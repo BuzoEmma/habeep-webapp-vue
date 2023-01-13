@@ -2,20 +2,20 @@
     <div class="fixed w-screen h-screen top-0 opacity-50 overflow-hidden max-h-screen" v-if="onModal"
         style="background: #161622"></div>
 
-    <div class="w-screen min-w-full flex flex-col items-center bg-white h-full min-h-screen overflow-y-auto"
-        :class="{ 'max-h-screen overflow-y-hidden': onModal }" resize="changeWidth">
+    <div class="w-screen min-w-full flex flex-col items-center bg-white h-screen min-h-screen overflow-y-auto"
+        :class="{ 'max-h-screen overflow-y-hidden overflow-hidden': onModal }" resize="changeWidth">
         <ProfileNavbar />
 
 
         <div
-            class="body px-6 2xl:px-44 md:px-20 mb-10 w-full flex flex-col gap-y-8 lg:flex-row h-fit gap-x-3 items-center md:items-start  mt-10">
+            class="body px-6 2xl:px-44 md:px-20 mb-10 w-full flex flex-col gap-y-8 lg:flex-row h-full gap-x-3 items-center md:items-start  mt-10">
             <!-- user basic info -->
             <div class="w-full lg:w-2/6 2xl:w-1/4 lg:ml-3 h-fit flex flex-col items-center gap-y-8 left">
                 <div
                     class="user-info flex p-4 bg-white flex-col border items-start border-gray-200 rounded w-full h-full">
                     <div class="flex flex-row gap-x-3 items-start">
-                        <div class="rounded-full w-24 h-24 grid place-items-center">
-                            <img src="../../../assets/icons/model.svg" class="w-full h-full" alt="">
+                        <div class="rounded-full w-24 h-24 grid place-items-center border">
+                            <img src="../../../assets/icons/memoji.svg" class="w-full h-full" alt="">
                         </div>
                         <div class="flex flex-col ">
                             <span class="text-xl md:text-center text-left agent-name text-webapp font-medium">{{
@@ -40,6 +40,7 @@
                             class="user-btn flex-row items-center justify-center text-sm font-medium text-webapp w-1/2  bg-white">Affiliate
                             profile</button>
                         <button
+                            @click="openModal('editProfileModal')"
                             class="user-btn flex flex-row items-center justify-center text-sm font-medium  text-webapp ml-2 bg-white w-1/2">Edit
                             profile</button>
                     </div>
@@ -86,8 +87,8 @@
                     </div>
                 </div>
 
-                <div class="ads-tab w-full  h-full mt-6 flex flex-row items-center justify-center" v-if="(openTab === 1)" id="ads-tab">
-                    <div class="flex flex-col items-center gap-y-3 self-center">
+                <div class="ads-tab w-full h-full mt-6 flex flex-row md:items-center justify-center" v-if="(openTab === 1)" id="ads-tab">
+                    <div class="flex flex-col items-center gap-y-3 md:justify-center">
                         <img src="../../../assets/icons/no-ad.svg" alt="">
                         <span class="text-gray-300 text-lg">No ads yet</span>
                     </div>
@@ -163,8 +164,11 @@
             </div>
 
 
+            <EditUserProfile @close="closeModal" @changePin="openModal('changePincode')" v-if="onModal && editProfileModal" />
+            <pincodeModal @close="closeModal" @back="goBack" v-if="onModal && changePincode" />
+            <Following @close="closeModal" v-if="onModal && FollowingModal" />
         </div>
-        <Following @close="closeModal" v-if="onModal" />
+        
     </div>
 </template>
 
@@ -174,12 +178,18 @@ import { ref } from 'vue'
 
 import ProfileNavbar from '../../../components/ProfileNavbar.vue'
 import Following from './components/modal/Following.vue'
+import EditUserProfile from './components/EditUserProfile.vue'
+import pincodeModal from './components/pincodeModal.vue'
 import Naira from './components/wallet/Naira.vue'
 import HBP from './components/wallet/HBP.vue'
 
 const openTab = ref(1)
 const walletTab = ref(1)
 const onModal = ref(false)
+let modalState = ref(null)
+const editProfileModal = ref(false)
+const changePincode = ref(false)
+const FollowingModal = ref(false)
 
 function changeTab(tab) {
     openTab.value = tab
@@ -189,12 +199,26 @@ function changeWalletTab(tab) {
     walletTab.value = tab
 }
 
-function openModal() {
+function openModal(name) {
     onModal.value = true
+    modalState.value = name
+    console.log(eval(name))
+    
+    eval(name).value = true
 }
 function closeModal() {
     onModal.value = false
+    editProfileModal.value = false
+    changePincode.value = false
+    FollowingModal.value = false
 }
+
+function goBack(component) {
+    // console.log(component)
+    closeModal();
+    onModal.value = true
+    eval(component).value = true
+} 
 
 const screenWidth = ref(window.innerWidth)
 

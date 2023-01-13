@@ -103,9 +103,9 @@
 
             </div>
 
-            <SuggestedCategory @enterAgents="gotoModal('agents')" @close="closeModal"
+            <!-- <SuggestedCategory @enterAgents="gotoModal('agents')" @close="closeModal"
                 v-if="onSuggestedListingsModal && onModal" />
-            <SuggestedAgents v-if="onSuggestedFollowersModal && onModal" @close="closeModal" />
+            <SuggestedAgents v-if="onSuggestedFollowersModal && onModal" @close="closeModal" /> -->
 
             <!-- components -->
             <Toast :msg="errorMsg.msg" type="danger" v-if="onError" />
@@ -124,8 +124,8 @@ import { useStore } from "vuex";
 
 import { registerValidate, formValidator } from '../../composables/2-validator'
 
-import SuggestedCategory from './components/SuggestedCategory.vue'
-import SuggestedAgents from './components/SuggestedAgents.vue'
+// import SuggestedCategory from './components/SuggestedCategory.vue'
+// import SuggestedAgents from './components/SuggestedAgents.vue'
 
 const screenWidth = ref(window.innerWidth)
 

@@ -1,5 +1,8 @@
 import { createStore } from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
+import { useCookies } from "vue3-cookies";
+
+const { cookies } = useCookies();
 
 export default createStore({
   state: {
@@ -20,6 +23,8 @@ export default createStore({
         state.isAuthenticated = false;
         state.sessionId = '';
         state.user = []
+
+        cookies.set('loggedIn', false)
     }
   },
   actions: {

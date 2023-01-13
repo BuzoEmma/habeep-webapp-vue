@@ -27,25 +27,22 @@
 
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8">
                     <label for="" class="text-sm text-webapp">Email address</label>
-                    <input type="email" @input="validateFormField('email', data.email)"
-                        v-model="data.email"
+                    <input type="email" @input="validateFormField('email', data.email)" v-model="data.email"
                         :class="{ 'invalidField': errorMsg.field === 'email' }" placeholder="Enter Email address"
                         class="w-full h-14 rounded-lg">
                 </div>
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8">
                     <label for="" class="text-sm text-webapp">Enter your secure pin</label>
-                    <input type="password" @input="validateFormField('pin', data.pin.toString())"
-                        v-model="data.pin" maxlength="4"
-                        :class="{ 'invalidField': errorMsg.field === 'pin' }" placeholder="Enter your 4 digit pin"
-                        class="w-full h-14 rounded-lg">
+                    <input type="password" @input="validateFormField('pin', data.pin.toString())" v-model="data.pin"
+                        maxlength="4" :class="{ 'invalidField': errorMsg.field === 'pin' }"
+                        placeholder="Enter your 4 digit pin" class="w-full h-14 rounded-lg">
                 </div>
 
                 <p class="w-full text-primary flex flex-row justify-end underline cursor-pointer my-10 text-sm"
                     @click="$router.push('/forgot-pin')">Forgot Pin?</p>
 
                 <!-- submit btn -->
-                <button class="bg-primary w-full rounded-lg grid place-items-center h-14 text-white"
-                    @click="loginUser">
+                <button class="bg-primary w-full rounded-lg grid place-items-center h-14 text-white" @click="loginUser">
                     <span v-if="!processing">Continue</span>
                     <Preloader v-else />
                 </button>
@@ -140,6 +137,8 @@ async function loginUser() {
 
         setTimeout(() => {
             onError.value = false
+            errorMsg.value.msg = ''
+            errorMsg.value.field = null
         }, 3000);
     } else {
         try {
@@ -155,13 +154,13 @@ async function loginUser() {
                 store.dispatch('setAuth', mutate)
                 cookies.set('loggedIn', true)
                 newMsg.value = login.data.data.message
-                
+
                 setTimeout(() => {
                     processing.value = false
-                    if(login.data.data.user.verified) {
+                    if (login.data.data.user.verified) {
                         router.push('/user/profile/' + login.data.data.user._id)
                     } else {
-                        router.push('/verify?email=' + login.data.data.user.email)
+                        router.push('/verify-otp?email=' + login.data.data.user.email)
                     }
                 }, 2000);
             } else {
@@ -171,15 +170,22 @@ async function loginUser() {
 
                 setTimeout(() => {
                     onError.value = false
+                    errorMsg.value.msg = ''
                 }, 3000);
             }
         } catch (error) {
             onError.value = true
-            errorMsg.value.msg = error.response.data.message;
+            if (error.response.data) {
+                errorMsg.value.msg = error.response.data.message;
+            } else errorMsg.value.msg = error.message;
             processing.value = false
 
             data.email = ''
             data.pin = ''
+
+            setTimeout(() => {
+                onError.value = false;
+            }, 3000);
         }
 
 

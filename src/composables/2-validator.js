@@ -70,7 +70,8 @@ export function formValidator(field, data) {
         }
     }
 
-    if(field === 'pin') {
+
+    if(field === 'pin' || field.includes('Pin') === true) {
         if(data.length === 4) {
             return {
                 success: true,
@@ -81,7 +82,7 @@ export function formValidator(field, data) {
             return {
                 success: false,
                 message: 'Please enter a valid pin',
-                field: 'pin',
+                field: field,
             }
 
         }

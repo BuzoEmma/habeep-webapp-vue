@@ -43,6 +43,7 @@ import TOS from '../views/extras/TermsOfService.vue'
 // auth
 import Register from '../views/Auth/Register.vue'
 import Login from '../views/Auth/Login.vue'
+import Logout from '../views/Auth/Logout.vue'
 import ForgotPin from '../views/Auth/ForgotPin.vue'
 import ResetPin from '../views/Auth/ResetPin.vue'
 import OTP from '../views/Auth/OTP_Validation.vue'
@@ -116,6 +117,11 @@ const routes = [
         path: '/login',
         name: 'Login',
         component: Login
+    },
+    {
+        path: '/logout',
+        name: 'Logout',
+        component: Logout
     },
     {
         path: '/forgot-pin',
