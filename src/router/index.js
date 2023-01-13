@@ -129,11 +129,6 @@ const routes = [
         component: ForgotPin
     },
     {
-        path: '/reset-pin',
-        name: 'ResetPin',
-        component: ResetPin
-    },
-    {
         path: '/verify-otp',
         name: 'OTP',
         component: OTP

@@ -23,27 +23,112 @@
                 </p>
 
                 <p class="w-full text-left text-webapp  text-sm mt-10">
-                    Please provide us with the email address, an OTP code will be sent to you
+                    Please provide us with the email address, your new PIN will be sent to you if account exists
                 </p>
 
                 <!-- input fields -->
 
 
-                <div class="flex flex-col items-start w-full gap-y-1 my-8">
-                    <label for="" class="text-sm text-webapp">Email</label>
-                    <input type="email" placeholder="Enter your your email address" class="w-full h-14 rounded-lg">
+                <div class="flex flex-col items-start w-full gap-y-1 mt-8">
+                    <label for="" class="text-sm text-webapp">Email address</label>
+                    <input type="email" v-model="data.email" @input="validateFormField('email', data.email)"
+                        placeholder="Enter your email address" :class="{ 'invalidField': errorMsg.field === 'email' }"
+                        class="w-full h-14 rounded-lg">
                 </div>
                 <!-- submit btn -->
-                <button class="bg-primary w-full rounded-lg grid place-items-center h-14 text-white">Send OTP code</button>
+                <button class="bg-primary w-full rounded-lg grid place-items-center h-14 text-white mt-5"
+                    @click="resetUserPin">
+                    <span v-if="!processing">Send Pin</span>
+                    <Preloader v-else />
+                </button>   
 
             </div>
+
+            <!-- components -->
+            <Toast :msg="errorMsg.msg" type="danger" v-if="onError" />
+            <Toast :msg="newMsg" type="success" v-if="newMsg.length > 0" />
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
+import { useRouter, useRoute } from "vue-router";
+import axios from "../../composables/axios";
+import axiosDefault from 'axios'
+import { useStore } from "vuex";
 
+import { formValidator } from '../../composables/2-validator'
+
+const route = useRoute();
+const router = useRouter();
+
+const store = useStore();
+
+const url = '/auth/user/reset/password';
+
+
+const data = reactive({
+    email: ''
+})
+
+const onError = ref(false)
+let errorMsg = ref({
+    msg: '',
+    field: null
+})
+let newMsg = ref('')
+let warningMsg = ref('')
+const processing = ref(false)
+
+function validateFormField(field, data) {
+    const validator = formValidator(field, data)
+
+
+    if (!validator.success) {
+        onError.value = true
+        errorMsg.value.msg = validator.message
+        errorMsg.value.field = field
+    } else {
+        onError.value = false
+        errorMsg.value.msg = ''
+        errorMsg.value.field = null
+    }
+}
+
+async function resetUserPin() {
+    try {
+        processing.value = true
+        const reset = await axios.patch(url, data)
+        if (!reset.data.success) {
+            onError.value = true
+            errorMsg.value.msg = create.data.message
+
+            setTimeout(() => {
+                processing.value = false
+                onError.value = false
+                errorMsg.value.msg = ''
+            }, 3000);
+        } else {
+            newMsg.value = reset.data.message
+
+            setTimeout(() => {
+                processing.value = false
+                newMsg.value = ''
+                router.push('/login')
+            }, 5000);
+
+        }
+    } catch (error) {
+        processing.value = false
+        onError.value = true
+        errorMsg.value.msg = error.response.data.error
+
+        setTimeout(() => {
+            onError.value = false
+        }, 5000);
+    }
+}
 
 </script>
 
@@ -61,6 +146,11 @@ input {
 
 input:focus {
     border: 1px solid #1B49FF;
+}
+
+/* formValidators */
+.invalidField {
+    border: 1px solid #c5120b !important;
 }
 
 .form-container::-webkit-scrollbar {

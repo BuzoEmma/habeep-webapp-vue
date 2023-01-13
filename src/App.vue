@@ -22,6 +22,12 @@ function verifyAllowedRoles(route, role) {
             return true
         if(route.name === 'Terms-Of-Service')
             return true
+        if(route.name === 'ForgotPin')
+            return true
+        if(route.name === 'ResetPin')
+            return true
+        if(route.name === 'OTP')
+            return true
     }
 }
 

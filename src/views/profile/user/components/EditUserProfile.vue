@@ -1,5 +1,6 @@
 <template>
-  <div class="main flex flex-col md:h-64 fixed md:absolute z-10 overflow-hidden md:right-1/4 md:top-1/4 bg-white h-full">
+  <div
+    class="main flex flex-col md:h-64 fixed md:absolute z-10 overflow-hidden md:right-1/4 md:top-1/6 bg-white h-full">
     <div class="flex flex-row items-center justify-between w-full px-4 py-4 border-b border-b-gray-100">
       <span class="text-lg font-medium text-webapp">Edit profile</span>
       <img src="../../../../assets/icons/x.svg" class="cursor-pointer" @click="$emit('close')" alt="">
@@ -49,7 +50,8 @@
       <div class="flex flex-col items-start w-full gap-y-1 relative">
         <label for="" class="text-sm text-webapp">Secure pin</label>
         <input type="text" value="****" disabled placeholder="Enter your first name" class="w-full h-14 rounded-lg">
-        <img src="../../../../assets/icons/edit-icon-nobg.svg" @click="$emit('changePin')" class="absolute right-5 top-10 cursor-pointer" alt="">
+        <img src="../../../../assets/icons/edit-icon-nobg.svg" @click="$emit('changePin')"
+          class="absolute right-5 top-10 cursor-pointer" alt="">
       </div>
 
       <!-- components -->
@@ -58,8 +60,10 @@
     </div>
 
 
-    <button class="bg-primary mx-4 rounded-lg grid place-items-center h-14 my-6 text-white"
-      @click="$emit('enterAgents')">Continue</button>
+    <button class="bg-primary mx-4 rounded-lg grid place-items-center h-14 my-6 text-white" @click="updateProfile">
+      <span v-if="!processing">Continue</span>
+      <Preloader v-else />
+    </button>
   </div>
 </template>
 
@@ -70,7 +74,9 @@ import axios from "../../../../composables/axios";
 import axiosDefault from 'axios'
 import { useStore } from "vuex";
 
-import {formValidator } from '../../../../composables/2-validator'
+import { formValidator } from '../../../../composables/2-validator'
+
+const emit = defineEmits(['close'])
 
 const route = useRoute();
 const router = useRouter();
@@ -85,6 +91,7 @@ let selectedCountry = ref({
   callingCode: '234',
   flag: 'https://flagcdn.com/ng.svg'
 });
+
 
 
 function openCountryCode() {
@@ -128,8 +135,22 @@ async function getCountries() {
 }
 
 // manage profile editing
-const url = '/auth/user/profile/edit';
+function formatNames(data) {
+  let names = data.split(' ')
+  if (names.length === 2) {
+    return {
+      fname: names[0],
+      surname: names[1],
+    }
+  } else {
+    return {
+      fname: names[0]
+    }
+  }
+}
 
+
+const url = '/auth/user/update';
 
 const data = reactive({
   fname: '',
@@ -164,6 +185,55 @@ function validateFormField(field, data) {
   }
 }
 
+async function updateProfile() {
+  try {
+    if (data.phoneNumber.toString().length >= 10) {
+      data.countryCode = selectedCountry.value.callingCode
+      data.nationality = selectedCountry.value.name
+      if (data.fullName.length > 5) {
+        let name = formatNames(data.fullName)
+        data.fname = name.fname
+        data.surname = name.surname ? name.surname : store.state.user.surname
+
+        processing.value = true
+        const update = await axios.put(url, data)
+        if (!update.data.success) {
+          onError.value = true
+          errorMsg.value.msg = update.data.message
+
+          setTimeout(() => {
+            processing.value = false
+            onError.value = false
+            errorMsg.value.msg = ''
+          }, 3000);
+        } else {
+          newMsg.value = update.data.message
+
+          setTimeout(() => {
+            processing.value = false
+            newMsg.value = ''
+            emit('close')
+          }, 5000);
+
+        }
+      } else {
+        onError.value = true
+        errorMsg.value.msg = 'Input your Full Name'
+      }
+    } else {
+      onError.value = true
+      errorMsg.value.msg = 'Input a correct Phone Number'
+    }
+  } catch (error) {
+    processing.value = false
+    onError.value = true
+    errorMsg.value.msg = error.response.data.error
+
+    setTimeout(() => {
+      onError.value = false
+    }, 5000);
+  }
+}
 
 onMounted(() => {
   getCountries()
