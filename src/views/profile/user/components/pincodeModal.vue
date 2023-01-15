@@ -4,7 +4,8 @@
         <div class="flex flex-row items-center justify-between w-full px-4 py-4 border-b border-b-gray-100">
             <span class="text-lg font-medium text-webapp">Change pincode</span>
             <div class="flex flex-row items-center gap-x-2">
-                <img src="../../../../assets/icons/g-back.svg" class="cursor-pointer" @click="$emit('back', 'editProfileModal')" alt="">
+                <img src="../../../../assets/icons/g-back.svg" class="cursor-pointer"
+                    @click="$emit('back', 'editProfileModal')" alt="">
                 <img src="../../../../assets/icons/x.svg" class="cursor-pointer" @click="$emit('close')" alt="">
             </div>
         </div>
@@ -49,8 +50,10 @@
         </div>
 
 
-        <button class="bg-primary mx-4 rounded-lg grid place-items-center h-14 my-6 text-white"
-            @click="$emit('enterAgents')">Continue</button>
+        <button class="bg-primary mx-4 rounded-lg grid place-items-center h-14 my-6 text-white" @click="changePin">
+            <span v-if="!processing">Continue</span>
+            <Preloader v-else />
+        </button>
     </div>
 </template>
 
@@ -63,6 +66,8 @@ import { useStore } from "vuex";
 
 import { formValidator } from '../../../../composables/2-validator'
 
+const emit = defineEmits(['back'])
+
 const route = useRoute();
 const router = useRouter();
 
@@ -70,7 +75,7 @@ const store = useStore();
 
 
 // manage profile editing
-const url = '/auth/user/edit/pin';
+const url = '/auth/user/update/password';
 
 
 const data = reactive({
@@ -103,9 +108,46 @@ function validateFormField(field, data) {
     }
 }
 
+async function changePin() {
+    try {
+        if (data.newPin === data.confirmPin) {
+            processing.value = true
+            const change = await axios.patch(url, data)
+            if (!change.data.success) {
+                onError.value = true
+                errorMsg.value.msg = change.data.message
 
-onMounted(() => {
-})
+                setTimeout(() => {
+                    processing.value = false
+                    onError.value = false
+                    errorMsg.value.msg = ''
+                }, 3000);
+            } else {
+                newMsg.value = change.data.message
+
+                setTimeout(() => {
+                    processing.value = false
+                    newMsg.value = ''
+                    emit('back', 'editProfileModal')
+                }, 5000);
+
+            }
+        } else {
+            onError.value = true
+            errorMsg.value.msg = "New Pin and Confirm Pin doesn't match"
+        }
+    } catch (error) {
+        processing.value = false
+        onError.value = true
+        errorMsg.value.msg = error.response.data.error
+
+        setTimeout(() => {
+            onError.value = false
+        }, 5000);
+    }
+}
+
+
 </script>
 
 <style scoped>

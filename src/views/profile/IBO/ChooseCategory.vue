@@ -22,14 +22,14 @@
                     <span>Choose the IBO category</span>
                 </p>
 
-                <div class="border-2 border-gray-200 w-full flex flex-col items-start p-5 gap-y-4 mt-14 md:mt-24 rounded-lg" style="background: #F9FAFF">
+                <div class="border-2 border-gray-200 w-full flex flex-col items-start p-5 gap-y-4 mt-14 md:mt-24 rounded-lg cursor-pointer" @click="$router.push('/account/IBO/category/agent')" style="background: #F9FAFF">
                     <img src="../../../assets/icons/agent-ibo.svg" alt="">
 
                     <span class="text-primary font-xl font-medium">Agent IBO</span>
 
                     <p class="text-sm text-webapp text-left w-full">Build your own financial wealth by owning your affiliate business. Click to join the agent IBO and start earning</p>
                 </div>
-                <div class="border-2 border-gray-200 w-full flex flex-col items-start p-5 gap-y-4 mt-10 rounded-lg" style="background: #F7F7F7;">
+                <div class="border-2 border-gray-200 w-full flex flex-col items-start p-5 gap-y-4 mt-10 rounded-lg cursor-pointer" @click="$router.push('/account/IBO/category/user')" style="background: #F7F7F7;">
                     <img src="../../../assets/icons/user-ibo.svg" alt="">
 
                     <span class="text-primary font-xl font-medium">User IBO</span>

@@ -30,6 +30,9 @@ import AgentProfile from '../views/profile/agents/Profile.vue'
 
 // IBO
 import IBO_ChooseCategory from '../views/profile/IBO/ChooseCategory.vue'
+import IBO_Agent from '../views/profile/IBO/AgentForm.vue'
+import IBO_User from '../views/profile/IBO/UserForm.vue'
+import IBO_Fee from '../views/profile/IBO/AffiliateFee.vue'
 
 
 
@@ -45,7 +48,6 @@ import Register from '../views/Auth/Register.vue'
 import Login from '../views/Auth/Login.vue'
 import Logout from '../views/Auth/Logout.vue'
 import ForgotPin from '../views/Auth/ForgotPin.vue'
-import ResetPin from '../views/Auth/ResetPin.vue'
 import OTP from '../views/Auth/OTP_Validation.vue'
 
 
@@ -98,6 +100,24 @@ const routes = [
         name: 'IBO_ChooseCategory',
         beforeEnter: guardMyroute,
         component: IBO_ChooseCategory
+    },
+    {
+        path: '/account/IBO/category/agent',
+        name: 'IBO_Category_Agent',
+        beforeEnter: guardMyroute,
+        component: IBO_Agent
+    },
+    {
+        path: '/account/IBO/category/user',
+        name: 'IBO_Category_User',
+        beforeEnter: guardMyroute,
+        component: IBO_User
+    },
+    {
+        path: '/account/IBO/category/fee/:type',
+        name: 'IBO_Affiliate_Fee',
+        beforeEnter: guardMyroute,
+        component: IBO_Fee
     },
 
     // chats

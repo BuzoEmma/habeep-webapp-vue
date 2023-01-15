@@ -25,6 +25,13 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
+select {
+  /* for Firefox */
+  -moz-appearance: none;
+  /* for Safari, Chrome, Opera */
+  -webkit-appearance: none;
+}
+
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
