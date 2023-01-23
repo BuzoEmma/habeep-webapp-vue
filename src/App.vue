@@ -12,23 +12,23 @@ const router = useRouter();
 const route = useRoute();
 
 function verifyAllowedRoles(route, role) {
-    if(role === 'random') {
-        return false;
-    }
-    if(role === 'user') {
-        if(route.name === 'Home')
-            return true
-        if(route.name === 'Blog')
-            return true
-        if(route.name === 'Terms-Of-Service')
-            return true
-        if(route.name === 'ForgotPin')
-            return true
-        if(route.name === 'ResetPin')
-            return true
-        if(route.name === 'OTP')
-            return true
-    }
+  if (role === 'random') {
+    return false;
+  }
+  if (role === 'user') {
+    if (route.name === 'Home')
+      return true
+    if (route.name === 'Blog')
+      return true
+    if (route.name === 'Terms-Of-Service')
+      return true
+    if (route.name === 'ForgotPin')
+      return true
+    if (route.name === 'ResetPin')
+      return true
+    if (route.name === 'OTP')
+      return true
+  }
 }
 
 const getUser = async () => {
@@ -38,13 +38,13 @@ const getUser = async () => {
     if (user.data === "Unauthorized" || !loggedIn) {
       store.dispatch("unsetAuth");
       if (!verifyAllowedRoles(route, 'user')) {
-        router.push("/login?redirect=" + router.currentRoute);
+        router.push("/login?redirect=" + router.currentRoute.value.fullPath);
       }
     } else {
       if (user.data.error === null) {
         store.dispatch("unsetAuth");
         if (!verifyAllowedRoles(route, 'user')) {
-          router.push("/login?redirect=" + router.currentRoute);
+          router.push("/login?redirect=" + router.currentRoute.value.fullPath);
         }
       } else {
         let mutate = {
@@ -58,13 +58,14 @@ const getUser = async () => {
   } catch (error) {
     store.dispatch("unsetAuth");
     if (!verifyAllowedRoles(route, 'user')) {
-      router.push("/login");
+      // console.log(router.currentRoute)
+      router.push("/login?redirect=" + router.currentRoute.value.fullPath);
     }
   }
 };
 
 onMounted(() => {
-  getUser();
+  // getUser();
 });
 </script>
 

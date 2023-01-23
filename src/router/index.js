@@ -10,6 +10,23 @@ function guardMyroute(to, from, next) {
           next({ name: 'Verify' }) // go to '/verify';
        }  else next() // allow to enter route
     } else {
+        // console.log(to)
+       next("/login?redirect=" + to.path) // go to '/login';
+    }
+ }
+
+function guardMyrouteForAgent(to, from, next) {
+    var isAuthenticated = false
+    if (createStore.state.isAuthenticated) { isAuthenticated = true } else { isAuthenticated = false }
+    if (isAuthenticated) {
+       if (!createStore.state.user.verified) {
+          next({ name: 'Verify' }) // go to '/verify';
+       }  else {
+        if (createStore.state.user.role === 'AGENT_IBO') {
+            next()
+        } else next({ name: 'IBO_Category_Agent' })
+       } // allow to enter route
+    } else {
        next("/login?redirect=" + to.path) // go to '/login';
     }
  }
@@ -21,6 +38,10 @@ import Home from '../views/Home.vue'
 import ListingSearch from '../views/listings/Search.vue'
 import ListingProduct from '../views/listings/Product.vue'
 
+// posts
+import AgentAds from '../views/profile/agents/post/Ads.vue'
+
+
 // profile
 // user
 import UserProfile from '../views/profile/user/Profile.vue'
@@ -29,10 +50,9 @@ import UserProfile from '../views/profile/user/Profile.vue'
 import AgentProfile from '../views/profile/agents/Profile.vue'
 
 // IBO
-import IBO_ChooseCategory from '../views/profile/IBO/ChooseCategory.vue'
-import IBO_Agent from '../views/profile/IBO/AgentForm.vue'
-import IBO_User from '../views/profile/IBO/UserForm.vue'
-import IBO_Fee from '../views/profile/IBO/AffiliateFee.vue'
+import IBO_ChooseCategory from '../views/profile/IBO/register/ChooseCategory.vue'
+import IBO_Agent from '../views/profile/IBO/register/AgentForm.vue'
+import IBO_User from '../views/profile/IBO/register/UserForm.vue'
 
 
 
@@ -88,6 +108,12 @@ const routes = [
         component: AgentProfile
     },
     {
+        path: '/agents/ads',
+        beforeEnter: guardMyrouteForAgent,
+        name: 'Agent-ads',
+        component: AgentAds
+    },
+    {
         path: '/user/profile/:id',
         name: 'User-profile',
         beforeEnter: guardMyroute,
@@ -112,12 +138,6 @@ const routes = [
         name: 'IBO_Category_User',
         beforeEnter: guardMyroute,
         component: IBO_User
-    },
-    {
-        path: '/account/IBO/category/fee/:type',
-        name: 'IBO_Affiliate_Fee',
-        beforeEnter: guardMyroute,
-        component: IBO_Fee
     },
 
     // chats

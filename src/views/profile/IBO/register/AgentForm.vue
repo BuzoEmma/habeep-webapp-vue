@@ -1,15 +1,15 @@
 <template>
 
     <div class="w-screen min-w-full flex flex-row items-center bg-white h-screen min-h-full overflow-hidden">
-        <img src="../../../assets/images/habeep-show-ibo.png" class="w-1/3 xl:block hidden h-full" alt="">
-        <div
+        <img src="../../../../assets/images/habeep-show-ibo.png" class="w-1/3 xl:block hidden h-full" alt="">
+        <div v-if="!inputCompleted"
             class="form-container flex flex-col items-center relative bg-white gap-y-3 w-full xl:w-2/3 h-full pb-6 md:py-10 overflow-y-auto overflow-x-hidden">
 
             <div class="flex flex-col items-center w-full md:w-2/3 px-4">
                 <!-- logo -->
                 <div class="logo md:flex hidden flex-row items-center justify-end w-full gap-x-2 cursor-pointer"
                     @click="$router.push('/')">
-                    <img src="../../../assets/icons/logo.svg" alt="Logo">
+                    <img src="../../../../assets/icons/logo.svg" alt="Logo">
                     <span class="text-primary text-2xl">Habeep</span>
                 </div>
 
@@ -26,36 +26,36 @@
 
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8">
                     <label for="" class="text-sm text-webapp">Agent category</label>
-                    <select name="" class="w-full h-14 rounded-lg px-2" id="">
-                        <option value="Individual agent">Individual agent</option>
-                        <option value="Individual agent">Company agent</option>
+                    <select name="" v-model="data.category" class="w-full h-14 rounded-lg px-2" id="">
+                        <option value="Individual">Individual agent</option>
+                        <option value="Company">Company agent</option>
                     </select>
                 </div>
 
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8">
                     <label for="" class="text-sm text-webapp">Street address</label>
-                    <input type="text" name="" class="w-full h-14 rounded-lg" placeholder="Enter your street address"
+                    <input type="text" name="" v-model="data.address" class="w-full h-14 rounded-lg" placeholder="Enter your street address"
                         id="">
                 </div>
 
                 <div class="flex flex-col sm:flex-row items-center gap-x-3 w-full justify-between">
                     <div class="flex flex-col items-start w-full sm:w-6/12 gap-y-1 mt-8">
                         <label for="" class="text-sm text-webapp">City</label>
-                        <select name="" class="w-full h-14 rounded-lg px-2" id="">
-                            <option value="Individual agent">Calabar</option>
+                        <select name="" v-model="data.city" class="w-full h-14 rounded-lg px-2" id="">
+                            <option value="Calabar">Calabar</option>
                         </select>
                     </div>
                     <div class="flex flex-col items-start  w-full sm:w-6/12 gap-y-1 mt-8">
                         <label for="" class="text-sm text-webapp">State</label>
-                        <select name="" class="w-full h-14 rounded-lg px-2" id="">
-                            <option value="Individual agent">Cross River State</option>
+                        <select name="" v-model="data.state" class="w-full h-14 rounded-lg px-2" id="">
+                            <option value="Cross River">Cross River State</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8">
                     <label for="" class="text-sm text-webapp">Bio</label>
-                    <textarea type="text" name="" class="w-full h-28 pt-3 rounded-lg"
+                    <textarea type="text" v-model="data.bio" name="" class="w-full h-28 pt-3 rounded-lg"
                         placeholder="Write something about youself" id=""></textarea>
                 </div>
 
@@ -64,28 +64,33 @@
                 </p>
                 <!-- submit btn -->
                 <button class="bg-primary w-full rounded-lg grid place-items-center h-14 text-white mt-5"
-                    @click="resetUserPin">
+                    @click="inputCompleted = true">
                     <span v-if="!processing">Next</span>
                     <Preloader v-else />
                 </button>
 
             </div>
 
-            <!-- components -->
-            <Toast :msg="errorMsg.msg" type="danger" v-if="onError" />
-            <Toast :msg="newMsg" type="success" v-if="newMsg.length > 0" />
         </div>
+
+
+        <AffiliateFee v-else :data="data" />
+        
+        <!-- components -->
+        <Toast :msg="errorMsg.msg" type="danger" v-if="onError" />
+        <Toast :msg="newMsg" type="success" v-if="newMsg.length > 0" />
     </div>
 </template>
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter, useRoute } from "vue-router";
-import axios from "../../../composables/axios";
+import axios from "../../../../composables/axios";
 import axiosDefault from 'axios'
 import { useStore } from "vuex";
+import AffiliateFee from './AffiliateFee.vue';
 
-import { formValidator } from '../../../composables/2-validator'
+import { formValidator } from '../../../../composables/2-validator'
 
 const route = useRoute();
 const router = useRouter();
@@ -94,9 +99,15 @@ const store = useStore();
 
 const url = '/auth/user/reset/password';
 
+const inputCompleted = ref(false)
 
 const data = reactive({
-    email: ''
+    role: 'AGENT_IBO',
+    bio: '',
+    state: '',
+    city: '',
+    category: '',
+    address: ''
 })
 
 const onError = ref(false)
@@ -104,6 +115,7 @@ let errorMsg = ref({
     msg: '',
     field: null
 })
+
 let newMsg = ref('')
 let warningMsg = ref('')
 const processing = ref(false)
@@ -122,41 +134,6 @@ function validateFormField(field, data) {
         errorMsg.value.field = null
     }
 }
-
-async function resetUserPin() {
-    try {
-        processing.value = true
-        const reset = await axios.patch(url, data)
-        if (!reset.data.success) {
-            onError.value = true
-            errorMsg.value.msg = create.data.message
-
-            setTimeout(() => {
-                processing.value = false
-                onError.value = false
-                errorMsg.value.msg = ''
-            }, 3000);
-        } else {
-            newMsg.value = reset.data.message
-
-            setTimeout(() => {
-                processing.value = false
-                newMsg.value = ''
-                router.push('/login')
-            }, 5000);
-
-        }
-    } catch (error) {
-        processing.value = false
-        onError.value = true
-        errorMsg.value.msg = error.response.data.error
-
-        setTimeout(() => {
-            onError.value = false
-        }, 5000);
-    }
-}
-
 </script>
 
 <style scoped>

@@ -1,7 +1,7 @@
 <template>
 
     <div class="w-screen min-w-full flex flex-row items-center bg-white h-screen min-h-full overflow-hidden">
-        <img src="../../../assets/images/habeep-show-ibo.png" class="w-1/3 xl:block hidden h-full" alt="">
+        <img src="../../../../assets/images/habeep-show-ibo.png" class="w-1/3 xl:block hidden h-full" alt="">
 
         <div
             class="form-container flex flex-col items-center relative bg-white gap-y-3 w-full xl:w-2/3 h-full pb-6 md:py-10 overflow-y-auto overflow-x-hidden">
@@ -10,7 +10,7 @@
                 <!-- logo -->
                 <div class="logo md:flex hidden flex-row items-center justify-end w-full gap-x-2 cursor-pointer"
                     @click="$router.push('/')">
-                    <img src="../../../assets/icons/logo.svg" alt="Logo">
+                    <img src="../../../../assets/icons/logo.svg" alt="Logo">
                     <span class="text-primary text-2xl">Habeep</span>
                 </div>
 
@@ -23,14 +23,14 @@
                 </p>
 
                 <div class="border-2 border-gray-200 w-full flex flex-col items-start p-5 gap-y-4 mt-14 md:mt-24 rounded-lg cursor-pointer" @click="$router.push('/account/IBO/category/agent')" style="background: #F9FAFF">
-                    <img src="../../../assets/icons/agent-ibo.svg" alt="">
+                    <img src="../../../../assets/icons/agent-ibo.svg" alt="">
 
                     <span class="text-primary font-xl font-medium">Agent IBO</span>
 
                     <p class="text-sm text-webapp text-left w-full">Build your own financial wealth by owning your affiliate business. Click to join the agent IBO and start earning</p>
                 </div>
                 <div class="border-2 border-gray-200 w-full flex flex-col items-start p-5 gap-y-4 mt-10 rounded-lg cursor-pointer" @click="$router.push('/account/IBO/category/user')" style="background: #F7F7F7;">
-                    <img src="../../../assets/icons/user-ibo.svg" alt="">
+                    <img src="../../../../assets/icons/user-ibo.svg" alt="">
 
                     <span class="text-primary font-xl font-medium">User IBO</span>
 

@@ -65,7 +65,7 @@
 <script setup>
 import axios from '../../composables/axios'
 import { ref, reactive, onMounted } from 'vue'
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { loginValidate, formValidator } from '../../composables/2-validator'
 import { useCookies } from "vue3-cookies";
@@ -98,6 +98,8 @@ function gotoModal(modal) {
 // initialization
 const store = useStore();
 const router = useRouter()
+const route = useRoute()
+
 const url = '/auth/login';
 // datas
 const data = reactive({
@@ -158,7 +160,11 @@ async function loginUser() {
                 setTimeout(() => {
                     processing.value = false
                     if (login.data.data.user.verified) {
-                        router.push('/user/profile/' + login.data.data.user._id)
+                        if(route.query.redirect) {
+                            router.push(route.query.redirect)
+                        } else {
+                            router.push('/user/profile/' + login.data.data.user._id)
+                        }
                     } else {
                         router.push('/verify-otp?email=' + login.data.data.user.email)
                     }
