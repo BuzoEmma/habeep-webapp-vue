@@ -80,10 +80,10 @@
                             placeholder="Enter a 4 digit pin" class="w-full h-14 rounded-lg bg-transaparent"
                             :class="{ 'bg-bg': onModal, 'invalidField': errorMsg.field === 'pin' }">
                     </div>
-                    <div class="flex flex-col items-start  w-full sm:w-6/12 gap-y-1 mt-8">
+                    <div class="flex flex-col items-start w-full sm:w-6/12 gap-y-1 mt-8">
                         <label for="" class="text-sm text-webapp">Refferal code(optional)</label>
                         <input type="text" v-model="data.referralCode" placeholder="Enter a refferal code"
-                            class="w-full  h-14 rounded-lg">
+                            class="w-full  h-14 rounded-lg bg-transparent">
                     </div>
                 </div>
 

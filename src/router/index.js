@@ -40,6 +40,7 @@ import ListingProduct from '../views/listings/Product.vue'
 
 // posts
 import AgentAds from '../views/profile/agents/post/Ads.vue'
+import PostAd from '../views/profile/agents/post/Post.vue'
 
 
 // profile
@@ -112,6 +113,12 @@ const routes = [
         beforeEnter: guardMyrouteForAgent,
         name: 'Agent-ads',
         component: AgentAds
+    },
+    {
+        path: '/agents/ads/create',
+        beforeEnter: guardMyrouteForAgent,
+        name: 'Agent-ads-create',
+        component: PostAd
     },
     {
         path: '/user/profile/:id',
