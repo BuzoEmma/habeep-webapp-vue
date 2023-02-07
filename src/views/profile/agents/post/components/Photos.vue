@@ -33,11 +33,7 @@
                                     clip-rule="evenodd" />
                             </svg>
                             <span>Upload</span>
-                            <input type="file" ref="pic1" name="pic1" v-if="noPicture === true" @change="previewImg">
-                            <input type="file" ref="pic2" name="pic2" v-if="imageData1" @change="previewImg">
-                            <input type="file" ref="pic3" name="pic3" v-if="imageData2" @change="previewImg">
-                            <input type="file" ref="pic4" name="pic4" v-if="imageData3" @change="previewImg">
-                            <input type="file" ref="pic5" name="pic5" v-if="imageData4" @change="previewImg">
+                            <input type="file" accept="image/png" name="pic" v-if="!imageData5" @change="previewImg">
                         </button>
                     </form>
 
@@ -84,9 +80,9 @@
                 <div class="flex flex-row p-6 w-full items-center justify-between">
                     <span class="text-xl font-medium text-webapp underline cursor-pointer"
                         @click="$emit('goBack')">Back</span>
-                    <button @click="sendData()" :class="{ 'bg-slate-400 text-white': imageData1.length < 1 }"
+                    <button @click="sendData()" :class="{ 'bg-slate-400 text-white': imageData5.length < 1 }"
                         class="h-10 w-24 rounded-lg bg-primary text-white text-sm text-medium"
-                        :disabled="imageData1.length < 1">
+                        :disabled="imageData5.length < 1">
                         <span v-if="!processing">Post AD</span>
                         <Preloader v-else />
                     </button>
@@ -134,6 +130,7 @@ const previewImg = async (event) => {
     var input = event.target;
     // Ensure that you have a file before attempting to read it
     if (input.files && input.files[0]) {
+        eval(`pic${currentImage.value}`).value = input
         // create a new FileReader to read this image and convert to base64 format
         var reader = new FileReader();
         // Define a callback function to run, when FileReader finishes its job
@@ -141,6 +138,7 @@ const previewImg = async (event) => {
             // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
             // Read image as base64 and set to imageData
             eval(`imageData${currentImage.value}`).value = e.target.result;
+            console.log(eval(`pic${currentImage.value}`).value)
         }
         // Start the reader job - read file as a data url (base64 format)
         reader.readAsDataURL(input.files[0]);
@@ -154,7 +152,7 @@ const sendData = async () => {
     
     for(let i = 1; i < currentImage.value + 1; i++) {
         console.log(i, currentImage.value)
-        console.log(eval(`pic${i}`).value)
+        console.log(await eval(`pic${i}`).value)
         let img = await eval(`pic${i}`).value.files[0]
         formData.append(`photo${i}`, img)
     }

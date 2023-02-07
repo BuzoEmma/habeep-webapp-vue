@@ -61,6 +61,7 @@
             <p @click="$router.push('chat')" class="text-sm text-webapp mt-1 cursor-pointer" :class="{'text-primary': $route.name === 'Chat'}" v-if="$store.state.isAuthenticated">Message</p>
             <p @click="$router.push('/user/profile/' + $store.state.user._id)" class="text-sm text-webapp mt-1 cursor-pointer" :class="{'text-primary': $route.name === 'User-profile'}" v-if="$store.state.isAuthenticated">Account</p>
             <hr class="my-1">
+            <p @click="$router.push('/agents/ads')" class="text-sm text-webapp mt-1 cursor-pointer" :class="{'text-primary': $route.name === 'Agent-ads' || 'Agent-ads-create'}" v-if="$store.state.isAuthenticated && $store.state.user.role === 'AGENT_IBO'">Post an Ad</p>
             <p @click="$router.push('/wallet')" class="text-sm text-webapp mt-1 cursor-pointer" :class="{'text-primary': $route.name === 'Wallet'}" v-if="$store.state.isAuthenticated">Wallet</p>
             <div class="flex flex-row items-center justify-between w-full rounded-full p-2 mt-8 border border-gray-300 cursor-pointer" @click="$router.push('/logout')">
                 <img src="../assets/icons/logo-mini.svg" alt="">
