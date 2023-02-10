@@ -10,8 +10,7 @@
             <!-- product display images for desktop view -->
             <div class="product-img-grid desktop-view xl:flex flex-row items-center w-full mt-10 hidden">
                 <div class="relative h-full display-img w-1/2 py-1">
-                    <img :src="carouselImg.link" class="h-full w-full cursor-pointer" @click="enterImageViewer()"
-                        alt="">
+                    <img :src="carouselImg.path" class="h-full w-full cursor-pointer" @click="enterImageViewer()" alt="">
 
                     <div class="w-full absolute flex flex-row top-5 items-center justify-between px-2">
                         <img src="../../assets/icons/back-img.svg" class="cursor-pointer" alt="">
@@ -24,12 +23,12 @@
 
                 <div class="flex h-full flex-col w-1/2">
                     <div class=" flex flex-row h-1/2 w-full pl-2 items-center">
-                        <img :src="image.link" class="h-full w-1/2 p-1 cursor-pointer"
-                            v-for="image in images.slice(0, 2)" @click="enterImageViewer()" :key="image" alt="">
+                        <img :src="image.path" class="h-full w-1/2 p-1 cursor-pointer" v-for="image in images.slice(0, 2)"
+                            @click="enterImageViewer()" :key="image" alt="">
                     </div>
                     <div class=" flex flex-row h-1/2 w-full pl-2 items-center">
-                        <img :src="image.link" class="h-full w-1/2 p-1 cursor-pointer"
-                            v-for="image in images.slice(3, 5)" @click="enterImageViewer()" :key="image" alt="">
+                        <img :src="image.path" class="h-full w-1/2 p-1 cursor-pointer" v-for="image in images.slice(3, 5)"
+                            @click="enterImageViewer()" :key="image" alt="">
                     </div>
                 </div>
             </div>
@@ -46,8 +45,8 @@
                     </div>
                 </div>
 
-                <img :src="carouselImg.link" class="h-full w-full main-img cursor-pointer" @click="enterImageViewer()">
-                <!-- <img :src="images[activeCarouselImg - 1].link" class="h-full w-full new-img" :class="{'hidden': changeCarouselImg}"> -->
+                <img :src="carouselImg.path" class="h-full w-full main-img cursor-pointer" @click="enterImageViewer()">
+                <!-- <img :src="images[activeCarouselImg - 1].path" class="h-full w-full new-img" :class="{'hidden': changeCarouselImg}"> -->
 
                 <div class="flex flex-row items-center w-full absolute bottom-5 justify-between md:px-8 px-2">
                     <!-- just to take space 🤞 -->
@@ -65,7 +64,7 @@
                     <!-- main one now 😎 -->
                     <div class="px-6 py-2 rounded opacity-70" style="background: #161622;">
                         <span class="text-sm text-white font-medium">{{ (activeCarouselImg + '/' +
-                            images.length)
+                                images.length)
                         }}</span>
                     </div>
                 </div>
@@ -81,28 +80,25 @@
                         <div class="flex flex-col md:gap-y-3 gap-y-2">
                             <p
                                 class="text-webapp text-2xl md:text-xl xl:text-2xl font-semibold xl:font-medium product-name">
-                                {{ product.title }}</p>
+                                One bedroom apartment</p>
                             <p
                                 class="text-sub-webapp text-lg md:text-sm xl:text-lg product-location flex flex-row items-center gap-x-2">
-                                <img src="../../assets/images/map-pin.png" alt="">{{
-                                    product.location.address + ', ' +
-                                        product.location.city
-                                }}
-                            </p>
+                                <img src="../../assets/images/map-pin.png" alt=""> 34 Marian Road, Calabar, Cross River
+                                State</p>
                         </div>
                     </div>
 
                     <div class="flex flex-row py-2 border-y mt-8 border-y-gray-200 w-full divide-x">
                         <div class="flex flex-col gap-y-2 items-center w-64 md:w-auto md:pr-20">
-                            <span class="text-2xl font-medium text-webapp">{{ product.bedrooms }}</span>
+                            <span class="text-2xl font-medium text-webapp">3</span>
                             <span class="text-sm text-sub-webapp">Bedroom</span>
                         </div>
                         <div class="flex flex-col gap-y-2 items-center w-64">
-                            <span class="text-2xl font-medium text-webapp">{{ product.bedrooms }}</span>
+                            <span class="text-2xl font-medium text-webapp">4</span>
                             <span class="text-sm text-sub-webapp">Bathroom</span>
                         </div>
                         <div class="flex flex-col gap-y-2 items-center w-64">
-                            <span class="text-2xl font-medium text-webapp">{{ product.size }}</span>
+                            <span class="text-2xl font-medium text-webapp">1,522</span>
                             <span class="text-sm text-sub-webapp">Square feet</span>
                         </div>
                     </div>
@@ -110,23 +106,23 @@
                     <p class="text-xl font-medium mt-8 text-webapp">Features</p>
                     <div
                         class="flex flex-row py-3 border-y mt-2 border-y-gray-200 w-full gap-x-3 overflow-x-auto flex-no-wrap">
-                        <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
-                            v-if="product.features.includes('electricity')">
+                        <div
+                            class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center">
                             <img src="../../assets/icons/light.svg" alt="">
                             <span class="text-sm text-sub-webapp">Electricity</span>
                         </div>
-                        <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
-                            v-if="product.features.includes('water')">
+                        <div
+                            class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center">
                             <img src="../../assets/icons/water.svg" alt="">
                             <span class="text-sm text-sub-webapp">Water</span>
                         </div>
-                        <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
-                            v-if="product.features.includes('parking')">
+                        <div
+                            class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center">
                             <img src="../../assets/icons/parking.svg" alt="">
                             <span class="text-sm text-sub-webapp">Parking</span>
                         </div>
-                        <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
-                            v-if="product.features.includes('pool')">
+                        <div
+                            class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center">
                             <img src="../../assets/icons/pool.svg" alt="">
                             <span class="text-sm text-sub-webapp">Pool</span>
                         </div>
@@ -139,7 +135,9 @@
                     <h3 class="text-lg xl:text-xl font-medium  text-webapp">Description</h3>
 
                     <p class="text-sub-webapp text-xm xl:text-lg text-left w-full mt-1 xl:mt-3">
-                        {{ product.description }}
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cursus dui, a eleifend iaculis. Donec
+                        proin tincidunt vitae a sagittis, rutrum. Eros, elementum, nisl sagittis elit pellentesque et
+                        auctor sit imperdiet. Vitae id bibendum a, felis volutpat ornare. I
                     </p>
 
                     <div
@@ -189,15 +187,16 @@
                         </div>
                         <img src="../../assets/icons/call-btn.svg" alt="" class="cursor-pointer">
                         <button
-                            class="w-24 flex flex-row agent-btn items-center justify-center text-sm font-medium text-primary bg-white"
-                            @click="$router.push('/agents/profile/dfhffhfh')">Visit
+                            class="w-24 flex flex-row agent-btn items-center justify-center text-sm font-medium text-primary bg-white" @click="$router.push('/agents/profile/dfhffhfh')">Visit
                             Profile</button>
                     </div>
 
                     <h3 class="text-lg font-medium  text-webapp">Description</h3>
 
                     <p class="text-sub-webapp text-lg text-left w-full mt-1 xl:mt-3">
-                        {{ product.description }}
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cursus dui, a eleifend iaculis. Donec
+                        proin tincidunt vitae a sagittis, rutrum. Eros, elementum, nisl sagittis elit pellentesque et
+                        auctor sit imperdiet. Vitae id bibendum a, felis volutpat ornare. I
                     </p>
 
 
@@ -205,12 +204,11 @@
                     <div
                         class="flex md:hidden py-5  flex-row items-center fixed bottom-0 px-4 z-10 left-0 bg-white w-screen justify-between mt-4 border-t pt-2 border-t-gray-300">
                         <div class="flex flex-col gap-y-1">
-                            <p class="text-webapp text-2xl md:text-xl xl:text-2xl font-medium product-price">{{
-                                product.price
-                            }}
+                            <p class="text-webapp text-2xl md:text-xl xl:text-2xl font-medium product-price">N270,000
                             </p>
-                            <p v-if="product.for === 'rent'" class="text-2xl md:text-xl xl:text-2xl font-medium product-price text-webapp">per Year</p>
-                            <p v-else class="text-sub-webapp text-lg md:text-sm xl:text-lg product-duration flex flex-row justify-start ">forever</p>
+                            <p
+                                class="text-sub-webapp text-lg md:text-sm xl:text-lg product-duration flex flex-row justify-start ">
+                                per year</p>
                         </div>
                         <button
                             class="agent-btn flex flex-row items-center justify-center text-sm font-medium w-3/5 mr-2 text-white ml-2 bg-primary xl:w-1/2">Chat
@@ -233,7 +231,7 @@
             <img src="../../assets/icons/back-circle.svg" @click="changeCarouselImg(activeCarouselImg - 1)"
                 class="cursor-pointer lg:block absolute left-3 z-10" alt="">
             <div class="image-container h-fit w-full">
-                <img :src="carouselImg.link" class="w-full h-full main-img" alt="">
+                <img :src="carouselImg.path" class="w-full h-full main-img" alt="">
             </div>
             <img src="../../assets/icons/next-circle.svg" @click="changeCarouselImg(activeCarouselImg + 1)"
                 class="cursor-pointer lg:block absolute right-3 z-10" alt="">
@@ -242,17 +240,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import MainNavbar from '../../components/MainNavbar.vue'
 import gsap from 'gsap'
-import axios from "../../composables/axios";
-import { useRoute } from 'vue-router'
 
-const url = '/listings/ads/get/';
+const carouselImg = ref({
+    name: '1',
+    path: '/src/assets/images/house-1.png'
+})
 
-const carouselImg = ref(null)
-
-const route = useRoute()
 const processingProduct = ref(false)
 const product = ref(null)
 
@@ -261,23 +257,32 @@ const inNewCarousel = ref(false)
 const activeCarouselImg = ref(1)
 const onImageViewer = ref(false)
 
-const images = ref(null)
-
-const getProduct = async () => {
-    processingProduct.value = true
-    const getProduct = await axios.get(url + route.params.id)
-    processingProduct.value = true
-
-    product.value = getProduct.data.product
-    images.value = getProduct.data.product.images
-    carouselImg.value = getProduct.data.product.images[0]
-}
-
-getProduct()
+const images = [
+    {
+        name: '1',
+        path: '/src/assets/images/house-1.png'
+    },
+    {
+        name: '2',
+        path: '/src/assets/images/house-2.png'
+    },
+    {
+        name: '3',
+        path: '/src/assets/images/house-3.png'
+    },
+    {
+        name: '4',
+        path: '/src/assets/images/house-4.png'
+    },
+    {
+        name: '5',
+        path: '/src/assets/images/house-5.png'
+    }
+]
 
 function changeCarouselImg(value) {
     // changingCarousel.value = true
-    let image = images.value[value - 1]
+    let image = images[value - 1]
     activeCarouselImg.value = value
 
     animateImgCarousel()
@@ -298,7 +303,7 @@ function exitImageViewer() {
 
     const carouselInt = setInterval(() => {
         let value = activeCarouselImg.value + 1
-        if (activeCarouselImg.value == images.value.length) {
+        if (activeCarouselImg.value == images.length) {
             value = 1
         }
         changeCarouselImg(value)
@@ -311,7 +316,7 @@ function enterImageViewer() {
 
 const carouselInt = setInterval(() => {
     let value = activeCarouselImg.value + 1
-    if (activeCarouselImg.value == images.value.length) {
+    if (activeCarouselImg.value == images.length) {
         value = 1
     }
     changeCarouselImg(value)
@@ -326,36 +331,36 @@ function changeWidth() {
 
 <style scoped>
 .product-img-grid {
-    max-height: 538px;
-    height: 538px;
-}
+     max-height: 538px;
+     height: 538px;
+ }
 
-.product-img-carousel {
-    max-height: 400px;
-    height: 400px;
-}
+ .product-img-carousel {
+     max-height: 400px;
+     height: 400px;
+ }
 
-.agent-info {
-    background: #FFFFFF;
-    /* Habeep grey/grey 4 */
+ .agent-info {
+     background: #FFFFFF;
+     /* Habeep grey/grey 4 */
 
-    border: 1px solid #EBEBEB;
-    box-shadow: 0px 8px 30px -6px rgba(24, 39, 75, 0.12), 0px 14px 88px -4px rgba(24, 39, 75, 0.12);
-    border-radius: 10px;
-}
+     border: 1px solid #EBEBEB;
+     box-shadow: 0px 8px 30px -6px rgba(24, 39, 75, 0.12), 0px 14px 88px -4px rgba(24, 39, 75, 0.12);
+     border-radius: 10px;
+ }
 
-.agent-btn {
-    border: 1px solid #3E64F9;
-    border-radius: 5px;
-    height: 50px;
-}
+ .agent-btn {
+     border: 1px solid #3E64F9;
+     border-radius: 5px;
+     height: 50px;
+ }
 
-.agent-btn-mobile {
-    border: 1px solid #3E64F9;
-    border-radius: 5px;
-}
+ .agent-btn-mobile {
+     border: 1px solid #3E64F9;
+     border-radius: 5px;
+ }
 
-.image-container {
-    height: 80vh;
-}
+ .image-container {
+     height: 80vh;
+ }
 </style>

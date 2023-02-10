@@ -37,6 +37,7 @@ import Home from '../views/Home.vue'
 // listings
 import ListingSearch from '../views/listings/Search.vue'
 import ListingProduct from '../views/listings/Product.vue'
+import ListingAgent from '../views/listings/AgentAd.vue'
 
 // posts
 import AgentAds from '../views/profile/agents/post/Ads.vue'
@@ -101,11 +102,17 @@ const routes = [
         name: 'Listings-product',
         component: ListingProduct
     },
+    {
+        path: '/listings/agent/products/:id',
+        name: 'Listings-product-Agent',
+        beforeEnter: guardMyrouteForAgent,
+        component: ListingAgent
+    },
     // profile
     {
         path: '/agents/profile/:id',
         name: 'Agent-profile',
-        beforeEnter: guardMyroute,
+        beforeEnter: guardMyrouteForAgent,
         component: AgentProfile
     },
     {
