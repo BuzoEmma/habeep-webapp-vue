@@ -229,8 +229,8 @@ const data = reactive({
 })
 
 
-if (route.query.code) {
-    data.referralCode = route.query.code;
+if (route.query.invite !== null) {
+    data.referralCode = route.query.invite;
 }
 
 const onError = ref(false)

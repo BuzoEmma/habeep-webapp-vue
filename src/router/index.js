@@ -116,13 +116,13 @@ const routes = [
         component: AgentProfile
     },
     {
-        path: '/agents/ads',
+        path: '/agent/ads',
         beforeEnter: guardMyrouteForAgent,
         name: 'Agent-ads',
         component: AgentAds
     },
     {
-        path: '/agents/ads/create',
+        path: '/agent/ads/create',
         beforeEnter: guardMyrouteForAgent,
         name: 'Agent-ads-create',
         component: PostAd

@@ -1,9 +1,15 @@
 <template>
-    <div class="fixed w-screen h-screen top-0 opacity-50 overflow-hidden max-h-screen" v-if="onModal"
-        style="background: #161622"></div>
+    <div class="absolute w-screen h-screen flex flex-row items-center justify-center" v-if="onModal"
+        style="background: rgb(22, 22, 34, 0.5)">
+        
+        <EditUserProfile @close="closeModal" @changePin="openModal('changePincode')" v-if="onModal && editProfileModal" />
+        <pincodeModal @close="closeModal" @back="goBack" v-if="onModal && changePincode" />
+        <Following @close="closeModal" v-if="onModal && FollowingModal" />
+        <Affiliate @close="closeModal" v-if="onModal && affiliateModal" />
+    </div>
 
-    <div class="w-screen min-w-full flex flex-col items-center bg-white h-screen min-h-screen overflow-y-auto"
-        :class="{ 'max-h-screen overflow-y-hidden overflow-hidden': onModal }" resize="changeWidth">
+    <div  class="w-screen min-w-full flex flex-col items-center bg-white h-screen min-h-screen overflow-y-auto"
+        :class="{ 'max-h-screen overflow-y-hidden overflow-hidden opacity-40': onModal }" resize="changeWidth">
         <ProfileNavbar />
 
 
@@ -11,8 +17,7 @@
             class="body px-6 2xl:px-44 md:px-20 mb-10 w-full flex flex-col gap-y-8 lg:flex-row h-full gap-x-3 items-center md:items-start  mt-10">
             <!-- user basic info -->
             <div class="w-full lg:w-2/6 2xl:w-1/4 lg:ml-3 h-fit flex flex-col items-center gap-y-8 left">
-                <div
-                    class="user-info flex p-4 bg-white flex-col border items-start border-gray-200 rounded w-full h-full">
+                <div class="user-info flex p-4 bg-white flex-col border items-start border-gray-200 rounded w-full h-full">
                     <div class="flex flex-row gap-x-3 items-start">
                         <div class="rounded-full w-24 h-24 grid place-items-center border">
                             <img src="../../../assets/icons/memoji.svg" class="w-full h-full" alt="">
@@ -27,21 +32,31 @@
                     </div>
 
                     <div class="flex flex-row items-center w-full gap-x-4 mt-3">
-                        <p class="text-xl font-webapp font-medium flex flex-row gap-x-1">0<span
-                                class="text-sub-webapp text-lg">Saved Ads</span></p>
-                                <!-- @click="openModal" -->
-                        <p class="text-xl font-webapp font-medium flex flex-row gap-x-1 cursor-pointer"
-                            >0<span class="text-sub-webapp text-lg">Following </span></p>
+                        <p class="text-xl font-webapp font-medium flex flex-row gap-x-1"
+                            v-if="$store.state.user.role === 'AGENT_IBO'">
+                            {{ agentDetails.ads.length }}
+                            <span class="text-sub-webapp text-lg">Ads
+                            </span>
+                        </p>
+                        <p class="text-xl font-webapp font-medium flex flex-row gap-x-1">
+                            0
+                            <span class="text-sub-webapp text-lg">Saved Ads
+                            </span>
+                        </p>
+                        <p class="text-xl font-webapp font-medium flex flex-row gap-x-1 cursor-pointer">{{
+                            $store.state.user.following.length
+                        }}<span class="text-sub-webapp text-lg">Following </span>
+                        </p>
                     </div>
 
 
                     <div class="flex flex-row items-center w-full gap-y-1 xl:justify-between mt-4 xl:mt-3">
-                        <button
-                            class="user-btn flex-row items-center justify-center text-sm font-medium text-webapp w-1/2  bg-white">Affiliate
+                        <button v-if="$store.state.user.role === 'AGENT_IBO'" @click="openModal('affiliateModal')"
+                            class="user-btn flex-row items-center justify-center text-sm font-medium text-webapp w-1/2 bg-white">Affiliate
                             profile</button>
-                        <button
-                            @click="openModal('editProfileModal')"
-                            class="user-btn flex flex-row items-center justify-center text-sm font-medium  text-webapp ml-2 bg-white w-1/2">Edit
+                        <button @click="openModal('editProfileModal')"
+                            class="user-btn flex flex-row items-center justify-center text-sm font-medium  text-webapp ml-2 bg-white w-1/2"
+                            :class="{ 'w-full': $store.state.user.role === 'AGENT_IBO' }">Edit
                             profile</button>
                     </div>
                 </div>
@@ -78,37 +93,47 @@
             <div class="flex flex-col min-h-full items-start w-full h-full lg:w-4/5">
                 <div class="flex flex-row gap-x-3 border-b border-b-gray-200 w-full">
                     <div class="cursor-pointer flex flex-row items-center justify-center w-24  pb-1"
-                        @click="changeTab(1)" :class="{ 'text-blue-600 border-b-blue-700 border-b-2': openTab === 1 }">
+                        v-if="$store.state.user.role === 'AGENT_IBO'" @click="changeTab(1)"
+                        :class="{ 'text-blue-600 border-b-blue-700 border-b-2': openTab === 1 }">
                         Agent Ads
                     </div>
-                    <div class="cursor-pointer flex flex-row items-center justify-center w-24 pb-1"
-                        @click="changeTab(2)" :class="{ 'text-blue-600 border-b-blue-700 border-b-2': openTab === 2 }">
+                    <div class="cursor-pointer flex flex-row items-center justify-center w-24 pb-1" @click="changeTab(2)"
+                        :class="{ 'text-blue-600 border-b-blue-700 border-b-2': openTab === 2 }">
                         Saved ads
                     </div>
                 </div>
 
-                <div class="ads-tab w-full h-full mt-6 flex flex-row md:items-center justify-center" v-if="(openTab === 1)" id="ads-tab">
-                    <div class="flex flex-col items-center gap-y-3 md:justify-center">
+                <div class="ads-tab w-full h-full mt-6 flex flex-row  justify-center"
+                    :class="{ 'md:items-center': !agentDetails || agentDetails.ads.length === 0 }" v-if="(openTab === 1)"
+                    id="ads-tab">
+                    <div class="flex flex-col items-center gap-y-3 md:justify-center"
+                        v-if="!agentDetails || agentDetails.ads.length === 0">
                         <img src="../../../assets/icons/no-ad.svg" alt="">
                         <span class="text-gray-300 text-lg">No ads yet</span>
                     </div>
-                    <div class=" flex-row flex-auto h-fit  flex-wrap hidden">
+                    <div class="flex-row flex-auto h-fit flex flex-wrap" v-else>
 
                         <!-- listing template -->
-                        <div class="md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0 " v-for="item in 6" :key="item">
-                            <div
-                                class="flex flex-col items-start gap-y-2 relative border rounded-lg border-gray-200 pb-2">
-                                <img src="../../../assets/images/house-img.svg" alt="" class="w-full h-full">
-                                <p class="text-webapp text-xl font-medium w-full mx-3">4 bedroom apartment at atimbo
+                        <div class="md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0 " v-for="ad in agentDetails.ads"
+                            :key="ad">
+                            <div class="flex flex-col items-start gap-y-2 relative border rounded-sm border-gray-200 pb-2">
+                                <img :src="ad.images[0].link" class="w-full p-2 h-full rounded-lg" alt="">
+                                <p class="text-webapp text-lg font-medium w-full mx-3">{{
+                                    ad.title + ' at ' +
+                                    ad.location.city
+                                }}
                                 </p>
 
                                 <div class="location flex flex-row items-center gap-x-2 px-3">
-                                    <img src="../../../assets/images/map-pin.png" alt="">
-                                    <span class="text-sm text-webapp">Calabar</span>
+                                    <span class="text-sm text-webapp capitalize">{{ ad.location.city }}</span>
                                 </div>
 
                                 <div class="flex flex-row items-center w-full justify-between px-3">
-                                    <span class="text-sm text-webapp font-medium">N500,000 / Year</span>
+                                    <span class="text-sm text-webapp font-medium">
+                                        N{{
+                                            formatNumber(ad.price)
+                                        }}
+                                    </span>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="#0A1045B2" class="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -118,13 +143,14 @@
                                 </div>
 
                                 <div class="rounded border border-white px-2 py-1 absolute top-5 right-5">
-                                    <span class="text-white text-sm text-center">1.8km Away</span>
+                                    <span class="text-white text-sm text-center">Around you</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="saved-ads-tab w-full h-full mt-6" v-if="(openTab === 2)" id="saved-ads-tab">
+                <div class="saved-ads-tab w-full h-full flex flex-row mt-6 items-center justify-center"
+                    v-if="(openTab === 2)" id="saved-ads-tab">
                     <div class="flex flex-col items-center gap-y-3 self-center">
                         <img src="../../../assets/icons/no-ad.svg" alt="">
                         <span class="text-gray-300 text-lg">No ads yet</span>
@@ -133,8 +159,7 @@
 
                         <!-- listing template -->
                         <div class="md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0 " v-for="item in 3" :key="item">
-                            <div
-                                class="flex flex-col items-start gap-y-2 relative border rounded-lg border-gray-200 pb-2">
+                            <div class="flex flex-col items-start gap-y-2 relative border rounded-lg border-gray-200 pb-2">
                                 <img src="../../../assets/images/house-img.svg" alt="" class="w-full h-full">
                                 <p class="text-webapp text-xl font-medium w-full mx-3">4 bedroom apartment at atimbo
                                 </p>
@@ -162,26 +187,31 @@
                     </div>
                 </div>
             </div>
-
-
-            <EditUserProfile @close="closeModal" @changePin="openModal('changePincode')" v-if="onModal && editProfileModal" />
-            <pincodeModal @close="closeModal" @back="goBack" v-if="onModal && changePincode" />
-            <Following @close="closeModal" v-if="onModal && FollowingModal" />
         </div>
-        
+
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
-
-
+import { ref, onMounted } from 'vue'
 import ProfileNavbar from '../../../components/ProfileNavbar.vue'
 import Following from './components/modal/Following.vue'
+import Affiliate from './components/modal/Affiliate.vue'
 import EditUserProfile from './components/EditUserProfile.vue'
 import pincodeModal from './components/pincodeModal.vue'
 import Naira from './components/wallet/Naira.vue'
 import HBP from './components/wallet/HBP.vue'
+import axios from "../../../composables/axios"
+import formatNumber from "number_formatter"
+
+
+import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
+
+const url2 = '/profile/get-agent/';
+
+const store = useStore()
+const route = useRoute()
 
 const openTab = ref(1)
 const walletTab = ref(1)
@@ -190,6 +220,14 @@ let modalState = ref(null)
 const editProfileModal = ref(false)
 const changePincode = ref(false)
 const FollowingModal = ref(false)
+const affiliateModal = ref(false)
+
+const agentDetails = ref({})
+
+async function getAgent() {
+    const getAgent = await axios.get(url2 + route.params.id)
+    agentDetails.value = getAgent.data.agent
+}
 
 function changeTab(tab) {
     openTab.value = tab
@@ -202,8 +240,7 @@ function changeWalletTab(tab) {
 function openModal(name) {
     onModal.value = true
     modalState.value = name
-    console.log(eval(name))
-    
+
     eval(name).value = true
 }
 function closeModal() {
@@ -211,20 +248,26 @@ function closeModal() {
     editProfileModal.value = false
     changePincode.value = false
     FollowingModal.value = false
+    affiliateModal.value = false
 }
 
 function goBack(component) {
-    // console.log(component)
     closeModal();
     onModal.value = true
     eval(component).value = true
-} 
+}
 
 const screenWidth = ref(window.innerWidth)
 
 function changeWidth() {
     screenWidth.value = window.innerWidth
 }
+
+
+if (store.state.user.role == 'AGENT_IBO') {
+    getAgent()
+}
+
 </script>
 
 <style scoped>

@@ -4,14 +4,16 @@
         @resize="changeWidth">
         <MainNavbar v-if="(screenWidth > 767)" />
 
+        <img src="../../assets/images/rhombus-preloader.gif" class="m-auto" v-if="!processingProduct && !product.price" alt="">    
         <div
+            v-else
             class="body px-0 2xl:px-44 xl:px-20 mb-16 w-full flex flex-col h-fit items-center pb-10 md:items-start gap-y-8 mt-0 relative">
 
             <!-- product display images for desktop view -->
             <div class="product-img-grid desktop-view xl:flex flex-row items-center w-full mt-10 hidden">
                 <div class="relative h-full display-img w-1/2 py-1">
-                    <img :src="carouselImg.link" class="h-full w-full cursor-pointer" @click="enterImageViewer()"
-                        alt="">
+                    <img :src="carouselImg.link" class="h-full w-full rounded-lg cursor-pointer"
+                        @click="enterImageViewer()" alt="">
 
                     <div class="w-full absolute flex flex-row top-5 items-center justify-between px-2">
                         <img src="../../assets/icons/back-img.svg" class="cursor-pointer" alt="">
@@ -24,11 +26,11 @@
 
                 <div class="flex h-full flex-col w-1/2">
                     <div class=" flex flex-row h-1/2 w-full pl-2 items-center">
-                        <img :src="image.link" class="h-full w-1/2 p-1 cursor-pointer"
+                        <img :src="image.link" class="h-full w-1/2 p-1 cursor-pointer rounded-lg"
                             v-for="image in images.slice(0, 2)" @click="enterImageViewer()" :key="image" alt="">
                     </div>
                     <div class=" flex flex-row h-1/2 w-full pl-2 items-center">
-                        <img :src="image.link" class="h-full w-1/2 p-1 cursor-pointer"
+                        <img :src="image.link" class="h-full w-1/2 p-1 rounded-lg cursor-pointer"
                             v-for="image in images.slice(3, 5)" @click="enterImageViewer()" :key="image" alt="">
                     </div>
                 </div>
@@ -75,20 +77,32 @@
             <div
                 class="flex flex-col md:flex-row items-start w-full gap-x-4 h-fit justify-between px-6 sm:px-7 xl:px-0">
                 <!-- product info -->
-                <div class="flex flex-col items-start md:w-2/3 w-full xl:w-4/6 h-full">
+                <div class="flex flex-col items-start md:w-2/3 w-full xl:w-4/6 h-full pt-2">
                     <!-- top product info -->
                     <div class="flex flex-row main-info items-center w-full justify-between">
-                        <div class="flex flex-col md:gap-y-3 gap-y-2">
+                        <div class="flex flex-col gap-y-2">
                             <p
                                 class="text-webapp text-2xl md:text-xl xl:text-2xl font-semibold xl:font-medium product-name">
                                 {{ product.title }}</p>
                             <p
                                 class="text-sub-webapp text-lg md:text-sm xl:text-lg product-location flex flex-row items-center gap-x-2">
-                                <img src="../../assets/images/map-pin.png" alt="">{{
+                                <img src="../../assets/icons/map-pin-blue.svg" alt="">{{
                                     product.location.address + ', ' +
                                         product.location.city
                                 }}
                             </p>
+                        </div>
+                        <div class="md:flex hidden flex-col gap-y-1">
+                            <p class="text-webapp text-2xl md:text-xl xl:text-2xl font-medium product-price">N{{
+                                formatNumber(product.price)
+                            }}
+                            </p>
+                            <p v-if="product.for === 'rent'"
+                                class="text-2xl md:text-xl xl:text-2xl font-medium product-price text-webapp">per Year
+                            </p>
+                            <p v-else
+                                class="text-sub-webapp text-lg md:text-sm xl:text-lg product-duration flex flex-row justify-start ">
+                                forever</p>
                         </div>
                     </div>
 
@@ -102,7 +116,7 @@
                             <span class="text-sm text-sub-webapp">Bathroom</span>
                         </div>
                         <div class="flex flex-col gap-y-2 items-center w-64">
-                            <span class="text-2xl font-medium text-webapp">{{ product.size }}</span>
+                            <span class="text-2xl font-medium text-webapp">{{ formatNumber(product.size) }}</span>
                             <span class="text-sm text-sub-webapp">Square feet</span>
                         </div>
                     </div>
@@ -142,27 +156,32 @@
                         {{ product.description }}
                     </p>
 
+                    <hr class="my-3">
+
                     <div
                         class="agent-desktop flex flex-row items-center  md:justify-between w-full border-t pt-2 mt-2 border-t-gray-300">
                         <div class="flex flex-row gap-x-2 items-center">
                             <div class="rounded-full w-12 h-12 xl:w-16 xl:h-16 grid place-items-center">
-                                <img src="../../assets/icons/model.svg" class="w-full h-full" alt="">
+                                <img :src="agentDetails.profileImg" class="w-full h-full" alt="">
                             </div>
                             <div class="flex flex-col ">
                                 <span
-                                    class="text-sm xl:text-lg md:text-center text-left agent-name text-webapp font-medium">Duke
-                                    Carrick</span>
+                                    class="text-sm xl:text-lg md:text-center text-left agent-name text-webapp font-medium">{{
+                                        agentDetails.name.fname + ' ' + agentDetails.name.surname
+                                    }}</span>
                                 <span
-                                    class="text-sm agent-ads-count md:text-center xl:text-left text-left text-sub-webapp">62
+                                    class="text-sm agent-ads-count md:text-center xl:text-left text-left text-sub-webapp">{{
+                                        agentDetails.ads.length
+                                    }}
                                     ads</span>
                             </div>
                         </div>
-                        <img src="../../assets/icons/call-btn.svg" alt="" class="cursor-pointer md:ml-4">
-                        <!-- <button class="w-24 h-20 xl:hidden md:flex flex-row items-center justify-center text-sm font-medium text-primary bg-white">Visit Profile</button> -->
+                        <a class="cursor-pointer" :href="'tel:' + agentDetails.phoneNumber"><img
+                                src="../../assets/icons/call-btn.svg" alt=""></a>
                     </div>
 
                     <div class="flex flex-col xl:flex-row items-center w-full gap-y-1 xl:justify-between mt-1 xl:mt-3">
-                        <button
+                        <button @click="$router.push('/agents/profile/' + product.agentId)"
                             class="agent-btn hidden xl:flex flex-row items-center justify-center text-sm font-medium text-primary w-1/2  bg-white">Visit
                             Profile</button>
                         <button
@@ -182,15 +201,19 @@
                                 <img src="../../assets/icons/model.svg" class="w-full h-full" alt="">
                             </div>
                             <div class="flex flex-col">
-                                <span class="text-sm xl:text-lg text-left agent-name text-webapp font-medium">Duke
-                                    Carrick</span>
-                                <span class="text-sm agent-ads-count text-left text-sub-webapp">62 ads</span>
+                                <span class="text-sm xl:text-lg text-left agent-name text-webapp font-medium">{{
+                                    agentDetails.name.fname + ' ' + agentDetails.name.surname
+                                }}</span>
+                                <span class="text-sm agent-ads-count text-left text-sub-webapp">{{
+                                    agentDetails.ads
+                                }} ads</span>
                             </div>
                         </div>
-                        <img src="../../assets/icons/call-btn.svg" alt="" class="cursor-pointer">
+                        <a class="cursor-pointer" :href="'tel:' + agentDetails.phoneNumber"><img
+                                src="../../assets/icons/call-btn.svg" alt=""></a>
                         <button
                             class="w-24 flex flex-row agent-btn items-center justify-center text-sm font-medium text-primary bg-white"
-                            @click="$router.push('/agents/profile/dfhffhfh')">Visit
+                            @click="$router.push('/agents/profile/' + product.agentId)">Visit
                             Profile</button>
                     </div>
 
@@ -209,8 +232,12 @@
                                 product.price
                             }}
                             </p>
-                            <p v-if="product.for === 'rent'" class="text-2xl md:text-xl xl:text-2xl font-medium product-price text-webapp">per Year</p>
-                            <p v-else class="text-sub-webapp text-lg md:text-sm xl:text-lg product-duration flex flex-row justify-start ">forever</p>
+                            <p v-if="product.for === 'rent'"
+                                class="text-2xl md:text-xl xl:text-2xl font-medium product-price text-webapp">per Year
+                            </p>
+                            <p v-else
+                                class="text-sub-webapp text-lg md:text-sm xl:text-lg product-duration flex flex-row justify-start ">
+                                forever</p>
                         </div>
                         <button
                             class="agent-btn flex flex-row items-center justify-center text-sm font-medium w-3/5 mr-2 text-white ml-2 bg-primary xl:w-1/2">Chat
@@ -247,14 +274,18 @@ import MainNavbar from '../../components/MainNavbar.vue'
 import gsap from 'gsap'
 import axios from "../../composables/axios";
 import { useRoute } from 'vue-router'
+import formatNumber from "number_formatter"
+
 
 const url = '/listings/ads/get/';
+const url2 = '/profile/get-agent/';
 
 const carouselImg = ref(null)
 
 const route = useRoute()
 const processingProduct = ref(false)
-const product = ref(null)
+const product = ref({})
+const agentDetails = ref({})
 
 const changingCarousel = ref(false)
 const inNewCarousel = ref(false)
@@ -271,9 +302,16 @@ const getProduct = async () => {
     product.value = getProduct.data.product
     images.value = getProduct.data.product.images
     carouselImg.value = getProduct.data.product.images[0]
+
+    getAgent(product.value.agentId)
+}
+async function getAgent(agentId) {
+    const getAgent = await axios.get(url2 + agentId)
+    agentDetails.value = getAgent.data.agent
 }
 
-getProduct()
+
+
 
 function changeCarouselImg(value) {
     // changingCarousel.value = true
@@ -322,6 +360,10 @@ const screenWidth = ref(window.innerWidth)
 function changeWidth() {
     screenWidth.value = window.innerWidth
 }
+
+onMounted(() => {
+    getProduct()
+})
 </script>
 
 <style scoped>

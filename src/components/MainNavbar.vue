@@ -56,7 +56,7 @@
             <p @click="$router.push('chat')" class="text-sm text-webapp mt-1 cursor-pointer" :class="{'text-primary': $route.name === 'Chat'}" v-if="$store.state.isAuthenticated">Message</p>
             <p @click="$router.push('/user/profile/' + $store.state.user._id)" class="text-sm text-webapp mt-1 cursor-pointer" :class="{'text-primary': $route.name === 'User-profile'}" v-if="$store.state.isAuthenticated">Account</p>
             <hr class="my-1">
-            <p @click="$router.push('/agents/ads')" class="text-sm text-webapp mt-1 cursor-pointer" :class="{'text-primary': $route.name === 'Agent-ads' || 'Agent-ads-create'}" v-if="$store.state.isAuthenticated && $store.state.user.role === 'AGENT_IBO'">Post an Ad</p>
+            <p @click="$router.push('/agent/ads')" class="text-sm text-webapp mt-1 cursor-pointer" :class="{'text-primary': $route.name === 'Agent-ads' || 'Agent-ads-create'}" v-if="$store.state.isAuthenticated && $store.state.user.role === 'AGENT_IBO'">Post an Ad</p>
             <p @click="$router.push('/wallet')" class="text-sm text-webapp mt-1 cursor-pointer" :class="{'text-primary': $route.name === 'Wallet'}" v-if="$store.state.isAuthenticated">Wallet</p>
             <span class="text-sm text-webapp mt-1 md:hidden" @click="$router.push('/blog')">BLOG</span>
 

@@ -52,3 +52,6 @@ input[type=number] {
 .text-webapp {
   color: #0A1045;
 }
+.ubuntu {
+  font-family: 'Ubuntu', sans-serif;
+}

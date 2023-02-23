@@ -155,7 +155,10 @@
                                     ads</span>
                             </div>
                         </div>
-                        <img src="../../assets/icons/call-btn.svg" alt="" class="cursor-pointer md:ml-4">
+                        <button>
+                            <img src="../../assets/icons/call-btn.svg"  alt="" class="cursor-pointer md:ml-4">
+                            <a :href="'tel:' + pr">123-456-7890</a>
+                        </button>
                         <!-- <button class="w-24 h-20 xl:hidden md:flex flex-row items-center justify-center text-sm font-medium text-primary bg-white">Visit Profile</button> -->
                     </div>
 
