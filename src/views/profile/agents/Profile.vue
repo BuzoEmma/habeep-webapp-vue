@@ -2,7 +2,7 @@
     <div class="fixed w-screen h-screen top-0 opacity-50 overflow-hidden max-h-screen" v-if="onModal"
         style="background: #161622"></div>
 
-    <img src="../../assets/images/rhombus-preloader.gif" class="m-auto" v-if="!agentDetails.id" alt="">
+    <img src="../../../assets/images/rhombus-preloader.gif" class="m-auto" v-if="!agentDetails.id" alt="">
 
     <div class="w-screen min-w-full flex flex-col items-center bg-white h-full min-h-screen overflow-y-auto" v-else
         :class="{ 'max-h-screen overflow-y-hidden': onModal }" resize="changeWidth">
