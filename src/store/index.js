@@ -6,6 +6,11 @@ const { cookies } = useCookies();
 
 export default createStore({
   state: {
+      allStates: [],
+      feedLocation: {
+        city: '',
+        state: ''
+      },
       isAuthenticated: false,
       user: [],
       sessionId: '',
@@ -25,6 +30,15 @@ export default createStore({
         state.user = []
 
         cookies.set('loggedIn', false)
+    },
+    saveStates(state, data) {
+        state.allStates = data
+    },
+    changeFeedLocation(state, data) {
+        state.feedLocation = data
+    },
+    addSavedAds(state, data) {
+        state.user.savedAds.push(data)
     }
   },
   actions: {
@@ -36,8 +50,11 @@ export default createStore({
     },
     unsetAuth({commit}) {
         commit('unsetUserAuth')
-    }
-  },
+    },
+    saveStates({commit}, data) {
+        commit('saveStates', data)
+    },
+},
   modules: {
   },
 

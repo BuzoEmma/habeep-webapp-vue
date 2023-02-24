@@ -36,14 +36,14 @@
         <div class="flex flex-row items-center justify-center gap-x-5 w-full h-fit mt-5 divide-x-2">
             <div class="flex flex-col items-center gap-y-2">
                 <span class="text-lg text-webapp ubuntu">Total Earnings</span>
-                <div class="flex flex-row items-end">
-                    <span class="text-3xl font-medium text-webapp">90</span>
+                <div class="flex flex-row items-end gap-x-1">
+                    <span class="text-3xl font-medium text-webapp">{{ $store.state.user.referralEarnings }}</span>
                     <span class="text-lg text-webapp font-medium">HBP</span>
                 </div>
             </div>
             <div class="flex flex-col items-center pl-5 gap-y-2">
                 <span class="text-lg text-webapp ubuntu">Total refferals</span>
-                <span class="text-3xl font-medium text-webapp">6</span>
+                <span class="text-3xl font-medium text-webapp">{{ $store.state.user.referrals.length }}</span>
             </div>
         </div>
 

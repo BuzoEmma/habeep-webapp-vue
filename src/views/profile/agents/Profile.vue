@@ -97,9 +97,9 @@
                         <div class="md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0 " v-for="ad in agentDetails.ads"
                             :key="ad">
                             <div
-                                class="flex flex-col items-start gap-y-2 relative border rounded-sm border-gray-200 pb-2">
-                                <img :src="ad.images[0].link" class="w-full p-2 h-full rounded-lg" alt="">
-                                <p class="text-webapp text-lg font-medium w-full mx-3">{{
+                                class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2">
+                                <img :src="ad.images[0].link" class="w-full h-full rounded-t-md" alt="">
+                                <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer" @click="$router.push('/listings/products/' + ad._id)">{{
                                     ad.title + ' at ' +
                                         ad.location.city
                                 }}

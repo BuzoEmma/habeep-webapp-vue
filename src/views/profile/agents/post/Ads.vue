@@ -2,19 +2,19 @@
     <MainNavbarVue />
     <div
         class="w-screen min-w-full flex flex-col lg:flex-row items-center bg-white h-screen min-h-full overflow-y-auto overflow-x-hidden">
-        <div class="flex flex-col items-start gap-y-3 h-2/5 lg:h-full bg-webapp justify-center w-full lg:w-2/5 px-10">
+        <div class="flex flex-col items-start gap-y-3 h-2/5 lg:h-full bg-webapp justify-center w-full lg:w-2/5 px-4 md:px-10">
             <h3 class="text-white font-medium text-4xl w-full text-left">Welcome {{
                 $store.state.user.fname + ' ' +
-                    $store.state.user.surname
+                $store.state.user.surname
             }} </h3>
             <p class="text-left sm:text-lg xl:text-xl text-gray-300 w-full">Hey, you’re in the right place to list a
                 house. A few details is needed. Let’s go</p>
             <button class="mt-2 bg-primary text-white text-lg px-8 py-2 rounded"
-                @click="$router.push('/agents/ads/create')">List a House</button>
+                @click="$router.push('/agent/ads/create')">List a House</button>
         </div>
 
         <div
-            class="form-container flex flex-col items-center relative bg-white gap-y-3 py-3 px-1 w-full lg:w-3/5 min-h-fit h-3/5 lg:h-full md:py-10 overflow-y-auto">
+            class="form-container flex flex-col items-center relative bg-white gap-y-3 py-3 px-4 w-full lg:w-3/5 min-h-fit h-3/5 lg:h-full md:py-10 overflow-y-auto">
 
             <h3 class="text-webapp font-medium text-2xl w-full text-left">Your uploads</h3>
 
@@ -32,8 +32,8 @@
                     :class="{ 'w-full': onSearch === true, 'w-2/3': !onSearch }">
                     <div :class="{ 'flex-display w-4/5': onSearch === true }"
                         class="search-bar w-3/5 hidden md:flex flex-row rounded-full border border-gray-300 items-center py-1 px-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" @click="onSearch = false" fill="none"
-                            viewBox="0 0 24 24" stroke-width="1" stroke="#B1B4CD" class="w-6 h-6 mt-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" @click="onSearch = false" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1" stroke="#B1B4CD" class="w-6 h-6 mt-1">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>
@@ -84,8 +84,8 @@
                         <p class="text-sm text-webapp mt-2 cursor-pointer" @click="changeSort('Office')"
                             :class="{ 'text-primary': sortValue === 'Office' }">Office</p>
                         <hr>
-                        <p class="text-sm text-webapp mt-2 cursor-pointer" @click="changeSort('Room and Parlor')"
-                            :class="{ 'text-primary': sortValue === 'Room and Parlor' }">Room and Parlor</p>
+                        <p class="text-sm text-webapp mt-2 cursor-pointer" @click="changeSort('room_parlor')"
+                            :class="{ 'text-primary': sortValue === 'room_parlor' }">Room and Parlor</p>
                     </div>
                 </div>
             </div>
@@ -100,8 +100,7 @@
                 <div class="flex flex-row w-full h-fit flex-wrap" v-else>
 
                     <!-- listing template -->
-                    <div class="basis-full md:basis-1/2 2xl:basis-1/3 ad p-4" v-for="item in activeProducts"
-                        :key="item">
+                    <div class="basis-full md:basis-1/2 2xl:basis-1/3 ad p-4" v-for="item in activeProducts" :key="item">
                         <div class="flex flex-col items-start gap-y-2 relative border-2 rounded-md border-gray-200 p-2">
                             <img :src="item.images[0].link" alt="" class="w-full rounded-md h-full">
                             <p class="text-webapp text-xl font-medium w-full">{{ item.title }}
@@ -111,7 +110,7 @@
                                 <img src="../../../../assets/images/map-pin.png" class="mt-1" alt="">
                                 <span class="text-sm text-webapp capitalize">{{
                                     item.location.address + ', ' +
-                                        item.location.city
+                                    item.location.city
                                 }}</span>
                             </div>
 
@@ -129,8 +128,7 @@
                                     <img src="../../../../assets/icons/listings/edit.svg" alt="">
                                     <span class="text-sm text-primary">Edit ad</span>
                                 </button>
-                                <button
-                                    class="bg-primary flex flex-row justify-center items-center rounded-md w-1/2 h-12">
+                                <button class="bg-primary flex flex-row justify-center items-center rounded-md w-1/2 h-12">
                                     <span class="text-sm text-white">Close ad</span>
                                 </button>
                             </div>
@@ -159,15 +157,17 @@
                                 <img src="../../../../assets/images/map-pin.png" class="mt-1" alt="">
                                 <span class="text-sm text-webapp capitalize">{{
                                     item.location.address + ', ' +
-                                        item.location.city
+                                    item.location.city
                                 }}</span>
                             </div>
 
                             <div class="flex flex-row items-center w-full justify-start">
                                 <p v-if="item.for === 'rent'"><span class="text-lg text-webapp font-medium">N{{
-                                    item.price
-                                }}</span><span class="text-gray-400 text-sm">/ Year</span></p>
-                                <p v-else><span class="text-lg text-webapp font-medium">N{{ item.price }}</span><span
+                                    formatNumber(item.price) }}
+                                    </span>
+                                    <span class="text-gray-400 text-sm">/ Year</span>
+                                </p>
+                                <p v-else><span class="text-lg text-webapp font-medium">N{{ formatNumber(item.price) }}</span><span
                                         class="text-gray-500 text-sm">/ Sale</span></p>
                             </div>
 
@@ -190,6 +190,8 @@
 import { ref, onMounted } from 'vue'
 import MainNavbarVue from "../../../../components/MainNavbar.vue";
 import axios from "../../../../composables/axios";
+import formatNumber from "number_formatter"
+
 
 const adsTab = ref(1)
 

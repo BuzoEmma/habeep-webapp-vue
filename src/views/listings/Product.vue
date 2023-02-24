@@ -92,16 +92,16 @@
                                 }}
                             </p>
                         </div>
-                        <div class="md:flex hidden flex-col gap-y-1">
+                        <div class="md:flex hidden flex-col ">
                             <p class="text-webapp text-2xl md:text-xl xl:text-2xl font-medium product-price">N{{
                                 formatNumber(product.price)
                             }}
                             </p>
                             <p v-if="product.for === 'rent'"
-                                class="text-2xl md:text-xl xl:text-2xl font-medium product-price text-webapp">per Year
+                                class="text-sm  xl:text-lg font-medium product-price text-webapp">per Year
                             </p>
                             <p v-else
-                                class="text-sub-webapp text-lg md:text-sm xl:text-lg product-duration flex flex-row justify-start ">
+                                class="text-sub-webapp text-sm xl:text-lg product-duration flex flex-row justify-start ">
                                 forever</p>
                         </div>
                     </div>

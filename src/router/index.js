@@ -6,33 +6,42 @@ function guardMyroute(to, from, next) {
     var isAuthenticated = false
     if (createStore.state.isAuthenticated) { isAuthenticated = true } else { isAuthenticated = false }
     if (isAuthenticated) {
-       if (!createStore.state.user.verified) {
-          next({ name: 'Verify' }) // go to '/verify';
-       }  else next() // allow to enter route
+        if (!createStore.state.user.verified) {
+            next({ name: 'Verify' }) // go to '/verify';
+        } else next() // allow to enter route
     } else {
         // console.log(to)
-       next("/login?redirect=" + to.path) // go to '/login';
+        next("/login?redirect=" + to.path) // go to '/login';
     }
- }
+}
+
+
 
 function guardMyrouteForAgent(to, from, next) {
     var isAuthenticated = false
     if (createStore.state.isAuthenticated) { isAuthenticated = true } else { isAuthenticated = false }
     if (isAuthenticated) {
-       if (!createStore.state.user.verified) {
-          next({ name: 'Verify' }) // go to '/verify';
-       }  else {
-        if (createStore.state.user.role === 'AGENT_IBO') {
-            next()
-        } else next({ name: 'IBO_Category_Agent' })
-       } // allow to enter route
+        if (!createStore.state.user.verified) {
+            next({ name: 'Verify' }) // go to '/verify';
+        } else {
+            if (createStore.state.user.role === 'AGENT_IBO') {
+                next()
+            } else next({ name: 'IBO_Category_Agent' })
+        } // allow to enter route
     } else {
-       next("/login?redirect=" + to.path) // go to '/login';
+        next("/login?redirect=" + to.path) // go to '/login';
     }
- }
+}
 
 // pages
 import Home from '../views/Home.vue'
+import Feeds from '../views/Feeds.vue'
+
+function changeHomeRoute() {
+    if(createStore.state.isAuthenticated) {
+        return Feeds
+    } else return Home
+}
 
 // listings
 import ListingSearch from '../views/listings/Search.vue'
@@ -78,7 +87,7 @@ const routes = [
     {
         path: '/',
         name: 'Home',
-        component: Home
+        component: changeHomeRoute()
     },
     // extras
     {
@@ -188,7 +197,7 @@ const routes = [
         component: OTP
     },
 
-    
+
 ]
 
 
@@ -196,6 +205,6 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes
- })
- 
- export default router
+})
+
+export default router

@@ -7,7 +7,7 @@
                 <img src="../../../../../assets/icons/logo-white.svg" alt="Logo">
                 <span class="text-white text-2xl">Habeep</span>
             </div>
-            <img src="../../../../../assets/icons/chevron-left.svg" class="md:hidden block pt-10" alt="">
+            <img src="../../../../../assets/icons/chevron-left.svg" @click="$emit('goBack')" class="md:hidden block pt-10" alt="">
             <h1 class="text-white font-medium text-2xl md:text-5xl   w-full text-left">What’s the size of the property?
             </h1>
             <p></p>

@@ -80,11 +80,10 @@ async function saveData() {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
 
-  console.log(adDetails.data)
 
   onModal.value = true;
   if (adDetails.data.success) {
-    successModal.value = true
+    // successModal.value = true
   } else {
     onError.value = true;
     errorMsg.value = adDetails.data.message;
@@ -105,7 +104,6 @@ const getData = async (e) => {
       data[key] = e.data[key]
     })
   } else if (e.type === 'images') {
-    console.log('init')
     formData.value = e.data
     await saveData()
   } else data[e.type] = e.data

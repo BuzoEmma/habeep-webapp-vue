@@ -1,14 +1,14 @@
 <template>
     <div class="absolute w-screen h-screen flex flex-row items-center justify-center" v-if="onModal"
         style="background: rgb(22, 22, 34, 0.5)">
-        
+
         <EditUserProfile @close="closeModal" @changePin="openModal('changePincode')" v-if="onModal && editProfileModal" />
         <pincodeModal @close="closeModal" @back="goBack" v-if="onModal && changePincode" />
         <Following @close="closeModal" v-if="onModal && FollowingModal" />
         <Affiliate @close="closeModal" v-if="onModal && affiliateModal" />
     </div>
 
-    <div  class="w-screen min-w-full flex flex-col items-center bg-white h-screen min-h-screen overflow-y-auto"
+    <div class="w-screen min-w-full flex flex-col items-center bg-white h-screen min-h-screen overflow-y-auto"
         :class="{ 'max-h-screen overflow-y-hidden overflow-hidden opacity-40': onModal }" resize="changeWidth">
         <ProfileNavbar />
 
@@ -118,10 +118,11 @@
                             :key="ad">
                             <div class="flex flex-col items-start gap-y-2 relative border rounded-sm border-gray-200 pb-2">
                                 <img :src="ad.images[0].link" class="w-full p-2 h-full rounded-lg" alt="">
-                                <p class="text-webapp text-lg font-medium w-full mx-3">{{
-                                    ad.title + ' at ' +
-                                    ad.location.city
-                                }}
+                                <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
+                                    @click="$router.push('/listings/products/' + ad._id)">{{
+                                        ad.title + ' at ' +
+                                        ad.location.city
+                                    }}
                                 </p>
 
                                 <div class="location flex flex-row items-center gap-x-2 px-3">
@@ -135,7 +136,9 @@
                                         }}
                                     </span>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="#0A1045B2" class="w-6 h-6">
+                                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6 cursor-pointer"
+                                        @click="saveAd(ad._id)"
+                                        :class="{ 'text-orange-400': $store.state.user.savedAds.includes(ad._id) }">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                                     </svg>
@@ -171,11 +174,13 @@
 
                                 <div class="flex flex-row items-center w-full justify-between px-3">
                                     <span class="text-sm text-webapp font-medium">N500,000 / Year</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="#FF8500" class="w-6 h-6">
+                                    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6 cursor-pointer"
+                                        @click="saveAd(feed._id)"
+                                        :class="{ 'text-orange-400': $store.state.user.savedAds.includes(feed._id) }">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                                    </svg>
+                                    </svg> -->
 
                                 </div>
 
@@ -201,6 +206,7 @@ import EditUserProfile from './components/EditUserProfile.vue'
 import pincodeModal from './components/pincodeModal.vue'
 import Naira from './components/wallet/Naira.vue'
 import HBP from './components/wallet/HBP.vue'
+import saveAd from "../../../composables/saveAd";
 import axios from "../../../composables/axios"
 import formatNumber from "number_formatter"
 
@@ -275,5 +281,4 @@ if (store.state.user.role == 'AGENT_IBO') {
     border: 1px solid #D9DDEE;
     border-radius: 5px;
     height: 50px;
-}
-</style>
+}</style>
