@@ -227,17 +227,17 @@
 
                     <div
                         class="flex md:hidden py-5  flex-row items-center fixed bottom-0 px-4 z-10 left-0 bg-white w-screen justify-between mt-4 border-t pt-2 border-t-gray-300">
-                        <div class="flex flex-col gap-y-1">
-                            <p class="text-webapp text-2xl md:text-xl xl:text-2xl font-medium product-price">{{
-                                product.price
+                        <div class="flex flex-col">
+                            <p class="text-webapp text-xl xl:text-2xl font-medium product-price">{{
+                                formatNumber(product.price)
                             }}
                             </p>
                             <p v-if="product.for === 'rent'"
-                                class="text-2xl md:text-xl xl:text-2xl font-medium product-price text-webapp">per Year
+                                class="text-sm md:text-xl xl:text-2xl font-medium product-price text-webapp">Per Year
                             </p>
                             <p v-else
-                                class="text-sub-webapp text-lg md:text-sm xl:text-lg product-duration flex flex-row justify-start ">
-                                forever</p>
+                                class="text-sub-webapp text-sm md:text-sm xl:text-lg product-duration flex flex-row justify-start ">
+                                Forever</p>
                         </div>
                         <button
                             class="agent-btn flex flex-row items-center justify-center text-sm font-medium w-3/5 mr-2 text-white ml-2 bg-primary xl:w-1/2">Chat

@@ -3,7 +3,7 @@
         <img src="../../../../../assets/icons/listings/house_uploaded.svg" alt="">
         <span class="text-sm text-gray-400 mt-4">Hurray!</span>
         <span class="text-webapp text-lg font-medium">Ads successfully published</span>
-      <button class="bg-primary mt-4 rounded-lg w-full grid place-items-center h-14 text-white" @click="$router.push('/user/profile/' + $store.state.user._id)">Go to profile</button>
+      <button class="bg-primary mt-4 rounded-lg w-full grid place-items-center h-14 text-white" @click="$emit('gotoProduct')">Go to profile</button>
     </div>
   </template>
   

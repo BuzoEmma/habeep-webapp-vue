@@ -38,7 +38,7 @@ import Home from '../views/Home.vue'
 import Feeds from '../views/Feeds.vue'
 
 function changeHomeRoute() {
-    if(createStore.state.isAuthenticated) {
+    if (createStore.state.isAuthenticated) {
         return Feeds
     } else return Home
 }
@@ -81,7 +81,8 @@ import Logout from '../views/Auth/Logout.vue'
 import ForgotPin from '../views/Auth/ForgotPin.vue'
 import OTP from '../views/Auth/OTP_Validation.vue'
 
-
+// fallbacks
+import Error404 from '../views/fallbacks/404.vue'
 
 const routes = [
     {
@@ -198,6 +199,7 @@ const routes = [
     },
 
 
+    { path: '/:pathMatch(.*)*', name: 'not-found', component: Error404 },
 ]
 
 
@@ -206,5 +208,10 @@ const router = createRouter({
     history: createWebHistory(),
     routes
 })
+
+router.resolve({
+    name: 'not-found',
+    params: { pathMatch: ['not', 'found'] },
+}).href
 
 export default router

@@ -128,7 +128,6 @@ const previewImg = async (event) => {
     // Reference to the DOM input element
     var input = event.target;
 
-    console.log(input.files)
     // Ensure that you have a file before attempting to read it
     if (input.files && input.files[0]) {
         switch (currentImage.value) {
@@ -160,13 +159,9 @@ const previewImg = async (event) => {
             eval(`imageData${currentImage.value}`).value = e.target.result;
         }
 
-        console.log(pic1.value)
         // Start the reader job - read file as a data url (base64 format)
         reader.readAsDataURL(input.files[0]);
 
-        if(currentImage.value === 3) {
-            console.log(pic1.value, pic2.value, pic3.value)
-        }
 
     }
     noPicture.value = false
@@ -175,17 +170,11 @@ const previewImg = async (event) => {
 const sendData = async () => {
     const formData = new FormData();
 
-
     for (let i = 1; i < currentImage.value + 1; i++) {
-        console.log(i, currentImage.value)
         let img = eval(`pic${i}`).value
-        formData.append('photo' + 1, img)
+        formData.append('photo' + i, img)
     }
 
-
-    for (const value of formData.values()) {
-        console.log(value);
-    }
     data.data = formData
 
     emit('passData', data)
@@ -193,7 +182,7 @@ const sendData = async () => {
 
     setTimeout(() => {
         processing.value = false
-    }, 10000);
+    }, 100000);
 }
 
 </script>

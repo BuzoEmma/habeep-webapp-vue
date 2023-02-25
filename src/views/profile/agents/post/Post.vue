@@ -1,7 +1,7 @@
 <template>
   <div class="absolute w-screen h-screen flex flex-row items-center justify-center" v-if="onModal"
     style="background: rgb(22, 22, 34, 0.5)">
-    <AdUploadedModal v-if="successModal" />
+    <AdUploadedModal v-if="successModal" @gotoProduct="$router.push('/listings/products/' + savedProductID)" />
     <Toast :msg="errorMsg" type="danger" v-if="onError" />
   </div>
   <div class="h-screen w-screen">
@@ -56,6 +56,8 @@ let previousComponent = ref(null)
 
 let formData = ref(null)
 
+let savedProductID = ref('')
+
 const data = reactive({
   for: '',
   type: '',
@@ -83,7 +85,8 @@ async function saveData() {
 
   onModal.value = true;
   if (adDetails.data.success) {
-    // successModal.value = true
+    savedProductID.value = adDetails.data._id
+    successModal.value = true
   } else {
     onError.value = true;
     errorMsg.value = adDetails.data.message;

@@ -148,8 +148,8 @@
 
                     <!-- listing template -->
                     <div class="basis-full md:basis-1/2 2xl:basis-1/3 ad p-4" v-for="item in closedProducts" :key="item">
-                        <div class="flex flex-col items-start gap-y-2 relative ad border-2 rounded-lg border-gray-200 p-2">
-                            <img :src="item.images[0].link" alt="" class="w-full ad-image">
+                        <div class="flex flex-col items-start gap-y-2 relative ad border-2 rounded-md border-gray-200 p-2">
+                            <img :src="item.images[0].link" alt="" class="w-full ad-image rounded-md">
                             <p class="text-webapp text-lg font-medium w-full">{{ item.title }}
                             </p>
 
