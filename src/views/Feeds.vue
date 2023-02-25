@@ -89,7 +89,7 @@
         </div>
     </div>
 
-    <div class="w-screen min-w-full flex flex-col items-center bg-white h-screen min-h-full overflow-y-auto"
+    <div class="w-screen min-w-full flex flex-col items-center main bg-white h-screen min-h-full overflow-y-auto"
         :class="{ 'max-h-screen overflow-y-hidden overflow-hidden opacity-40': onDropdown && screenWidth < 1024 }"
         resize="changeWidth">
         <MainNavbar />
@@ -114,9 +114,13 @@
                         :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': activeType === 'flat' }">Flat</span>
                     <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg" @click="changeHouseType('office')"
                         :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': activeType === 'office' }">Office</span>
-                    <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg w-full"
+                    <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg w-full md:hidden block"
                         @click="changeHouseType('room_parlor')"
-                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': activeType === 'room_parlor' }">Room&Parlour</span>
+                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary md:hidden block': activeType === 'room_parlor' }">Room&Parlour</span>
+                    <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg w-full md:block hidden"
+                        @click="changeHouseType('room_parlor')"
+                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary ': activeType === 'room_parlor' }">Room
+                        & Parlour</span>
                 </div>
 
                 <!-- filters -->
@@ -228,9 +232,10 @@
                 </div>
             </div>
 
-            <!-- listing -->
 
 
+
+            <!-- feeds sections -->
             <div class="flex flex-row flex-auto h-full md:mt-10 w-full flex-wrap px-6"
                 :class="{ 'justify-center items-center': filteredFeeds.length < 1 }">
 
@@ -240,42 +245,43 @@
                 <div class="flex flex-col items-center gap-y-3 md:justify-center"
                     v-if="filteredFeeds.length < 1 && !started">
                     <img src="../assets/icons/no-ad.svg" alt="">
-                    <span class="text-gray-300 text-lg">No ads yet</span>
+                    <span class="text-gray-300 text-lg">No feeds for {{ activeType }} yet</span>
                 </div>
                 <!-- listing template -->
-                <div class="md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 gap-y-4 px-0" v-else
+                <div class="basis-full md:basis-1/2 xl:basis-1/4 md:px-3 md:py-3 py-5 gap-y-4 px-0" v-else
                     v-for="feed in filteredFeeds" :key="feed">
-                    <div class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2">
-                        <img :src="feed.images[0].link" alt="" class="w-full h-full rounded-t-md">
-                        <p class="text-webapp text-xl font-medium w-full mx-3 cursor-pointer"
+                    <div class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 feed">
+                        <img :src="feed.images[0].link" alt="" class="w-full feed-image rounded-t-md"
+                            v-if="feed.images.length > 0">
+                        <p class="text-webapp text-lg font-medium w-full px-2 cursor-pointer"
                             @click="$router.push('/listings/products/' + feed._id)">{{ feed.title }}</p>
 
-                        <div class="location flex flex-row items-center gap-x-2 px-3">
+                        <div class="location flex flex-row items-center gap-x-2 px-2">
                             <img src="../assets/images/map-pin.png" alt="">
                             <span class="text-sm text-webapp">{{ feed.location.city }}</span>
                         </div>
 
-                        <div class="flex flex-row items-center w-full justify-between px-3">
+                        <div class="flex flex-row items-center w-full justify-between px-2">
                             <p class="text-sm text-webapp font-medium">N{{ formatNumber(feed.price) }} /
                                 <span v-if="feed.for === 'rent'">Year</span>
                                 <span v-if="feed.for === 'sale'">Forever</span>
                             </p>
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="w-6 h-6 cursor-pointer" @click="saveAd(feed._id)" :class="{'text-orange-400': $store.state.user.savedAds.includes(feed._id)}">
+                                stroke="currentColor" class="w-6 h-6 cursor-pointer" @click="saveAd(feed._id)"
+                                :class="{ 'text-orange-400': $store.state.user.savedAds.includes(feed._id) }">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                             </svg>
-
-
                         </div>
 
+                        <!-- distance of listing from you -->
                         <div class="rounded border border-white px-2 py-1 absolute top-5 right-5">
                             <span class="text-white text-sm text-center">1.8km Away</span>
                         </div>
                     </div>
                 </div>
             </div>
-            
+            <!-- feed section end -->
 
         </div>
     </div>
@@ -318,6 +324,16 @@ const filteredFeeds = ref([])
 const errorMsg = ref('')
 
 const url = '/listings/feeds';
+
+function filterType() {
+    let newFeeds = feeds.value
+    let filtered = newFeeds.filter(feed => {
+        return feed.type.toLowerCase() === activeType.value.toLowerCase()
+    })
+
+    filteredFeeds.value = filtered
+}
+
 async function getFeeds() {
     try {
         fetchingFeeds.value = true
@@ -326,7 +342,7 @@ async function getFeeds() {
         fetchingFeeds.value = true
 
         if (getFeeds.data) {
-            feeds.value = getFeeds.data.feed[0]
+            feeds.value = getFeeds.data.feed
         }
 
         filterType()
@@ -339,16 +355,6 @@ async function getFeeds() {
 
 getFeeds()
 
-function filterType() {
-    let filtered = feeds.value.filter(feed => {
-        return feed.type === activeType.value
-    })
-
-    console.log(filtered)
-
-
-    filteredFeeds.value = filtered
-}
 
 // filters
 const sortValue = ref('Recommended')
@@ -499,6 +505,21 @@ onMounted(() => {
     box-shadow: inset 0 0 10px white;
 }
 
+.main::-webkit-scrollbar {
+    width: 6px;
+}
+
+
+.main::-webkit-scrollbar-thumb {
+    width: 10px;
+    background-color: #71759D;
+    border-radius: 10px;
+}
+
+.main::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 10px white;
+}
+
 .tabs::-webkit-scrollbar {
     display: none;
 }
@@ -508,4 +529,14 @@ onMounted(() => {
     display: none;
     background-color: white;
     border-radius: 10px;
+}
+
+.feed-image {
+    height: 164px;
+    max-height: 164px !important;
+}
+
+.feed {
+    height: 291px !important;
+    max-height: 291px !important;
 }</style>

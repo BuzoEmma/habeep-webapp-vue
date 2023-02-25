@@ -9,7 +9,10 @@ async function saveAd(id) {
         id: id
     }
     const save = await axios.post(url, data)
-    createStore.commit('addSavedAds', id)
+    if(createStore.state.user.savedAds.includes(id)) {
+        createStore.commit('deleteSavedAd', id)
+    } else createStore.commit('addSavedAd', id)
+    
 }
 
 export default saveAd

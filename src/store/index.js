@@ -37,8 +37,16 @@ export default createStore({
     changeFeedLocation(state, data) {
         state.feedLocation = data
     },
-    addSavedAds(state, data) {
+    addSavedAd(state, data) {
         state.user.savedAds.push(data)
+    },
+    deleteSavedAd(state, data) {
+        // state.user.savedAds.splice(state.user.savedAds.indexOf(data))
+        let newSavedAds = state.user.savedAds.filter(ad => {
+            return ad !== data
+        })
+
+        state.user.savedAds = newSavedAds
     }
   },
   actions: {

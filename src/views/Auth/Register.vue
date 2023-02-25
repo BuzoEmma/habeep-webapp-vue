@@ -1,8 +1,16 @@
 <template>
-    <div class="absolute w-screen h-screen min-h-full top-0 opacity-50" v-if="onModal" style="background: #161622">
+    <div class="absolute w-screen h-screen flex flex-row items-center justify-center" v-if="onModal"
+        style="background: rgb(22, 22, 34, 0.5)">
+
+        <SuggestedCategory @enterAgents="gotoModal('agents')" @close="closeModal"
+            @saveSuggs="addHouseSuggestions"
+            v-if="onSuggestedListingsModal && onModal" />
+        <SuggestedAgents v-if="onSuggestedFollowersModal && onModal" @close="closeModal" @finish="nextPage" :email="data.email" />
+
     </div>
 
-    <div class="w-screen min-w-full flex flex-row items-center bg-white h-screen min-h-full overflow-hidden">
+    <div class="w-screen min-w-full flex flex-row items-center bg-white h-screen min-h-full overflow-hidden"
+        :class="{ 'max-h-screen overflow-y-hidden overflow-hidden opacity-40': onModal}">
         <img src="../../assets/images/habeep-show.png" class="w-1/3 xl:block hidden h-full" alt="">
 
         <div :class="{ 'relative': screenWidth < 768 }"
@@ -76,8 +84,9 @@
                 <div class="flex flex-col sm:flex-row items-center relative w-full gap-x-3 justify-between">
                     <div class="flex flex-col items-start w-full sm:w-6/12 gap-y-1 mt-8">
                         <label for="" class="text-sm text-webapp">Create a secure pin</label>
-                        <input type="number" maxlength="4" v-model="data.pin" @input="validateFormField('pin', data.pin.toString())"
-                            placeholder="Enter a 4 digit pin" class="w-full h-14 rounded-lg bg-transaparent"
+                        <input type="number" maxlength="4" v-model="data.pin"
+                            @input="validateFormField('pin', data.pin.toString())" placeholder="Enter a 4 digit pin"
+                            class="w-full h-14 rounded-lg bg-transaparent"
                             :class="{ 'bg-bg': onModal, 'invalidField': errorMsg.field === 'pin' }">
                     </div>
                     <div class="flex flex-col items-start w-full sm:w-6/12 gap-y-1 mt-8">
@@ -88,24 +97,18 @@
                 </div>
 
                 <!-- botttom -->
-                <p
-                    class="text-webapp my-7 text-sm w-full flex flex-row items-center gap-x-1 text-center justify-center">
+                <p class="text-webapp my-7 text-sm w-full flex flex-row items-center gap-x-1 text-center justify-center">
                     Have an account! <span class="text-primary underline cursor-pointer"
-                        @click="$router.push('login')">Login</span>
+                        @click="$router.push('/login')">Login</span>
                 </p>
 
                 <!-- submit btn -->
-                <button class="bg-primary w-full rounded-lg grid place-items-center h-14 text-white"
-                    @click="createUser">
+                <button class="bg-primary w-full rounded-lg grid place-items-center h-14 text-white" @click="createUser">
                     <span v-if="!processing">Next</span>
                     <Preloader v-else />
                 </button>
 
             </div>
-
-            <!-- <SuggestedCategory @enterAgents="gotoModal('agents')" @close="closeModal"
-                v-if="onSuggestedListingsModal && onModal" />
-            <SuggestedAgents v-if="onSuggestedFollowersModal && onModal" @close="closeModal" /> -->
 
             <!-- components -->
             <Toast :msg="errorMsg.msg" type="danger" v-if="onError" />
@@ -124,8 +127,8 @@ import { useStore } from "vuex";
 
 import { registerValidate, formValidator } from '../../composables/2-validator'
 
-// import SuggestedCategory from './components/SuggestedCategory.vue'
-// import SuggestedAgents from './components/SuggestedAgents.vue'
+import SuggestedCategory from './components/SuggestedCategory.vue'
+import SuggestedAgents from './components/SuggestedAgents.vue'
 
 const screenWidth = ref(window.innerWidth)
 
@@ -137,6 +140,7 @@ const store = useStore();
 const onModal = ref(false)
 const onSuggestedListingsModal = ref(false)
 const onSuggestedFollowersModal = ref(false)
+
 
 function gotoModal(modal) {
     onModal.value = true
@@ -279,7 +283,7 @@ async function createUser() {
             if (!create.data.success) {
                 onError.value = true
                 errorMsg.value.msg = create.data.message
-                
+
                 setTimeout(() => {
                     processing.value = false
                     onError.value = false
@@ -287,12 +291,13 @@ async function createUser() {
                 }, 3000);
             } else {
                 newMsg.value = create.data.message
-                
+
                 setTimeout(() => {
                     processing.value = false
                     newMsg.value = ''
-                    router.push('/verify-otp?email=' + data.email)
-                }, 5000);
+
+                    gotoModal('listings')
+                }, 2000);
 
             }
         } catch (error) {
@@ -306,6 +311,26 @@ async function createUser() {
         }
 
     }
+}
+
+const addHouseSuggestions = async (e) => {
+    gotoModal('agents')
+
+
+    let fields = reactive({
+        email: data.email,
+        types: e.types
+    })
+
+    const save = await axios.post('/profile/add-suggestedhousetype', fields)
+}
+
+const nextPage = () => {
+    closeModal()
+
+    setTimeout(() => {
+        router.push('/verify-otp?email=' + data.email)
+    }, 1000);
 }
 
 onMounted(() => {

@@ -95,15 +95,15 @@
                 :class="{ 'justify-center items-center': activeProducts.length < 1 }" v-if="adsTab === 1">
                 <div class="flex flex-col items-center gap-y-3 md:justify-center" v-if="activeProducts.length < 1">
                     <img src="../../../../assets/icons/no-ad.svg" alt="">
-                    <span class="text-gray-300 text-lg">No ads yet</span>
+                    <span class="text-gray-300 text-lg">No active post yet</span>
                 </div>
-                <div class="flex flex-row w-full h-fit flex-wrap" v-else>
+                <div class="flex flex-row w-full h-full flex-wrap" v-else>
 
                     <!-- listing template -->
-                    <div class="basis-full md:basis-1/2 2xl:basis-1/3 ad p-4" v-for="item in activeProducts" :key="item">
-                        <div class="flex flex-col items-start gap-y-2 relative border-2 rounded-md border-gray-200 p-2">
-                            <img :src="item.images[0].link" alt="" class="w-full rounded-md h-full">
-                            <p class="text-webapp text-xl font-medium w-full">{{ item.title }}
+                    <div class="basis-full md:basis-1/2 2xl:basis-1/3 p-4" v-for="item in activeProducts" :key="item">
+                        <div class="flex flex-col items-start gap-y-2 ad relative border-2 rounded-md border-gray-200 p-2">
+                            <img :src="item.images[0].link" alt="" class="w-full rounded-md ad-image">
+                            <p class="text-webapp text-lg font-medium w-full">{{ item.title }}
                             </p>
 
                             <div class="location flex flex-row items-start gap-x-2">
@@ -148,9 +148,9 @@
 
                     <!-- listing template -->
                     <div class="basis-full md:basis-1/2 2xl:basis-1/3 ad p-4" v-for="item in closedProducts" :key="item">
-                        <div class="flex flex-col items-start gap-y-2 relative border-2 rounded-lg border-gray-200 p-4">
-                            <img :src="item.images[0].link" alt="" class="w-full h-full">
-                            <p class="text-webapp text-xl font-medium w-full">{{ item.title }}
+                        <div class="flex flex-col items-start gap-y-2 relative ad border-2 rounded-lg border-gray-200 p-2">
+                            <img :src="item.images[0].link" alt="" class="w-full ad-image">
+                            <p class="text-webapp text-lg font-medium w-full">{{ item.title }}
                             </p>
 
                             <div class="location flex flex-row items-start gap-x-2">
@@ -304,9 +304,15 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
+.ad-image {
+    height: 164px;
+    max-height: 164px !important;
+}
+
 .ad {
-    width: 400px;
-    height: 379px;
+    height: 370px !important;
+    max-height: 379px !important;
 }
 
 .flex-display {

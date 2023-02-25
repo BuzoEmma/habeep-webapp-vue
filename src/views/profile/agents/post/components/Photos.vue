@@ -1,5 +1,4 @@
 <template>
-
     <div
         class="w-screen min-w-full flex flex-col lg:flex-row items-center bg-white h-full md:h-screen min-h-full overflow-y-auto md:overflow-hidden">
         <div class="flex flex-col items-start gap-y-6 h-2/6 lg:h-full bg-webapp justify-between w-full lg:w-2/5 px-10">
@@ -8,7 +7,8 @@
                 <img src="../../../../../assets/icons/logo-white.svg" alt="Logo">
                 <span class="text-white text-2xl">Habeep</span>
             </div>
-            <img src="../../../../../assets/icons/chevron-left.svg" @click="$emit('goBack')" class="md:hidden block pt-10" alt="">
+            <img src="../../../../../assets/icons/chevron-left.svg" @click="$emit('goBack')" class="md:hidden block pt-10"
+                alt="">
             <h1 class="text-white font-medium text-2xl md:text-5xl   w-full text-left">Add some photos to the listing
             </h1>
             <p></p>
@@ -26,14 +26,13 @@
                         :class="{ 'hidden': imageData5.length > 0 }">
                         <button type="button"
                             class="upload-btn w-30 h-8 rounded-lg p-2 flex flex-row items-center justify-center font-medium gap-x-1 text-webapp">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                class="w-5 h-5">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
                                 <path fill-rule="evenodd"
                                     d="M11.47 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06l-3.22-3.22V16.5a.75.75 0 01-1.5 0V4.81L8.03 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zM3 15.75a.75.75 0 01.75.75v2.25a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5V16.5a.75.75 0 011.5 0v2.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V16.5a.75.75 0 01.75-.75z"
                                     clip-rule="evenodd" />
                             </svg>
                             <span>Upload</span>
-                            <input type="file" accept="image/png" name="pic" v-if="!imageData5" @change="previewImg">
+                            <input type="file" accept="image/png" v-if="!imageData5" @change="previewImg">
                         </button>
                     </form>
 
@@ -128,9 +127,30 @@ const previewImg = async (event) => {
     currentImage.value += 1
     // Reference to the DOM input element
     var input = event.target;
+
+    console.log(input.files)
     // Ensure that you have a file before attempting to read it
     if (input.files && input.files[0]) {
-        eval(`pic${currentImage.value}`).value = input
+        switch (currentImage.value) {
+            case 1:
+                pic1.value = input.files[0]
+                break;
+            case 2:
+                pic2.value = input.files[0]
+                break;
+            case 3:
+                pic3.value = input.files[0]
+                break;
+            case 4:
+                pic4.value = input.files[0]
+                break;
+            case 5:
+                pic5.value = input.files[0]
+                break;
+        
+            default:
+                break;
+        }
         // create a new FileReader to read this image and convert to base64 format
         var reader = new FileReader();
         // Define a callback function to run, when FileReader finishes its job
@@ -138,26 +158,34 @@ const previewImg = async (event) => {
             // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
             // Read image as base64 and set to imageData
             eval(`imageData${currentImage.value}`).value = e.target.result;
-            console.log(eval(`pic${currentImage.value}`).value)
         }
+
+        console.log(pic1.value)
         // Start the reader job - read file as a data url (base64 format)
         reader.readAsDataURL(input.files[0]);
-        
+
+        if(currentImage.value === 3) {
+            console.log(pic1.value, pic2.value, pic3.value)
+        }
+
     }
     noPicture.value = false
 }
 
 const sendData = async () => {
     const formData = new FormData();
-    
-    for(let i = 1; i < currentImage.value + 1; i++) {
+
+
+    for (let i = 1; i < currentImage.value + 1; i++) {
         console.log(i, currentImage.value)
-        // console.log(await eval(`pic${i}`).value.files[0])
-        // console.log(await eval(`pic1`).value.files[0])
-        let img = await eval(`pic${i}`).value.files[0]
-        formData.append(`photo${i}`, img)
+        let img = eval(`pic${i}`).value
+        formData.append('photo' + 1, img)
     }
-    // console.log(formData)
+
+
+    for (const value of formData.values()) {
+        console.log(value);
+    }
     data.data = formData
 
     emit('passData', data)

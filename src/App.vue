@@ -57,8 +57,7 @@ const getUser = async () => {
     }
   } catch (error) {
     store.dispatch("unsetAuth");
-    if (!verifyAllowedRoles(route, 'user')) {
-      // console.log(router.currentRoute)
+    if (!verifyAllowedRoles(route, 'user') || !loggedIn) {
       router.push("/login?redirect=" + router.currentRoute.value.fullPath);
     }
   }

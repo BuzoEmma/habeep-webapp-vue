@@ -1,5 +1,4 @@
 <template>
-
     <div class="w-screen min-w-full flex flex-row items-center bg-white h-screen min-h-full overflow-hidden">
         <img src="../../assets/images/habeep-show.png" class="w-1/3 xl:block hidden h-full" alt="">
 
@@ -98,6 +97,7 @@ const data = reactive({
 })
 
 const processing = ref(false)
+
 let msg = ref({
     type: '',
     text: '',
@@ -141,52 +141,63 @@ const getOTP = async () => {
 }
 
 const verifyOTP = async () => {
-    const otpInput = [val1.value, val2.value, val3.value, val4.value, val5.value].join('');
-    const info = {
-        email: '',
-        otp: otpInput
-    }
-    if (route.query.email) {
-        info.email = route.query.email;
-    } else {
-        info.email = store.state.user.email;
-    }
-    processing.value = true
+    try {
+        const otpInput = [val1.value, val2.value, val3.value, val4.value, val5.value].join('');
+        const info = {
+            email: '',
+            otp: otpInput
+        }
+        if (route.query.email) {
+            info.email = route.query.email;
+        } else {
+            info.email = store.state.user.email;
+        }
+        processing.value = true
 
-    const verify = await axios.post(url, info);
+        const verify = await axios.post(url, info);
 
-    if (verify.data.errorMsg === 'OK') {
-        msg.value.type = 'success'
-        msg.value.text = verify.data.message
-        
+        if (verify.data.errorMsg === 'OK') {
+            msg.value.type = 'success'
+            msg.value.text = verify.data.message
+
+            setTimeout(() => {
+                processing.value = false
+                router.push('/login')
+            }, 3000);
+        } else if (verify.data.errorMsg == null) {
+            msg.value.type = 'success'
+            msg.value.text = verify.data.message
+
+            setTimeout(() => {
+                processing.value = false
+                router.push('/login')
+            }, 3000);
+
+        } else {
+            msg.value.type = 'danger'
+            msg.value.text = verify.data.message
+
+            val1.value = ''
+            val2.value = ''
+            val3.value = ''
+            val4.value = ''
+            val5.value = ''
+        }
+
         setTimeout(() => {
-            processing.value = false
-            router.push('/login')
-        }, 3000);
-    } else if (verify.data.errorMsg == null) {
-        msg.value.type = 'success'
-        msg.value.text = verify.data.message
-        
-        setTimeout(() => {
-            processing.value = false
-            router.push('/login')
-        }, 3000);
-
-    } else {
+            msg.value.type = ''
+            msg.value.text = '';
+        }, 5000)
+    } catch (error) {
+        processing.value = false
         msg.value.type = 'danger'
-        msg.value.text = verify.data.message
-        
-        val1.value = ''
-        val2.value = ''
-        val3.value = ''
-        val4.value = ''
-        val5.value = ''
-    }
+        msg.value.text = error.response.data.message
 
-    setTimeout(() => {
-        msg.value.type = ''
-        msg.value.text = '';
-    }, 5000)
+        setTimeout(() => {
+            msg.value.type = ''
+            msg.value.text = '';
+        }, 5000);
+    }
 }
 
 

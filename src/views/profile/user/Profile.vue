@@ -8,7 +8,7 @@
         <Affiliate @close="closeModal" v-if="onModal && affiliateModal" />
     </div>
 
-    <div class="w-screen min-w-full flex flex-col items-center bg-white h-screen min-h-screen overflow-y-auto"
+    <div class="w-screen min-w-full flex flex-col items-center main bg-white h-screen min-h-screen overflow-y-auto"
         :class="{ 'max-h-screen overflow-y-hidden overflow-hidden opacity-40': onModal }" resize="changeWidth">
         <ProfileNavbar />
 
@@ -33,13 +33,13 @@
 
                     <div class="flex flex-row items-center w-full gap-x-4 mt-3">
                         <p class="text-xl font-webapp font-medium flex flex-row gap-x-1"
-                            v-if="$store.state.user.role === 'AGENT_IBO'">
+                            v-if="$store.state.user.role === 'AGENT_IBO' && agentDetails.ads">
                             {{ agentDetails.ads.length }}
                             <span class="text-sub-webapp text-lg">Ads
                             </span>
                         </p>
                         <p class="text-xl font-webapp font-medium flex flex-row gap-x-1">
-                            0
+                            {{ $store.state.user.savedAds.length }}
                             <span class="text-sub-webapp text-lg">Saved Ads
                             </span>
                         </p>
@@ -52,10 +52,10 @@
 
                     <div class="flex flex-row items-center w-full gap-y-1 xl:justify-between mt-4 xl:mt-3">
                         <button v-if="$store.state.user.role === 'AGENT_IBO'" @click="openModal('affiliateModal')"
-                            class="user-btn flex-row items-center justify-center text-sm font-medium text-webapp w-1/2 bg-white">Affiliate
+                            class="user-btn flex-row items-center justify-center text-sm font-medium text-webapp w-full bg-white">Affiliate
                             profile</button>
                         <button @click="openModal('editProfileModal')"
-                            class="user-btn flex flex-row items-center justify-center text-sm font-medium  text-webapp ml-2 bg-white w-1/2"
+                            class="user-btn flex flex-row items-center justify-center text-sm font-medium  text-webapp ml-2 bg-white w-full"
                             :class="{ 'w-full': $store.state.user.role === 'AGENT_IBO' }">Edit
                             profile</button>
                     </div>
@@ -88,7 +88,7 @@
             </div>
 
 
-            <!-- listing -->
+            <!-- ads tab  -->
 
             <div class="flex flex-col min-h-full items-start w-full h-full lg:w-4/5">
                 <div class="flex flex-row gap-x-3 border-b border-b-gray-200 w-full">
@@ -103,38 +103,42 @@
                     </div>
                 </div>
 
+                <!-- user as agent posted ads -->
                 <div class="ads-tab w-full h-full mt-6 flex flex-row  justify-center"
-                    :class="{ 'md:items-center': !agentDetails || agentDetails.ads.length === 0 }" v-if="(openTab === 1)"
-                    id="ads-tab">
+                    :class="{ 'md:items-center': !agentDetails || agentDetails.ads.length === 0 }"
+                    v-if="(openTab === 1 && agentDetails.ads)" id="ads-tab">
                     <div class="flex flex-col items-center gap-y-3 md:justify-center"
                         v-if="!agentDetails || agentDetails.ads.length === 0">
                         <img src="../../../assets/icons/no-ad.svg" alt="">
                         <span class="text-gray-300 text-lg">No ads yet</span>
                     </div>
-                    <div class="flex-row flex-auto h-fit flex flex-wrap" v-else>
+                    <div class="flex-row flex-auto h-fit flex flex-wrap w-full " v-else>
 
                         <!-- listing template -->
-                        <div class="md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0 " v-for="ad in agentDetails.ads"
-                            :key="ad">
-                            <div class="flex flex-col items-start gap-y-2 relative border rounded-sm border-gray-200 pb-2">
-                                <img :src="ad.images[0].link" class="w-full p-2 h-full rounded-lg" alt="">
-                                <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
+                        <div class="basis-full md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0"
+                            v-for="ad in agentDetails.ads" :key="ad">
+                            <div
+                                class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 ad">
+                                <img :src="ad.images[0].link" class="w-full ad-image rounded-t-md" alt=""
+                                    v-if="ad.images.length > 0">
+                                <p class="text-webapp  font-medium w-full px-2 cursor-pointer"
+                                    style="font-size: 15px !important"
                                     @click="$router.push('/listings/products/' + ad._id)">{{
                                         ad.title + ' at ' +
                                         ad.location.city
                                     }}
                                 </p>
 
-                                <div class="location flex flex-row items-center gap-x-2 px-3">
+                                <div class="location flex flex-row items-center gap-x-2 px-2">
+                                    <img src="../../../assets/images/map-pin.png" alt="">
                                     <span class="text-sm text-webapp capitalize">{{ ad.location.city }}</span>
                                 </div>
 
                                 <div class="flex flex-row items-center w-full justify-between px-3">
-                                    <span class="text-sm text-webapp font-medium">
-                                        N{{
-                                            formatNumber(ad.price)
-                                        }}
-                                    </span>
+                                    <p class="text-sm text-webapp font-medium">N{{ formatNumber(ad.price) }} /
+                                        <span v-if="ad.for === 'rent'">Year</span>
+                                        <span v-if="ad.for === 'sale'">Forever</span>
+                                    </p>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6 cursor-pointer"
                                         @click="saveAd(ad._id)"
@@ -152,35 +156,46 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- user saved ads tab -->
                 <div class="saved-ads-tab w-full h-full flex flex-row mt-6 items-center justify-center"
                     v-if="(openTab === 2)" id="saved-ads-tab">
-                    <div class="flex flex-col items-center gap-y-3 self-center">
+                    <div class="flex flex-col items-center gap-y-3 self-center" v-if="savedAds.length === 0">
                         <img src="../../../assets/icons/no-ad.svg" alt="">
-                        <span class="text-gray-300 text-lg">No ads yet</span>
+                        <span class="text-gray-300 text-lg">No Saved ads yet</span>
                     </div>
-                    <div class="flex-row flex-auto h-fit  flex-wrap hidden">
-
+                    <div class="flex-row flex-auto h-full flex-wrap w-full flex overflow-y-auto" v-else>
                         <!-- listing template -->
-                        <div class="md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0 " v-for="item in 3" :key="item">
-                            <div class="flex flex-col items-start gap-y-2 relative border rounded-lg border-gray-200 pb-2">
-                                <img src="../../../assets/images/house-img.svg" alt="" class="w-full h-full">
-                                <p class="text-webapp text-xl font-medium w-full mx-3">4 bedroom apartment at atimbo
+                        <div class="md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0" v-for="ad in savedAds" :key="ad">
+                            <div
+                                class="flex flex-col items-start gap-y-2 relative ad border rounded-md border-gray-200 pb-2">
+                                <img :src="ad.images[0].link" class="w-full ad-image rounded-t-md" alt=""
+                                    v-if="ad.images.length > 0">
+                                <p class="text-webapp font-medium w-full px-2 cursor-pointer"
+                                    style="font-size: 15px !important"
+                                    @click="$router.push('/listings/products/' + ad._id)">{{
+                                        ad.title + ' at ' +
+                                        ad.location.city
+                                    }}
                                 </p>
 
-                                <div class="location flex flex-row items-center gap-x-2 px-3">
+                                <div class="location flex flex-row items-center gap-x-2 px-2">
                                     <img src="../../../assets/images/map-pin.png" alt="">
-                                    <span class="text-sm text-webapp">Calabar</span>
+                                    <span class="text-sm text-webapp capitalize">{{ ad.location.city }}</span>
                                 </div>
 
                                 <div class="flex flex-row items-center w-full justify-between px-3">
-                                    <span class="text-sm text-webapp font-medium">N500,000 / Year</span>
-                                    <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    <p class="text-sm text-webapp font-medium">N{{ formatNumber(ad.price) }} /
+                                        <span v-if="ad.for === 'rent'">Year</span>
+                                        <span v-if="ad.for === 'sale'">Forever</span>
+                                    </p>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6 cursor-pointer"
-                                        @click="saveAd(feed._id)"
-                                        :class="{ 'text-orange-400': $store.state.user.savedAds.includes(feed._id) }">
+                                        @click="saveAd(ad._id)"
+                                        :class="{ 'text-orange-400': $store.state.user.savedAds.includes(ad._id) }">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                                    </svg> -->
+                                    </svg>
 
                                 </div>
 
@@ -215,11 +230,12 @@ import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 
 const url2 = '/profile/get-agent/';
+const url = '/listings/ads/get/';
 
 const store = useStore()
 const route = useRoute()
 
-const openTab = ref(1)
+const openTab = ref(2)
 const walletTab = ref(1)
 const onModal = ref(false)
 let modalState = ref(null)
@@ -229,11 +245,38 @@ const FollowingModal = ref(false)
 const affiliateModal = ref(false)
 
 const agentDetails = ref({})
+const savedAds = ref([])
 
 async function getAgent() {
     const getAgent = await axios.get(url2 + route.params.id)
     agentDetails.value = getAgent.data.agent
 }
+
+if (store.state.user.role == 'AGENT_IBO') {
+    getAgent()
+}
+
+getSavedAds()
+
+async function getSavedAds() {
+    let savedAdsArray = store.state.user.savedAds
+    if (savedAdsArray.length > 0) {
+        for (const ad of savedAdsArray) {
+            if (typeof (ad) == "string") {
+                try {
+                    const getAd = await axios.get(url + ad)
+                    if (getAd.data.status == 200) {
+                        savedAds.value.push(getAd.data.product)
+                    }
+                } catch (error) {
+                }
+            }
+        }
+    }
+}
+
+
+
 
 function changeTab(tab) {
     openTab.value = tab
@@ -269,11 +312,6 @@ function changeWidth() {
     screenWidth.value = window.innerWidth
 }
 
-
-if (store.state.user.role == 'AGENT_IBO') {
-    getAgent()
-}
-
 </script>
 
 <style scoped>
@@ -281,4 +319,46 @@ if (store.state.user.role == 'AGENT_IBO') {
     border: 1px solid #D9DDEE;
     border-radius: 5px;
     height: 50px;
-}</style>
+}
+
+.ad-image {
+    height: 164px;
+    max-height: 164px !important;
+}
+
+.ad {
+    height: 291px !important;
+    max-height: 291px !important;
+}
+
+.main::-webkit-scrollbar {
+    width: 6px;
+}
+
+
+.main::-webkit-scrollbar-thumb {
+    width: 10px;
+    background-color: #71759D;
+    border-radius: 10px;
+}
+
+.main::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 10px white;
+}
+
+.ads-tab::-webkit-scrollbar, .saved-ads-tab::-webkit-scrollbar {
+    width: 6px;
+}
+
+
+.ads-tab::-webkit-scrollbar-thumb, .saved-ads-tab::-webkit-scrollbar-thumb {
+    width: 10px;
+    background-color: #71759D;
+    border-radius: 10px;
+}
+
+.ads-tab::-webkit-scrollbar-track, .saved-ads-tab::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 10px white;
+}
+
+</style>

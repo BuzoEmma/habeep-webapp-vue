@@ -1,39 +1,101 @@
 <template>
-     <div class="main flex flex-col  md:h-64 fixed md:absolute z-10 overflow-hidden md:right-1/4 md:top-1/3 bg-white">
+    <div class="main flex flex-col h-screen min-h-full  md:h-64 z-10 overflow-hidden bg-white">
         <div class="flex flex-row items-center justify-between w-full px-4 py-4 border-b border-b-gray-100">
-            <span class="text-lg font-medium text-webapp">Discover agents</span>
-            <img src="../../../assets/icons/x.svg" class="cursor-pointer" @click="$emit('close')" alt="">
-        </div>
-
-        <div class="agents-to-follow flex w-full flex-col h-3/5 overflow-y-auto items-center my-1 px-2">
-            <div class="following flex flex-row items-center  justify-between w-full py-2 px-4" v-for="item in 5"
-                :key="item">
-                <div class="flex flex-row gap-x-2 items-center">
-                    <div class="rounded-full w-10 h-10 grid place-items-center">
-                        <img src="../../../assets/icons/model.svg" class="w-full h-full" alt="">
-                    </div>
-                    <div class="flex flex-col ">
-                        <span
-                            class="text-sm xl:text-lg md:text-center text-left following-name text-webapp font-medium">Duke
-                            Carrick</span>
-                        <span
-                            class="text-sm following-ads-count md:text-center xl:text-left text-left text-sub-webapp">62
-                            ads</span>
-                    </div>
-                </div>
-                <!-- <img src="../../assets/icons/call-btn.svg" alt="" class="cursor-pointer md:ml-4"> -->
-                <button
-                    class="w-28 h-8 flex flex-row items-center justify-center rounded-lg text-sm font-medium text-white bg-primary border border-gray-300">Follow</button>
+            <div class="flex flex-row items-center gap-x-2" @click="($emit('enterAgents'))">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0A1045"
+                    class="w-6 h-6 cursor-pointer md:hidden block" @click="$router.go(-1)">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg><span class="text-lg font-medium text-webapp">Discover agents</span>
             </div>
+            <img src="../../../assets/icons/x.svg" class="cursor-pointer md:block hidden" @click="$emit('close')" alt="">
         </div>
 
-        <button class="bg-primary m-4 rounded-lg grid place-items-center h-14 text-white" @click="$emit('followAgents')">Continue</button>
+        <div class="flex flex-col items-center w-full h-full overflow-y-auto px-2 pb-8">
+            <div class="agents-to-follow flex w-full flex-col overflow-y-auto items-center h-full my-1" :class="{'justify-center': discoveredAgents.length === 0}">
+                <img src="../../../assets/images/rhombus-preloader.gif" class="m-auto" v-if="discoveredAgents.length === 0">
+                <div class="following flex flex-row items-center justify-between w-full py-4 px-4" v-else v-for="agent in discoveredAgents"
+                    :key="agent">
+                    <div class="flex flex-row gap-x-2 items-center">
+                        <div class="rounded-full w-10 h-10 grid place-items-center">
+                            <img :src="agent.details.profileImage" class="w-full h-full" alt="">
+                        </div>
+                        <div class="flex flex-col items-start">
+                            <span
+                                class="text-sm xl:text-lg md:text-center text-left following-name text-webapp font-medium">{{ agent.details.name }}</span>
+                            <span
+                                class="text-sm following-ads-count md:text-center xl:text-left text-left text-sub-webapp">{{ agent.adsCount }} ads</span>
+                        </div>
+                    </div>
+                    <!-- <img src="../../assets/icons/call-btn.svg" alt="" class="cursor-pointer md:ml-4"> -->
+                    <button
+                        class="w-28 h-8 flex flex-row items-center justify-center rounded-lg text-sm font-medium text-white " :class="{'bg-white border border-blue-600': agent.following, 'bg-blue-600': !agent.following}" @click="manageAgentFollow(agent)">
+                        <span v-if="!agent.following" class="text-white">Follow</span>
+                        <span v-else class="text-blue-600">Unfollow</span>
+                    </button>
+                </div>
+            </div>
+
+            <button class="bg-primary rounded-lg w-full grid place-items-center h-14 text-white"
+                @click="$emit('finish')">Continue</button>
+        </div>
     </div>
 </template>
   
 <script setup>
 import { ref, reactive } from 'vue'
+import axios from "../../../composables/axios";
 
+let props = defineProps(['email'])
+
+const discoveredAgents = ref([])
+
+async function discoverAgents() {
+    try {
+        let data = {
+            user: {
+                nationality: 'Nigeria'
+            }
+        }
+
+        const agents = await axios.post('/discover/agents', data)
+
+        if (agents.data.success === true) {
+            agents.data.data.forEach(agent => {
+                agent.following = false
+                discoveredAgents.value.push(agent)
+            })
+        }
+    } catch (error) {
+
+    }
+
+}
+
+async function manageAgentFollow(agent) {
+    if(!agent.following) {
+        let data = {
+            email: props.email,
+            userId: agent.id,
+            activity: 'follow'
+        }
+
+        const follow = await axios.post('/profile/follows/new/update', data)
+
+        agent.following = true
+    } else {
+        let data = {
+            email: props.email,
+            userId: agent.id,
+            activity: 'unfollow'
+        }
+
+        const follow = await axios.post('/profile/follows/new/update', data)
+
+        agent.following = false
+    }
+}
+
+discoverAgents()
 
 </script>
   
@@ -44,12 +106,29 @@ import { ref, reactive } from 'vue'
     border-radius: 15px;
 }
 
-@media screen and (max-width: 767px) {
-  .main {
-    height: 100vh !important;
-    width: 100vw;
-  }
+.agents-to-follow::-webkit-scrollbar {
+    width: 6px;
 }
+
+
+.agents-to-follow::-webkit-scrollbar-thumb {
+    width: 10px;
+    background-color: #71759D;
+    border-radius: 10px;
+}
+
+.agents-to-follow::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 10px white;
+}
+
+@media screen and (max-width: 767px) {
+    .main {
+        height: 100vh !important;
+        width: 100vw;
+        border-radius: 0px;
+    }
+}
+
 .suggs {
     box-shadow: 0px 0.33px 10px 0.33px #EBEBEB;
 }
