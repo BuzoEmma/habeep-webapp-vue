@@ -96,7 +96,8 @@
 
                         <div class="mt-1" v-if="onState">
                             <p class="text-sm mb-1 text-webapp cursor-pointer gap-x-2 flex flex-row"><img
-                                    src="../assets/icons/location-checked.svg" alt="">{{ currentState + ' - ' + currentCity
+                                    src="../../assets/icons/location-checked.svg" alt="">{{ currentState + ' - ' +
+                                        currentCity
                                     }}</p>
                             <hr>
                         </div>
@@ -153,7 +154,7 @@
                             @click="$router.push('/listings/products/' + product._id)">{{ product.title }}</p>
 
                         <div class="location flex flex-row items-center gap-x-2 px-2">
-                            <img src="../assets/images/map-pin.png" alt="">
+                            <img src="../../assets/images/map-pin.png" alt="">
                             <span class="text-sm text-webapp">{{ product.location.city }}</span>
                         </div>
 
