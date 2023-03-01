@@ -1,5 +1,4 @@
 <template>
-
     <div class="w-screen min-w-full flex flex-row items-center bg-white h-screen min-h-full overflow-hidden">
         <img src="../../assets/images/habeep-show.png" class="w-1/3 xl:block hidden h-full" alt="">
 
@@ -48,8 +47,7 @@
                 </button>
 
                 <!-- botttom -->
-                <p
-                    class="text-webapp my-7 text-sm w-full flex flex-row items-center gap-x-1 text-center justify-center">
+                <p class="text-webapp my-7 text-sm w-full flex flex-row items-center gap-x-1 text-center justify-center">
                     Don't have an account! <span class="text-primary underline cursor-pointer"
                         @click="$router.push('/register')">Sign Up</span>
                 </p>
@@ -154,16 +152,17 @@ async function loginUser() {
                     userDetails: login.data.data.user
                 }
                 store.dispatch('setAuth', mutate)
+
                 cookies.set('loggedIn', true)
                 newMsg.value = login.data.data.message
 
                 setTimeout(() => {
                     processing.value = false
                     if (login.data.data.user.verified) {
-                        if(route.query.redirect) {
+                        if (route.query.redirect) {
                             router.push(route.query.redirect)
                         } else {
-                            router.push('/')
+                            router.push('/?loggedIn=true')
                         }
                     } else {
                         router.push('/verify-otp?email=' + login.data.data.user.email)

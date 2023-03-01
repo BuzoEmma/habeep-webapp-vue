@@ -92,10 +92,24 @@
     <div class="w-screen min-w-full flex flex-col items-center main bg-white h-screen min-h-full overflow-y-auto"
         :class="{ 'max-h-screen overflow-y-hidden overflow-hidden opacity-40': onDropdown && screenWidth < 1024 }"
         resize="changeWidth">
-        <MainNavbar />
+        <MainNavbar @toggleSearch="toggleSearch" />
 
         <div
             class="body px-0 2xl:px-44 md:px-20 mb-10 w-full flex flex-col h-full items-center md:items-start  gap-y-3 mt-3">
+            <!-- mobile search bar -->
+            <div class="flex flex-row items-center w-full px-2 relative" v-if="onSearchBar">
+                <input type="text" placeholder="Search products" v-model="searchData"
+                    class=" border border-black pl-2 outline-none h-10 w-full">
+                <div class="search-btn w-8 h-8 bg-black absolute right-3 grid place-items-center cursor-pointer"
+                    @click="$router.push('/listings/search?name=' + searchData)">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-5 h-5 text-white">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg>
+
+                </div>
+            </div>
             <p class="text my-3 text-webapp text-xl font-medium w-full text-left ml-7 lg:hidden ">Home</p>
             <div class="flex flex-row w-full items-center justify-between">
                 <div
@@ -239,11 +253,10 @@
             <div class="flex flex-row flex-auto h-full md:mt-10 w-full flex-wrap px-6"
                 :class="{ 'justify-center items-center': filteredFeeds.length < 1 }">
 
-                <img src="../assets/images/rhombus-preloader.gif" class="m-auto"
-                    v-if="fetchingFeeds === true && feeds.length < 1" alt="">
+                <img src="../assets/images/rhombus-preloader.gif" class="m-auto" v-if="fetchingFeeds === true" alt="">
 
                 <div class="flex flex-col items-center gap-y-3 md:justify-center"
-                    v-if="filteredFeeds.length < 1 && !started">
+                    v-if="filteredFeeds.length < 1 && !started && !fetchingFeeds">
                     <img src="../assets/icons/no-ad.svg" alt="">
                     <span class="text-gray-300 text-lg">No feeds for {{ activeType }} yet</span>
                 </div>
@@ -292,11 +305,18 @@ import { ref, reactive, onMounted } from 'vue'
 import axiosDefault from 'axios'
 import formatNumber from "number_formatter"
 import { useStore } from 'vuex'
-import MainNavbar from '../components/MainNavbar.vue'
+import { useRoute, useRouter } from "vue-router";
+import MainNavbar from '../components/HomeNavbar.vue'
 import axios from "../composables/axios";
 import saveAd from "../composables/saveAd";
 
 const store = useStore()
+
+const route = useRoute()
+const router = useRouter()
+if (route.query.loggedIn) {
+    router.push('/')
+}
 
 
 // ui conditionals
@@ -332,6 +352,8 @@ function filterType() {
     })
 
     filteredFeeds.value = filtered
+
+    return filtered
 }
 
 async function getFeeds() {
@@ -339,15 +361,16 @@ async function getFeeds() {
         fetchingFeeds.value = true
         started.value = true
         const getFeeds = await axios.get(url)
-        fetchingFeeds.value = true
+        fetchingFeeds.value = false
 
         if (getFeeds.data) {
             feeds.value = getFeeds.data.feed
         }
 
+        started.value = false
+
         filterType()
 
-        started.value = false
     } catch (error) {
         errorMsg.value = 'Error getting feeds'
     }
@@ -375,6 +398,13 @@ function changeStateModal(state, type) {
     }
 }
 
+const onSearchBar = ref(false)
+
+const searchData = ref('')
+
+function toggleSearch() {
+    onSearchBar.value = !onSearchBar.value
+}
 
 function changeHouseType(type) {
     activeType.value = type
@@ -539,4 +569,5 @@ onMounted(() => {
 .feed {
     height: 291px !important;
     max-height: 291px !important;
-}</style>
+}
+</style>
