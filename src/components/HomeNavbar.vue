@@ -32,7 +32,8 @@
             <div class="flex flex-row gap-x-10 items-start md:items-center pl-6">
                 <span class="uppercase text-lg text-webapp cursor-pointer" @click="$router.push('/blog')">BLOG</span>
                 <div class="flex flex-row items-center cursor-pointer gap-x-2" @click="toggleNav">
-                    <img :src="$store.state.user.userProfileImage" class="w-10 h-10 border border-gray-100 rounded-full" alt="User Profile photo" v-if="$store.state.isAuthenticated">
+                    <img :src="$store.state.user.userProfileImage" class="w-10 h-10 border border-gray-100 rounded-full"
+                        alt="User Profile photo" v-if="$store.state.isAuthenticated">
                     <img src="../assets/icons/user.svg" alt="" v-else>
                     <svg xmlns="http://www.w3.org/2000/svg" :class="{ 'rotate-180': onNavDropdown }" fill="none"
                         viewBox="0 0 24 24" stroke-width="2" stroke="#0A1045" class="w-5 h-5">
@@ -61,8 +62,13 @@
                 v-if="$store.state.isAuthenticated">Account</p>
             <hr class="my-1">
             <p @click="$router.push('/agent/ads')" class="text-sm text-webapp mt-1 cursor-pointer"
-                :class="{ 'text-primary': $route.name === 'Agent-ads' || 'Agent-ads-create' }"
+                :class="{ 'text-primary': $route.name.includes === 'Agent-ads' || 'Agent-ads-create' }"
                 v-if="$store.state.isAuthenticated && $store.state.user.role === 'AGENT_IBO'">Post an Ad</p>
+
+            <p @click="$router.push('/account/IBO/category')" class="text-sm text-webapp mt-1 cursor-pointer"
+                :class="{ 'text-primary': $route.name.includes('IBO') === true }"
+                v-if="$store.state.isAuthenticated && $store.state.user.role === 'USER'">Become an Agent</p>
+
             <p @click="$router.push('/wallet')" class="text-sm text-webapp mt-1 cursor-pointer"
                 :class="{ 'text-primary': $route.name === 'Wallet' }" v-if="$store.state.isAuthenticated">Wallet</p>
 
@@ -102,11 +108,13 @@ function toggleMobileNav() {
 }
 </script>
 
-<style scoped>input::placeholder {
+<style scoped>
+input::placeholder {
     color: #B1B4CD;
     font-size: 16px;
 }
 
 input {
     outline: none;
-}</style>
+}
+</style>
