@@ -7,8 +7,10 @@
                 <img src="../../../../../assets/icons/logo-white.svg" alt="Logo">
                 <span class="text-white text-2xl">Habeep</span>
             </div>
-            <img src="../../../../../assets/icons/chevron-left.svg" @click="$emit('goBack')" class="md:hidden block pt-10" alt="">
-            <h1 class="text-white font-medium text-2xl md:text-5xl   w-full text-left">Where’s this property located?
+            <img src="../../../../../assets/icons/chevron-left.svg" @click="$emit('goBack')" class="md:hidden block pt-10"
+                alt="">
+            <h1 class="text-white font-medium text-2xl md:text-4xl xl:text-5xl   w-full text-left">Where’s this property
+                located?
             </h1>
             <p></p>
         </div>
@@ -68,15 +70,13 @@
                                     clip-rule="evenodd" />
                             </svg>
                         </div>
-                        <div
-                            class="mt-2 px-5 gap-y-6 flex flex-col items-center w-full overflow-y-scroll h-5/6 results">
+                        <div class="mt-2 px-5 gap-y-6 flex flex-col items-center w-full overflow-y-scroll h-5/6 results">
                             <div
                                 class="flex flex-row gap-x-3 items-center  h-12 py-2 w-full border border-gray-200 rounded-full bg-white px-4">
                                 <input type="text" class="outline-none border-none w-full" @keyup="checkForCity"
                                     v-model="addrData.city" placeholder="Type in your city">
                             </div>
-                            <div @click="selectCity(match)"
-                                class="flex flex-row gap-x-2 items-center w-full cursor-pointer"
+                            <div @click="selectCity(match)" class="flex flex-row gap-x-2 items-center w-full cursor-pointer"
                                 v-for="match in possibleMatches" :key="match">
                                 <img src="../../../../../assets/icons/listings/city-icon.svg" alt="">
                                 <div class="flex flex-col  items-start">
@@ -200,8 +200,12 @@ async function getStates() {
     store.dispatch('saveStates', states.value)
 }
 
+if (store.state.listingProcess.location.address) {
+    data.data = store.state.listingProcess.location
+}
+
 onMounted(() => {
-    if(store.state.allStates.length !== 0) {
+    if (store.state.allStates.length !== 0) {
         states.value = store.state.allStates
     } else {
         getStates()

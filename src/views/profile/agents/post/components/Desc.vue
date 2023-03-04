@@ -7,8 +7,10 @@
                 <img src="../../../../../assets/icons/logo-white.svg" alt="Logo">
                 <span class="text-white text-2xl">Habeep</span>
             </div>
-            <img src="../../../../../assets/icons/chevron-left.svg" @click="$emit('goBack')" class="md:hidden block pt-10" alt="">
-            <h1 class="text-white font-medium text-2xl md:text-5xl   w-full text-left">Describe the property to others
+            <img src="../../../../../assets/icons/chevron-left.svg" @click="$emit('goBack')" class="md:hidden block pt-10"
+                alt="">
+            <h1 class="text-white font-medium text-2xl md:text-4xl xl:text-5xl   w-full text-left">Describe the property to
+                others
             </h1>
             <p></p>
         </div>
@@ -19,7 +21,8 @@
             <div class="form-fields w-full flex flex-col h-full items-center px-5 justify-center gap-y-5">
                 <div class="flex flex-col items-start w-full gap-y-1 md:w-4/6 xl:w-3/5 ">
                     <label for="" class="text-lg font-medium text-webapp">Property description</label>
-                    <textarea name="" class="w-full rounded-lg pt-5" id="" v-model="data.data" cols="30" rows="10" placeholder="Type in something..."></textarea>
+                    <textarea name="" class="w-full rounded-lg pt-5" id="" v-model="data.data" cols="30" rows="10"
+                        placeholder="Type in something..."></textarea>
                 </div>
             </div>
 
@@ -53,13 +56,17 @@ const data = reactive({
     data: ''
 })
 
+if (store.state.listingProcess.description.length > 0) {
+    data.data = store.state.listingProcess.description
+}
+
 </script>
 
 <style scoped>
 textarea::placeholder {
     color: #B5B7CB;
     font-size: 16px;
-    
+
 }
 
 textarea {

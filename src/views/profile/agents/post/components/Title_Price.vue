@@ -7,8 +7,10 @@
                 <img src="../../../../../assets/icons/logo-white.svg" alt="Logo">
                 <span class="text-white text-2xl">Habeep</span>
             </div>
-            <img src="../../../../../assets/icons/chevron-left.svg" @click="$emit('goBack')" class="md:hidden block pt-10" alt="">
-            <h1 class="text-white font-medium text-2xl md:text-5xl   w-full text-left">What’s the property title and
+            <img src="../../../../../assets/icons/chevron-left.svg" @click="$emit('goBack')" class="md:hidden block pt-10"
+                alt="">
+            <h1 class="text-white font-medium text-2xl md:text-4xl xl:text-5xl   w-full text-left">What’s the property title
+                and
                 price?
             </h1>
             <p></p>
@@ -39,8 +41,9 @@
                 </div>
                 <div class="flex flex-row p-6 w-full items-center justify-between">
                     <span class="text-xl font-medium text-webapp underline cursor-pointer"
-                    @click="$emit('goBack')">Back</span>
-                    <button @click="$emit('passData', data)" :disabled="data.data.price.length < 1 && data.data.title.length < 1"
+                        @click="$emit('goBack')">Back</span>
+                    <button @click="$emit('passData', data)"
+                        :disabled="data.data.price.length < 1 && data.data.title.length < 1"
                         :class="{ 'bg-slate-400 text-white': data.data.price.length < 1 || data.data.title.length < 1 }"
                         class="h-10 w-24 rounded-lg bg-primary text-white text-sm text-medium">Next</button>
                 </div>
@@ -66,28 +69,32 @@ const data = reactive({
         title: ''
     }
 })
-
+if (store.state.listingProcess.title.length > 0) {
+    data.data.title = store.state.listingProcess.title
+    data.data.price = store.state.listingProcess.price
+}
 </script>
 
 <style scoped>
 input::placeholder {
-  color: #71759D;
-  font-size: 16px;
+    color: #71759D;
+    font-size: 16px;
 }
 
 input.title {
-  padding-left: 10px;
-  outline: none;
-  border: 1px solid #D9DDEE;
+    padding-left: 10px;
+    outline: none;
+    border: 1px solid #D9DDEE;
 }
+
 input.price {
-  padding-left: 10px;
-  outline: none;
-  border: none  !important;
+    padding-left: 10px;
+    outline: none;
+    border: none !important;
 }
 
 input.title:focus {
-  border: 1px solid #1B49FF;
+    border: 1px solid #1B49FF;
 }
 
 .results::-webkit-scrollbar {

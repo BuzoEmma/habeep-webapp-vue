@@ -7,8 +7,11 @@
                 <img src="../../../../../assets/icons/logo-white.svg" alt="Logo">
                 <span class="text-white text-2xl">Habeep</span>
             </div>
-            <img src="../../../../../assets/icons/chevron-left.svg" @click="$router.push('/agent/ads/create')" class="md:hidden block pt-10" alt="">
-            <h1 class="text-white font-medium text-2xl md:text-5xl   w-full text-left">Which of these describes the listing?</h1>
+            <img src="../../../../../assets/icons/chevron-left.svg" @click="$router.push('/agent/ads/create')"
+                class="md:hidden block pt-10" alt="">
+            <h1 class="text-white font-medium text-2xl md:text-4xl xl:text-5xl   w-full text-left">Which of these describes
+                the listing?
+            </h1>
             <p></p>
         </div>
 
@@ -19,7 +22,8 @@
                 <div class="border-2 border-gray-200 w-full flex flex-col items-start p-5 gap-y-4 mt-14 md:mt-24 rounded-lg cursor-pointer"
                     @click="selectSaleType(1)" :class="{ 'border-blue-600': activeType === 1 }">
 
-                    <span class="text-webapp font-xl font-medium" :class="{ 'text-blue-600': activeType === 1 }">For rent</span>
+                    <span class="text-webapp font-xl font-medium" :class="{ 'text-blue-600': activeType === 1 }">For
+                        rent</span>
 
                     <p class="text-sm text-webapp text-left w-full">A property for rent on a period of time usually
                         calculated per annum </p>
@@ -27,20 +31,24 @@
                 <div class="border-2 border-gray-200 w-full flex flex-col items-start p-5 gap-y-4 mt-4 rounded-lg cursor-pointer"
                     @click="selectSaleType(2)" :class="{ 'border-blue-600': activeType === 2 }">
 
-                    <span class="text-webapp font-xl font-medium" :class="{ 'text-blue-600': activeType === 2 }">For sale</span>
+                    <span class="text-webapp font-xl font-medium" :class="{ 'text-blue-600': activeType === 2 }">For
+                        sale</span>
 
                     <p class="text-sm text-webapp text-left w-full">A property for rent on a period of time usually
                         calculated per annum </p>
                 </div>
             </div>
 
-            <div class="bottom flex flex-col items-center w-full justify-between">
+            <div class="bottom flex flex-col items-center w-full justify-between static bottom-0">
                 <div class="w-full bg-gray-200" style="height: 2px;">
                     <div class="bg-webapp h-full w-1/12"></div>
                 </div>
                 <div class="flex flex-row p-6 w-full items-center justify-between">
-                    <span class="text-xl font-medium text-webapp underline cursor-pointer" @click="$router.go(-1)">Back</span>
-                    <button @click="$emit('passData', data)" :disabled="data.data.length < 1" :class="{'bg-slate-400 text-white': data.data.length < 1}" class="h-10 w-24 rounded-lg bg-primary text-white text-sm text-medium">Next</button>
+                    <span class="text-xl font-medium text-webapp underline cursor-pointer"
+                        @click="$router.go(-1)">Back</span>
+                    <button @click="$emit('passData', data)" :disabled="data.data.length < 1"
+                        :class="{ 'bg-slate-400 text-white': data.data.length < 1 }"
+                        class="h-10 w-24 rounded-lg bg-primary text-white text-sm text-medium">Next</button>
                 </div>
             </div>
         </div>
@@ -50,19 +58,35 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import MainNavbarVue from "../../../../../components/MainNavbar.vue";
+import { useStore } from 'vuex'
+const store = useStore()
 
 const data = reactive({
     type: 'for',
     data: ''
 })
 
+
+
+
+
+
 let activeType = ref(0)
 
 const selectSaleType = (type) => {
     activeType.value = type
-    if(type === 1) {
+    if (type === 1) {
         data.data = 'rent'
     } else data.data = 'sale'
+}
+
+if (store.state.listingProcess.for.length > 0) {
+    data.data = store.state.listingProcess.for
+
+    if (data.data = 'rent') {
+        activeType.value = 1
+    } else activeType.value = 2
+
 }
 </script>
 

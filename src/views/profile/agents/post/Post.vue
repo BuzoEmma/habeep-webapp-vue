@@ -5,7 +5,7 @@
     <Toast :msg="errorMsg" type="danger" v-if="onError" />
   </div>
   <div class="h-screen w-screen">
-    <component :is="currentComponent" @passData="getData" @goBack="back"></component>
+    <component :is="currentComponent" :results="result" @passData="getData" @goBack="back"></component>
 
   </div>
 </template>
@@ -14,8 +14,12 @@
 import { ref, reactive } from 'vue'
 import { defineAsyncComponent } from 'vue'
 import axios from "../../../../composables/axios";
+import { useStore } from "vuex";
 
 import AdUploadedModal from './components/AdUploadedModal.vue';
+
+const store = useStore();
+
 const onModal = ref(false)
 const successModal = ref(false)
 const onError = ref(false)
@@ -58,11 +62,16 @@ let formData = ref(null)
 
 let savedProductID = ref('')
 
+const result = reactive({
+  modelRun: false,
+  status: false
+})
+
 const data = reactive({
   for: '',
   type: '',
   status: 'AVAILABLE',
-  location: '',
+  location: {},
   price: 0,
   title: '',
   bedrooms: 0,
@@ -77,31 +86,46 @@ const back = () => {
 
 // save ad data to db
 async function saveData() {
-  formData.value.append('data', JSON.stringify(data))
-  const adDetails = await axios.post(url, formData.value, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
+  try {
+    formData.value.append('data', JSON.stringify(data))
+    const adDetails = await axios.post(url, formData.value, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
 
+    onModal.value = true;
+    if (adDetails.data.success) {
+      savedProductID.value = adDetails.data._id
+      successModal.value = true
 
-  onModal.value = true;
-  if (adDetails.data.success) {
-    savedProductID.value = adDetails.data._id
-    successModal.value = true
-  } else {
-    onError.value = true;
-    errorMsg.value = adDetails.data.message;
-  }
-
-  if (onError.value === true) {
-    setTimeout(() => {
-      onModal.value = false;
+      store.commit('deleteListingData')
+    } else {
       onError.value = true;
-    }, 4000);
+      errorMsg.value = adDetails.data.message;
+    }
+
+    if (onError.value === true) {
+      setTimeout(() => {
+        onModal.value = false;
+        onError.value = true;
+      }, 4000);
+    }
+  } catch (error) {
+    onModal.value = true;
+    onError.value = true;
+    errorMsg.value = error.response.message;
+
+    if (onError.value === true) {
+      setTimeout(() => {
+        onModal.value = false;
+        onError.value = true;
+      }, 4000);
+    }
   }
 }
 
 // get all form data
 const getData = async (e) => {
+  store.commit('addDataToListing', e)
   if (e.cast) {
     Object.keys(e.data).forEach(key => {
       data[key] = e.data[key]
@@ -109,8 +133,9 @@ const getData = async (e) => {
   } else if (e.type === 'images') {
     formData.value = e.data
     await saveData()
-  } else data[e.type] = e.data
-
+  } else {
+    data[e.type] = e.data
+  }
   if (e.type === 'for') {
     currentComponent.value = HouseTypePage
     previousComponent.value = ForPage
@@ -140,8 +165,49 @@ const getData = async (e) => {
     previousComponent.value = Desc
   }
 }
+
+function managePagesOnload() {
+  let savedData = store.state.listingProcess
+
+  if (savedData.for.length > 0) {
+    currentComponent.value = HouseTypePage
+    previousComponent.value = ForPage
+  }
+  if (savedData.type.length > 0) {
+    currentComponent.value = Location
+    previousComponent.value = HouseTypePage
+  }
+  if (savedData.location.address) {
+    currentComponent.value = TitlePrice
+    previousComponent.value = Location
+  }
+  if (savedData.title.length > 0) {
+    currentComponent.value = Size
+    previousComponent.value = TitlePrice
+  }
+  if (savedData.size > 0) {
+    currentComponent.value = Features
+    previousComponent.value = Size
+  }
+  if (savedData.features.length > 0) {
+    currentComponent.value = Desc
+    previousComponent.value = Features
+  }
+  if (savedData.description.length > 0) {
+    currentComponent.value = Photos
+    previousComponent.value = Desc
+  }
+  if (Object.keys(savedData.images).length > 0) {
+    formData.value = images
+  }
+
+  delete savedData.images
+  data.value = savedData
+
+}
+
+managePagesOnload()
+
 </script>
 
-<style>
-
-</style>
+<style></style>

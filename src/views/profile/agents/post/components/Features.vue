@@ -7,8 +7,10 @@
                 <img src="../../../../../assets/icons/logo-white.svg" alt="Logo">
                 <span class="text-white text-2xl">Habeep</span>
             </div>
-            <img src="../../../../../assets/icons/chevron-left.svg" @click="$emit('goBack')" class="md:hidden block pt-10" alt="">
-            <h1 class="text-white font-medium text-2xl md:text-5xl   w-full text-left">Whats are the available features?
+            <img src="../../../../../assets/icons/chevron-left.svg" @click="$emit('goBack')" class="md:hidden block pt-10"
+                alt="">
+            <h1 class="text-white font-medium text-2xl md:text-4xl xl:text-5xl  w-full text-left">Whats are the available
+                features?
             </h1>
             <p></p>
         </div>
@@ -64,6 +66,7 @@ import { useStore } from 'vuex'
 import MainNavbarVue from "../../../../../components/MainNavbar.vue";
 import axiosDefault from 'axios'
 
+
 const store = useStore()
 
 
@@ -81,6 +84,10 @@ const manage = (feature) => {
 
         console.log(data.data, index)
     }
+}
+
+if (store.state.listingProcess.features.length > 0) {
+    data.data = store.state.listingProcess.features
 }
 
 </script>
