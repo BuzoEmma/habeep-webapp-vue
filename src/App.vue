@@ -64,7 +64,7 @@ const getUser = async () => {
 };
 
 onMounted(() => {
-  // getUser();
+  getUser();
 });
 </script>
 

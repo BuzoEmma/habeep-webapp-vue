@@ -88,7 +88,10 @@ const routes = [
     {
         path: '/',
         name: 'Home',
-        component: changeHomeRoute()
+        component: changeHomeRoute(),
+        meta: {
+            title: "Home"
+        }
     },
     // extras
     {
@@ -135,13 +138,19 @@ const routes = [
         path: '/agent/ads/create',
         beforeEnter: guardMyrouteForAgent,
         name: 'Agent-ads-create',
-        component: PostAd
+        component: PostAd,
+        meta: {
+            title: "Create Ad"
+        }
     },
     {
         path: '/user/profile/:id',
         name: 'User-profile',
         beforeEnter: guardMyroute,
-        component: UserProfile
+        component: UserProfile,
+        meta: {
+            title: "Profile"
+        }
     },
 
     // IBO
@@ -149,7 +158,10 @@ const routes = [
         path: '/account/IBO/category',
         name: 'IBO_ChooseCategory',
         beforeEnter: guardMyroute,
-        component: IBO_ChooseCategory
+        component: IBO_ChooseCategory,
+        meta: {
+            title: "Become an Agent"
+        }
     },
     {
         path: '/account/IBO/category/agent',
@@ -175,12 +187,18 @@ const routes = [
     {
         path: '/register',
         name: 'Register',
-        component: Register
+        component: Register,
+        meta: {
+            title: "Register"
+        }
     },
     {
         path: '/login',
         name: 'Login',
-        component: Login
+        component: Login,
+        meta: {
+            title: "Login"
+        }
     },
     {
         path: '/logout',
@@ -207,6 +225,11 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes
+})
+
+router.beforeEach((to, from, next) => {
+    document.title = `Habeep - ${to.meta.title}`;
+    next();
 })
 
 router.resolve({
