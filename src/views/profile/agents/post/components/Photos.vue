@@ -33,8 +33,8 @@
                                     clip-rule="evenodd" />
                             </svg>
                             <span>Upload</span>
-                            <input type="file" ref="input" multiple accept="image/png" v-if="!imageData5"
-                                @change="callImgProcessor">
+                            <input type="file" ref="inputRef" :multiple="allCompleted === false" accept="image/*"
+                                v-if="!allCompleted" @change="previewImg($event.target, currentBlock)">
                         </button>
                     </form>
 
@@ -43,9 +43,13 @@
 
                 <div class="flex flex-col items-center photos-preview w-full h-full overflow-y-auto mb-2">
                     <div class="flex flex-row items-center w-full flex-wrap h-fit pb-2">
-                        <img :src="imageData1" v-if="imageData1" class="basis-full p-2 md:basis-2/3 h-full photo-cover"
-                            alt="">
-                        <div class="gap-x-2 basis-full p-2 md:basis-2/3 h-full photo-cover" v-else>
+                        <div class="basis-full md:basis-2/3 photo-cover p-2 h-full" v-if="imageData1">
+                            <div class="flex flex-col items-center justify-center dashed h-full w-full">
+                                <img :src="imageData1" class="h-full " alt="">
+                            </div>
+                        </div>
+                        <div class="gap-x-2 basis-full p-2 md:basis-2/3 h-full photo-cover" @click="callImgProcessor(1)"
+                            v-else>
                             <div class="flex flex-col items-start dashed px-2 h-full">
                                 <span class="text-lg text-webapp">Cover photo</span>
                                 <div class="flex flex-row items-center w-full h-5/6 justify-center">
@@ -54,33 +58,45 @@
                             </div>
                         </div>
 
-                        <img :src="imageData2" v-if="imageData2" class="basis-1/2 md:basis-1/3 photo p-2 dashed h-full"
-                            alt="">
-                        <div v-else class="basis-1/2 md:basis-1/3 photo p-2 h-full">
+                        <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" v-if="imageData2">
+                            <div class="flex flex-col items-center justify-center dashed h-full w-full">
+                                <img :src="imageData2" class="h-full w-fit" alt="">
+                            </div>
+                        </div>
+                        <div v-else class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(2)">
                             <div class="flex flex-row items-center justify-center h-full w-full dashed">
                                 <img src="../../../../../assets/icons/listings/img.svg" alt="">
                             </div>
                         </div>
 
-                        <img :src="imageData3" v-if="imageData3" class="basis-1/2 md:basis-1/3 photo p-2 dashed h-full"
-                            alt="">
-                        <div v-else class="basis-1/2 md:basis-1/3 photo p-2 h-full">
+                        <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" v-if="imageData3">
+                            <div class="flex flex-col items-center justify-center dashed h-full w-full">
+                                <img :src="imageData3" class="h-full w-fit" alt="">
+                            </div>
+                        </div>
+                        <div v-else class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(3)">
                             <div class="flex flex-row items-center justify-center h-full w-full dashed">
                                 <img src="../../../../../assets/icons/listings/img.svg" alt="">
                             </div>
                         </div>
 
-                        <img :src="imageData4" v-if="imageData4" class="basis-1/2 md:basis-1/3 photo p-2 dashed h-full"
-                            alt="">
-                        <div v-else class="basis-1/2 md:basis-1/3 photo p-2 h-full">
+                        <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" v-if="imageData4">
+                            <div class="flex flex-col items-center justify-center dashed h-full w-full">
+                                <img :src="imageData4" class="h-full w-fit" alt="">
+                            </div>
+                        </div>
+                        <div v-else class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(4)">
                             <div class="flex flex-row items-center justify-center h-full w-full dashed">
                                 <img src="../../../../../assets/icons/listings/img.svg" alt="">
                             </div>
                         </div>
 
-                        <img :src="imageData5" v-if="imageData5" class="basis-1/2 md:basis-1/3 photo p-2 dashed h-full"
-                            alt="">
-                        <div v-else class="basis-1/2 md:basis-1/3 photo p-2 h-full">
+                        <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" v-if="imageData5">
+                            <div class="flex flex-col items-center justify-center dashed h-full w-full">
+                                <img :src="imageData5" class="h-full w-fit" alt="">
+                            </div>
+                        </div>
+                        <div v-else class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(5)">
                             <div class="flex flex-row items-center justify-center h-full w-full dashed">
                                 <img src="../../../../../assets/icons/listings/img.svg" alt="">
                             </div>
@@ -97,9 +113,9 @@
                 <div class="flex flex-row p-6 w-full items-center justify-between">
                     <span class="text-xl font-medium text-webapp underline cursor-pointer"
                         @click="$emit('goBack')">Back</span>
-                    <button @click="sendData()" :class="{ 'bg-slate-400 text-white': imageData5.length < 1 }"
+                    <button @click="sendData()" :class="{ 'bg-slate-400 text-white': allCompleted === false }"
                         class="h-10 w-24 rounded-lg bg-primary text-white text-sm text-medium"
-                        :disabled="imageData5.length < 1">
+                        :disabled="allCompleted === false">
                         <span v-if="!processing">Post AD</span>
                         <Preloader v-else />
                     </button>
@@ -110,16 +126,14 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, watch } from 'vue'
-import { useStore } from 'vuex'
-import MainNavbarVue from "../../../../../components/MainNavbar.vue";
-import axiosDefault from 'axios'
+import { isArray } from '@vue/shared';
+import { computed, inject, reactive, ref } from 'vue';
+import { useStore } from 'vuex';
 
 const store = useStore()
 const processing = ref(false)
 
 const emit = defineEmits(['passData'])
-const props = defineProps(['results'])
 
 
 const data = reactive({
@@ -127,9 +141,10 @@ const data = reactive({
     data: '',
 })
 
-const input = ref(null)
+const inputRef = ref(null)
 
 const currentImage = ref(0)
+const currentBlock = ref(1)
 
 const pic1 = ref(null)
 const imageData1 = ref('')
@@ -144,17 +159,19 @@ const imageData5 = ref('')
 
 const noPicture = ref(true)
 
-function callImgProcessor(event) {
-    console.log(input)
+
+function callImgProcessor(value) {
+    currentBlock.value = value
+    inputRef.value.click()
 }
 
-const previewImg = async (event) => {
-    currentImage.value += 1
+const previewImg = async (event, value) => {
+    currentBlock.value += 1
     // Reference to the DOM input element
-    var input = event.target;
-
+    var input = event;
     // Ensure that you have a file before attempting to read it
-    if (input.files && input.files[0]) {
+    if (input.files && input.files.length === 1) {
+        currentImage.value = value
         switch (currentImage.value) {
             case 1:
                 pic1.value = input.files[0]
@@ -178,6 +195,7 @@ const previewImg = async (event) => {
         // create a new FileReader to read this image and convert to base64 format
         var reader = new FileReader();
         // Define a callback function to run, when FileReader finishes its job
+        // reader.readAsDataURL(eval(`pic${value}`).value)
         reader.onload = (e) => {
             // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
             // Read image as base64 and set to imageData
@@ -186,23 +204,35 @@ const previewImg = async (event) => {
 
         // Start the reader job - read file as a data url (base64 format)
         reader.readAsDataURL(input.files[0]);
+    } else if (input.files && input.files.length > 1) {
+        // read multiple files
+        for (let i = currentImage.value; i < input.files.length && i < 5; i++) {
+            eval(`pic${i + 1}`).value = input.files[i]
 
 
+            var reader = new FileReader();
+            // Define a callback function to run, when FileReader finishes its job
+            reader.readAsDataURL(input.files[i])
+            reader.onload = (e) => {
+                // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
+                // Read image as base64 and set to imageData
+                eval(`imageData${i + 1}`).currentImage.valuevalue = e.target.result;
+            }
+            if (currentImage.value !== 5) {
+                currentImage.value += 1
+            }
+        }
     }
+
+
     noPicture.value = false
 }
 
-let mainResults = ref(props.results)
-
-watch(props.results, (newResults) => {
-    console.log(newResults)
-    mainResults.value = newResults
-})
+const progress = inject('progress')
 
 const sendData = async () => {
     const formData = new FormData();
-
-    for (let i = 1; i < currentImage.value + 1; i++) {
+    for (let i = 1; i < 6; i++) {
         let img = eval(`pic${i}`).value
         formData.append('photo' + i, img)
     }
@@ -210,23 +240,65 @@ const sendData = async () => {
     data.data = formData
 
     emit('passData', data)
-    if (mainResults.value.bool === true) {
+
+    if (progress.value.modelRun === true) {
         processing.value = true
-        if (mainResults.value.status === true) {
+        if (progress.value.status === true) {
             processing.value = false
         }
     }
+
+    const checkProgress = setInterval(() => {
+        if (progress.value.modelRun === true) {
+            processing.value = true
+            if (progress.value.status === true) {
+                processing.value = false
+            }
+        }
+    }, 2000);
+
+    setTimeout(() => {
+        clearInterval(checkProgress)
+        processing.value = false
+    }, 30000);
 }
+
+function allImagesComplete() {
+    if (imageData1.value.length < 1) {
+        return false
+    }
+    if (imageData2.value.length < 1) {
+        return false
+    }
+    if (imageData3.value.length < 1) {
+        return false
+    }
+    if (imageData4.value.length < 1) {
+        return false
+    }
+    if (imageData5.value.length < 1) {
+        return false
+    }
+    return true
+}
+
+let allCompleted = computed(() => {
+    return allImagesComplete()
+})
 
 </script>
 
 <style scoped>
 .photo {
-    max-height: 300px;
+    max-height: 300px !important;
+    height: 300px !important;
+    border-radius: 10px;
 }
 
 .photo-cover {
-    max-height: 300px;
+    max-height: 300px !important;
+    height: 300px !important;
+    border-radius: 10px;
 }
 
 .dashed {
@@ -287,10 +359,12 @@ const sendData = async () => {
 @media screen and (max-width : 425px) {
     .photo {
         max-height: 130px !important;
+        height: 130px !important;
     }
 
     .photo-cover {
         max-height: 220px !important;
+        height: 220px !important;
     }
 }
 </style>

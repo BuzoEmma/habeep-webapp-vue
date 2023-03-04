@@ -5,13 +5,13 @@
     <Toast :msg="errorMsg" type="danger" v-if="onError" />
   </div>
   <div class="h-screen w-screen">
-    <component :is="currentComponent" :results="result" @passData="getData" @goBack="back"></component>
+    <component :is="currentComponent" @passData="getData" @goBack="back"></component>
 
   </div>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed, provide } from 'vue'
 import { defineAsyncComponent } from 'vue'
 import axios from "../../../../composables/axios";
 import { useStore } from "vuex";
@@ -62,10 +62,23 @@ let formData = ref(null)
 
 let savedProductID = ref('')
 
-const result = reactive({
+const result = ref({
   modelRun: false,
-  status: false
+  status: false,
+  success: false
 })
+
+const finalResult = ref({
+  modelRun: false,
+  status: false,
+  success: false
+})
+
+// function updateProgress() {
+//   finalResult.value = result.value
+// }
+
+provide('progress', result)
 
 const data = reactive({
   for: '',
@@ -87,12 +100,14 @@ const back = () => {
 // save ad data to db
 async function saveData() {
   try {
+    result.value.modelRun = true
     formData.value.append('data', JSON.stringify(data))
     const adDetails = await axios.post(url, formData.value, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
 
     onModal.value = true;
+    result.value.status = true
     if (adDetails.data.success) {
       savedProductID.value = adDetails.data._id
       successModal.value = true
@@ -112,7 +127,7 @@ async function saveData() {
   } catch (error) {
     onModal.value = true;
     onError.value = true;
-    errorMsg.value = error.response.message;
+    errorMsg.value = error.response.data.message
 
     if (onError.value === true) {
       setTimeout(() => {
