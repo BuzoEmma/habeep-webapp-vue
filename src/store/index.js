@@ -21,7 +21,9 @@ export default createStore({
             location: {},
             price: 0,
             title: '',
+            features: [],
             bedrooms: 0,
+            description: '',
             bathrooms: 0,
             size: 0,
             images: new FormData()
@@ -81,6 +83,8 @@ export default createStore({
                 title: '',
                 bedrooms: 0,
                 bathrooms: 0,
+                description: '',
+                features: [],
                 size: 0,
                 images: new FormData()
             }

@@ -53,7 +53,7 @@
                 <!-- input city modal -->
                 <div class="city flex flex-col items-center justify-center absolute h-screen w-screen md:w-full md:h-full z-20"
                     style="background-color: rgba(22,22,34, 0.5)" v-if="cityModal">
-                    <div class="modal bg-white rounded-lg h-modal w-full md:h-3/5 md:w-3/5">
+                    <div class="modal bg-white rounded-lg h-5/6 rounded-t-3xl w-full md:h-3/5 md:w-3/5">
                         <div class="flex flex-row items-center justify-between p-3 border-b w-full border-b-gray-100">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#71759D"
                                 class="w-6 h-6 md:hidden block cursor-pointer">
@@ -92,7 +92,7 @@
 
 
 
-            <div class="bottom flex flex-col items-center w-full justify-between">
+            <div class="bottom flex flex-col items-center w-full justify-between static bottom-0">
                 <div class="w-full bg-gray-200" style="height: 2px;">
                     <div class="bg-webapp h-full w-5/12"></div>
                 </div>

@@ -4,16 +4,16 @@
         @resize="changeWidth">
         <MainNavbar v-if="(screenWidth > 767)" />
 
-        <img src="../../assets/images/rhombus-preloader.gif" class="m-auto" v-if="!processingProduct && !product.price" alt="">    
-        <div
-            v-else
+        <img src="../../assets/images/rhombus-preloader.gif" class="m-auto" v-if="!processingProduct && !product.price"
+            alt="">
+        <div v-else
             class="body px-0 2xl:px-44 xl:px-20 mb-16 w-full flex flex-col h-fit items-center pb-10 md:items-start gap-y-8 mt-0 relative">
 
             <!-- product display images for desktop view -->
             <div class="product-img-grid desktop-view xl:flex flex-row items-center w-full mt-10 hidden">
                 <div class="relative h-full display-img w-1/2 py-1">
-                    <img :src="carouselImg.link" class="h-full w-full rounded-lg cursor-pointer"
-                        @click="enterImageViewer()" alt="">
+                    <img :src="carouselImg.link" class="h-full w-full rounded-lg cursor-pointer" @click="enterImageViewer()"
+                        alt="">
 
                     <div class="w-full absolute flex flex-row top-5 items-center justify-between px-2">
                         <img src="../../assets/icons/back-img.svg" class="cursor-pointer" alt="">
@@ -74,8 +74,7 @@
             </div>
 
             <!-- product details -->
-            <div
-                class="flex flex-col md:flex-row items-start w-full gap-x-4 h-fit justify-between px-6 sm:px-7 xl:px-0">
+            <div class="flex flex-col md:flex-row items-start w-full gap-x-4 h-fit justify-between px-6 sm:px-7 xl:px-0">
                 <!-- product info -->
                 <div class="flex flex-col items-start md:w-2/3 w-full xl:w-4/6 h-full pt-2">
                     <!-- top product info -->
@@ -88,7 +87,7 @@
                                 class="text-sub-webapp text-lg md:text-sm xl:text-lg product-location flex flex-row items-center gap-x-2">
                                 <img src="../../assets/icons/map-pin-blue.svg" alt="">{{
                                     product.location.address + ', ' +
-                                        product.location.city
+                                    product.location.city
                                 }}
                             </p>
                         </div>
@@ -198,21 +197,21 @@
                         class="agent flex flex-row items-center justify-between w-full border-b py-3 my-3 border-b-gray-300">
                         <div class="flex flex-row gap-x-2 items-center">
                             <div class="rounded-full w-12 h-12  grid place-items-center">
-                                <img src="../../assets/icons/model.svg" class="w-full h-full" alt="">
+                                <img :src="agentDetails.profileImg" class="w-full h-full" alt="">
                             </div>
                             <div class="flex flex-col">
                                 <span class="text-sm xl:text-lg text-left agent-name text-webapp font-medium">{{
                                     agentDetails.name.fname + ' ' + agentDetails.name.surname
                                 }}</span>
                                 <span class="text-sm agent-ads-count text-left text-sub-webapp">{{
-                                    agentDetails.ads
+                                    agentDetails.ads.length
                                 }} ads</span>
                             </div>
                         </div>
                         <a class="cursor-pointer" :href="'tel:' + agentDetails.phoneNumber"><img
                                 src="../../assets/icons/call-btn.svg" alt=""></a>
                         <button
-                            class="w-24 flex flex-row agent-btn items-center justify-center text-sm font-medium text-primary bg-white"
+                            class="w-24 flex ml-2 flex-row border border-blue-700 h-8 rounded-sm items-center justify-center text-sm font-medium text-primary bg-white"
                             @click="$router.push('/agents/profile/' + product.agentId)">Visit
                             Profile</button>
                     </div>

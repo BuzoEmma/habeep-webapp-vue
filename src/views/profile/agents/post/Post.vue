@@ -80,7 +80,7 @@ const finalResult = ref({
 
 provide('progress', result)
 
-const data = reactive({
+let data = reactive({
   for: '',
   type: '',
   status: 'AVAILABLE',
@@ -109,7 +109,7 @@ async function saveData() {
     onModal.value = true;
     result.value.status = true
     if (adDetails.data.success) {
-      savedProductID.value = adDetails.data._id
+      savedProductID.value = adDetails.data.data._id
       successModal.value = true
 
       store.commit('deleteListingData')
@@ -215,9 +215,8 @@ function managePagesOnload() {
   if (Object.keys(savedData.images).length > 0) {
     formData.value = images
   }
-
   delete savedData.images
-  data.value = savedData
+  data = savedData
 
 }
 
