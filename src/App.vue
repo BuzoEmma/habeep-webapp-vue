@@ -11,6 +11,11 @@ const store = useStore();
 const router = useRouter();
 const route = useRoute();
 
+console.log(route.query)
+if (route.query.loggedIn) {
+  router.push('/feeds')
+}
+
 function verifyAllowedRoles(route, role) {
   if (role === 'random') {
     return false;

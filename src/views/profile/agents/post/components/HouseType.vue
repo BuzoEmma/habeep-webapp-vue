@@ -71,7 +71,7 @@
 
             </div>
 
-            <div class="bottom flex flex-col items-center w-full justify-between">
+            <div class="bottom flex flex-col items-center w-full justify-between static bottom-0">
                 <div class="w-full bg-gray-200" style="height: 2px;">
                     <div class="bg-webapp h-full w-3/12"></div>
                 </div>

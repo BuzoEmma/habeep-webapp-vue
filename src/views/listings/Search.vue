@@ -196,6 +196,8 @@ const onLocationDropdown = ref(false)
 const onDropdown = ref(false)
 const locationValue = ref(false)
 
+let searchInput = ref('')
+
 const store = useStore()
 const route = useRoute()
 const url = '/listings/query';
@@ -204,8 +206,8 @@ const products = ref([])
 const states = ref([])
 const cities = ref([])
 let onState = ref(true)
-const currentState = ref(route.query.location || 'Cross River')
-const currentCity = ref('Calabar')
+const currentState = ref(route.query.location || 'Nigeria')
+const currentCity = ref('All')
 
 function saveFeedLocation() {
     store.commit('changeFeedLocation', {
@@ -228,6 +230,10 @@ function changeStateModal(state, type) {
 
         saveFeedLocation()
     }
+}
+
+if (route.query) {
+    searchInput.value = route.query.name
 }
 
 async function getSearch(location, query) {

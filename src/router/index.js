@@ -93,6 +93,10 @@ const routes = [
             title: "Home"
         }
     },
+    {
+        path: '/feeds',
+        redirect: '/'
+    },
     // extras
     {
         path: '/blog',
@@ -108,12 +112,18 @@ const routes = [
     {
         path: '/listings/search',
         name: 'Listings-search',
-        component: ListingSearch
+        component: ListingSearch,
+        meta: {
+            title: "Search ads"
+        }
     },
     {
         path: '/listings/products/:id',
         name: 'Listings-product',
-        component: ListingProduct
+        component: ListingProduct,
+        meta: {
+            title: "Product"
+        }
     },
     {
         path: '/listings/agent/products/:id',

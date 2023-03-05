@@ -54,7 +54,7 @@
                 <div class="w-full bg-gray-200" style="height: 2px;">
                     <div class="bg-webapp h-full w-9/12"></div>
                 </div>
-                <div class="flex flex-row p-6 w-full items-center justify-between">
+                <div class="flex flex-row p-6 w-full items-center justify-between static bottom-0">
                     <span class="text-xl font-medium text-webapp underline cursor-pointer"
                         @click="$emit('goBack')">Back</span>
                     <button @click="$emit('passData', data)"

@@ -94,9 +94,6 @@ import MobileSearch from "./components/MobileSearch.vue";
 
 const route = useRoute()
 const router = useRouter()
-if (route.query.loggedIn) {
-  router.push('/')
-}
 // Manage quick search
 const onSearch = ref(false)
 
