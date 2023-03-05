@@ -1,7 +1,7 @@
 <template>
     <div class="w-screen min-w-full flex flex-col items-center bg-white h-full min-h-screen overflow-y-auto"
         resize="changeWidth">
-        <MainNavbar v-if="(screenWidth > 767)" />
+        <MainNavbar v-if="(screenWidth > 767)" @search="searchDB" />
 
         <div class="flex flex-row items-center justify-between w-full px-6 2xl:px-44 md:px-20 my-4" v-else>
             <div class="flex flex-row items-center gap-x-3">
@@ -187,6 +187,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import MainNavbar from '../../components/MainNavbar.vue'
+import formatNumber from 'number_formatter';
 import axios from "../../composables/axios";
 import { useRoute } from 'vue-router';
 
@@ -196,18 +197,23 @@ const onLocationDropdown = ref(false)
 const onDropdown = ref(false)
 const locationValue = ref(false)
 
-let searchInput = ref('')
 
 const store = useStore()
 const route = useRoute()
 const url = '/listings/query';
 const products = ref([])
 
+
+
 const states = ref([])
 const cities = ref([])
 let onState = ref(true)
 const currentState = ref(route.query.location || 'Nigeria')
 const currentCity = ref('All')
+
+const searchDB = (e) => {
+    getSearch(currentCity, e)
+}
 
 function saveFeedLocation() {
     store.commit('changeFeedLocation', {
@@ -232,10 +238,6 @@ function changeStateModal(state, type) {
     }
 }
 
-if (route.query) {
-    searchInput.value = route.query.name
-}
-
 async function getSearch(location, query) {
     let data = reactive({
         location: location,
@@ -247,6 +249,7 @@ async function getSearch(location, query) {
     getProducts.data.products.forEach(product => {
         products.value.push(product)
     })
+    console.log(products)
 
 }
 
