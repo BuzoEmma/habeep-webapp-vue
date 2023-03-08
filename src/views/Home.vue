@@ -87,6 +87,7 @@
 <script setup>
 import { ref, reactive } from "vue"
 import { useRoute, useRouter } from "vue-router";
+import { useStore } from "vuex";
 
 
 import HomeNavbar from '../components/HomeNavbar.vue'
@@ -96,6 +97,12 @@ const route = useRoute()
 const router = useRouter()
 // Manage quick search
 const onSearch = ref(false)
+
+const store = useStore()
+
+if (store.state.isAuthenticated === true) {
+  router.go()
+}
 
 // search variables
 const data = reactive({

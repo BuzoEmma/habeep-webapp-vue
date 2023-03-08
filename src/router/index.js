@@ -43,6 +43,12 @@ function changeHomeRoute() {
     } else return Home
 }
 
+function changeHomeName() {
+    if (createStore.state.isAuthenticated) {
+        return 'Feeds'
+    } else return 'Home'
+}
+
 // listings
 import ListingSearch from '../views/listings/Search.vue'
 import ListingProduct from '../views/listings/Product.vue'
@@ -84,13 +90,16 @@ import OTP from '../views/Auth/OTP_Validation.vue'
 // fallbacks
 import Error404 from '../views/fallbacks/404.vue'
 
+// wallet
+import WalletIndex from '../views/wallet/Index.vue'
+
 const routes = [
     {
         path: '/',
-        name: 'Home',
+        name: changeHomeName(),
         component: changeHomeRoute(),
         meta: {
-            title: "Home"
+            title: changeHomeName()
         }
     },
     {
@@ -101,12 +110,18 @@ const routes = [
     {
         path: '/blog',
         name: 'Blog',
-        component: Blog
+        component: Blog,
+        meta: {
+            title: "Blog"
+        }
     },
     {
         path: '/terms-of-service',
         name: 'Terms-Of-Service',
-        component: TOS
+        component: TOS,
+        meta: {
+            title: "Terms of Service"
+        }
     },
     // listings
     {
@@ -129,20 +144,29 @@ const routes = [
         path: '/listings/agent/products/:id',
         name: 'Listings-product-Agent',
         beforeEnter: guardMyrouteForAgent,
-        component: ListingAgent
+        component: ListingAgent,
+        meta: {
+            title: "Agent Listing"
+        }
     },
     // profile
     {
         path: '/agents/profile/:id',
         name: 'Agent-profile',
         beforeEnter: guardMyrouteForAgent,
-        component: AgentProfile
+        component: AgentProfile,
+        meta: {
+            title: "Agent Profile"
+        }
     },
     {
         path: '/agent/ads',
         beforeEnter: guardMyrouteForAgent,
         name: 'Agent-ads',
-        component: AgentAds
+        component: AgentAds,
+        meta: {
+            title: "Agent Listings"
+        }
     },
     {
         path: '/agent/ads/create',
@@ -170,20 +194,26 @@ const routes = [
         beforeEnter: guardMyroute,
         component: IBO_ChooseCategory,
         meta: {
-            title: "Become an Agent"
+            title: "Become an IBO"
         }
     },
     {
         path: '/account/IBO/category/agent',
         name: 'IBO_Category_Agent',
         beforeEnter: guardMyroute,
-        component: IBO_Agent
+        component: IBO_Agent,
+        meta: {
+            title: "Become an Agent"
+        }
     },
     {
         path: '/account/IBO/category/user',
         name: 'IBO_Category_User',
         beforeEnter: guardMyroute,
-        component: IBO_User
+        component: IBO_User,
+        meta: {
+            title: "Become an IBO User"
+        }
     },
 
     // chats
@@ -191,7 +221,10 @@ const routes = [
         path: '/chats',
         name: 'Chat',
         beforeEnter: guardMyroute,
-        component: ChatIndex
+        component: ChatIndex,
+        meta: {
+            title: "Chats"
+        }
     },
     // authentication
     {
@@ -218,14 +251,28 @@ const routes = [
     {
         path: '/forgot-pin',
         name: 'ForgotPin',
-        component: ForgotPin
+        component: ForgotPin,
+        meta: {
+            title: "Recover pin"
+        }
     },
     {
         path: '/verify-otp',
         name: 'OTP',
-        component: OTP
+        component: OTP,
+        meta: {
+            title: "Verify email"
+        }
     },
-
+    // wallet
+    {
+        path: '/wallet',
+        name: 'Wallet',
+        component: WalletIndex,
+        meta: {
+            title: "Wallet"
+        }
+    },
 
     { path: '/:pathMatch(.*)*', name: 'not-found', component: Error404 },
 ]
