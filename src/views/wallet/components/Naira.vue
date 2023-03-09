@@ -103,7 +103,9 @@
             </div>
         </div>
     </div>
-    <img src="../../../assets/images/rhombus-preloader.gif" class="m-auto" v-else alt="">
+    <div class="flex flex-col items-center justify-center w-full mt-24" v-else>
+        <img src="../../../assets/images/rhombus-preloader.gif" class="y-auto" alt="">
+    </div>
 </template>
 
 <script setup>
