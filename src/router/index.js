@@ -33,6 +33,22 @@ function guardMyrouteForAgent(to, from, next) {
     }
 }
 
+function guardMyrouteForIBO(to, from, next) {
+    var isAuthenticated = false
+    if (createStore.state.isAuthenticated) { isAuthenticated = true } else { isAuthenticated = false }
+    if (isAuthenticated) {
+        if (!createStore.state.user.verified) {
+            next({ name: 'Verify' }) // go to '/verify';
+        } else {
+            if (createStore.state.user.role.includes('IBO')) {
+                next()
+            } else next({ name: 'IBO_Category_Agent' })
+        } // allow to enter route
+    } else {
+        next("/login?redirect=" + to.path) // go to '/login';
+    }
+}
+
 // pages
 import Home from '../views/Home.vue'
 import Feeds from '../views/Feeds.vue'
@@ -269,6 +285,7 @@ const routes = [
         path: '/wallet',
         name: 'Wallet',
         component: WalletIndex,
+        beforeEnter: guardMyrouteForIBO,
         meta: {
             title: "Wallet"
         }

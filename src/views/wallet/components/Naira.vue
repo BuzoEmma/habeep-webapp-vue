@@ -1,12 +1,15 @@
 <template>
-    <div class="flex flex-col gap-y-5 h-full items-center w-full">
+    <div class="flex flex-col gap-y-5 h-full items-center w-full" v-if="walletData.accountValue">
         <div class="flex flex-col border border-gray-200 w-full divide-y rounded-lg h-full gap-y-6">
             <div class="top justify-center items-center h-1/2 w-full flex flex-col py-7">
-                <p class="text-6xl font-bold text-webapp flex flex-row items-end">0.00 <span class="text-sm">NGN</span></p>
+                <p class="text-6xl font-bold text-webapp flex flex-row items-end">{{ walletData.accountValue.toFixed(2) }}
+                    <span class="text-sm">NGN</span>
+                </p>
             </div>
             <div class="bottom justify-center items-center h-1/2 w-full flex flex-col py-10">
                 <div class="w-full flex flex-row items-center justify-center gap-x-16">
-                    <div class="flex flex-col gap-y-1 items-center">
+                    <div class="flex flex-col gap-y-1 items-center cursor-pointer"
+                        @click="$emit('openModal', 'depositModal')">
                         <img src="../../../assets/icons/wallet/deposit.svg" alt="">
                         <span class="text-xs text-webapp">Deposit</span>
                     </div>
@@ -39,14 +42,20 @@
                                 </thead>
                                 <br>
 
-                                <tr class="tables w-full px-2 pt-4">
-                                    <td class="">Mar 24, 2022</td>
-                                    <td class="capitalize">Wallet withdrawal</td>
-                                    <td class="">Bank account 1</td>
-                                    <td class="">N 1500</td>
+                                <tr class="tables w-full px-2 pt-4" v-for="txn in transactions" :key="txn">
+                                    <td class="">{{ txn.date + ' @ ' + txn.time }}</td>
+                                    <td class="capitalize">Wallet {{ txn.txnType }}</td>
+                                    <td class="">{{ txn.referenceId }}</td>
+                                    <td class="">N {{ txn.amount }}</td>
                                     <td>
-                                        <div class="pl-6 w-32 py-2 rounded-md" style="background: rgb(28,170,67, 0.1)">
-                                            <span class="text-sm text-green-500 text-center w-full">Completed</span>
+                                        <div class="w-32 py-2 rounded-md text-center"
+                                            style="background: rgb(28,170,67, 0.1)">
+                                            <span class="text-sm text-green-500 text-center w-full"
+                                                v-if="txn.status === 'COMPLETED'">COMPLETED</span>
+                                            <span class="text-sm text-blue-500 text-center w-full"
+                                                v-if="txn.status === 'PENDING'">PENDING</span>
+                                            <span class="text-sm text-red-500 text-center w-full"
+                                                v-if="txn.status === 'FAILED'">FAILED</span>
                                         </div>
                                     </td>
 
@@ -56,7 +65,7 @@
 
 
                         <!-- pagination tab -->
-                        <div class="w-full flex flex-col items-end mt-20 px-3" v-if="filteredTxns.length < 1">
+                        <div class="w-full flex flex-col items-end mt-20 px-3" v-if="transactions.length > 1">
                             <div class="flex flex-row items-center gap-x-3">
                                 <span class="w-full text-webapp text-lg">Page {{ currentPage }} of
                                     {{ Math.round(allPagesTxn) }}</span>
@@ -86,7 +95,7 @@
 
 
                     </div>
-                    <div class="flex flex-col items-center justify-center  gap-y-1 py-20">
+                    <div class="flex flex-col items-center justify-center  gap-y-1 py-20" v-if="transactions.length < 1">
                         <img src="../../../assets/icons/no-txn.svg" alt="">
                         <span class="text-sm text-sub-webapp">No transaction</span>
                     </div>
@@ -94,6 +103,7 @@
             </div>
         </div>
     </div>
+    <img src="../../../assets/images/rhombus-preloader.gif" class="m-auto" v-else alt="">
 </template>
 
 <script setup>
@@ -107,6 +117,7 @@ const store = useStore();
 
 const transactions = ref([])
 const waitForWalletLoad = ref(true)
+const walletData = ref({})
 
 // pagination
 let currentPage = ref(1);
@@ -143,6 +154,54 @@ function paginateEvent(page, arrayToFilter, newArray, pageType, pgstr) {
         } else paginateTxns(arrayToFilter, newArray, pageType)
     }
 }
+
+async function getWallet() {
+    try {
+        const nairaWallet = await axios.post('/wallet/fetch-wallet', { wallet: 'naira' })
+        if (nairaWallet.data.error === false) {
+            walletData.value = nairaWallet.data.data
+
+            getTransactions(nairaWallet.data.data.recentActivities)
+        }
+    } catch (error) {
+
+    }
+}
+
+
+async function getTransactions(txns) {
+    try {
+        for (const txn of txns) {
+            const fetch = await axios.post('/wallet/fetch-transaction', { id: txn })
+            if (fetch.data.error === false) {
+                transactions.value.push(fetch.data.data)
+            }
+        }
+    } catch (error) {
+
+    }
+}
+
+async function recordDeposit(body) {
+    try {
+        const data = reactive({
+            accountId: walletData.value.accountID,
+            amount: body.amount,
+            referenceId: body.transactionId,
+            paymentMethod: body.paymentMethod,
+            status: body.status,
+            userId: walletData.value.userId
+        })
+        const fetch = await axios.post('/wallet/deposit/naira', data)
+        if (fetch.data.error === false) {
+
+        }
+    } catch (error) {
+
+    }
+}
+
+getWallet()
 </script>
 
 <style scoped>
