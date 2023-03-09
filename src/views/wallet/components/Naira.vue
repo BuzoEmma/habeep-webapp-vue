@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col gap-y-5 h-full items-center w-full" v-if="walletData.accountValue">
+    <div class="flex flex-col gap-y-5 h-full items-center w-full" v-if="walletData !== null">
         <div class="flex flex-col border border-gray-200 w-full divide-y rounded-lg h-full gap-y-6">
             <div class="top justify-center items-center h-1/2 w-full flex flex-col py-7">
                 <p class="text-6xl font-bold text-webapp flex flex-row items-end">{{ walletData.accountValue.toFixed(2) }}
@@ -104,7 +104,7 @@
         </div>
     </div>
     <div class="flex flex-col items-center justify-center w-full mt-24" v-else>
-        <img src="../../../assets/images/rhombus-preloader.gif" class="y-auto" alt="">
+        <img src="../../../assets/images/rhombus-preloader.gif" alt="">
     </div>
 </template>
 
@@ -119,7 +119,7 @@ const store = useStore();
 
 const transactions = ref([])
 const waitForWalletLoad = ref(true)
-const walletData = ref({})
+const walletData = ref(null)
 
 // pagination
 let currentPage = ref(1);
@@ -178,25 +178,6 @@ async function getTransactions(txns) {
             if (fetch.data.error === false) {
                 transactions.value.push(fetch.data.data)
             }
-        }
-    } catch (error) {
-
-    }
-}
-
-async function recordDeposit(body) {
-    try {
-        const data = reactive({
-            accountId: walletData.value.accountID,
-            amount: body.amount,
-            referenceId: body.transactionId,
-            paymentMethod: body.paymentMethod,
-            status: body.status,
-            userId: walletData.value.userId
-        })
-        const fetch = await axios.post('/wallet/deposit/naira', data)
-        if (fetch.data.error === false) {
-
         }
     } catch (error) {
 
