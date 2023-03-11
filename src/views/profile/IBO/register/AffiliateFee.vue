@@ -1,5 +1,4 @@
 <template>
-
     <div
         class="form-container flex flex-col items-center relative bg-white gap-y-3 w-full xl:w-2/3 h-full pb-6 md:py-10 overflow-y-auto overflow-x-hidden">
 
@@ -12,8 +11,8 @@
             </div>
 
             <p class="w-full text-left text-webapp font-bold text-xl flex flex-row items-center gap-x-1 mt-10">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="#0A1045" class="w-6 h-6 cursor-pointer" @click="$router.go(-1)">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0A1045"
+                    class="w-6 h-6 cursor-pointer" @click="$router.go(-1)">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                 </svg>
                 <span>IBO Affiliate fee</span>
@@ -22,9 +21,9 @@
             <!-- input fields -->
             <div class="flex flex-col items-start w-full gap-y-1 mt-8">
                 <label for="" class="text-sm text-webapp">Pay with</label>
-                <div
-                class="flex flex-row items-center justify-between w-full h-14 rounded-lg px-2 gap-y-1 form-field " style="background: #F9FAFF">
-                <span class="text-lg text-webapp">Habeep wallet account</span>
+                <div class="flex flex-row items-center justify-between w-full h-14 rounded-lg px-2 gap-y-1 form-field "
+                    style="background: #F9FAFF">
+                    <span class="text-lg text-webapp">HBP Wallet</span>
                     <img src="../../../../assets/icons/exchange.svg" alt="">
                 </div>
             </div>
@@ -32,21 +31,20 @@
             <div class="flex flex-col items-start w-full gap-y-1 mt-8">
                 <label for="" class="text-sm text-webapp">Balance</label>
                 <div class="flex flex-row items-center px-2 w-full h-14 form-field rounded-lg" style="background: #F9FAFF">
-                    <span class="text-xl font-medium text-webapp">100</span>
+                    <span class="text-xl font-medium text-webapp">{{ walletData.accountValue }}</span>
                     <span class="text-sm text-webapp">HBP</span>
                 </div>
             </div>
 
             <p class="w-full text-left text-webapp  text-sm mt-10">
-                By clicking on Pay 50HBP, you agree to <span @click="$router.push('')"
+                By clicking on Pay {{ amountToDebit }}HBP, you agree to <span @click="$router.push('')"
                     class="cursor-pointer text-primary underline">Terms and conditions</span> of the platform for
                 property listing and other affiliate structure put in place. This fee is mandatory for IBO and is been
                 used to reward the system. Kindly fund your wallet before clicking the active button.
             </p>
             <!-- submit btn -->
-            <button class="bg-primary w-full rounded-lg grid place-items-center h-14 text-white mt-5"
-                @click="makeUserAnIBO">
-                <span v-if="!processing">Pay 50HBP</span>
+            <button class="bg-primary w-full rounded-lg grid place-items-center h-14 text-white mt-5" @click="debitFee">
+                <span v-if="!processing">Pay {{ amountToDebit }}HBP</span>
                 <Preloader v-else />
             </button>
 
@@ -66,6 +64,7 @@ import axiosDefault from 'axios'
 import { useStore } from "vuex";
 
 const props = defineProps(['data'])
+const emit = defineEmits(['pushToWallet'])
 
 const route = useRoute();
 const router = useRouter();
@@ -83,11 +82,55 @@ let newMsg = ref('')
 let warningMsg = ref('')
 const processing = ref(false)
 
+const walletData = ref({
+    accountValue: 0
+})
+
+async function getWallet() {
+    try {
+        const hbpWallet = await axios.post('/wallet/fetch-wallet', { wallet: 'hbp' })
+        if (hbpWallet.data.error === false) {
+            walletData.value = hbpWallet.data.data
+        }
+    } catch (error) {
+
+    }
+}
+
+let amountToDebit = 50 ? props.data.role == "AGENT_IBO" : 25
+if (amountToDebit === true) {
+    amountToDebit = 50
+} else {
+    amountToDebit = 25
+}
+async function debitFee() {
+    if (walletData.value.accountValue < amountToDebit) {
+        onError.value = true
+        errorMsg.value.msg = 'Swap naira to ' + (amountToDebit - walletData.value.accountValue) + ' to continue. Redirecting to swap page in 2sec'
+
+        setTimeout(() => {
+            emit('pushToWallet')
+        }, 2000);
+    } else {
+        try {
+            let data = {
+                amount: amountToDebit,
+                description: 'Purchase ' + props.data.role + ' plan'
+            }
+            const debit = await axios.post('/wallet/debit-wallet', data)
+
+            makeUserAnIBO()
+        } catch (error) {
+            console.log('Unable to debit user wallet. Try again later')
+        }
+    }
+}
 
 
 async function makeUserAnIBO() {
     try {
         processing.value = true
+        props.data.state = props.data.state.state.name
         const change = await axios.put(url, props.data)
         if (!change.data.success) {
             onError.value = true
@@ -97,15 +140,15 @@ async function makeUserAnIBO() {
                 processing.value = false
                 onError.value = false
                 errorMsg.value.msg = ''
-            }, 3000);
+            }, 2000);
         } else {
             newMsg.value = change.data.message
 
             setTimeout(() => {
                 processing.value = false
                 newMsg.value = ''
-                router.push('/user/profile/' + store.state.user._id)
-            }, 5000);
+                router.push('/agent/ads')
+            }, 2000);
 
         }
     } catch (error) {
@@ -118,6 +161,8 @@ async function makeUserAnIBO() {
         }, 5000);
     }
 }
+
+getWallet()
 
 </script>
 

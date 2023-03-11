@@ -2,15 +2,15 @@
     <div class="absolute w-screen h-screen flex flex-row items-center justify-center" v-if="onModal"
         style="background: rgb(22, 22, 34, 0.5)">
 
-        <SuggestedCategory @enterAgents="gotoModal('agents')" @close="closeModal"
-            @saveSuggs="addHouseSuggestions"
+        <SuggestedCategory @enterAgents="gotoModal('agents')" @close="closeModal" @saveSuggs="addHouseSuggestions"
             v-if="onSuggestedListingsModal && onModal" />
-        <SuggestedAgents v-if="onSuggestedFollowersModal && onModal" @close="closeModal" @finish="nextPage" :email="data.email" />
+        <SuggestedAgents v-if="onSuggestedFollowersModal && onModal" @close="closeModal" @finish="nextPage"
+            :email="data.email" />
 
     </div>
 
     <div class="w-screen min-w-full flex flex-row items-center bg-white h-screen min-h-full overflow-hidden"
-        :class="{ 'max-h-screen overflow-y-hidden overflow-hidden opacity-40': onModal}">
+        :class="{ 'max-h-screen overflow-y-hidden overflow-hidden opacity-40': onModal }">
         <img src="../../assets/images/habeep-show.png" class="w-1/3 xl:block hidden h-full" alt="">
 
         <div :class="{ 'relative': screenWidth < 768 }"

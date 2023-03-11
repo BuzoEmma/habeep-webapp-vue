@@ -285,7 +285,7 @@ const routes = [
         path: '/wallet',
         name: 'Wallet',
         component: WalletIndex,
-        beforeEnter: guardMyrouteForIBO,
+        beforeEnter: guardMyroute,
         meta: {
             title: "Wallet"
         }

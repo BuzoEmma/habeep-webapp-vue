@@ -36,6 +36,8 @@ function verifyAllowedRoles(route, role) {
       return true
     if (route.name === 'Wallet')
       return true
+    if (route.name === 'Wallet')
+      return true
   }
 }
 

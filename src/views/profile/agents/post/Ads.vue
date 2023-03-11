@@ -2,7 +2,8 @@
     <MainNavbarVue />
     <div
         class="w-screen min-w-full flex flex-col lg:flex-row items-center bg-white h-screen min-h-full overflow-y-auto overflow-x-hidden">
-        <div class="flex flex-col items-start gap-y-3 h-2/5 lg:h-full bg-webapp justify-center w-full lg:w-2/5 px-4 md:px-10">
+        <div
+            class="flex flex-col items-start gap-y-3 h-2/5 lg:h-full bg-webapp justify-center w-full lg:w-2/5 px-4 md:px-10">
             <h3 class="text-white font-medium text-4xl w-full text-left">Welcome {{
                 $store.state.user.fname + ' ' +
                 $store.state.user.surname
@@ -167,8 +168,8 @@
                                     </span>
                                     <span class="text-gray-400 text-sm">/ Year</span>
                                 </p>
-                                <p v-else><span class="text-lg text-webapp font-medium">N{{ formatNumber(item.price) }}</span><span
-                                        class="text-gray-500 text-sm">/ Sale</span></p>
+                                <p v-else><span class="text-lg text-webapp font-medium">N{{ formatNumber(item.price)
+                                }}</span><span class="text-gray-500 text-sm">/ Sale</span></p>
                             </div>
 
                             <div class="mt-3 flex flex-row items-center justify-between gap-x-2 w-full">
@@ -190,8 +191,17 @@
 import { ref, onMounted } from 'vue'
 import MainNavbarVue from "../../../../components/MainNavbar.vue";
 import axios from "../../../../composables/axios";
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import formatNumber from "number_formatter"
 
+const store = useStore()
+
+if (store.state.user.role !== "AGENT_IBO") {
+    setTimeout(() => {
+        router.go()
+    }, 5000);
+}
 
 const adsTab = ref(1)
 
@@ -304,7 +314,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
 .ad-image {
     height: 164px;
     max-height: 164px !important;

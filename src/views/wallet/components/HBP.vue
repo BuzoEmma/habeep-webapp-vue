@@ -3,13 +3,12 @@
         <div class="flex flex-col border border-gray-200 w-full divide-y rounded-lg h-full gap-y-6">
             <div class="top justify-center items-center h-1/2 w-full flex flex-col py-7">
                 <p class="text-6xl font-bold text-webapp flex flex-row items-end">{{ walletData.accountValue }}
-                    <span class="text-sm">NGN</span>
+                    <span class="text-sm">HBP</span>
                 </p>
             </div>
             <div class="bottom justify-center items-center h-1/2 w-full flex flex-col py-10">
                 <div class="w-full flex flex-row items-center justify-center gap-x-16">
-                    <div class="flex flex-col gap-y-1 items-center cursor-pointer"
-                        @click="$emit('openModal', 'depositModal')">
+                    <div class="flex flex-col gap-y-1 items-center cursor-pointer" @click="$emit('openModal', 'swapModal')">
                         <img src="../../../assets/icons/wallet/deposit.svg" alt="">
                         <span class="text-xs text-webapp">Deposit</span>
                     </div>
@@ -17,9 +16,9 @@
                         <img src="../../../assets/icons/wallet/withdraw.svg" alt="">
                         <span class="text-xs text-webapp">Withdraw</span>
                     </div>
-                    <div class="flex flex-col gap-y-1 items-center cursor-pointer" @click="$emit('openModal', 'swapModal')">
-                        <img src="../../../assets/icons/wallet/swap.svg" alt="">
-                        <span class="text-xs text-webapp">Swap</span>
+                    <div class="flex flex-col gap-y-1 items-center cursor-pointer">
+                        <img src="../../../assets/icons/wallet/staking.svg" alt="">
+                        <span class="text-xs text-webapp">Staking</span>
                     </div>
                 </div>
             </div>
@@ -123,23 +122,18 @@ const emit = defineEmits(['openModal'])
 
 const transactions = ref([])
 const waitForWalletLoad = ref(true)
-const walletData = ref({
-    accountValue: 0
-})
-
-if (route.query.cont) {
-    if (route.query.cont === 'deposit') {
-        emit('openModal', 'depositModal')
-    }
-    if (route.query.cont === 'swap') {
-        emit('openModal', 'swapModal')
-    }
-}
+const walletData = ref(null)
 
 // pagination
 let currentPage = ref(1);
 let allPagesTxn = ref(1)
 let filteredTxns = ref([])
+
+if (route.query.cont) {
+    if (route.query.cont === 'deposit') {
+        emit('openModal', 'swapModal')
+    }
+}
 
 function paginateTxns(array, newArray, pageType) {
     let perPage = array.length >= 10 ? 10 : array.length
@@ -174,11 +168,11 @@ function paginateEvent(page, arrayToFilter, newArray, pageType, pgstr) {
 
 async function getWallet() {
     try {
-        const nairaWallet = await axios.post('/wallet/fetch-wallet', { wallet: 'naira' })
-        if (nairaWallet.data.error === false) {
-            walletData.value = nairaWallet.data.data
+        const hbpWallet = await axios.post('/wallet/fetch-wallet', { wallet: 'hbp' })
+        if (hbpWallet.data.error === false) {
+            walletData.value = hbpWallet.data.data
 
-            getTransactions(nairaWallet.data.data.recentActivities)
+            getTransactions(hbpWallet.data.data.recentActivities)
         }
     } catch (error) {
 
@@ -198,7 +192,6 @@ async function getTransactions(txns) {
 
     }
 }
-
 
 getWallet()
 </script>

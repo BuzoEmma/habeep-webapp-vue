@@ -49,38 +49,39 @@
         <!-- Navigation Menu -->
 
         <div v-if="(onNavDropdown || onMobileNav)" :class="{ 'right-2 top-20': onMobileNav }"
-            class="flex flex-col drop-shadow-lg shadow-xl bg-white rounded-xl gap-y-3 border p-6 border-gray-300 absolute top-16 right-20 z-10"
+            class="flex flex-col mobile-nav drop-shadow-lg shadow-xl bg-white rounded-xl gap-y-3 border p-6 border-gray-300 absolute top-16 right-20 z-10"
             style="width: 250px">
 
-            <p @click="$router.push('/')" class="text-sm text-webapp mt-1 cursor-pointer"
+            <p @click="$router.push('/')" class="text-sm text-webapp mt-1 cursor-pointer mobile-nav-item"
                 :class="{ 'text-primary': $route.name === 'Home' }">Home</p>
-            <p @click="$router.push('/listings/search')" class="text-sm text-webapp mt-1 cursor-pointer"
+            <p @click="$router.push('/listings/search')" class="mobile-nav-item text-sm text-webapp mt-1 cursor-pointer"
                 :class="{ 'text-primary': $route.name === 'Listings-search' }">Search</p>
-            <p @click="$router.push('chat')" class="text-sm text-webapp mt-1 cursor-pointer"
+            <p @click="$router.push('chat')" class="mobile-nav-item text-sm text-webapp mt-1 cursor-pointer"
                 :class="{ 'text-primary': $route.name === 'Chat' }" v-if="$store.state.isAuthenticated">Message</p>
             <p @click="$router.push('/user/profile/' + $store.state.user._id)"
                 class="text-sm text-webapp mt-1 cursor-pointer" :class="{ 'text-primary': $route.name === 'User-profile' }"
                 v-if="$store.state.isAuthenticated">Account</p>
             <hr class="my-1">
-            <p @click="$router.push('/agent/ads')" class="text-sm text-webapp mt-1 cursor-pointer"
+            <p @click="$router.push('/agent/ads')" class="mobile-nav-item text-sm text-webapp mt-1 cursor-pointer"
                 :class="{ 'text-primary': $route.name === 'Agent-ads' || 'Agent-ads-create' }"
                 v-if="$store.state.isAuthenticated && $store.state.user.role === 'AGENT_IBO'">Post an Ad</p>
-            <p @click="$router.push('/account/IBO/category')" class="text-sm text-webapp mt-1 cursor-pointer"
+            <p @click="$router.push('/account/IBO/category')"
+                class="mobile-nav-item text-sm text-webapp mt-1 cursor-pointer"
                 :class="{ 'text-primary': $route.name.includes('IBO') === true }"
                 v-if="$store.state.isAuthenticated && $store.state.user.role === 'USER'">Become an Agent</p>
-            <p @click="$router.push('/wallet')" class="text-sm text-webapp mt-1 cursor-pointer"
+            <p @click="$router.push('/wallet')" class="mobile-nav-item text-sm text-webapp mt-1 cursor-pointer"
                 :class="{ 'text-primary': $route.name === 'Wallet' }" v-if="$store.state.isAuthenticated">Wallet</p>
-            <span class="text-sm text-webapp mt-1 md:hidden" @click="$router.push('/blog')">BLOG</span>
+            <span class="text-sm text-webapp mt-1 md:hidden mobile-nav-item" @click="$router.push('/blog')">BLOG</span>
 
             <div v-if="!$store.state.isAuthenticated"
-                class="flex flex-row items-center justify-between w-full rounded-full p-2 mt-8 border border-gray-300 cursor-pointer"
+                class="flex flex-row items-center mobile-nav-item justify-between w-full rounded-full p-2 mt-8 border border-gray-300 cursor-pointer"
                 @click="$router.push('/login')">
                 <img src="../assets/icons/logo-mini.svg" alt="">
                 <span class="text-lg text-webapp">Login</span>
                 <span></span>
             </div>
             <div v-else
-                class="flex flex-row items-center justify-between w-full rounded-full p-2 mt-8 border border-gray-300 cursor-pointer"
+                class="flex flex-row items-center mobile-nav-item justify-between w-full rounded-full p-2 mt-8 border border-gray-300 cursor-pointer"
                 @click="$router.push('/logout')">
                 <img src="../assets/icons/logo-mini.svg" alt="">
                 <span class="text-lg text-webapp">Logout</span>
@@ -108,6 +109,7 @@ function toggleNav() {
 function toggleMobileNav() {
     onMobileNav.value = !onMobileNav.value
 }
+
 </script>
 
 <style scoped>

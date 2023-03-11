@@ -1,5 +1,4 @@
 <template>
-
     <div class="w-screen min-w-full flex flex-row items-center bg-white h-screen min-h-full overflow-hidden">
         <img src="../../../../assets/images/habeep-show-ibo.png" class="w-1/3 xl:block hidden h-full" alt="">
         <div v-if="!inputCompleted"
@@ -34,21 +33,25 @@
 
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8">
                     <label for="" class="text-sm text-webapp">Street address</label>
-                    <input type="text" name="" v-model="data.address" class="w-full h-14 rounded-lg" placeholder="Enter your street address"
-                        id="">
+                    <input type="text" name="" v-model="data.address" class="w-full h-14 rounded-lg"
+                        placeholder="Enter your street address" id="">
                 </div>
 
                 <div class="flex flex-col sm:flex-row items-center gap-x-3 w-full justify-between">
                     <div class="flex flex-col items-start w-full sm:w-6/12 gap-y-1 mt-8">
                         <label for="" class="text-sm text-webapp">City</label>
                         <select name="" v-model="data.city" class="w-full h-14 rounded-lg px-2" id="">
-                            <option value="Calabar">Calabar</option>
+                            <option value="" v-if="!data.state.cities">Choose a state</option>
+                            <option v-else :value="city.name" v-for="city in data.state.cities" :key="city">
+                                {{ city.name }}
+                            </option>
                         </select>
                     </div>
                     <div class="flex flex-col items-start  w-full sm:w-6/12 gap-y-1 mt-8">
                         <label for="" class="text-sm text-webapp">State</label>
                         <select name="" v-model="data.state" class="w-full h-14 rounded-lg px-2" id="">
-                            <option value="Cross River">Cross River State</option>
+                            <option :value="state" v-for="state in $store.state.allStates" :key="state">
+                                {{ state.state.name }}</option>
                         </select>
                     </div>
                 </div>
@@ -60,11 +63,13 @@
                 </div>
 
                 <p class="w-full text-left text-webapp  text-sm mt-10">
-                    By clicking on “Next” you agree to Agent IBO <span @click="$router.push('')"  class="cursor-pointer text-primary underline">Terms and conditions</span>
+                    By clicking on “Next” you agree to Agent IBO <span @click="$router.push('')"
+                        class="cursor-pointer text-primary underline">Terms and conditions</span>
                 </p>
                 <!-- submit btn -->
-                <button class="bg-primary w-full rounded-lg grid place-items-center h-14 text-white mt-5"
-                    @click="inputCompleted = true">
+                <button
+                    :class="{ 'bg-blue-600 text-white': allFields() === true, 'bg-gray-300 text-black': allFields() === false }"
+                    class=" w-full rounded-lg grid place-items-center h-14 mt-5" @click="inputCompleted = true">
                     <span v-if="!processing">Next</span>
                     <Preloader v-else />
                 </button>
@@ -74,8 +79,8 @@
         </div>
 
 
-        <AffiliateFee v-else :data="data" />
-        
+        <AffiliateFee v-else :data="data" @pushToWallet="$router.push('/wallet?tab=hbp&cont=deposit')" />
+
         <!-- components -->
         <Toast :msg="errorMsg.msg" type="danger" v-if="onError" />
         <Toast :msg="newMsg" type="success" v-if="newMsg.length > 0" />
@@ -101,6 +106,7 @@ const url = '/auth/user/reset/password';
 
 const inputCompleted = ref(false)
 
+const currentState = ref('')
 const data = reactive({
     role: 'AGENT_IBO',
     bio: '',
@@ -116,11 +122,22 @@ let errorMsg = ref({
     field: null
 })
 
+
 let newMsg = ref('')
 let warningMsg = ref('')
 const processing = ref(false)
 
+function allFields() {
+    for (const key of Object.keys(data)) {
+        if (data[key].length < 1) {
+            return false
+        }
+    }
+    return true
+}
+
 function validateFormField(field, data) {
+    data.state = data.state.state.name
     const validator = formValidator(field, data)
 
 
@@ -134,15 +151,19 @@ function validateFormField(field, data) {
         errorMsg.value.field = null
     }
 }
+
+
 </script>
 
 <style scoped>
-input::placeholder, textarea::placeholder {
+input::placeholder,
+textarea::placeholder {
     color: #71759D;
     font-size: 14px;
 }
 
-input, textarea {
+input,
+textarea {
     padding-left: 10px;
     outline: none;
     border: 1px solid #D9DDEE;
@@ -152,7 +173,8 @@ select {
     border: 1px solid #D9DDEE;
 }
 
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
     border: 1px solid #1B49FF;
 }
 

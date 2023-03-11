@@ -1,14 +1,13 @@
 <template>
     <div class="main flex flex-col items-center z-20 gap-y-2 overflow-hidden my-auto mx-auto bg-white">
         <div class="flex flex-row items-center justify-between w-full px-4 py-4 border-b border-b-gray-100">
-            <div class="flex flex-row items-center gap-x-3">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-6 h-6 block sm:hidden font-bold ">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                </svg>
-                <span class="text-xl font-medium text-webapp">Deposit NGN</span>
-            </div>
-            <img src="../../../../assets/icons/x.svg" class="cursor-pointer" @click="$emit('close')" alt="">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" @click="$emit('close')" viewBox="0 0 24 24"
+                stroke-width="1.5" stroke="currentColor" class="w-6 h-6 block md:hidden font-bold">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+            <span class="text-xl font-medium text-webapp">Deposit</span>
+            <img src="../../../../assets/icons/x.svg" class="cursor-pointer collapse md:visible" @click="$emit('close')"
+                alt="">
         </div>
         <div class="w-full px-4 py-6 flex flex-col items-start ">
             <span class="text-sub-webapp text-lg w-full text-left">Provide the amount and deposit method you
@@ -43,8 +42,6 @@
                         card</span>
                     <span class="text-sm text-webapp" v-if="depositData.paymentMethod === 'bank-transfer'">Pay via
                         direct bank transfers</span>
-                    <span class="text-sm text-webapp" v-if="depositData.paymentMethod === 'mono'">Pay via direct
-                        debit(Mono)</span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="#71759D" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -58,8 +55,6 @@
                         card</span>
                     <span class="text-sm text-webapp cursor-pointer" @click="choosePaymentMethod('bank-transfer')">Pay via
                         direct bank transfers</span>
-                    <span class="text-sm text-webapp cursor-pointer" @click="choosePaymentMethod('mono')">Pay via direct
-                        debit(Mono)</span>
 
                 </div>
             </div>
@@ -115,7 +110,7 @@ const choosePaymentMethod = (method) => {
 }
 
 function proceedToPayment() {
-    if (depositData.paymentMethod === 'paystack') {
+    if (depositData.paymentMethod === 'paystack' || depositData.paymentMethod === 'bank-transfer') {
         paystackBtn.value.click()
     }
 }
@@ -155,7 +150,7 @@ const processSuccessPayment = async (response) => {
 
         setTimeout(() => {
             onError.value = false
-            errorMsg.value = 'saveDeposit.data.message'
+            errorMsg.value = ''
         }, 3000);
     }
 
@@ -220,5 +215,13 @@ onMounted(() => {
 .paystack-btn {
     display: none;
     color: white;
+}
+
+@media screen and (max-width: 450px) {
+    .main {
+        width: 100vw !important;
+        height: 100vh !important;
+        border-radius: 0px;
+    }
 }
 </style>

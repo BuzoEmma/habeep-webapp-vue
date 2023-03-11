@@ -3,6 +3,7 @@
         style="background: rgb(22, 22, 34, 0.5)">
 
         <DepositModal v-if="depositModal" @close="closeModal" />
+        <SwapModal v-if="swapModal" @close="closeModal" />
     </div>
 
     <div class="main w-screen min-w-full flex flex-col items-center bg-white h-full min-h-screen overflow-y-auto"
@@ -17,7 +18,7 @@
         </div>
 
         <div class="body h-full flex flex-col lg:w-4/6 md:w-4/5 w-full px-4 md:px-0 pt-5 xl:w-3/5">
-            <h1 class="text-2xl font-medium text-webapp">Wallet</h1>
+            <h1 class="text-2xl font-medium text-webapp md:block hidden">Wallet</h1>
 
             <div class="flex flex-row items-center mt-6 ml-7 ">
                 <div class="cursor-pointer flex flex-row items-center justify-center w-24 py-4 pb-1"
@@ -30,6 +31,7 @@
                 </div>
             </div>
             <Naira v-if="walletTab === 1" @openModal="openModal" />
+            <HBP v-if="walletTab === 2" @openModal="openModal" />
         </div>
     </div>
 </template>
@@ -38,12 +40,21 @@
 import { ref } from 'vue'
 import MainNavbar from '../../components/MainNavbar.vue';
 import Naira from './components/Naira.vue';
+import HBP from './components/HBP.vue';
 import DepositModal from './components/modals/Deposit.vue';
+import SwapModal from './components/modals/Swap.vue';
+
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
 
 const screenWidth = ref(window.innerWidth)
 const onModal = ref(false)
 let modalState = ref(null)
 const depositModal = ref(false)
+const swapModal = ref(false)
+
+
 
 
 function openModal(name) {
@@ -55,6 +66,7 @@ function openModal(name) {
 function closeModal() {
     onModal.value = false
     depositModal.value = false
+    swapModal.value = false
 }
 
 function goBack(component) {
@@ -67,6 +79,12 @@ function goBack(component) {
 const walletTab = ref(1)
 function changeWalletTab(tab) {
     walletTab.value = tab
+}
+
+if (route.query.tab) {
+    if (route.query.tab === 'naira') {
+        walletTab.value = 1
+    } else walletTab.value = 2
 }
 </script>
 

@@ -249,7 +249,6 @@ async function getSearch(location, query) {
     getProducts.data.products.forEach(product => {
         products.value.push(product)
     })
-    console.log(products)
 
 }
 

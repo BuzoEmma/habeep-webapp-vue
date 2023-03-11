@@ -71,8 +71,18 @@ const val5 = ref()
 const val6 = ref()
 
 const next = (e) => {
-    if (!e.target.value.length < 1) {
-        e.target?.nextSibling?.focus()
+    if (!e.target.value < 1) {
+        if (e.target.value.toString().length > 1) {
+            let newText = e.target.value.substr(0, 5)
+            let array = newText.split('')
+
+            for (let i = 0; i < array.length; i++) {
+                eval('val' + (i + 1)).value = parseInt(array[i])
+            }
+            e.target.parentElement.lastChild.focus()
+        } else {
+            e.target?.nextSibling?.focus()
+        }
     }
 }
 
