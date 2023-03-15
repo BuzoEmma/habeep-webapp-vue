@@ -9,8 +9,8 @@
                         d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                 </svg>
 
-                <input type="text" v-model="data.input" class=" rounded-sm w-full h-full outline-none"
-                    placeholder="Search by property type, location, price">
+                <input type="text" v-model="data.input" @keydown="checkForEnter"
+                    class=" rounded-sm w-full h-full outline-none" placeholder="Search by property type, location, price">
             </div>
             <!-- search results -->
             <div class="flex flex-col gap-y-3 search-results  w-full py-5 px-5 mt-4" v-if="(data.input.length > 0)">
@@ -42,10 +42,21 @@
   
 <script setup>
 import { ref, reactive } from 'vue'
+import { useRoute, useRouter } from "vue-router";
+
+const router = useRouter()
 
 const data = reactive({
     input: ''
 })
+
+const checkForEnter = (e) => {
+    var key = e.keyCode || e.charCode || e.key || e.code;
+    if (key === 13 || key === 'Enter') {
+        router.push('/listings/search?name=' + data.input)
+    }
+}
+
 
 const locations = ref([
     'Calabar',

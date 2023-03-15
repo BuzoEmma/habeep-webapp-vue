@@ -11,15 +11,28 @@
                 </svg>
                 <span class="text-xl text-webapp font-medium">Search Results</span>
             </div>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0A1045"
-                class="w-6 h-6">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" @click="toggleSearch" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="#0A1045" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round"
                     d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
             </svg>
-
         </div>
 
+
         <div class="body px-6 2xl:px-44 md:px-20 mb-10 w-full flex flex-col h-fit items-center md:items-start gap-y-8 mt-3">
+            <div class="flex flex-row items-center w-full px-2 relative" v-if="onSearchBar">
+                <input type="text" placeholder="Search products" v-model="searchData" @keydown="checkForEnter"
+                    class=" border border-black pl-2 outline-none h-10 w-full">
+                <div class="search-btn w-8 h-8 bg-black absolute right-3 grid place-items-center cursor-pointer"
+                    @click="getSearch(currentState, searchData)">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-5 h-5 text-white">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg>
+
+                </div>
+            </div>
             <div class="flex flex-row w-full items-center justify-between">
                 <p class="text-webapp text-lg w-full md:block hidden"><span class="text-primary font-medium">{{
                     products.length }}</span>
@@ -215,6 +228,21 @@ const searchDB = (e) => {
     getSearch(currentCity, e)
 }
 
+const checkForEnter = (e) => {
+    var key = e.keyCode || e.charCode || e.key || e.code;
+    if (key == 13 || key == 'Enter') {
+        getSearch(currentState.value, searchData.value)
+    }
+}
+
+const onSearchBar = ref(false)
+
+const searchData = ref('')
+
+function toggleSearch() {
+    onSearchBar.value = !onSearchBar.value
+}
+
 function saveFeedLocation() {
     store.commit('changeFeedLocation', {
         state: currentState.value,
@@ -252,7 +280,7 @@ async function getSearch(location, query) {
 
 }
 
-getSearch(route.query.location, route.query.name)
+getSearch(route.query.location, route.query.name || 'all')
 
 // filters
 const sortValue = ref('Recommended')

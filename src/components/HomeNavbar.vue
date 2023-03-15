@@ -44,8 +44,8 @@
         </div>
 
         <div class="flex flex-row items-center gap-x-5 lg:hidden ">
-            <img src="../assets/icons/search.svg" @click="$emit('toggleSearch')" class="cursor-pointer flex md:hidden"
-                v-if="$route.name === 'Home'" alt="">
+            <!-- <img src="../assets/icons/search.svg" @click="$emit('toggleSearch')" class="cursor-pointer flex md:hidden"
+                v-if="$route.name === 'Home'" alt=""> -->
             <img src="../assets/icons/mobile-nav.svg" @click="toggleMobileNav" class="cursor-pointer flex md:hidden" alt="">
         </div>
 

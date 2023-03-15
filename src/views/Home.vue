@@ -22,7 +22,7 @@
               d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
           </svg>
 
-          <input type="text" v-model="data.input" class=" rounded-sm w-full h-full outline-none"
+          <input type="text" v-model="data.input" @keydown=checkForEnter class=" rounded-sm w-full h-full outline-none"
             placeholder="Search by property type, location, price">
         </div>
 
@@ -104,10 +104,19 @@ if (store.state.isAuthenticated === true) {
   router.go()
 }
 
-// search variables
 const data = reactive({
   input: ''
 })
+
+const checkForEnter = (e) => {
+  var key = e.keyCode || e.charCode || e.key || e.code;
+  if (key === 13 || key === 'Enter') {
+    router.push('/listings/search?name=' + data.input)
+  }
+}
+
+// search variables
+
 
 const locations = ref([
   'Calabar',
