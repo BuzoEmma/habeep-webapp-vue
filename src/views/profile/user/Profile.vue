@@ -5,7 +5,8 @@
         <EditUserProfile @close="closeModal" @changePin="openModal('changePincode')" v-if="onModal && editProfileModal" />
         <pincodeModal @close="closeModal" @back="goBack" v-if="onModal && changePincode" />
         <Following @close="closeModal" v-if="onModal && FollowingModal" />
-        <Affiliate @close="closeModal" v-if="onModal && affiliateModal" />
+        <Affiliate @close="closeModal" v-if="onModal && affiliateModal" @openReferral="closeAndOpen('referralModal')" />
+        <Referrals @close="closeAndOpen('affiliateModal')" @closeModals="closeModal" v-if="onModal && referralModal" />
     </div>
 
     <div class="w-screen min-w-full flex flex-col items-center main bg-white h-screen min-h-screen overflow-y-auto"
@@ -51,7 +52,7 @@
 
 
                     <div class="flex flex-row items-center w-full gap-y-1 xl:justify-between mt-4 xl:mt-3">
-                        <button v-if="$store.state.user.role === 'AGENT_IBO'" @click="openModal('affiliateModal')"
+                        <button v-if="$store.state.user.role.includes('IBO')" @click="openModal('affiliateModal')"
                             class="user-btn flex-row items-center justify-center text-sm font-medium text-webapp w-full bg-white">Affiliate
                             profile</button>
                         <button @click="openModal('editProfileModal')"
@@ -224,6 +225,7 @@ import HBP from './components/wallet/HBP.vue'
 import saveAd from "../../../composables/saveAd";
 import axios from "../../../composables/axios"
 import formatNumber from "number_formatter"
+import Referrals from './components/modal/Referrals.vue'
 
 
 import { useStore } from 'vuex'
@@ -243,6 +245,7 @@ const editProfileModal = ref(false)
 const changePincode = ref(false)
 const FollowingModal = ref(false)
 const affiliateModal = ref(false)
+const referralModal = ref(false)
 
 const agentDetails = ref({})
 const savedAds = ref([])
@@ -286,6 +289,11 @@ function changeWalletTab(tab) {
     walletTab.value = tab
 }
 
+function closeAndOpen(name) {
+    closeModal()
+    openModal(name)
+}
+
 function openModal(name) {
     onModal.value = true
     modalState.value = name
@@ -298,6 +306,7 @@ function closeModal() {
     changePincode.value = false
     FollowingModal.value = false
     affiliateModal.value = false
+    referralModal.value = false
 }
 
 function goBack(component) {
@@ -346,19 +355,21 @@ function changeWidth() {
     box-shadow: inset 0 0 10px white;
 }
 
-.ads-tab::-webkit-scrollbar, .saved-ads-tab::-webkit-scrollbar {
+.ads-tab::-webkit-scrollbar,
+.saved-ads-tab::-webkit-scrollbar {
     width: 6px;
 }
 
 
-.ads-tab::-webkit-scrollbar-thumb, .saved-ads-tab::-webkit-scrollbar-thumb {
+.ads-tab::-webkit-scrollbar-thumb,
+.saved-ads-tab::-webkit-scrollbar-thumb {
     width: 10px;
     background-color: #71759D;
     border-radius: 10px;
 }
 
-.ads-tab::-webkit-scrollbar-track, .saved-ads-tab::-webkit-scrollbar-track {
+.ads-tab::-webkit-scrollbar-track,
+.saved-ads-tab::-webkit-scrollbar-track {
     box-shadow: inset 0 0 10px white;
 }
-
 </style>

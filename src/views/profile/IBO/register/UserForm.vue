@@ -1,5 +1,4 @@
 <template>
-
     <div class="w-screen min-w-full flex flex-row items-center bg-white h-screen min-h-full overflow-hidden">
         <img src="../../../../assets/images/habeep-show-ibo.png" class="w-1/3 xl:block hidden h-full" alt="">
         <div v-if="!inputCompleted"
@@ -61,8 +60,6 @@ const route = useRoute();
 const router = useRouter();
 
 const store = useStore();
-
-const url = '/auth/user/reset/password';
 
 const inputCompleted = ref(false)
 

@@ -2,7 +2,8 @@
     <div class="flex flex-col gap-y-5 h-full items-center w-full" v-if="walletData !== null">
         <div class="flex flex-col border border-gray-200 w-full divide-y rounded-lg h-full gap-y-6">
             <div class="top justify-center items-center h-1/2 w-full flex flex-col py-7">
-                <p class="text-6xl font-bold text-webapp flex flex-row items-end">{{ walletData.accountValue }}
+                <p class="text-6xl font-bold text-webapp flex flex-row items-end">{{ formatNumber(walletData.accountValue)
+                }}
                     <span class="text-sm">HBP</span>
                 </p>
             </div>
@@ -112,12 +113,14 @@ import { ref, reactive, onMounted } from 'vue'
 
 import { useStore } from "vuex";
 import axios from '../../../composables/axios'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+import formatNumber from 'number_formatter'
 
 import moment from 'moment';
 const store = useStore();
 
 const route = useRoute()
+const router = useRouter()
 const emit = defineEmits(['openModal'])
 
 const transactions = ref([])
@@ -133,6 +136,7 @@ if (route.query.cont) {
     if (route.query.cont === 'deposit') {
         emit('openModal', 'swapModal')
     }
+    router.replace({ query: null });
 }
 
 function paginateTxns(array, newArray, pageType) {

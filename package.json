@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vueuse/motion": "^2.0.0-beta.12",
     "axios": "^1.2.2",
     "copy-to-clipboard3": "^0.1.4",
     "flowbite": "^1.6.0",

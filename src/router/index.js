@@ -49,6 +49,22 @@ function guardMyrouteForIBO(to, from, next) {
     }
 }
 
+function guardMyrouteForUSERIBO(to, from, next) {
+    var isAuthenticated = false
+    if (createStore.state.isAuthenticated) { isAuthenticated = true } else { isAuthenticated = false }
+    if (isAuthenticated) {
+        if (!createStore.state.user.verified) {
+            next({ name: 'Verify' }) // go to '/verify';
+        } else {
+            if (createStore.state.user.role !== "USER_IBO") {
+                next()
+            } else next({ name: 'IBO_Category_Agent' })
+        } // allow to enter route
+    } else {
+        next("/login?redirect=" + to.path) // go to '/login';
+    }
+}
+
 // pages
 import Home from '../views/Home.vue'
 import Feeds from '../views/Feeds.vue'
@@ -207,7 +223,7 @@ const routes = [
     {
         path: '/account/IBO/category',
         name: 'IBO_ChooseCategory',
-        beforeEnter: guardMyroute,
+        beforeEnter: guardMyrouteForUSERIBO,
         component: IBO_ChooseCategory,
         meta: {
             title: "Become an IBO"
@@ -303,7 +319,13 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     document.title = `Habeep - ${to.meta.title}`;
-    next();
+    if (to.query.reload) {
+        next({
+            query: null,
+            replace: true,
+            path: to.path
+        })
+    } else next()
 })
 
 router.resolve({

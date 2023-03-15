@@ -74,7 +74,7 @@
                 v-if="$store.state.isAuthenticated && $store.state.user.role === 'AGENT_IBO'">Post an Ad</p>
             <p @click="$router.push('/account/IBO/category')" class="text-sm text-webapp mt-1 cursor-pointer"
                 :class="{ 'text-primary': $route.name.includes('IBO') === true }"
-                v-if="$store.state.isAuthenticated && $store.state.user.role === 'USER'">Become an Agent</p>
+                v-if="$store.state.isAuthenticated && $store.state.user.role !== 'AGENT_IBO'">Become an Agent</p>
             <p @click="$router.push('/wallet')" class="text-sm text-webapp mt-1 cursor-pointer"
                 :class="{ 'text-primary': $route.name === 'Wallet' }" v-if="$store.state.isAuthenticated">Wallet</p>
             <div class="flex flex-row items-center justify-between w-full rounded-full p-2 mt-8 border border-gray-300 cursor-pointer"

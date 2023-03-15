@@ -10,8 +10,8 @@
         :class="{ 'max-h-screen overflow-y-hidden overflow-hidden opacity-40': onModal }">
         <MainNavbar v-if="screenWidth > 767" />
         <div class="md:hidden flex flex-row gap-x-5 pl-3 items-center w-full pt-5">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0A1045"
-                class="w-6 h-6">
+            <svg xmlns="http://www.w3.org/2000/svg" @click="$router.go(-1)" fill="none" viewBox="0 0 24 24"
+                stroke-width="1.5" stroke="#0A1045" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
             <span class="text-lg text-webapp font-medium">Wallet</span>

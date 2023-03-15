@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col items-center justify-between w-full h-full gap-y-9">
-        <p class="text-webapp text-3xl font-bold">{{ walletData.accountValue }}<sub
+        <p class="text-webapp text-3xl font-bold">{{ formatNumber(walletData.accountValue) }}<sub
                 class="text-webapp text-sm font-bold">NGN</sub></p>
 
         <div class="w-full flex flex-row items-center justify-between">
@@ -29,6 +29,7 @@
 <script setup>
 import { ref } from 'vue'
 import axios from '../../../../../composables/axios'
+import formatNumber from 'number_formatter'
 
 const walletData = ref({
     accountValue: 0

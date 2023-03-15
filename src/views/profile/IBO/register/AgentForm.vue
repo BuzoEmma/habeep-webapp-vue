@@ -102,8 +102,6 @@ const router = useRouter();
 
 const store = useStore();
 
-const url = '/auth/user/reset/password';
-
 const inputCompleted = ref(false)
 
 const currentState = ref('')

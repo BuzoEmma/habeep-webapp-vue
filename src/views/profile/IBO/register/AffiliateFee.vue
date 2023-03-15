@@ -109,7 +109,7 @@ async function debitFee() {
         errorMsg.value.msg = 'Swap naira to ' + (amountToDebit - walletData.value.accountValue) + ' to continue. Redirecting to swap page in 2sec'
 
         setTimeout(() => {
-            emit('pushToWallet')
+            router.push('/wallet?tab=hbp&cont=deposit')
         }, 2000);
     } else {
         try {
@@ -121,7 +121,8 @@ async function debitFee() {
 
             makeUserAnIBO()
         } catch (error) {
-            console.log('Unable to debit user wallet. Try again later')
+            onError.value = true
+            errorMsg.value.msg = 'Unable to debit user wallet. Try again later'
         }
     }
 }
@@ -130,7 +131,9 @@ async function debitFee() {
 async function makeUserAnIBO() {
     try {
         processing.value = true
-        props.data.state = props.data.state.state.name
+        if (props.data.role === 'AGENT_IBO') {
+            props.data.state = props.data.state.state.name
+        }
         const change = await axios.put(url, props.data)
         if (!change.data.success) {
             onError.value = true
@@ -147,14 +150,23 @@ async function makeUserAnIBO() {
             setTimeout(() => {
                 processing.value = false
                 newMsg.value = ''
-                router.push('/agent/ads')
+                if (props.data.role === "AGENT_IBO") {
+                    router.push('/agent/ads?reload=true')
+                } else {
+                    router.push('/?reload=true')
+                }
             }, 2000);
 
         }
     } catch (error) {
         processing.value = false
         onError.value = true
-        errorMsg.value.msg = error.response.data.error
+        console.log(error)
+        if (error.response) {
+            errorMsg.value.msg = error.response.data.error
+        } else {
+            errorMsg.value.msg = error.message
+        }
 
         setTimeout(() => {
             onError.value = false

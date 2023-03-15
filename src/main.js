@@ -6,6 +6,7 @@ import router from './router/index.js'
 import store from './store'
 import Toast from './components/reusables/Toast.vue'
 import Preloader from './components/reusables/Preloader.vue'
+import { MotionPlugin } from '@vueuse/motion'
 
 
 import { globalCookiesConfig } from "vue3-cookies";
@@ -30,6 +31,7 @@ myApp.component('Preloader', Preloader)
 
 myApp.use(router)
 myApp.use(store)
+myApp.use(MotionPlugin)
 myApp.mount('#app')
 
 
