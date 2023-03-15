@@ -48,7 +48,7 @@
             </div>
         </div>
 
-        <button @click="$emit('openReferral')"
+        <button @click="$emit('openReferral')" v-if="$store.state.user.referrals.length > 0"
             class="border border-blue-700 flex flex-row items-center gap-x-2 rounded-lg px-6 py-3 mt-8 mb-5">
             <span class="text-primary text-sm font-medium">View refferals</span>
         </button>
