@@ -5,7 +5,7 @@
 
     <div
         class="flex flex-row items-center relative py-4 justify-between w-full px-6 2xl:px-44 md:px-20 border-b border-b-textfieldbg">
-        <div class="logo flex flex-row items-center gap-x-2 cursor-pointer" @click="$router.push('/')">
+        <div class="logo flex flex-row items-center gap-x-2 cursor-pointer" @click="$router.push('/home')">
             <img src="../assets/icons/logo.svg" alt="Logo">
             <span class="text-primary text-2xl">Habeep</span>
         </div>

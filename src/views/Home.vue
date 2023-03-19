@@ -100,10 +100,6 @@ const onSearch = ref(false)
 
 const store = useStore()
 
-if (store.state.isAuthenticated === true) {
-  router.go()
-}
-
 const data = reactive({
   input: ''
 })

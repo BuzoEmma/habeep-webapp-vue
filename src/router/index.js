@@ -135,6 +135,14 @@ const routes = [
         }
     },
     {
+        path: '/home',
+        name: 'Home',
+        component: Home,
+        meta: {
+            title: "Search"
+        }
+    },
+    {
         path: '/feeds',
         redirect: '/'
     },

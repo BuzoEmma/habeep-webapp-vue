@@ -25,10 +25,14 @@
             <div class="flex flex-col items-start gap-y-1 w-full mt-5 relative">
                 <span class="text-webapp text-sm">Deposit fee</span>
                 <input type="text" disabled value="0.00" placeholder="0.00"
+                    v-if="depositData.paymentMethod !== 'bank-transfer'"
+                    class="w-full outline-none h-14 rounded-lg border border-gray p-2">
+                <input type="text" disabled value="100.00" v-else
                     class="w-full outline-none h-14 rounded-lg border border-gray p-2">
 
                 <div class="absolute top-8 h-10 px-2 right-2 rounded grid place-items-center" style="background: #EBEBEB;">
-                    <p class="flex flex-row items-center gap-x-4"><span>Free</span> N</p>
+                    <p class="flex flex-row items-center gap-x-4"><span
+                            v-if="depositData.paymentMethod !== 'bank-transfer'">Free</span> N</p>
                 </div>
             </div>
 

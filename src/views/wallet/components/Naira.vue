@@ -14,7 +14,8 @@
                         <img src="../../../assets/icons/wallet/deposit.svg" alt="">
                         <span class="text-xs text-webapp">Deposit</span>
                     </div>
-                    <div class="flex flex-col gap-y-1 items-center">
+                    <div class="flex flex-col gap-y-1 items-center cursor-pointer"
+                        @click="$emit('openModal', 'chooseWithdrawalMethodModal')">
                         <img src="../../../assets/icons/wallet/withdraw.svg" alt="">
                         <span class="text-xs text-webapp">Withdraw</span>
                     </div>
@@ -122,7 +123,7 @@ const store = useStore();
 
 const route = useRoute()
 const router = useRouter()
-const emit = defineEmits(['openModal'])
+const emit = defineEmits(['openModal', 'sendWallet'])
 
 const transactions = ref([])
 const waitForWalletLoad = ref(true)
@@ -181,6 +182,8 @@ async function getWallet() {
         const nairaWallet = await axios.post('/wallet/fetch-wallet', { wallet: 'naira' })
         if (nairaWallet.data.error === false) {
             walletData.value = nairaWallet.data.data
+
+            emit('sendWallet', walletData.value)
 
             getTransactions(nairaWallet.data.data.recentActivities)
         }

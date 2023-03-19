@@ -10,8 +10,8 @@
 
         <div class="flex flex-row items-center justify-between w-full px-6 2xl:px-44 md:px-20 my-4" v-else>
             <div class="flex flex-row items-center gap-x-3">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="#0A1045" class="w-6 h-6 cursor-pointer" @click="$router.go(-1)">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0A1045"
+                    class="w-6 h-6 cursor-pointer" @click="$router.go(-1)">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                 </svg>
                 <span class="text-xl text-webapp font-medium">Agent profile</span>
@@ -60,7 +60,8 @@
                 </p>
 
 
-                <div class="flex flex-row items-center w-full gap-y-1 xl:justify-between mt-4 xl:mt-3" v-if="$store.state.user._id !== agentDetails.userId">
+                <div class="flex flex-row items-center w-full gap-y-1 xl:justify-between mt-4 xl:mt-3"
+                    v-if="$store.state.user._id !== agentDetails.userId">
                     <button
                         class="agent-btn flex-row items-center justify-center text-sm font-medium text-white text-primary w-1/2  bg-primary"
                         @click="FollowUser">Follow</button>
@@ -68,9 +69,9 @@
                         class="agent-btn flex flex-row items-center justify-center text-sm font-medium  text-primary ml-2 bg-white w-1/2">Message</button>
                 </div>
                 <div class="flex flex-row items-center w-full mt-4 xl:mt-3" v-else>
-                    <button
-                        @click="$router.push('/user/profile/' + $route.params.id)"
-                        class="agent-btn flex flex-row items-center justify-center text-sm font-medium  text-primary ml-2 bg-white w-full">View Profile</button>
+                    <button @click="$router.push('/user/profile/' + $route.params.id)"
+                        class="agent-btn flex flex-row items-center justify-center text-sm font-medium  text-primary ml-2 bg-white w-full">View
+                        Profile</button>
                 </div>
             </div>
 
@@ -79,8 +80,8 @@
 
             <div class="flex flex-col items-start w-full lg:w-4/5">
                 <div class="flex flex-row gap-x-3 border-b border-b-gray-300 w-full">
-                    <div class="cursor-pointer flex flex-row items-center justify-center w-16  pb-1"
-                        @click="changeTab(1)" :class="{ 'text-blue-600 border-b-blue-700 border-b-2': openTab === 1 }">
+                    <div class="cursor-pointer flex flex-row items-center justify-center w-16  pb-1" @click="changeTab(1)"
+                        :class="{ 'text-blue-600 border-b-blue-700 border-b-2': openTab === 1 }">
                         Ads
                     </div>
                     <div class="cursor-pointer hidden flex-row items-center justify-center w-24 pb-1"
@@ -90,19 +91,21 @@
                     </div>
                 </div>
 
-                <div class="ads-tab w-full h-full mt-6" v-if="(openTab === 1)" id="ads-tab">
+                <div class="ads-tab w-full h-full mt-6" v-if="(openTab === 1) && agentDetails.ads" id="ads-tab">
                     <div class="flex flex-row flex-auto h-fit  flex-wrap">
 
                         <!-- listing template -->
                         <div class="md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0 " v-for="ad in agentDetails.ads"
                             :key="ad">
-                            <div
-                                class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2">
-                                <img :src="ad.images[0].link" class="w-full h-full rounded-t-md" alt="">
-                                <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer" @click="$router.push('/listings/products/' + ad._id)">{{
-                                    ad.title + ' at ' +
+                            <div class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2">
+                                <img :src="ad.images[0].link" class="w-full h-full rounded-t-md"
+                                    v-if="ad.images[0].link.includes('mp4') == false" alt="">
+                                <video :src="ad.images[0].link" h class="w-full rounded-lg" v-else autoplay muted></video>
+                                <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
+                                    @click="$router.push('/listings/products/' + ad._id)">{{
+                                        ad.title + ' at ' +
                                         ad.location.city
-                                }}
+                                    }}
                                 </p>
 
                                 <div class="location flex flex-row items-center gap-x-2 px-3">
@@ -138,8 +141,7 @@
                         <!-- listing template -->
                         <div class="md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0 " v-for="ad in agentDetails.ads"
                             :key="ad">
-                            <div
-                                class="flex flex-col items-start gap-y-2 relative border rounded-lg border-gray-200 pb-2">
+                            <div class="flex flex-col items-start gap-y-2 relative border rounded-lg border-gray-200 pb-2">
                                 <img src="../../../assets/images/house-img.svg" alt="" class="w-full h-full">
                                 <p class="text-webapp text-xl font-medium w-full mx-3">4 bedroom apartment at atimbo
                                 </p>

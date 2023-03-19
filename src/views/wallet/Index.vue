@@ -4,6 +4,9 @@
 
         <DepositModal v-if="depositModal" @close="closeModal" />
         <SwapModal v-if="swapModal" @close="closeModal" />
+        <ChooseMethod :walletData="walletData" v-if="chooseWithdrawalMethodModal" @close="closeModal"
+            @gotoWithdrawal="openWithdrawalModal" />
+        <Withdraw :walletData="walletData" :amount="withdrawAmount" v-if="withdrawalModal" @close="closeModal" />
     </div>
 
     <div class="main w-screen min-w-full flex flex-col items-center bg-white h-full min-h-screen overflow-y-auto"
@@ -30,7 +33,7 @@
                     HBP
                 </div>
             </div>
-            <Naira v-if="walletTab === 1" @openModal="openModal" />
+            <Naira @sendWallet="getData" v-if="walletTab === 1" @openModal="openModal" />
             <HBP v-if="walletTab === 2" @openModal="openModal" />
         </div>
     </div>
@@ -45,16 +48,29 @@ import DepositModal from './components/modals/Deposit.vue';
 import SwapModal from './components/modals/Swap.vue';
 
 import { useRoute } from 'vue-router'
+import ChooseMethod from './components/modals/withdraw/ChooseMethod.vue';
+import Withdraw from './components/modals/Withdraw.vue';
 
 const route = useRoute()
+const withdrawAmount = ref(0)
+function openWithdrawalModal(e) {
+    withdrawAmount.value = e
+    closeModal()
+    openModal('withdrawalModal')
+}
 
 const screenWidth = ref(window.innerWidth)
 const onModal = ref(false)
 let modalState = ref(null)
 const depositModal = ref(false)
 const swapModal = ref(false)
+const chooseWithdrawalMethodModal = ref(false)
+const withdrawalModal = ref(false)
+const walletData = ref(null)
 
-
+function getData(e) {
+    walletData.value = e
+}
 
 
 function openModal(name) {
@@ -67,6 +83,8 @@ function closeModal() {
     onModal.value = false
     depositModal.value = false
     swapModal.value = false
+    chooseWithdrawalMethodModal.value = false
+    withdrawalModal.value = false
 }
 
 function goBack(component) {

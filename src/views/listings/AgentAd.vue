@@ -64,15 +64,14 @@
                     <!-- main one now 😎 -->
                     <div class="px-6 py-2 rounded opacity-70" style="background: #161622;">
                         <span class="text-sm text-white font-medium">{{ (activeCarouselImg + '/' +
-                                images.length)
+                            images.length)
                         }}</span>
                     </div>
                 </div>
             </div>
 
             <!-- product details -->
-            <div
-                class="flex flex-col md:flex-row items-start w-full gap-x-4 h-fit justify-between px-6 sm:px-7 xl:px-0">
+            <div class="flex flex-col md:flex-row items-start w-full gap-x-4 h-fit justify-between px-6 sm:px-7 xl:px-0">
                 <!-- product info -->
                 <div class="flex flex-col items-start md:w-2/3 w-full xl:w-4/6 h-full">
                     <!-- top product info -->
@@ -84,7 +83,8 @@
                             <p
                                 class="text-sub-webapp text-lg md:text-sm xl:text-lg product-location flex flex-row items-center gap-x-2">
                                 <img src="../../assets/images/map-pin.png" alt=""> 34 Marian Road, Calabar, Cross River
-                                State</p>
+                                State
+                            </p>
                         </div>
                     </div>
 
@@ -156,7 +156,7 @@
                             </div>
                         </div>
                         <button>
-                            <img src="../../assets/icons/call-btn.svg"  alt="" class="cursor-pointer md:ml-4">
+                            <img src="../../assets/icons/call-btn.svg" alt="" class="cursor-pointer md:ml-4">
                             <a :href="'tel:' + pr">123-456-7890</a>
                         </button>
                         <!-- <button class="w-24 h-20 xl:hidden md:flex flex-row items-center justify-center text-sm font-medium text-primary bg-white">Visit Profile</button> -->
@@ -190,7 +190,8 @@
                         </div>
                         <img src="../../assets/icons/call-btn.svg" alt="" class="cursor-pointer">
                         <button
-                            class="w-24 flex flex-row agent-btn items-center justify-center text-sm font-medium text-primary bg-white" @click="$router.push('/agents/profile/dfhffhfh')">Visit
+                            class="w-24 flex flex-row agent-btn items-center justify-center text-sm font-medium text-primary bg-white"
+                            @click="$router.push('/agents/profile/dfhffhfh')">Visit
                             Profile</button>
                     </div>
 
@@ -334,36 +335,36 @@ function changeWidth() {
 
 <style scoped>
 .product-img-grid {
-     max-height: 538px;
-     height: 538px;
- }
+    max-height: 538px;
+    height: 538px;
+}
 
- .product-img-carousel {
-     max-height: 400px;
-     height: 400px;
- }
+.product-img-carousel {
+    max-height: 400px;
+    height: 400px;
+}
 
- .agent-info {
-     background: #FFFFFF;
-     /* Habeep grey/grey 4 */
+.agent-info {
+    background: #FFFFFF;
+    /* Habeep grey/grey 4 */
 
-     border: 1px solid #EBEBEB;
-     box-shadow: 0px 8px 30px -6px rgba(24, 39, 75, 0.12), 0px 14px 88px -4px rgba(24, 39, 75, 0.12);
-     border-radius: 10px;
- }
+    border: 1px solid #EBEBEB;
+    box-shadow: 0px 8px 30px -6px rgba(24, 39, 75, 0.12), 0px 14px 88px -4px rgba(24, 39, 75, 0.12);
+    border-radius: 10px;
+}
 
- .agent-btn {
-     border: 1px solid #3E64F9;
-     border-radius: 5px;
-     height: 50px;
- }
+.agent-btn {
+    border: 1px solid #3E64F9;
+    border-radius: 5px;
+    height: 50px;
+}
 
- .agent-btn-mobile {
-     border: 1px solid #3E64F9;
-     border-radius: 5px;
- }
+.agent-btn-mobile {
+    border: 1px solid #3E64F9;
+    border-radius: 5px;
+}
 
- .image-container {
-     height: 80vh;
- }
+.image-container {
+    height: 80vh;
+}
 </style>

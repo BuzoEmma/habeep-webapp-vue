@@ -5,7 +5,8 @@
     <Toast :msg="errorMsg" type="danger" v-if="onError" />
   </div>
   <div class="h-screen w-screen">
-    <component :is="currentComponent" @passData="getData" @goBack="back"></component>
+    <component :is="currentComponent" @postSuccess="onDataSuccess" :data="data" @passData="getData" @goBack="back">
+    </component>
 
   </div>
 </template>
@@ -58,27 +59,8 @@ const Photos = defineAsyncComponent(() =>
 let currentComponent = ref(ForPage)
 let previousComponent = ref(null)
 
-let formData = ref(null)
-
 let savedProductID = ref('')
 
-const result = ref({
-  modelRun: false,
-  status: false,
-  success: false
-})
-
-const finalResult = ref({
-  modelRun: false,
-  status: false,
-  success: false
-})
-
-// function updateProgress() {
-//   finalResult.value = result.value
-// }
-
-provide('progress', result)
 
 let data = reactive({
   for: '',
@@ -98,44 +80,10 @@ const back = () => {
 
 
 // save ad data to db
-async function saveData() {
-  try {
-    result.value.modelRun = true
-    formData.value.append('data', JSON.stringify(data))
-    const adDetails = await axios.post(url, formData.value, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
-
-    onModal.value = true;
-    result.value.status = true
-    if (adDetails.data.success) {
-      savedProductID.value = adDetails.data.data._id
-      successModal.value = true
-
-      store.commit('deleteListingData')
-    } else {
-      onError.value = true;
-      errorMsg.value = adDetails.data.message;
-    }
-
-    if (onError.value === true) {
-      setTimeout(() => {
-        onModal.value = false;
-        onError.value = true;
-      }, 4000);
-    }
-  } catch (error) {
-    onModal.value = true;
-    onError.value = true;
-    errorMsg.value = error.response.data.message
-
-    if (onError.value === true) {
-      setTimeout(() => {
-        onModal.value = false;
-        onError.value = true;
-      }, 4000);
-    }
-  }
+async function onDataSuccess(e) {
+  onModal.value = true;
+  savedProductID.value = e
+  successModal.value = true
 }
 
 // get all form data
@@ -145,9 +93,6 @@ const getData = async (e) => {
     Object.keys(e.data).forEach(key => {
       data[key] = e.data[key]
     })
-  } else if (e.type === 'images') {
-    formData.value = e.data
-    await saveData()
   } else {
     data[e.type] = e.data
   }
@@ -212,9 +157,7 @@ function managePagesOnload() {
     currentComponent.value = Photos
     previousComponent.value = Desc
   }
-  if (Object.keys(savedData.images).length > 0) {
-    formData.value = images
-  }
+
   delete savedData.images
   data = savedData
 

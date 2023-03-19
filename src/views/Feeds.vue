@@ -107,15 +107,15 @@
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                     </svg>
-
                 </div>
             </div>
-            <p class="text my-3 text-webapp text-xl font-medium w-full text-left ml-7 lg:hidden ">Home</p>
-            <div class="flex flex-row w-full items-center justify-between">
+            <div class="flex flex-row w-full mt-2 items-center justify-between">
                 <div
                     class="flex flex-row items-center tabs gap-x-4 border-b flex-nowrap border-gray-200 lg:overflow-x-hidden overflow-x-scroll px-6">
                     <img src="../assets/icons/Filter.svg" alt="" class="cursor-pointer lg:hidden"
                         @click="toggleDropdown('sort')">
+                    <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg" @click="changeHouseType('all')"
+                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': activeType === 'all' }">All</span>
                     <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg"
                         @click="changeHouseType('apartment')"
                         :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': activeType === 'apartment' }">Apartment</span>
@@ -265,7 +265,8 @@
                     v-for="feed in filteredFeeds" :key="feed">
                     <div class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 feed">
                         <img :src="feed.images[0].link" alt="" class="w-full feed-image rounded-t-md"
-                            v-if="feed.images.length > 0">
+                            v-if="feed.images[0].link.length > 0 && feed.images[0].length.includes('mp4') == false">
+                        <video :src="feed.images[0].link" h class="w-full rounded-t-md" v-else autoplay muted></video>
                         <p class="text-webapp text-lg font-medium w-full px-2 cursor-pointer"
                             @click="$router.push('/listings/products/' + feed._id)">{{ feed.title }}</p>
 
@@ -325,7 +326,7 @@ const onLocationDropdown = ref(false)
 const onDropdown = ref(false)
 const locationValue = ref(false)
 
-const activeType = ref('apartment')
+const activeType = ref('all')
 const states = ref([])
 const cities = ref([])
 let onState = ref(true)
@@ -347,11 +348,16 @@ const url = '/listings/feeds';
 
 function filterType() {
     let newFeeds = feeds.value
-    let filtered = newFeeds.filter(feed => {
-        return feed.type.toLowerCase() === activeType.value.toLowerCase()
-    })
+    if (activeType.value === 'all') {
+        filteredFeeds.value = newFeeds
+    } else {
+        let filtered = newFeeds.filter(feed => {
+            return feed.type.toLowerCase() === activeType.value.toLowerCase()
+        })
 
-    filteredFeeds.value = filtered
+        filteredFeeds.value = filtered
+    }
+
 
     return filtered
 }

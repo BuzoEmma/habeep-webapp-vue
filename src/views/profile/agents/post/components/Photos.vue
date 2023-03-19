@@ -9,7 +9,8 @@
             </div>
             <img src="../../../../../assets/icons/chevron-left.svg" @click="$emit('goBack')" class="md:hidden block pt-10"
                 alt="">
-            <h1 class="text-white font-medium text-2xl md:text-4xl xl:text-5xl   w-full text-left">Add some photos to the
+            <h1 class="text-white font-medium text-2xl md:text-4xl xl:text-5xl   w-full text-left">Add some photos or videos
+                to the
                 listing
             </h1>
             <p></p>
@@ -20,7 +21,8 @@
 
             <div class="flex flex-col gap-y-5 h-full w-full items-center px-5 lg:px-20 pt-5 overflow-y-auto">
                 <div class="flex flex-row items-center justify-between w-full">
-                    <span class="text-webapp text-lg md:text-xl font-medium">Add at most 5 photos</span>
+                    <span class="text-webapp text-lg md:text-xl font-medium">Add at most 5 photos or videos(Max size is
+                        50mb)</span>
 
                     <!-- upload images -->
                     <form enctype="multipart/form-data" class="upload flex flex-row items-center w-fit no-wrap gap-x-3"
@@ -33,7 +35,7 @@
                                     clip-rule="evenodd" />
                             </svg>
                             <span>Upload</span>
-                            <input type="file" ref="inputRef" :multiple="allCompleted === false" accept="image/*"
+                            <input type="file" ref="inputRef" :multiple="allCompleted === false" accept="video/mp4,image/*"
                                 v-if="!allCompleted" @change="previewImg($event.target, currentBlock)">
                         </button>
                     </form>
@@ -45,7 +47,9 @@
                     <div class="flex flex-row items-center w-full flex-wrap h-fit pb-2">
                         <div class="basis-full md:basis-2/3 photo-cover p-2 h-full" v-if="imageData1">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
-                                <img :src="imageData1" class="h-full " alt="">
+                                <img :src="imageData1" class="h-full" v-if="pic1.type !== 'video/mp4'" alt="">
+                                <video :src="imageData1" class="h-full w-full rounded-lg" v-else height="100%" width="100%"
+                                    autoplay muted></video>
                             </div>
                         </div>
                         <div class="gap-x-2 basis-full p-2 md:basis-2/3 h-full photo-cover" @click="callImgProcessor(1)"
@@ -60,7 +64,9 @@
 
                         <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" v-if="imageData2">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
-                                <img :src="imageData2" class="h-full w-fit" alt="">
+                                <img :src="imageData2" class="h-full" v-if="pic2.type !== 'video/mp4'" alt="">
+                                <video :src="imageData2" class="h-full w-full rounded-lg" v-else height="100%" width="100%"
+                                    autoplay muted></video>
                             </div>
                         </div>
                         <div v-else class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(2)">
@@ -71,7 +77,9 @@
 
                         <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" v-if="imageData3">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
-                                <img :src="imageData3" class="h-full w-fit" alt="">
+                                <img :src="imageData3" class="h-full" v-if="pic3.type !== 'video/mp4'" alt="">
+                                <video :src="imageData3" class="h-full w-full rounded-lg" v-else height="100%" width="100%"
+                                    autoplay muted></video>
                             </div>
                         </div>
                         <div v-else class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(3)">
@@ -82,7 +90,9 @@
 
                         <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" v-if="imageData4">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
-                                <img :src="imageData4" class="h-full w-fit" alt="">
+                                <img :src="imageData4" class="h-full" v-if="pic4.type !== 'video/mp4'" alt="">
+                                <video :src="imageData4" class="h-full w-full rounded-lg" v-else height="100&" width="100%"
+                                    autoplay muted></video>
                             </div>
                         </div>
                         <div v-else class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(4)">
@@ -93,7 +103,9 @@
 
                         <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" v-if="imageData5">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
-                                <img :src="imageData5" class="h-full w-fit" alt="">
+                                <img :src="imageData5" class="h-full" v-if="pic5.type !== 'video/mp4'" alt="">
+                                <video :src="imageData5" class="h-full w-full rounded-lg" v-else height="100%" width="100%"
+                                    autoplay muted></video>
                             </div>
                         </div>
                         <div v-else class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(5)">
@@ -122,6 +134,8 @@
                 </div>
             </div>
         </div>
+
+        <Toast :msg="errorMsg" type="danger" v-if="onError" />
     </div>
 </template>
 
@@ -129,17 +143,27 @@
 import { isArray } from '@vue/shared';
 import { computed, inject, reactive, ref } from 'vue';
 import { useStore } from 'vuex';
+import axios from '../../../../../composables/axios'
 
 const store = useStore()
 const processing = ref(false)
 
-const emit = defineEmits(['passData'])
+const onError = ref(false)
+let errorMsg = ref('')
 
+const emit = defineEmits(['passData', 'postSuccess'])
+const props = defineProps(['data'])
+
+const finalData = reactive(props.data)
 
 const data = reactive({
     type: 'images',
     data: '',
 })
+
+
+
+const formData = new FormData();
 
 const inputRef = ref(null)
 
@@ -166,9 +190,11 @@ function callImgProcessor(value) {
 }
 
 const previewImg = async (event, value) => {
+    console.log('hello', event.files)
     currentBlock.value += 1
     // Reference to the DOM input element
     var input = event;
+
     // Ensure that you have a file before attempting to read it
     if (input.files && input.files.length === 1) {
         currentImage.value = value
@@ -197,6 +223,7 @@ const previewImg = async (event, value) => {
         // Define a callback function to run, when FileReader finishes its job
         // reader.readAsDataURL(eval(`pic${value}`).value)
         reader.onload = (e) => {
+            console.log(e)
             // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
             // Read image as base64 and set to imageData
             eval(`imageData${currentImage.value}`).value = e.target.result;
@@ -208,15 +235,13 @@ const previewImg = async (event, value) => {
         // read multiple files
         for (let i = currentImage.value; i < input.files.length && i < 5; i++) {
             eval(`pic${i + 1}`).value = input.files[i]
-
-
             var reader = new FileReader();
             // Define a callback function to run, when FileReader finishes its job
             reader.readAsDataURL(input.files[i])
             reader.onload = (e) => {
                 // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
                 // Read image as base64 and set to imageData
-                eval(`imageData${i + 1}`).currentImage.valuevalue = e.target.result;
+                eval(`imageData${i + 1}`).value = e.target.result;
             }
             if (currentImage.value !== 5) {
                 currentImage.value += 1
@@ -228,39 +253,62 @@ const previewImg = async (event, value) => {
     noPicture.value = false
 }
 
-const progress = inject('progress')
+const url = '/listings/agent/create-product';
+
+async function saveData() {
+    try {
+        processing.value = true
+        console.log(finalData)
+        formData.append('data', JSON.stringify(finalData))
+        const adDetails = await axios.post(url, formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+        });
+
+        processing.value = false
+
+        if (adDetails.data.success) {
+            store.commit('deleteListingData')
+
+            emit('postSuccess', adDetails.data.data._id)
+        } else {
+            onError.value = true;
+            errorMsg.value = adDetails.data.message;
+        }
+
+        if (onError.value === true) {
+            setTimeout(() => {
+                onModal.value = false;
+                onError.value = true;
+            }, 4000);
+        }
+    } catch (error) {
+        processing.value = false
+
+        onError.value = true;
+        if (error.response) {
+            errorMsg.value = error.response.data.message
+        } else {
+            errorMsg.value = error.message
+        }
+
+        if (onError.value === true) {
+            setTimeout(() => {
+                onError.value = true;
+            }, 4000);
+        }
+    }
+}
 
 const sendData = async () => {
-    const formData = new FormData();
     for (let i = 1; i < 6; i++) {
         let img = eval(`pic${i}`).value
         formData.append('photo' + i, img)
     }
 
+    saveData()
     data.data = formData
 
-    emit('passData', data)
 
-    if (progress.value.modelRun === true) {
-        processing.value = true
-        if (progress.value.status === true) {
-            processing.value = false
-        }
-    }
-
-    const checkProgress = setInterval(() => {
-        if (progress.value.modelRun === true) {
-            processing.value = true
-            if (progress.value.status === true) {
-                processing.value = false
-            }
-        }
-    }, 2000);
-
-    setTimeout(() => {
-        clearInterval(checkProgress)
-        processing.value = false
-    }, 30000);
 }
 
 function allImagesComplete() {

@@ -12,8 +12,10 @@
             <!-- product display images for desktop view -->
             <div class="product-img-grid desktop-view xl:flex flex-row items-center w-full mt-10 hidden">
                 <div class="relative h-full display-img w-1/2 py-1">
-                    <img :src="carouselImg.link" class="h-full w-full rounded-lg cursor-pointer" @click="enterImageViewer()"
-                        alt="">
+                    <img :src="carouselImg.link" class=" h-full w-full rounded-lg main-img"
+                        v-if="carouselImg.link.toString().includes('mp4') == false" @click="enterImageViewer()" alt="">
+                    <video :src="carouselImg.link" @click="enterImageViewer()" loop controls class="w-full rounded-lg"
+                        v-else autoplay muted></video>
 
                     <div class="w-full absolute flex flex-row top-5 items-center justify-between px-2">
                         <img src="../../assets/icons/back-img.svg" class="cursor-pointer" alt="">
@@ -26,12 +28,23 @@
 
                 <div class="flex h-full flex-col w-1/2">
                     <div class=" flex flex-row h-1/2 w-full pl-2 items-center">
-                        <img :src="image.link" class="h-full w-1/2 p-1 cursor-pointer rounded-lg"
-                            v-for="image in images.slice(0, 2)" @click="enterImageViewer()" :key="image" alt="">
+                        <div class="h-full w-1/2 p-1 cursor-pointer rounded-lg overflow-hidden"
+                            v-for="image in images.slice(0, 2)" :key="image">
+                            <img :src="image.link" class=" h-full p-1 w-full rounded-lg"
+                                v-if="image.link.toString().includes('mp4') == false" @click="enterImageViewer()"
+                                :key="image" alt="">
+                            <video :src="image.link" @click="enterImageViewer()" h class="w-full rounded-lg" v-else autoplay
+                                muted></video>
+                        </div>
                     </div>
                     <div class=" flex flex-row h-1/2 w-full pl-2 items-center">
-                        <img :src="image.link" class="h-full w-1/2 p-1 rounded-lg cursor-pointer"
-                            v-for="image in images.slice(3, 5)" @click="enterImageViewer()" :key="image" alt="">
+                        <div class="w-1/2 p-1 cursor-pointer rounded-lg overflow-hidden" style="height: 300px"
+                            v-for="image in images.slice(0, 2)" :key="image">
+                            <img :src="image.link" class=" h-full p-1 w-full rounded-lg"
+                                v-if="image.link.toString().includes('mp4') == false" @click="enterImageViewer()" alt="">
+                            <video :src="image.link" @click="enterImageViewer()" loop controls class="w-full rounded-lg"
+                                v-else autoplay muted></video>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -44,11 +57,13 @@
                     <img src="../../assets/icons/back-img.svg" class="cursor-pointer" alt="">
                     <div class="flex flex-row gap-x-3">
                         <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
-                        <img src="../../assets/icons/heart.svg" class="cursor-pointer" alt="">
+                        <img src="../../assets/icons/heart.svg" @click="saveAd(product._id)" class="cursor-pointer" alt="">
                     </div>
                 </div>
 
-                <img :src="carouselImg.link" class="h-full w-full main-img cursor-pointer" @click="enterImageViewer()">
+                <img :src="carouselImg.link" class=" h-full w-full rounded-lg main-img"
+                    v-if="carouselImg.link.toString().includes('mp4') == false" @click="enterImageViewer()" alt="">
+                <video :src="carouselImg.link" loop controls class="w-full rounded-lg" v-else autoplay muted></video>
                 <!-- <img :src="images[activeCarouselImg - 1].link" class="h-full w-full new-img" :class="{'hidden': changeCarouselImg}"> -->
 
                 <div class="flex flex-row items-center w-full absolute bottom-5 justify-between md:px-8 px-2">
@@ -300,6 +315,7 @@ const getProduct = async () => {
 
     product.value = getProduct.data.product
     images.value = getProduct.data.product.images
+    console.log(images.value)
     carouselImg.value = getProduct.data.product.images[0]
 
     getAgent(product.value.agentId)
@@ -398,5 +414,4 @@ onMounted(() => {
 
 .image-container {
     height: 80vh;
-}
-</style>
+}</style>
