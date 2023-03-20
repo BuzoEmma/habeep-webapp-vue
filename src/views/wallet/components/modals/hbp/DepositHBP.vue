@@ -27,7 +27,7 @@
                         <button v-if="!linkCopied"
                             class="border border-blue-700 flex flex-row items-center gap-x-2 rounded-lg px-5 py-2"
                             @click="copyLink(props.wallet.accountID)">
-                            <img src="../../../../../../assets/icons/link.svg" alt="">
+                            <img src="../../../../../assets/icons/link.svg" alt="">
                             <span class="text-primary text-sm font-medium">Copy</span>
                         </button>
                         <img src="../../../../../assets/icons/copied.svg" v-else alt="">
