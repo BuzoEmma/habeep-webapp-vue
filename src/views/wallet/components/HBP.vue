@@ -48,7 +48,7 @@
                                     <td class="">{{ txn.date + ' @ ' + txn.time }}</td>
                                     <td class="capitalize">Wallet {{ txn.txnType }}</td>
                                     <td class="">{{ txn.reference }}</td>
-                                    <td class="">HBP {{ txn.amount }}</td>
+                                    <td class="amount">{{ txn.amount }} HBP</td>
                                     <td>
                                         <div class="w-32 py-2 rounded-md text-center"
                                             style="background: rgb(28,170,67, 0.1)">
@@ -237,6 +237,10 @@ td {
     color: #0A1045;
     font-weight: 300;
     font-size: 15px;
+}
+
+td.amount {
+    font-weight: 500 !important;
 }
 
 thead {

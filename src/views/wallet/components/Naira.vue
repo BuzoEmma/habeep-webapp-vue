@@ -48,7 +48,7 @@
                                     <td class="">{{ txn.date + ' @ ' + txn.time }}</td>
                                     <td class="capitalize">Wallet {{ txn.txnType }}</td>
                                     <td class="">{{ txn.reference }}</td>
-                                    <td class="font">₦{{ formatNumber(txn.amount) }}</td>
+                                    <td class="font amount">₦{{ formatNumber(txn.amount) }}</td>
                                     <td>
                                         <div class="w-32 py-2 rounded-md text-center"
                                             style="background: rgb(28,170,67, 0.1)">
@@ -245,6 +245,9 @@ td {
     font-size: 15px;
 }
 
+td.amount {
+    font-weight: 500 !important;
+}
 
 
 thead {
