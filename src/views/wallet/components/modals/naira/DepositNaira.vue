@@ -126,8 +126,6 @@ let newMsg = ref('')
 function channels() { return ["card", "bank", "ussd", "qr", "mobile_money", "bank_transfer"]; }
 
 const processSuccessPayment = async (response) => {
-    console.log(response)
-
     function getFee() {
         if (depositData.paymentMethod === "bank-transfer") {
             return 100
@@ -140,7 +138,7 @@ const processSuccessPayment = async (response) => {
         let data = {
             accountId: store.state.user.wallet.naira,
             amount: depositData.amount,
-            referenceId: paystackReference.value,
+            referenceId: response.reference,
             status: true,
             fee: getFee(),
             userId: store.state.user._id,
