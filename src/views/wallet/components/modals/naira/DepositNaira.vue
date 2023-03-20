@@ -159,7 +159,9 @@ const processSuccessPayment = async (response) => {
     } catch (error) {
         onError.value = true
         errorMsg.value = error.response.data.message
+        paystackReference.value = genRef()
 
+        processingDeposit.value = false
         setTimeout(() => {
             onError.value = false
             errorMsg.value = ''
