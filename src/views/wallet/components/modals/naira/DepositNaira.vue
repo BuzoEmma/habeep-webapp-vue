@@ -6,7 +6,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
             <span class="text-xl font-medium text-webapp">Deposit</span>
-            <img src="../../../../assets/icons/x.svg" class="cursor-pointer collapse md:visible" @click="$emit('close')"
+            <img src="../../../../../assets/icons/x.svg" class="cursor-pointer collapse md:visible" @click="$emit('close')"
                 alt="">
         </div>
         <div class="w-full px-4 py-6 flex flex-col items-start ">
@@ -88,7 +88,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import uniqid from 'uniqid'
 import paystack from 'vue3-paystack'
-import axios from '../../../../composables/axios'
+import axios from '../../../../../composables/axios'
 
 const store = useStore()
 const router = useRouter()
@@ -127,6 +127,13 @@ function channels() { return ["card", "bank", "ussd", "qr", "mobile_money", "ban
 
 const processSuccessPayment = async (response) => {
     console.log(response)
+
+    function getFee() {
+        if (depositData.paymentMethod === "bank-transfer") {
+            return 100
+        } else return 0
+    }
+
     try {
         processingDeposit.value = true
 
@@ -135,6 +142,7 @@ const processSuccessPayment = async (response) => {
             amount: depositData.amount,
             referenceId: paystackReference.value,
             status: true,
+            fee: getFee(),
             userId: store.state.user._id,
             paymentMethod: depositData.paymentMethod
         }

@@ -48,13 +48,13 @@ const getUser = async () => {
     if (user.data === "Unauthorized" || !loggedIn) {
       store.dispatch("unsetAuth");
       if (!verifyAllowedRoles(route, 'user')) {
-        router.push("/login?redirect=" + router.currentRoute.value.fullPath);
+        router.push("/login?redirect=" + router.currentRoute.value.fullPath + "?reload=true");
       }
     } else {
       if (user.data.error === null) {
         store.dispatch("unsetAuth");
         if (!verifyAllowedRoles(route, 'user')) {
-          router.push("/login?redirect=" + router.currentRoute.value.fullPath);
+          router.push("/login?redirect=" + router.currentRoute.value.fullPath + "?reload=true");
         }
       } else {
         let mutate = {
@@ -68,7 +68,7 @@ const getUser = async () => {
   } catch (error) {
     store.dispatch("unsetAuth");
     if (!verifyAllowedRoles(route, 'user') || !loggedIn) {
-      router.push("/login?redirect=" + router.currentRoute.value.fullPath);
+      router.push("/login?redirect=" + router.currentRoute.value.fullPath + "?reload=true");
     }
   }
 };

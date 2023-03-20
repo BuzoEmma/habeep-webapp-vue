@@ -9,11 +9,13 @@
             </div>
             <div class="bottom justify-center items-center h-1/2 w-full flex flex-col py-10">
                 <div class="w-full flex flex-row items-center justify-center gap-x-16">
-                    <div class="flex flex-col gap-y-1 items-center cursor-pointer" @click="$emit('openModal', 'swapModal')">
+                    <div class="flex flex-col gap-y-1 items-center cursor-pointer"
+                        @click="$emit('openModal', 'depositHBPModal')">
                         <img src="../../../assets/icons/wallet/deposit.svg" alt="">
                         <span class="text-xs text-webapp">Deposit</span>
                     </div>
-                    <div class="flex flex-col gap-y-1 items-center">
+                    <div class="flex flex-col gap-y-1 items-center cursor-pointer"
+                        @click="$emit('openModal', 'chooseHBPWithdrawalMethodModal')">
                         <img src="../../../assets/icons/wallet/withdraw.svg" alt="">
                         <span class="text-xs text-webapp">Withdraw</span>
                     </div>
@@ -46,7 +48,7 @@
                                     <td class="">{{ txn.date + ' @ ' + txn.time }}</td>
                                     <td class="capitalize">Wallet {{ txn.txnType }}</td>
                                     <td class="">{{ txn.reference }}</td>
-                                    <td class="">N {{ txn.amount }}</td>
+                                    <td class="">HBP {{ txn.amount }}</td>
                                     <td>
                                         <div class="w-32 py-2 rounded-md text-center"
                                             style="background: rgb(28,170,67, 0.1)">
@@ -121,7 +123,7 @@ const store = useStore();
 
 const route = useRoute()
 const router = useRouter()
-const emit = defineEmits(['openModal'])
+const emit = defineEmits(['openModal', 'sendWallet'])
 
 const transactions = ref([])
 const waitForWalletLoad = ref(true)
@@ -176,6 +178,8 @@ async function getWallet() {
         if (hbpWallet.data.error === false) {
             walletData.value = hbpWallet.data.data
 
+            emit('sendWallet', walletData.value)
+
             getTransactions(hbpWallet.data.data.recentActivities)
         }
     } catch (error) {
@@ -203,6 +207,7 @@ getWallet()
 <style scoped>
 table {
     border-collapse: collapse;
+    table-layout: auto;
 }
 
 .main::-webkit-scrollbar {
@@ -226,6 +231,8 @@ td {
     padding-right: 10px;
     padding-top: 10px;
     vertical-align: middle;
+    word-wrap: normal;
+    white-space: nowrap;
 
     color: #0A1045;
     font-weight: 300;
@@ -247,6 +254,8 @@ th {
     font-weight: 400;
     font-size: 15px;
     color: #0A1045;
+    word-wrap: normal;
+    white-space: nowrap;
     line-height: 25px;
 }
 </style>

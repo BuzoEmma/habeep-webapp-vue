@@ -12,6 +12,8 @@
     "@vueuse/motion": "^2.0.0-beta.12",
     "axios": "^1.2.2",
     "copy-to-clipboard3": "^0.1.4",
+    "dotenv": "^16.0.3",
+    "dotenv-expand": "^10.0.0",
     "flowbite": "^1.6.0",
     "gsap": "^3.11.3",
     "moment": "^2.29.4",

@@ -6,25 +6,25 @@
                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6 block md:hidden font-bold">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
-            <span class="text-xl font-medium text-webapp">Withdraw NGN</span>
-            <img src="../../../../../assets/icons/x.svg" class="cursor-pointer collapse md:visible" @click="$emit('close')"
-                alt="">
+            <span class="text-xl font-medium text-webapp">Withdraw HBP</span>
+            <img src="../../../../../../assets/icons/x.svg" class="cursor-pointer collapse md:visible"
+                @click="$emit('close')" alt="">
         </div>
         <div class="w-full px-4 py-3 flex flex-col items-start" v-if="!selectedMethod">
-            <span class="text-sub-webapp text-lg w-full text-left">Where would you like to withdraw Naira(NGN)?</span>
+            <span class="text-sub-webapp text-lg w-full text-left">Where would you like to withdraw Habeep points?</span>
 
             <div class="flex flex-row items-center cursor-pointer justify-between w-full py-4 px-4 mt-8 rounded-md"
-                style="background: #F2F4F9;" @click="selectedMethod = 'bank'">
-                <span class="text-sm font-medium text-webapp">Bank account</span>
+                style="background: #F2F4F9;" @click="$emit('gotoSwap')">
+                <span class="text-sm font-medium text-webapp">Swap to Naira</span>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                 </svg>
             </div>
             <div class="flex flex-row items-center justify-between w-full py-4 px-4 mt-5 rounded-md"
-                style="background: #F2F4F9;">
+                style="background: #F2F4F9;" @click="$emit('gotoTransfer')">
                 <p class="flex flex-row items-center gap-x-1">
-                    <span class="text-sm font-medium text-webapp">Purchase airtime</span>
+                    <span class="text-sm font-medium text-webapp">Transfer to beneficiary</span>
                     <span class="bg-orange-300 px-1 rounded-lg text-white" style="font-size: 8px;">Coming
                         soon</span>
                 </p>
@@ -34,21 +34,11 @@
                 </svg>
             </div>
         </div>
-
-        <BankAmount @receiveAmount="$emit('gotoWithdrawal', $event)" v-if="selectedMethod === 'bank'"
-            :wallet="props.walletData" />
     </div>
 </template>
   
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import BankAmount from './BankAmount.vue'
-
-const props = defineProps(['walletData'])
-const selectedMethod = ref(null)
-
-
-
 </script>
   
 <style scoped>

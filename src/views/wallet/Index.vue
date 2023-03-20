@@ -3,10 +3,16 @@
         style="background: rgb(22, 22, 34, 0.5)">
 
         <DepositModal v-if="depositModal" @close="closeModal" />
+        <Withdraw :walletData="walletData" :amount="withdrawAmount" v-if="withdrawalModal" @close="closeModal" />
         <SwapModal v-if="swapModal" @close="closeModal" />
         <ChooseMethod :walletData="walletData" v-if="chooseWithdrawalMethodModal" @close="closeModal"
             @gotoWithdrawal="openWithdrawalModal" />
-        <Withdraw :walletData="walletData" :amount="withdrawAmount" v-if="withdrawalModal" @close="closeModal" />
+
+        <DepositHBP :wallet="tokenWallet" v-if="depositHBPModal" @close="closeModal" />
+        <SwapHBP :wallet="tokenWallet" v-if="swapHBPModal" @close="closeModal" />
+        <TransferHBP :wallet="tokenWallet" v-if="transferHBP" @close="closeModal" />
+        <ChooseHBPMethod :wallet="tokenWallet" v-if="chooseHBPWithdrawalMethodModal" @close="closeModal"
+            @gotoTransfer="openWithdrawalHBPModal('transferHBP')" @gotoSwap="openWithdrawalHBPModal('swapHBPModal')" />
     </div>
 
     <div class="main w-screen min-w-full flex flex-col items-center bg-white h-full min-h-screen overflow-y-auto"
@@ -34,24 +40,35 @@
                 </div>
             </div>
             <Naira @sendWallet="getData" v-if="walletTab === 1" @openModal="openModal" />
-            <HBP v-if="walletTab === 2" @openModal="openModal" />
+            <HBP v-if="walletTab === 2" @sendWallet="getTokenWallet" @openModal="openModal" />
         </div>
     </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import MainNavbar from '../../components/MainNavbar.vue';
-import Naira from './components/Naira.vue';
-import HBP from './components/HBP.vue';
-import DepositModal from './components/modals/Deposit.vue';
-import SwapModal from './components/modals/Swap.vue';
-
 import { useRoute } from 'vue-router'
-import ChooseMethod from './components/modals/withdraw/ChooseMethod.vue';
-import Withdraw from './components/modals/Withdraw.vue';
+import MainNavbar from '../../components/MainNavbar.vue';
+
+// naira components
+import Naira from './components/Naira.vue';
+import DepositModal from './components/modals/naira/DepositNaira.vue';
+import SwapModal from './components/modals/naira/Swap.vue';
+import ChooseMethod from './components/modals/naira/withdraw/ChooseMethod.vue';
+import ChooseHBPMethod from './components/modals/hbp/withdraw/ChooseMethod.vue';
+
+import Withdraw from './components/modals/naira/Withdraw.vue';
+
+// hbp components
+import HBP from './components/HBP.vue';
+import SwapHBP from './components/modals/hbp/Swap.vue';
+import TransferHBP from './components/modals/hbp/Transfer.vue';
+import DepositHBP from './components/modals/hbp/DepositHBP.vue';
+
 
 const route = useRoute()
+
+// naira components
 const withdrawAmount = ref(0)
 function openWithdrawalModal(e) {
     withdrawAmount.value = e
@@ -59,17 +76,37 @@ function openWithdrawalModal(e) {
     openModal('withdrawalModal')
 }
 
+// hbp components
+function openWithdrawalHBPModal(modal) {
+    console.log(modal)
+    closeModal()
+    openModal(modal)
+}
+
+
 const screenWidth = ref(window.innerWidth)
 const onModal = ref(false)
 let modalState = ref(null)
+
 const depositModal = ref(false)
 const swapModal = ref(false)
 const chooseWithdrawalMethodModal = ref(false)
-const withdrawalModal = ref(false)
 const walletData = ref(null)
+const withdrawalModal = ref(false)
+
+const depositHBPModal = ref(false)
+const chooseHBPWithdrawalMethodModal = ref(false)
+const swapHBPModal = ref(false)
+const transferHBP = ref(false)
+const tokenWallet = ref(null)
 
 function getData(e) {
     walletData.value = e
+}
+
+function getTokenWallet(e) {
+    console.log('hello')
+    tokenWallet.value = e
 }
 
 
@@ -85,6 +122,10 @@ function closeModal() {
     swapModal.value = false
     chooseWithdrawalMethodModal.value = false
     withdrawalModal.value = false
+    transferHBP.value = false
+    chooseHBPWithdrawalMethodModal.value = false
+    swapHBPModal.value = false
+    depositHBPModal.value = false
 }
 
 function goBack(component) {

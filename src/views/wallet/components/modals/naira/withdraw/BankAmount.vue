@@ -6,14 +6,15 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
             <span class="text-xl font-medium text-webapp">Withdraw to bank account</span>
-            <img src="../../../../../assets/icons/x.svg" class="cursor-pointer collapse md:visible" @click="$emit('close')"
-                alt="">
+            <img src="../../../../../../assets/icons/x.svg" class="cursor-pointer collapse md:visible"
+                @click="$emit('close')" alt="">
         </div>
         <div class="w-full px-4 py-3 flex flex-col items-start">
             <span class="text-sub-webapp text-lg w-full text-left">
                 Transferable balance: N{{ props.wallet.accountValue }}</span>
 
-            <input type="number" v-model="amount" @input="processData" :disabled="amount > props.wallet.accountValue"
+            <input type="number" placeholder="0.00" v-model="amount" @input="processData"
+                :disabled="amount > props.wallet.accountValue"
                 class="h-14 w-full border mt-7 text-black border-gray-200 flex flex-row items-center justify-center text-center outline-none rounded-md">
 
             <button class="grid bg-blue-600 text-white rounded-lg cursor-pointer place-items-center h-14 mt-10 w-full"
@@ -31,18 +32,11 @@ import formatNumber from 'number_formatter';
 const props = defineProps(['wallet'])
 
 const selectedMethod = ref(null)
-const amount = ref(0.00)
+const amount = ref()
 
 
 const processData = () => {
-    let split = amount.value.toString().split(',')
-    let filtered = split.filter(e => {
-        return e !== ','
-    })
-    let realValue = Number(filtered.join(''))
-    if (realValue <= props.wallet.accountValue) {
-        amount.value = formatNumber(realValue)
-    } else {
+    if (amount.value > props.wallet.accountValue) {
         amount.value = props.wallet.accountValue
     }
 

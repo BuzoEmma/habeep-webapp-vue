@@ -48,7 +48,7 @@
                                     <td class="">{{ txn.date + ' @ ' + txn.time }}</td>
                                     <td class="capitalize">Wallet {{ txn.txnType }}</td>
                                     <td class="">{{ txn.reference }}</td>
-                                    <td class="">N {{ txn.amount }}</td>
+                                    <td class="font">₦{{ formatNumber(txn.amount) }}</td>
                                     <td>
                                         <div class="w-32 py-2 rounded-md text-center"
                                             style="background: rgb(28,170,67, 0.1)">
@@ -213,6 +213,7 @@ getWallet()
 <style scoped>
 table {
     border-collapse: collapse;
+    table-layout: auto;
 }
 
 .main::-webkit-scrollbar {
@@ -236,11 +237,15 @@ td {
     padding-right: 10px;
     padding-top: 10px;
     vertical-align: middle;
+    word-wrap: normal;
+    white-space: nowrap;
 
     color: #0A1045;
     font-weight: 300;
     font-size: 15px;
 }
+
+
 
 thead {
     background: #FFFFFF;
@@ -258,5 +263,7 @@ th {
     font-size: 15px;
     color: #0A1045;
     line-height: 25px;
+    word-wrap: normal;
+    white-space: nowrap;
 }
 </style>

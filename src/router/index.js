@@ -11,7 +11,7 @@ function guardMyroute(to, from, next) {
         } else next() // allow to enter route
     } else {
         // console.log(to)
-        next("/login?redirect=" + to.path) // go to '/login';
+        next("/login?redirect=" + to.path + "?reload=true") // go to '/login';
     }
 }
 
@@ -29,7 +29,7 @@ function guardMyrouteForAgent(to, from, next) {
             } else next({ name: 'IBO_Category_Agent' })
         } // allow to enter route
     } else {
-        next("/login?redirect=" + to.path) // go to '/login';
+        next("/login?redirect=" + to.path + "?reload=true") // go to '/login';
     }
 }
 
@@ -45,7 +45,7 @@ function guardMyrouteForIBO(to, from, next) {
             } else next({ name: 'IBO_Category_Agent' })
         } // allow to enter route
     } else {
-        next("/login?redirect=" + to.path) // go to '/login';
+        next("/login?redirect=" + to.path + "?reload=true") // go to '/login';
     }
 }
 

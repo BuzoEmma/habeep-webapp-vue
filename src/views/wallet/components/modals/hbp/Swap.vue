@@ -6,7 +6,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
             <span class="text-xl font-medium text-webapp">Swap</span>
-            <img src="../../../../assets/icons/x.svg" class="cursor-pointer collapse md:visible" @click="$emit('close')"
+            <img src="../../../../../assets/icons/x.svg" class="cursor-pointer collapse md:visible" @click="$emit('close')"
                 alt="">
         </div>
 
@@ -14,25 +14,25 @@
         <div class="calculator w-full flex flex-col items-center px-5 py-3 gap-y-10 mt-5">
             <div class="flex flex-col items-end w-full gap-y-2">
                 <div class="w-full border border-gray-200 relative flex flex-col justify-end px-2 rounded-md h-24">
-                    <input type="number" v-model="data.naira" @input="updateSwapValue('naira')" placeholder="0.00"
+                    <input type="number" v-model="data.hbp" @input="updateSwapValue('hbp')" placeholder="0.00"
                         class="outline-none h-10 text-3xl text-sub-webapp">
-                    <div class="px-2 bg-gray-200 rounded-md py-1 absolute -top-4 left-2 text-sm">You pay - NGN</div>
+                    <div class="px-2 bg-gray-200 rounded-md py-1 absolute -top-4 left-2 text-sm">You pay - HBP</div>
                 </div>
-                <span class="text-sm text-webapp">Available NGN: {{ formatNumber(walletData.accountValue) }}</span>
             </div>
 
             <div class="flex flex-col items-end w-full gap-y-2">
                 <div class="w-full border border-gray-200 relative flex flex-col justify-end px-2 rounded-md h-24">
-                    <input type="number" v-model="data.hbp" @input="updateSwapValue('hbp')" placeholder="0.00"
+                    <input type="number" v-model="data.naira" @input="updateSwapValue('naira')" placeholder="0.00"
                         class="outline-none h-10 text-3xl text-sub-webapp">
-                    <div class="px-2 bg-gray-200 rounded-md py-1 absolute -top-4 left-2 text-sm">You get - HBP</div>
+                    <div class="px-2 bg-gray-200 rounded-md py-1 absolute -top-4 left-2 text-sm">You get - NGN</div>
                 </div>
+                <span class="text-sm text-webapp">Available HBP: {{ formatNumber(props.wallet.accountValue) }}</span>
             </div>
 
             <button @click="processSwap"
-                :class="{ 'bg-blue-600 text-white': data.naira <= walletData.accountValue && data.hbp > 0, 'bg-gray-300': data.naira < 1 || data.naira > walletData.accountValue || data.hbp == 0, }"
+                :class="{ 'bg-blue-600 text-white': data.hbp <= props.wallet.accountValue && data.naira > 0, 'bg-gray-300': data.hbp < 1 || data.hbp > props.wallet.accountValue || data.naira == 0 }"
                 class="grid rounded-lg place-items-center h-14 my-6 w-full"
-                :disabled="data.naira < 1 || data.naira > walletData.accountValue || data.hbp == 0">
+                :disabled="data.hbp < 1 || data.hbp > props.wallet.accountValue || data.naira == 0">
                 <span v-if="!processingSwap">Swap</span>
                 <Preloader v-else />
             </button>
@@ -49,9 +49,10 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
-import axios from '../../../../composables/axios'
+import axios from '../../../../../composables/axios'
 import formatNumber from 'number_formatter'
 
+const props = defineProps(['wallet'])
 const store = useStore()
 const router = useRouter()
 const emit = defineEmits(['close'])
@@ -61,10 +62,6 @@ const data = reactive({
     hbp: null
 })
 
-const walletData = ref({
-    accountValue: 0
-})
-
 const onError = ref(false)
 let errorMsg = ref('')
 let newMsg = ref('')
@@ -72,9 +69,9 @@ let newMsg = ref('')
 function updateSwapValue(token) {
     onError.value = false
     if (token == 'naira') {
-        if (data.naira > walletData.value.accountValue) {
+        if (data.hbp > props.wallet.accountValue) {
             onError.value = true
-            errorMsg.value = 'Swap amount is lower than wallet balance. Deposit ' + (Number(data.naira) - Number(walletData.value.accountValue)) + ' to swap'
+            errorMsg.value = 'Swap amount is lower than wallet balance. Deposit ' + (Number(data.hbp) - Number(props.wallet.accountValue)) + ' HBP to swap'
         } else {
             data.hbp = data.naira / 80
             setTimeout(() => {
@@ -82,9 +79,9 @@ function updateSwapValue(token) {
             }, 3000);
         }
     } else {
-        if (data.naira > walletData.value.accountValue) {
+        if (data.hbp > props.wallet.accountValue) {
             onError.value = true
-            errorMsg.value = 'Swap amount is lower than wallet balance. Deposit ' + (data.naira - walletData.value.accountValue) + ' to swap'
+            errorMsg.value = 'Swap amount is lower than wallet balance. Deposit ' + (data.hbp - props.wallet.accountValue) + ' HBP to swap'
         } else {
             data.naira = data.hbp * 80
             setTimeout(() => {
@@ -97,32 +94,17 @@ function updateSwapValue(token) {
 const processingSwap = ref(false)
 
 
-async function getWallet() {
-    try {
-        const nairaWallet = await axios.post('/wallet/fetch-wallet', { wallet: 'naira' })
-        if (nairaWallet.data.error === false) {
-            walletData.value = nairaWallet.data.data
-        }
-    } catch (error) {
-
-    }
-}
-
-getWallet()
-
-
 const processSwap = async () => {
     try {
         processingSwap.value = true
 
         let mainData = {
-            wallet: walletData.value.accountID,
-            amount: data.naira,
-            tokenToSwap: 'naira'
+            wallet: props.wallet.accountID,
+            amount: data.hbp,
+            tokenToSwap: 'hbp'
         }
 
         const swapToken = await axios.post('/wallet/swap', mainData)
-        console.log(swapToken)
         newMsg.value = swapToken.data.message
 
         setTimeout(() => {
@@ -133,7 +115,11 @@ const processSwap = async () => {
         }, 3000);
     } catch (error) {
         onError.value = true
-        errorMsg.value = error.response.data.message
+        console.log(error)
+        errorMsg.value = error.message
+
+        processingSwap.value = false
+
 
         setTimeout(() => {
             onError.value = false

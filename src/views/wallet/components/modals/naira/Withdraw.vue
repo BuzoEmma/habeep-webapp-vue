@@ -6,7 +6,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
             <span class="text-xl font-medium text-webapp">Withdrawal details</span>
-            <img src="../../../../assets/icons/x.svg" class="cursor-pointer collapse md:visible" @click="$emit('close')"
+            <img src="../../../../../assets/icons/x.svg" class="cursor-pointer collapse md:visible" @click="$emit('close')"
                 alt="">
         </div>
         <div class="w-full px-4 py-6 flex flex-col items-start ">
@@ -89,12 +89,13 @@ import copy from 'copy-to-clipboard3';
 import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import uniqid from 'uniqid'
-import axios from '../../../../composables/axios'
+import axios from '../../../../../composables/axios'
 import axiosDefault from 'axios'
 
 axiosDefault.defaults.headers.common = {
-    Authorization: `bearer sk_live_8990dd21e112e7c5f4c74ece341c87c3c38ff2f3`,
+    Authorization: `bearer ${import.meta.env.PAYSTACK_SECRET_KEY}`,
 };
+
 
 const props = defineProps(['amount'])
 
@@ -105,7 +106,7 @@ const router = useRouter()
 const withdrawalDetails = reactive({
     amount: props.amount,
     fee: 0,
-    paymentMethod: 'paystack',
+    paymentMethod: 'bank_transfer',
     bank: '',
     accountNumber: ''
 })
@@ -190,9 +191,7 @@ async function withdrawMoney() {
         })
 
         const initiateTransfer = await axiosDefault.post('https://api.paystack.co/transfer', transferParams)
-        processingDeposit.value = true
-
-        newMsg.value = 'Withdrawal request has been queued'
+        processWithdrawal(initiateTransfer.data)
 
         setTimeout(() => {
             newMsg.value = ''
@@ -200,8 +199,8 @@ async function withdrawMoney() {
         }, 3000);
 
     } catch (error) {
-        processingWithdrawal.value = false
         onError.value = true
+        processWithdrawal({ status: 'QWERT//' })
         if (error.response) {
             errorMsg.value = error.response.data.message
         }
@@ -214,31 +213,30 @@ async function withdrawMoney() {
 
 const emit = defineEmits(['close'])
 
-
+const onSelectMethod = ref(false)
 const processingWithdrawal = ref(false)
 
-const onSelectMethod = ref(false)
 
-
-const processSuccessPayment = async (response) => {
-    console.log(response)
+const processWithdrawal = async (response) => {
+    let status = response.status
+    if (response.status === true) {
+        status = "ASDFG//"
+    }
     try {
-        processingDeposit.value = true
-
         let data = {
             accountId: store.state.user.wallet.naira,
-            amount: depositData.amount,
-            referenceId: paystackReference.value,
-            status: true,
+            amount: withdrawalDetails.amount,
+            reference: paystackReference.value,
+            status: response.status,
             userId: store.state.user._id,
-            paymentMethod: depositData.paymentMethod
+            paymentMethod: withdrawalDetails.paymentMethod
         }
 
-        const saveDeposit = await axios.post('/wallet/deposit/naira', data)
+        const saveDeposit = await axios.post('/wallet/withdraw/naira', data)
         newMsg.value = saveDeposit.data.message
+        processingWithdrawal.value = false
 
         setTimeout(() => {
-            processingDeposit.value = false
             emit('close')
             router.go()
             newMsg.value = ''
@@ -255,36 +253,6 @@ const processSuccessPayment = async (response) => {
 
 }
 
-const processCanceledPayment = async () => {
-    console.log('canceled')
-    try {
-        paystackReference.value = genRef()
-        processingDeposit.value = true
-
-        let data = {
-            accountId: store.state.user.wallet.naira,
-            amount: depositData.amount,
-            referenceId: paystackReference.value,
-            status: false,
-            userId: store.state.user._id,
-            paymentMethod: depositData.paymentMethod
-        }
-
-        const saveDeposit = await axios.post('/wallet/deposit/naira', data)
-    } catch (error) {
-        onError.value = true
-        errorMsg.value = error.response.data.message
-
-        setTimeout(() => {
-            processingDeposit.value = false
-            onError.value = false
-            emit('close')
-            router.go()
-            errorMsg.value = 'saveDeposit.data.message'
-        }, 3000);
-    }
-
-}
 
 function genRef() {
     return uniqid("wdl-pstk-");

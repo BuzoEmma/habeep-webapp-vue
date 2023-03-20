@@ -162,7 +162,7 @@ async function loginUser() {
                         if (route.query.redirect) {
                             router.push(route.query.redirect)
                         } else {
-                            router.push('/feeds?reload=true')
+                            router.push('/?reload=true')
                         }
                     } else {
                         router.push('/verify-otp?email=' + login.data.data.user.email)
@@ -180,7 +180,7 @@ async function loginUser() {
             }
         } catch (error) {
             onError.value = true
-            if (error.response.data) {
+            if (error.response) {
                 errorMsg.value.msg = error.response.data.message;
             } else errorMsg.value.msg = error.message;
             processing.value = false
