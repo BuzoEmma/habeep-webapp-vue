@@ -14,36 +14,46 @@
                 <div class="relative h-full display-img w-1/2 py-1">
                     <img :src="carouselImg.link" class=" h-full w-full rounded-lg main-img"
                         v-if="carouselImg.link.toString().includes('mp4') == false" @click="enterImageViewer()" alt="">
-                    <video :src="carouselImg.link" @click="enterImageViewer()" loop controls class="w-full rounded-lg"
-                        v-else autoplay muted></video>
+                    <video :src="carouselImg.link" @click="enterImageViewer()" loop class="w-full rounded-lg" v-else
+                        autoplay muted></video>
 
                     <div class="w-full absolute flex flex-row top-5 items-center justify-between px-2">
                         <img src="../../assets/icons/back-img.svg" class="cursor-pointer" alt="">
                         <div class="flex flex-row gap-x-3">
                             <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
-                            <img src="../../assets/icons/heart.svg" class="cursor-pointer" alt="">
+                            <div class="grid place-items-center relative p-1" v-if="$store.state.isAuthenticated">
+                                <img src="../../assets/icons/heart.svg" class="cursor-pointer" alt="">
+                                <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
+                                    :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor"
+                                    class="w-6 h-6 absolute top-3 text-white cursor-pointer" @click="saveAd(product._id)"
+                                    :class="{ 'text-orange-400': $store.state.user.savedAds.includes(product._id) }">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                                </svg>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="flex h-full flex-col w-1/2">
                     <div class=" flex flex-row h-1/2 w-full pl-2 items-center">
-                        <div class="h-full w-1/2 p-1 cursor-pointer rounded-lg overflow-hidden"
-                            v-for="image in images.slice(0, 2)" :key="image">
-                            <img :src="image.link" class=" h-full p-1 w-full rounded-lg"
-                                v-if="image.link.toString().includes('mp4') == false" @click="enterImageViewer()"
+                        <div class="h-full w-1/2 p-2 pt-4 cursor-pointer rounded-lg overflow-hidden"
+                            v-for="image in images.slice(1, 3)" :key="image">
+                            <img :src="image.link" class=" h-full p-2 w-full rounded-lg"
+                                v-if="image.link.toString().includes('mp4') === false" @click="enterImageViewer()"
                                 :key="image" alt="">
-                            <video :src="image.link" @click="enterImageViewer()" h class="w-full rounded-lg" v-else autoplay
-                                muted></video>
+                            <video :src="image.link" @click="enterImageViewer()" loop class="w-full rounded-lg" v-else
+                                autoplay muted></video>
                         </div>
                     </div>
                     <div class=" flex flex-row h-1/2 w-full pl-2 items-center">
-                        <div class="w-1/2 p-1 cursor-pointer rounded-lg overflow-hidden" style="height: 300px"
-                            v-for="image in images.slice(0, 2)" :key="image">
+                        <div class="w-1/2 p-2 cursor-pointer rounded-lg overflow-hidden" style="height: 300px"
+                            v-for="image in images.slice(3, 5)" :key="image">
                             <img :src="image.link" class=" h-full p-1 w-full rounded-lg"
                                 v-if="image.link.toString().includes('mp4') == false" @click="enterImageViewer()" alt="">
-                            <video :src="image.link" @click="enterImageViewer()" loop controls class="w-full rounded-lg"
-                                v-else autoplay muted></video>
+                            <video :src="image.link" @click="enterImageViewer()" loop class="w-full rounded-lg" v-else
+                                autoplay muted></video>
                         </div>
                     </div>
                 </div>
@@ -57,13 +67,27 @@
                     <img src="../../assets/icons/back-img.svg" class="cursor-pointer" alt="">
                     <div class="flex flex-row gap-x-3">
                         <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
-                        <img src="../../assets/icons/heart.svg" @click="saveAd(product._id)" class="cursor-pointer" alt="">
+                        <div class="flex flex-row gap-x-3">
+                            <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
+                            <div class="grid place-items-center relative p-1" v-if="$store.state.isAuthenticated">
+                                <img src="../../assets/icons/heart.svg" class="cursor-pointer" alt="">
+                                <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
+                                    :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor"
+                                    class="w-6 h-6 absolute top-3 text-white cursor-pointer" @click="saveAd(product._id)"
+                                    :class="{ 'text-orange-400': $store.state.user.savedAds.includes(product._id) }">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                                </svg>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <img :src="carouselImg.link" class=" h-full w-full rounded-lg main-img"
                     v-if="carouselImg.link.toString().includes('mp4') == false" @click="enterImageViewer()" alt="">
-                <video :src="carouselImg.link" loop controls class="w-full rounded-lg" v-else autoplay muted></video>
+                <video :src="carouselImg.link" loop class="w-full rounded-lg" @click="enterImageViewer()" v-else autoplay
+                    muted></video>
                 <!-- <img :src="images[activeCarouselImg - 1].link" class="h-full w-full new-img" :class="{'hidden': changeCarouselImg}"> -->
 
                 <div class="flex flex-row items-center w-full absolute bottom-5 justify-between md:px-8 px-2">
@@ -262,6 +286,7 @@
         </div>
     </div>
 
+    <!-- image viewer -->
     <div v-else class="view-img w-screen min-w-full flex flex-col items-center h-full min-h-screen lg:p-8  xl:p-12"
         style="background: #161622;">
         <div class="flex flex-row items-center w-full justify-between lg:p-0 p-6">
@@ -271,13 +296,17 @@
         </div>
 
         <div class="mt-6 flex flex-row items-center justify-between w-full h-fit gap-x-2 relative">
-            <img src="../../assets/icons/back-circle.svg" @click="changeCarouselImg(activeCarouselImg - 1)"
-                class="cursor-pointer lg:block absolute left-3 z-10" alt="">
+            <img src="../../assets/icons/back-circle.svg" v-if="activeCarouselImg > 1"
+                @click="changeCarouselImg(activeCarouselImg - 1)" class="cursor-pointer lg:block absolute left-3 z-10"
+                alt="">
             <div class="image-container h-fit w-full">
-                <img :src="carouselImg.link" class="w-full h-full main-img" alt="">
+                <img :src="carouselImg.link" style="object-fit: contain; object-position: center;"
+                    v-if="carouselImg.link.includes('mp4') == false" class="w-full h-full main-img" alt="">
+                <video :src="carouselImg.link" style="object-fit: contain !important; object-position: center;" loop
+                    class="w-full rounded-lg" @click="enterImageViewer()" v-else autoplay muted></video>
             </div>
             <img src="../../assets/icons/next-circle.svg" @click="changeCarouselImg(activeCarouselImg + 1)"
-                class="cursor-pointer lg:block absolute right-3 z-10" alt="">
+                v-if="activeCarouselImg < images.length" class="cursor-pointer lg:block absolute right-3 z-10" alt="">
         </div>
     </div>
 </template>
@@ -289,6 +318,7 @@ import gsap from 'gsap'
 import axios from "../../composables/axios";
 import { useRoute } from 'vue-router'
 import formatNumber from "number_formatter"
+import saveAd from '../../composables/saveAd'
 
 
 const url = '/listings/ads/get/';
@@ -315,7 +345,6 @@ const getProduct = async () => {
 
     product.value = getProduct.data.product
     images.value = getProduct.data.product.images
-    console.log(images.value)
     carouselImg.value = getProduct.data.product.images[0]
 
     getAgent(product.value.agentId)
@@ -414,4 +443,5 @@ onMounted(() => {
 
 .image-container {
     height: 80vh;
-}</style>
+}
+</style>

@@ -1,5 +1,7 @@
 <template>
-  <div class="main flex flex-col items-center gap-y-4 z-20 p-5  justify-end overflow-hidden my-auto mx-auto bg-white">
+  <div v-motion :initial="{ opacity: 0.2, x: -100, y: -100 }" :enter="{ opacity: 1, x: 0, y: 0 }"
+    :leave="{ x: 100, y: 100, opacity: 0, }"
+    class="main flex flex-col items-center gap-y-4 z-20 p-5  justify-end overflow-hidden my-auto mx-auto bg-white">
     <img src="../../../../../assets/icons/listings/house_uploaded.svg" alt="">
     <span class="text-sm text-gray-400 mt-4">Hurray!</span>
     <span class="text-webapp text-lg font-medium">Ads successfully published</span>

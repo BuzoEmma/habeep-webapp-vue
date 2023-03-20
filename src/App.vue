@@ -11,9 +11,6 @@ const store = useStore();
 const router = useRouter();
 const route = useRoute();
 
-if (route.query.loggedIn) {
-  router.push('/feeds')
-}
 
 function verifyAllowedRoles(route, role) {
   if (role === 'random') {
@@ -21,6 +18,8 @@ function verifyAllowedRoles(route, role) {
   }
   if (role === 'user') {
     if (route.name === 'Home')
+      return true
+    if (route.name === 'Main')
       return true
     if (route.name === 'Blog')
       return true
@@ -36,38 +35,29 @@ function verifyAllowedRoles(route, role) {
       return true
     if (route.name === 'Wallet')
       return true
-    if (route.name === 'Wallet')
-      return true
   }
 }
 
 const getUser = async () => {
   try {
     const user = await axios.get("/auth/user");
-    let loggedIn = cookies.get("loggedIn");
+    const loggedIn = cookies.get("loggedIn");
     if (user.data === "Unauthorized" || !loggedIn) {
       store.dispatch("unsetAuth");
-      if (!verifyAllowedRoles(route, 'user')) {
+      if (verifyAllowedRoles(route, 'user') === false) {
         router.push("/login?redirect=" + router.currentRoute.value.fullPath + "?reload=true");
       }
     } else {
-      if (user.data.error === null) {
-        store.dispatch("unsetAuth");
-        if (!verifyAllowedRoles(route, 'user')) {
-          router.push("/login?redirect=" + router.currentRoute.value.fullPath + "?reload=true");
-        }
-      } else {
-        let mutate = {
-          sessionId: store.state.sessionId,
-          authState: true,
-          userDetails: user.data,
-        };
-        store.dispatch("setAuth", mutate);
-      }
+      let mutate = {
+        sessionId: store.state.sessionId,
+        authState: true,
+        userDetails: user.data,
+      };
+      store.dispatch("setAuth", mutate);
     }
   } catch (error) {
     store.dispatch("unsetAuth");
-    if (!verifyAllowedRoles(route, 'user') || !loggedIn) {
+    if (verifyAllowedRoles(route, 'user') === false || !loggedIn) {
       router.push("/login?redirect=" + router.currentRoute.value.fullPath + "?reload=true");
     }
   }

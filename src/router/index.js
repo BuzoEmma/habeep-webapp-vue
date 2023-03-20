@@ -128,8 +128,8 @@ import WalletIndex from '../views/wallet/Index.vue'
 const routes = [
     {
         path: '/',
-        name: changeHomeName(),
         component: changeHomeRoute(),
+        name: 'Main',
         meta: {
             title: changeHomeName()
         }
@@ -315,7 +315,7 @@ const routes = [
         }
     },
 
-    { path: '/:pathMatch(.*)*', name: 'not-found', component: Error404 },
+    { path: '/:pathMatch(.*)*', name: 'not-found', component: Error404, meta: { title: 'Page not Found' } },
 ]
 
 

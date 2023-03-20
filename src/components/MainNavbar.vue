@@ -53,24 +53,26 @@
             style="width: 250px">
 
             <p @click="$router.push('/')" class="text-sm text-webapp mt-1 cursor-pointer mobile-nav-item"
-                :class="{ 'text-primary': $route.name === 'Home' }">Home</p>
+                :class="{ 'text-blue-500': $route.name === 'Home' }">Home</p>
+            <p @click="$router.push('/feeds')" class="text-sm text-webapp mt-1 cursor-pointer"
+                :class="{ 'text-blue-700': $route.name === 'Feeds' }" v-if="$store.state.isAuthenticated">Feeds</p>
             <p @click="$router.push('/listings/search')" class="mobile-nav-item text-sm text-webapp mt-1 cursor-pointer"
-                :class="{ 'text-primary': $route.name === 'Listings-search' }">Search</p>
+                :class="{ 'text-blue-700': $route.name === 'Listings-search' }">Search</p>
             <p @click="$router.push('chat')" class="mobile-nav-item text-sm text-webapp mt-1 cursor-pointer"
-                :class="{ 'text-primary': $route.name === 'Chat' }" v-if="$store.state.isAuthenticated">Message</p>
+                :class="{ 'text-blue-700': $route.name === 'Chat' }" v-if="$store.state.isAuthenticated">Message</p>
             <p @click="$router.push('/user/profile/' + $store.state.user._id)"
-                class="text-sm text-webapp mt-1 cursor-pointer" :class="{ 'text-primary': $route.name === 'User-profile' }"
+                class="text-sm text-webapp mt-1 cursor-pointer" :class="{ 'text-blue-700': $route.name === 'User-profile' }"
                 v-if="$store.state.isAuthenticated">Account</p>
             <hr class="my-1">
             <p @click="$router.push('/agent/ads')" class="mobile-nav-item text-sm text-webapp mt-1 cursor-pointer"
-                :class="{ 'text-primary': $route.name === 'Agent-ads' || 'Agent-ads-create' }"
+                :class="{ 'text-blue-700': $route.name === 'Agent-ads' || $route.name === 'Agent-ads-create' }"
                 v-if="$store.state.isAuthenticated && $store.state.user.role === 'AGENT_IBO'">Post an Ad</p>
             <p @click="$router.push('/account/IBO/category')"
                 class="mobile-nav-item text-sm text-webapp mt-1 cursor-pointer"
-                :class="{ 'text-primary': $route.name.includes('IBO') === true }"
+                :class="{ 'text-blue-700': $route.name.includes('IBO') === true }"
                 v-if="$store.state.isAuthenticated && $store.state.user.role === 'USER'">Become an Agent</p>
             <p @click="$router.push('/wallet')" class="mobile-nav-item text-sm text-webapp mt-1 cursor-pointer"
-                :class="{ 'text-primary': $route.name === 'Wallet' }" v-if="$store.state.isAuthenticated">Wallet</p>
+                :class="{ 'text-blue-700': $route.name === 'Wallet' }" v-if="$store.state.isAuthenticated">Wallet</p>
             <span class="text-sm text-webapp mt-1 md:hidden mobile-nav-item" @click="$router.push('/blog')">BLOG</span>
 
             <div v-if="!$store.state.isAuthenticated"

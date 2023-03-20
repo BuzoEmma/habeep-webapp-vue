@@ -80,7 +80,7 @@
       <img src="../assets/illustrations/home-right.svg" class="xl:flex hidden" alt="">
     </div>
 
-    <MobileSearch v-if="onSearch" />
+    <MobileSearch v-if="onSearch" v-motion :initial="{ opacity: 0.5, y: 100 }" :enter="{ opacity: 1, y: 0 }" />
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-    <div
+    <div v-motion :initial="{ opacity: 0.2, x: -100 }" :enter="{ opacity: 1, x: 0 }" :leave="{ x: 100, opacity: 0, }"
         class="w-screen min-w-full flex flex-col lg:flex-row items-center bg-white h-full md:h-screen min-h-full overflow-y-auto md:overflow-hidden">
         <div class="flex flex-col items-start gap-y-6 h-2/6 lg:h-full bg-webapp justify-between w-full lg:w-2/5 px-10">
             <div class="logo md:flex hidden flex-row items-center justify-start pt-10 w-full gap-x-2 cursor-pointer"
@@ -29,7 +29,7 @@
                     <label for="" class="text-lg font-medium text-webapp">Price in Naira</label>
                     <div class="flex flex-row gap-x-2 items-center w-full border border-gray-200 rounded-lg h-16 p-3">
                         <img src="../../../../../assets/icons/listings/naira.svg" alt="">
-                        <input type="number" v-model="data.data.price" placeholder="Type a title for this listing"
+                        <input type="number" v-model="data.data.price" placeholder="Type a price for this listing"
                             class="w-full h-full rounded-lg price">
                     </div>
                 </div>

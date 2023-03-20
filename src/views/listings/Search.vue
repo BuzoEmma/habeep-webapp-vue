@@ -20,7 +20,8 @@
 
 
         <div class="body px-6 2xl:px-44 md:px-20 mb-10 w-full flex flex-col h-fit items-center md:items-start gap-y-8 mt-3">
-            <div class="flex flex-row items-center w-full px-2 relative" v-if="onSearchBar">
+            <div class="flex flex-row items-center w-full px-2 relative" v-if="onSearchBar" v-motion
+                :initial="{ opacity: 0.5, y: -100 }" :enter="{ opacity: 1, y: 0 }" :leave="{ y: 100, opacity: 0.2, }">
                 <input type="text" placeholder="Search products" v-model="searchData" @keydown="checkForEnter"
                     class=" border border-black pl-2 outline-none h-10 w-full">
                 <div class="search-btn w-8 h-8 bg-black absolute right-3 grid place-items-center cursor-pointer"
@@ -176,8 +177,10 @@
                                 <span v-if="product.for === 'rent'">Year</span>
                                 <span v-if="product.for === 'sale'">Forever</span>
                             </p>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="w-6 h-6 cursor-pointer" @click="saveAd(product._id)"
+                            <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
+                                :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6 cursor-pointer"
+                                @click="saveAd(product._id)"
                                 :class="{ 'text-orange-400': $store.state.user.savedAds.includes(product._id) }">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
@@ -201,6 +204,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { useStore } from 'vuex'
 import MainNavbar from '../../components/MainNavbar.vue'
 import formatNumber from 'number_formatter';
+import saveAd from '../../composables/saveAd'
 import axios from "../../composables/axios";
 import { useRoute } from 'vue-router';
 

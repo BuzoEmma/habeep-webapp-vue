@@ -2,16 +2,24 @@
     <div class="absolute w-screen h-screen flex flex-row items-center justify-center" v-if="onModal"
         style="background: rgb(22, 22, 34, 0.5)">
 
-        <DepositModal v-if="depositModal" @close="closeModal" />
-        <Withdraw :walletData="walletData" :amount="withdrawAmount" v-if="withdrawalModal" @close="closeModal" />
-        <SwapModal v-if="swapModal" @close="closeModal" />
-        <ChooseMethod :walletData="walletData" v-if="chooseWithdrawalMethodModal" @close="closeModal"
+        <DepositModal v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }"
+            v-if="depositModal" @close="closeModal" />
+        <Withdraw v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }"
+            :walletData="walletData" :amount="withdrawAmount" v-if="withdrawalModal" @close="closeModal" />
+        <SwapModal v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }" v-if="swapModal"
+            @close="closeModal" />
+        <ChooseMethod v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }"
+            :walletData="walletData" v-if="chooseWithdrawalMethodModal" @close="closeModal"
             @gotoWithdrawal="openWithdrawalModal" />
 
-        <DepositHBP :wallet="tokenWallet" v-if="depositHBPModal" @close="closeModal" />
-        <SwapHBP :wallet="tokenWallet" v-if="swapHBPModal" @close="closeModal" />
-        <TransferHBP :wallet="tokenWallet" v-if="transferHBP" @close="closeModal" />
-        <ChooseHBPMethod :wallet="tokenWallet" v-if="chooseHBPWithdrawalMethodModal" @close="closeModal"
+        <DepositHBP v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }"
+            :wallet="tokenWallet" v-if="depositHBPModal" @close="closeModal" />
+        <SwapHBP v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }"
+            :wallet="tokenWallet" v-if="swapHBPModal" @close="closeModal" />
+        <TransferHBP v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }"
+            :wallet="tokenWallet" v-if="transferHBP" @close="closeModal" />
+        <ChooseHBPMethod v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }"
+            :wallet="tokenWallet" v-if="chooseHBPWithdrawalMethodModal" @close="closeModal"
             @gotoTransfer="openWithdrawalHBPModal('transferHBP')" @gotoSwap="openWithdrawalHBPModal('swapHBPModal')" />
     </div>
 
@@ -161,5 +169,4 @@ if (route.query.tab) {
 
 .main::-webkit-scrollbar-track {
     box-shadow: inset 0 0 10px white;
-}
-</style>
+}</style>

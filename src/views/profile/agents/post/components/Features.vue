@@ -1,5 +1,5 @@
 <template>
-    <div
+    <div v-motion :initial="{ opacity: 0.2, x: -100 }" :enter="{ opacity: 1, x: 0 }" :leave="{ x: 100, opacity: 0, }"
         class="w-screen min-w-full flex flex-col lg:flex-row items-center bg-white h-full md:h-screen min-h-full overflow-y-auto md:overflow-hidden">
         <div class="flex flex-col items-start gap-y-6 h-2/6 lg:h-full bg-webapp justify-between w-full lg:w-2/5 px-10">
             <div class="logo md:flex hidden flex-row items-center justify-start pt-10 w-full gap-x-2 cursor-pointer"
@@ -20,23 +20,23 @@
 
             <div class="form-fields w-full flex flex-row h-full items-center px-5 gap-3 flex-auto justify-center">
 
-                <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
+                <div class="flex cursor-pointer flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
                     :class="{ 'border-blue-500 border-2': data.data.includes('electricity') }"
                     @click="manage('electricity')">
                     <img src="../../../../../assets/icons/light.svg" alt="">
                     <span class="text-sm text-sub-webapp">Electricity</span>
                 </div>
-                <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
+                <div class="flex cursor-pointer flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
                     :class="{ 'border-blue-500 border-2': data.data.includes('water') }" @click="manage('water')">
                     <img src="../../../../../assets/icons/water.svg" alt="">
                     <span class="text-sm text-sub-webapp">Water</span>
                 </div>
-                <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
+                <div class="flex cursor-pointer flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
                     :class="{ 'border-blue-500 border-2': data.data.includes('parking') }" @click="manage('parking')">
                     <img src="../../../../../assets/icons/parking.svg" alt="">
                     <span class="text-sm text-sub-webapp">Parking</span>
                 </div>
-                <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
+                <div class="flex cursor-pointer flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
                     :class="{ 'border-blue-500 border-2': data.data.includes('pool') }" @click="manage('pool')">
                     <img src="../../../../../assets/icons/pool.svg" alt="">
                     <span class="text-sm text-sub-webapp">Pool</span>

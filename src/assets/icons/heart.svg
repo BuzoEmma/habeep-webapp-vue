@@ -1,14 +1,13 @@
 <svg width="35" height="35" viewBox="0 0 35 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_b_1601_6250)">
+<g filter="url(#filter0_b_1601_6251)">
 <path d="M17.5 0L27.7862 3.3422L34.1435 12.0922V22.9078L27.7862 31.6578L17.5 35L7.21376 31.6578L0.85651 22.9078V12.0922L7.21376 3.3422L17.5 0Z" fill="#020118" fill-opacity="0.3"/>
 </g>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M10 14.4844C10 12.0078 12.0078 10 14.4844 10C15.3698 10 16.2353 10.2621 16.972 10.7532L18 11.4385L19.028 10.7532C19.7647 10.2621 20.6302 10 21.5156 10C23.9922 10 26 12.0078 26 14.4844V15.0751C26 16.6478 25.3752 18.1561 24.2631 19.2682L19.6971 23.8343C18.7598 24.7716 17.2402 24.7716 16.3029 23.8343L11.7369 19.2682C10.6248 18.1561 10 16.6478 10 15.0751V14.4844ZM14.4844 11.6C12.8914 11.6 11.6 12.8914 11.6 14.4844V15.0751C11.6 16.2235 12.0562 17.3248 12.8682 18.1369L17.4343 22.7029C17.7467 23.0154 18.2533 23.0154 18.5657 22.7029L23.1318 18.1369C23.9438 17.3248 24.4 16.2235 24.4 15.0751V14.4844C24.4 12.8914 23.1086 11.6 21.5156 11.6C20.9461 11.6 20.3894 11.7686 19.9156 12.0844L18.4438 13.0656C18.175 13.2448 17.825 13.2448 17.5562 13.0656L16.0844 12.0844C15.6106 11.7686 15.0539 11.6 14.4844 11.6Z" fill="#FBFBFB"/>
 <defs>
-<filter id="filter0_b_1601_6250" x="-29.1426" y="-30" width="93.2852" height="95" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_b_1601_6251" x="-29.1426" y="-30" width="93.2852" height="95" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feGaussianBlur in="BackgroundImageFix" stdDeviation="15"/>
-<feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_1601_6250"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_1601_6250" result="shape"/>
+<feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_1601_6251"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_1601_6251" result="shape"/>
 </filter>
 </defs>
 </svg>
