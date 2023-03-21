@@ -56,10 +56,10 @@
             style="width: 250px">
 
             <p @click="$router.push('/home')" class="text-sm text-webapp mt-1 cursor-pointer"
-                :class="{ 'text-blue-600': $route.name === 'Feeds' }">Home</p>
+                :class="{ 'text-blue-600': $route.name === 'Home' }">Home</p>
             <p @click="$router.push('/feeds')" class="text-sm text-webapp mt-1 cursor-pointer"
                 :class="{ 'text-blue-600': $route.name === 'Feeds' }"
-                v-if="$store.state.isAuthenticated && $route.name === 'Feeds'">Feeds</p>
+                v-if="$store.state.isAuthenticated && $route.name !== 'Feeds'">Feeds</p>
 
             <p @click="$router.go()" class="text-sm text-webapp mt-1 cursor-pointer"
                 :class="{ 'text-blue-600': $route.name === 'Feeds' }"

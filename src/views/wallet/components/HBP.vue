@@ -136,7 +136,10 @@ let filteredTxns = ref([])
 
 if (route.query.cont) {
     if (route.query.cont === 'deposit') {
-        emit('openModal', 'swapModal')
+        emit('openModal', 'depositHBPModal')
+    }
+    if (route.query.cont === 'withdraw') {
+        emit('openModal', 'chooseHBPWithdrawalMethodModal')
     }
     router.replace({ query: null });
 }

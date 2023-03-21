@@ -120,19 +120,20 @@
                             v-for="ad in agentDetails.ads" :key="ad">
                             <div
                                 class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 ad">
-                                <img :src="ad.images[0].link" class="w-full ad-image rounded-t-md" alt=""
-                                    v-if="ad.images.length > 0">
-                                <p class="text-webapp  font-medium w-full px-2 cursor-pointer"
-                                    style="font-size: 15px !important"
-                                    @click="$router.push('/listings/products/' + ad._id)">{{
-                                        ad.title + ' at ' +
-                                        ad.location.city
-                                    }}
+                                <img @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
+                                    class="w-full h-full rounded-t-md" v-if="ad.images[0].link.includes('mp4') == false"
+                                    alt="">
+                                <video @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
+                                    class="w-full rounded-t-md" v-else autoplay muted></video>
+                                <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
+                                    @click="$router.push('/listings/products/' + ad._id)">
+                                    {{ ad.title }}
                                 </p>
 
                                 <div class="location flex flex-row items-center gap-x-2 px-2">
                                     <img src="../../../assets/images/map-pin.png" alt="">
-                                    <span class="text-sm text-webapp capitalize">{{ ad.location.city }}</span>
+                                    <span class="text-sm text-webapp capitalize">{{ ad.location.city ||
+                                        ad.location.address.substr(0, 20) }}</span>
                                 </div>
 
                                 <div class="flex flex-row items-center w-full justify-between px-3">
@@ -140,7 +141,8 @@
                                         <span v-if="ad.for === 'rent'">Year</span>
                                         <span v-if="ad.for === 'sale'">Forever</span>
                                     </p>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
+                                        :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6 cursor-pointer"
                                         @click="saveAd(ad._id)"
                                         :class="{ 'text-orange-400': $store.state.user.savedAds.includes(ad._id) }">
@@ -170,19 +172,20 @@
                         <div class="md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0" v-for="ad in savedAds" :key="ad">
                             <div
                                 class="flex flex-col items-start gap-y-2 relative ad border rounded-md border-gray-200 pb-2">
-                                <img :src="ad.images[0].link" class="w-full ad-image rounded-t-md" alt=""
-                                    v-if="ad.images.length > 0">
-                                <p class="text-webapp font-medium w-full px-2 cursor-pointer"
-                                    style="font-size: 15px !important"
-                                    @click="$router.push('/listings/products/' + ad._id)">{{
-                                        ad.title + ' at ' +
-                                        ad.location.city
-                                    }}
+                                <img @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
+                                    class="w-full h-full rounded-t-md" v-if="ad.images[0].link.includes('mp4') == false"
+                                    alt="">
+                                <video @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
+                                    class="w-full rounded-t-md" v-else autoplay muted></video>
+                                <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
+                                    @click="$router.push('/listings/products/' + ad._id)">
+                                    {{ ad.title }}
                                 </p>
 
                                 <div class="location flex flex-row items-center gap-x-2 px-2">
                                     <img src="../../../assets/images/map-pin.png" alt="">
-                                    <span class="text-sm text-webapp capitalize">{{ ad.location.city }}</span>
+                                    <span class="text-sm text-webapp capitalize">{{ ad.location.city ||
+                                        ad.location.address.substr(0, 20) }}</span>
                                 </div>
 
                                 <div class="flex flex-row items-center w-full justify-between px-3">
@@ -190,7 +193,8 @@
                                         <span v-if="ad.for === 'rent'">Year</span>
                                         <span v-if="ad.for === 'sale'">Forever</span>
                                     </p>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
+                                        :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6 cursor-pointer"
                                         @click="saveAd(ad._id)"
                                         :class="{ 'text-orange-400': $store.state.user.savedAds.includes(ad._id) }">

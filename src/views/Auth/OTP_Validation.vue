@@ -29,11 +29,16 @@
 
                 <div id="otp" class="flex flex-row  w-full text-webapp my-10">
                     <div class="flex flex-row gap-x-2 sm:gap-x-3 w-full text-lg overflow-none">
-                        <input type="number" v-model="val1" placeholder="-" @input="next" @keydown="back1" />
-                        <input type="number" v-model="val2" placeholder="-" @input="next" @keydown="back" />
-                        <input type="number" v-model="val3" placeholder="-" @input="next" @keydown="back" />
-                        <input type="number" v-model="val4" placeholder="-" @input="next" @keydown="back" />
-                        <input type="number" v-model="val5" placeholder="-" @input="next" @keydown="back" />
+                        <input type="number" maxlength="1" max="9" v-model="val1" placeholder="-" @input="next"
+                            @keyup="back1" />
+                        <input type="number" maxlength="1" max="9" v-model="val2" placeholder="-" @input="next"
+                            @keyup="back" />
+                        <input type="number" maxlength="1" max="9" v-model="val3" placeholder="-" @input="next"
+                            @keyup="back" />
+                        <input type="number" maxlength="1" max="9" v-model="val4" placeholder="-" @input="next"
+                            @keyup="back" />
+                        <input type="number" maxlength="1" max="9" v-model="val5" placeholder="-" @input="next"
+                            @keyup="back" />
                     </div>
                 </div>
                 <!-- submit btn -->
@@ -68,7 +73,6 @@ const val2 = ref()
 const val3 = ref()
 const val4 = ref()
 const val5 = ref()
-const val6 = ref()
 
 const next = (e) => {
     if (!e.target.value < 1) {
@@ -81,24 +85,29 @@ const next = (e) => {
             }
             e.target.parentElement.lastChild.focus()
         } else {
-            e.target?.nextSibling?.focus()
+            if (e.target === e.target.parentElement.lastChild) {
+                var key = e.keyCode || e.charCode;
+                if (key == 8 || key == 46) {
+                    e.target.value = null
+                    e.target.previousSibling.focus()
+                } else e.target.blur()
+            } else e.target.nextSibling.focus()
         }
     }
 }
 
 const back = (e) => {
     var key = e.keyCode || e.charCode;
-
     if (key == 8 || key == 46) {
-        e.target?.previousSibling?.focus()
-        e.target.value = ''
+        e.target.value = null
+        e.target.previousSibling.focus()
     }
 }
 const back1 = (e) => {
     var key = e.keyCode || e.charCode;
 
     if (key == 8 || key == 46) {
-        e.target.value = ''
+        e.target.value = null
     }
 }
 

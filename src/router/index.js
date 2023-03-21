@@ -78,7 +78,7 @@ function changeHomeRoute() {
 function changeHomeName() {
     if (createStore.state.isAuthenticated) {
         return 'Feeds'
-    } else return 'Home'
+    } else return 'Main'
 }
 
 // listings
@@ -129,7 +129,7 @@ const routes = [
     {
         path: '/',
         component: changeHomeRoute(),
-        name: 'Main',
+        name: changeHomeName(),
         meta: {
             title: changeHomeName()
         }

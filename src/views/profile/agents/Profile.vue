@@ -98,18 +98,22 @@
                         <div class="md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0 " v-for="ad in agentDetails.ads"
                             :key="ad">
                             <div class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2">
-                                <img :src="ad.images[0].link" class="w-full h-full rounded-t-md"
-                                    v-if="ad.images[0].link.includes('mp4') == false" alt="">
-                                <video :src="ad.images[0].link" h class="w-full rounded-lg" v-else autoplay muted></video>
+                                <img @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
+                                    class="w-full h-full rounded-t-md" v-if="ad.images[0].link.includes('mp4') == false"
+                                    alt="">
+                                <video @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
+                                    class="w-full rounded-t-md" v-else autoplay muted></video>
                                 <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
-                                    @click="$router.push('/listings/products/' + ad._id)">{{
-                                        ad.title + ' at ' +
-                                        ad.location.city
-                                    }}
+                                    @click="$router.push('/listings/products/' + ad._id)">
+                                    {{ ad.title }}
+                                    <span class="text-sm ">at</span>
+                                    {{ (ad.location.city || ad.location.address.substr(0, 20)) }}
                                 </p>
 
-                                <div class="location flex flex-row items-center gap-x-2 px-3">
-                                    <span class="text-sm text-webapp capitalize">{{ ad.location.city }}</span>
+                                <div class="location flex flex-row items-center gap-x-2 px-2">
+                                    <img src="../../../assets/images/map-pin.png" alt="">
+                                    <span class="text-sm text-webapp capitalize">{{ ad.location.city ||
+                                        ad.location.address.substr(0, 20) }}</span>
                                 </div>
 
                                 <div class="flex flex-row items-center w-full justify-between px-3">
@@ -118,8 +122,11 @@
                                             formatNumber(ad.price)
                                         }}
                                     </span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="#0A1045B2" class="w-6 h-6">
+                                    <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
+                                        :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6 cursor-pointer"
+                                        @click="saveAd(ad._id)"
+                                        :class="{ 'text-orange-400': $store.state.user.savedAds.includes(ad._id) }">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                                     </svg>
@@ -182,6 +189,7 @@ import MainNavbar from '../../../components/MainNavbar.vue'
 import Following from './components/modal/Following.vue'
 import axios from "../../../composables/axios";
 import formatNumber from "number_formatter"
+import saveAd from '../../../composables/saveAd'
 
 const route = useRoute()
 

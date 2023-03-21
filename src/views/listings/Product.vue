@@ -12,9 +12,9 @@
             <!-- product display images for desktop view -->
             <div class="product-img-grid desktop-view xl:flex flex-row items-center w-full mt-10 hidden">
                 <div class="relative h-full display-img w-1/2 py-1">
-                    <img :src="carouselImg.link" class=" h-full w-full rounded-lg main-img"
+                    <img :src="carouselImg.link" class=" h-full rounded-lg main-img w-full"
                         v-if="carouselImg.link.toString().includes('mp4') == false" @click="enterImageViewer()" alt="">
-                    <video :src="carouselImg.link" @click="enterImageViewer()" loop class="w-full rounded-lg" v-else
+                    <video :src="carouselImg.link" @click="enterImageViewer()" loop class="w-full h-full rounded-lg" v-else
                         autoplay muted></video>
 
                     <div class="w-full absolute flex flex-row top-5 items-center justify-between px-2">
@@ -67,19 +67,16 @@
                     <img src="../../assets/icons/back-img.svg" class="cursor-pointer" alt="">
                     <div class="flex flex-row gap-x-3">
                         <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
-                        <div class="flex flex-row gap-x-3">
-                            <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
-                            <div class="grid place-items-center relative p-1" v-if="$store.state.isAuthenticated">
-                                <img src="../../assets/icons/heart.svg" class="cursor-pointer" alt="">
-                                <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
-                                    :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor"
-                                    class="w-6 h-6 absolute top-3 text-white cursor-pointer" @click="saveAd(product._id)"
-                                    :class="{ 'text-orange-400': $store.state.user.savedAds.includes(product._id) }">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                                </svg>
-                            </div>
+                        <div class="grid place-items-center relative" v-if="$store.state.isAuthenticated">
+                            <img src="../../assets/icons/heart.svg" class="cursor-pointer" alt="">
+                            <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
+                                :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor"
+                                class="w-6 h-6 absolute top-2 text-white cursor-pointer" @click="saveAd(product._id)"
+                                :class="{ 'text-orange-400': $store.state.user.savedAds.includes(product._id) }">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                            </svg>
                         </div>
                     </div>
                 </div>
@@ -287,7 +284,7 @@
     </div>
 
     <!-- image viewer -->
-    <div v-else class="view-img w-screen min-w-full flex flex-col items-center h-full min-h-screen lg:p-8  xl:p-12"
+    <div v-else class="view-img w-screen flex flex-col items-center h-screen lg:p-8 overflow-hidden xl:p-12"
         style="background: #161622;">
         <div class="flex flex-row items-center w-full justify-between lg:p-0 p-6">
             <img src="../../assets/icons/x-bg.svg" @click="exitImageViewer()" class="cursor-pointer" alt="">
@@ -299,11 +296,11 @@
             <img src="../../assets/icons/back-circle.svg" v-if="activeCarouselImg > 1"
                 @click="changeCarouselImg(activeCarouselImg - 1)" class="cursor-pointer lg:block absolute left-3 z-10"
                 alt="">
-            <div class="image-container h-fit w-full">
+            <div class="image-container h-fit flex flex-col items-center justify-center w-full">
                 <img :src="carouselImg.link" style="object-fit: contain; object-position: center;"
                     v-if="carouselImg.link.includes('mp4') == false" class="w-full h-full main-img" alt="">
-                <video :src="carouselImg.link" style="object-fit: contain !important; object-position: center;" loop
-                    class="w-full rounded-lg" @click="enterImageViewer()" v-else autoplay muted></video>
+                <video :src="carouselImg.link" loop class="md:w-4/5 w-full rounded-lg" @click="enterImageViewer()" v-else
+                    controls></video>
             </div>
             <img src="../../assets/icons/next-circle.svg" @click="changeCarouselImg(activeCarouselImg + 1)"
                 v-if="activeCarouselImg < images.length" class="cursor-pointer lg:block absolute right-3 z-10" alt="">

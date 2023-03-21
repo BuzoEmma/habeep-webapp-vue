@@ -265,19 +265,24 @@
                 <div class="basis-full md:basis-1/2 xl:basis-1/4 md:px-3 md:py-3 py-5 gap-y-4 px-0" v-else
                     v-for="feed in filteredFeeds" :key="feed">
                     <div class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 feed">
-                        <img :src="feed.images[0].link" alt="" class="w-full feed-image rounded-t-md"
+                        <img :src="feed.images[0].link" @click="$router.push('/listings/products/' + feed._id)" alt=""
+                            class="w-full feed-image rounded-t-md"
                             v-if="feed.images[0].link.length > 0 && feed.images[0].link.includes('mp4') == false">
-                        <video :src="feed.images[0].link" h class="w-full rounded-t-md" v-else autoplay muted></video>
+                        <video :src="feed.images[0].link" @click="$router.push('/listings/products/' + feed._id)"
+                            class="w-full rounded-t-md" v-else autoplay muted></video>
                         <p class="text-webapp text-lg font-medium w-full px-2 cursor-pointer"
                             @click="$router.push('/listings/products/' + feed._id)">{{ feed.title }}</p>
 
-                        <div class="location flex flex-row items-center gap-x-2 px-2">
+                        <div class="location flex flex-row items-center gap-x-2 px-2"
+                            @click="$router.push('/listings/products/' + feed._id)">
                             <img src="../assets/images/map-pin.png" alt="">
-                            <span class="text-sm text-webapp">{{ feed.location.city }}</span>
+                            <span class="text-sm text-webapp">{{ feed.location.city || feed.location.address.substr(0, 20)
+                            }}</span>
                         </div>
 
                         <div class="flex flex-row items-center w-full justify-between px-2">
-                            <p class="text-sm text-webapp font-medium">N{{ formatNumber(feed.price) }} /
+                            <p @click="$router.push('/listings/products/' + feed._id)"
+                                class="text-sm text-webapp font-medium">N{{ formatNumber(feed.price) }} /
                                 <span v-if="feed.for === 'rent'">Year</span>
                                 <span v-if="feed.for === 'sale'">Forever</span>
                             </p>

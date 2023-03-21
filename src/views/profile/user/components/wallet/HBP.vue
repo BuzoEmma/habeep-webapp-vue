@@ -4,11 +4,13 @@
                 class="text-webapp text-sm font-bold">HBP</sub></p>
 
         <div class="w-full flex flex-row items-center justify-between">
-            <div class="flex flex-col gap-y-1 items-center" @click="$router.push('/wallet?tab=hbp&cont=deposit')">
+            <div class="flex flex-col gap-y-1 items-center cursor-pointer"
+                @click="$router.push('/wallet?tab=hbp&cont=deposit')">
                 <img src="../../../../../assets/icons/wallet/deposit.svg" alt="">
                 <span class="text-xs text-webapp">Deposit</span>
             </div>
-            <div class="flex flex-col gap-y-1 items-center">
+            <div class="flex flex-col gap-y-1 items-center cursor-pointer"
+                @click="$router.push('/wallet?tab=hbp&cont=withdraw')">
                 <img src="../../../../../assets/icons/wallet/withdraw.svg" alt="">
                 <span class="text-xs text-webapp">Withdraw</span>
             </div>

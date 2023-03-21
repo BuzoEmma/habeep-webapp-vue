@@ -166,14 +166,21 @@
                 <div class="basis-full md:basis-1/2 xl:basis-1/4 md:px-3 md:py-3 py-5 gap-y-4 px-0" v-else
                     v-for="product in products" :key="product">
                     <div class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 feed">
-                        <img :src="product.images[0].link" alt="" class="w-full feed-image rounded-t-md"
-                            v-if="product.images.length > 0">
-                        <p class="text-webapp text-lg font-medium w-full px-2 cursor-pointer"
-                            @click="$router.push('/listings/products/' + product._id)">{{ product.title }}</p>
+                        <img @click="$router.push('/listings/products/' + product._id)" :src="product.images[0].link"
+                            class="w-full h-full rounded-t-md" v-if="product.images[0].link.includes('mp4') == false"
+                            alt="">
+                        <video @click="$router.push('/listings/products/' + product._id)" :src="product.images[0].link"
+                            class="w-full rounded-t-md" v-else autoplay muted></video>
+                        <p class="text-webapp text-lg font-medium w-full mx-2 cursor-pointer"
+                            @click="$router.push('/listings/products/' + ad._id)">
+                            {{ product.title }}
+
+                        </p>
 
                         <div class="location flex flex-row items-center gap-x-2 px-2">
                             <img src="../../assets/images/map-pin.png" alt="">
-                            <span class="text-sm text-webapp">{{ product.location.city }}</span>
+                            <span class="text-sm text-webapp">{{ product.location.city || product.location.address.substr(0,
+                                20) }}</span>
                         </div>
 
                         <div class="flex flex-row items-center w-full justify-between px-2">

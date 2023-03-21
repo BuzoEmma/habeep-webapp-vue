@@ -102,25 +102,31 @@
 
                     <!-- listing template -->
                     <div class="basis-full md:basis-1/2 2xl:basis-1/3 p-4" v-for="item in activeProducts" :key="item">
-                        <div class="flex flex-col items-start gap-y-2 ad relative border-2 rounded-md border-gray-200 p-2">
-                            <img :src="item.images[0].link" alt="" class="w-full rounded-md ad-image">
-                            <p class="text-webapp text-lg font-medium w-full">{{ item.title }}
+                        <div class="flex flex-col items-start gap-y-2 ad relative rounded-t-md">
+                            <img @click="$router.push('/listings/products/' + item._id)" :src="item.images[0].link"
+                                class="w-full h-full rounded-t-md" v-if="item.images[0].link.includes('mp4') == false"
+                                alt="">
+                            <video @click="$router.push('/listings/products/' + item._id)" :src="item.images[0].link"
+                                class="w-full rounded-t-md" v-else autoplay muted></video>
+                            <p class="text-webapp text-lg font-medium w-full  cursor-pointer"
+                                @click="$router.push('/listings/products/' + item._id)">
+                                {{ item.title }}
                             </p>
 
                             <div class="location flex flex-row items-start gap-x-2">
                                 <img src="../../../../assets/images/map-pin.png" class="mt-1" alt="">
                                 <span class="text-sm text-webapp capitalize">{{
-                                    item.location.address + ', ' +
+                                    item.location.address ||
                                     item.location.city
                                 }}</span>
                             </div>
 
                             <div class="flex flex-row items-center w-full justify-start">
                                 <p v-if="item.for === 'rent'"><span class="text-lg text-webapp font-medium">N{{
-                                    item.price
+                                    formatNumber(item.price)
                                 }}</span><span class="text-gray-400 text-sm">/ Year</span></p>
-                                <p v-else><span class="text-lg text-webapp font-medium">N{{ item.price }}</span><span
-                                        class="text-gray-500 text-sm">/ Sale</span></p>
+                                <p v-else><span class="text-lg text-webapp font-medium">N{{ formatNumber(item.price)
+                                }}</span><span class="text-gray-500 text-sm">/ Sale</span></p>
                             </div>
 
                             <div class="mt-3 flex flex-row items-center justify-between gap-x-2 w-full">
@@ -149,15 +155,21 @@
 
                     <!-- listing template -->
                     <div class="basis-full md:basis-1/2 2xl:basis-1/3 ad p-4" v-for="item in closedProducts" :key="item">
-                        <div class="flex flex-col items-start gap-y-2 relative ad border-2 rounded-md border-gray-200 p-2">
-                            <img :src="item.images[0].link" alt="" class="w-full ad-image rounded-md">
-                            <p class="text-webapp text-lg font-medium w-full">{{ item.title }}
+                        <div class="flex flex-col items-start gap-y-2 relative ad  rounded-t-md">
+                            <img @click="$router.push('/listings/products/' + item._id)" :src="item.images[0].link"
+                                class="w-full h-full rounded-t-md" v-if="item.images[0].link.includes('mp4') == false"
+                                alt="">
+                            <video @click="$router.push('/listings/products/' + item._id)" :src="item.images[0].link"
+                                class="w-full rounded-t-md" v-else autoplay muted></video>
+                            <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
+                                @click="$router.push('/listings/products/' + item._id)">
+                                {{ item.title }}
                             </p>
 
                             <div class="location flex flex-row items-start gap-x-2">
                                 <img src="../../../../assets/images/map-pin.png" class="mt-1" alt="">
                                 <span class="text-sm text-webapp capitalize">{{
-                                    item.location.address + ', ' +
+                                    item.location.address ||
                                     item.location.city
                                 }}</span>
                             </div>
