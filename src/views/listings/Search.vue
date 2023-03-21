@@ -154,9 +154,13 @@
             <div class="flex flex-row flex-auto h-full md:mt-10 w-full flex-wrap px-6"
                 :class="{ 'justify-center items-center': products.length < 1 }">
 
-                <div class="flex flex-col items-center gap-y-3 md:justify-center" v-if="products.length < 1">
+                <div class="flex flex-col items-center gap-y-3 justify-center" v-if="products.length < 1 && !searchingData">
                     <img src="../../assets/icons/no-ad.svg" alt="">
                     <span class="text-gray-300 text-lg">No match for search yet</span>
+                </div>
+
+                <div class="flex flex-col items-center gap-y-3 justify-center" v-if="searchingData === true">
+                    <img src="../../assets/images/rhombus-preloader.gif" alt="">
                 </div>
                 <!-- listing template -->
                 <div class="basis-full md:basis-1/2 xl:basis-1/4 md:px-3 md:py-3 py-5 gap-y-4 px-0" v-else
@@ -228,6 +232,8 @@ let onState = ref(true)
 const currentState = ref(route.query.location || 'Nigeria')
 const currentCity = ref('All')
 
+const searchingData = ref(false)
+
 const searchDB = (e) => {
     getSearch(currentCity, e)
 }
@@ -271,6 +277,7 @@ function changeStateModal(state, type) {
 }
 
 async function getSearch(location, query) {
+    searchingData.value = true
     let data = reactive({
         location: location,
         string: query
@@ -281,6 +288,8 @@ async function getSearch(location, query) {
     getProducts.data.products.forEach(product => {
         products.value.push(product)
     })
+
+    searchingData.value = false
 
 }
 

@@ -11,24 +11,29 @@
         </div>
 
         <div class="flex flex-col items-center w-full h-full overflow-y-auto px-2 pb-8">
-            <div class="agents-to-follow flex w-full flex-col overflow-y-auto items-center h-full my-1" :class="{'justify-center': discoveredAgents.length === 0}">
+            <div class="agents-to-follow flex w-full flex-col overflow-y-auto items-center h-5/6 my-1"
+                :class="{ 'justify-center': discoveredAgents.length === 0 }">
                 <img src="../../../assets/images/rhombus-preloader.gif" class="m-auto" v-if="discoveredAgents.length === 0">
-                <div class="following flex flex-row items-center justify-between w-full py-4 px-4" v-else v-for="agent in discoveredAgents"
-                    :key="agent">
+                <div class="following flex flex-row items-center justify-between w-full py-4 px-4" v-else
+                    v-for="agent in discoveredAgents" :key="agent">
                     <div class="flex flex-row gap-x-2 items-center">
                         <div class="rounded-full w-10 h-10 grid place-items-center">
                             <img :src="agent.details.profileImage" class="w-full h-full" alt="">
                         </div>
                         <div class="flex flex-col items-start">
                             <span
-                                class="text-sm xl:text-lg md:text-center text-left following-name text-webapp font-medium">{{ agent.details.name }}</span>
+                                class="text-sm xl:text-lg md:text-center text-left following-name text-webapp font-medium">{{
+                                    agent.details.name }}</span>
                             <span
-                                class="text-sm following-ads-count md:text-center xl:text-left text-left text-sub-webapp">{{ agent.adsCount }} ads</span>
+                                class="text-sm following-ads-count md:text-center xl:text-left text-left text-sub-webapp">{{
+                                    agent.adsCount }} ads</span>
                         </div>
                     </div>
                     <!-- <img src="../../assets/icons/call-btn.svg" alt="" class="cursor-pointer md:ml-4"> -->
                     <button
-                        class="w-28 h-8 flex flex-row items-center justify-center rounded-lg text-sm font-medium text-white " :class="{'bg-white border border-blue-600': agent.following, 'bg-blue-600': !agent.following}" @click="manageAgentFollow(agent)">
+                        class="w-28 h-8 flex flex-row items-center justify-center rounded-lg text-sm font-medium text-white "
+                        :class="{ 'bg-white border border-blue-600': agent.following, 'bg-blue-600': !agent.following }"
+                        @click="manageAgentFollow(agent)">
                         <span v-if="!agent.following" class="text-white">Follow</span>
                         <span v-else class="text-blue-600">Unfollow</span>
                     </button>
@@ -72,7 +77,7 @@ async function discoverAgents() {
 }
 
 async function manageAgentFollow(agent) {
-    if(!agent.following) {
+    if (!agent.following) {
         let data = {
             email: props.email,
             userId: agent.id,
