@@ -263,7 +263,7 @@ const routes = [
         beforeEnter: guardMyroute,
         component: ChatIndex,
         meta: {
-            title: "Chats"
+            title: "Messages"
         }
     },
     // authentication

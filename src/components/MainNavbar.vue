@@ -58,7 +58,7 @@
                 :class="{ 'text-blue-700': $route.name === 'Feeds' }" v-if="$store.state.isAuthenticated">Feeds</p>
             <p @click="$router.push('/listings/search')" class="mobile-nav-item text-sm text-webapp mt-1 cursor-pointer"
                 :class="{ 'text-blue-700': $route.name === 'Listings-search' }">Search</p>
-            <p @click="$router.push('chat')" class="mobile-nav-item text-sm text-webapp mt-1 cursor-pointer"
+            <p @click="$router.push('/chats')" class="mobile-nav-item text-sm text-webapp mt-1 cursor-pointer"
                 :class="{ 'text-blue-700': $route.name === 'Chat' }" v-if="$store.state.isAuthenticated">Message</p>
             <p @click="$router.push('/user/profile/' + $store.state.user._id)"
                 class="text-sm text-webapp mt-1 cursor-pointer" :class="{ 'text-blue-700': $route.name === 'User-profile' }"

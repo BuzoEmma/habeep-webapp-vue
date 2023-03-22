@@ -1,45 +1,48 @@
 <template>
-
-    <div
-        class="flex flex-col items-center justify-center md:border md:border-gray-200 rounded-2xl w-full lg:w-2/3 h-full">
-        <div class="flex flex-col gap-y-2 h-fit" v-if="!props.chatState">
+    <div class="flex flex-col items-center justify-center md:border md:border-gray-200 rounded-2xl w-full lg:w-2/3 h-full">
+        <div class="flex flex-col gap-y-2 h-fit" v-if="!props.chat">
             <img src="../../../assets/illustrations/no-conversation.svg" alt="">
             <p class="text-lg text-webapp">No conversation yet</p>
         </div>
         <div class="flex flex-col h-full w-full justify-between items-center" v-else>
             <div
-                class="flex flex-row items-center justify-between w-full  relative border-b h-fit border-b-gray-200 px-2 lg:px-10 py-3">
+                class="flex flex-row items-center justify-between w-full  relative border-b h-fit border-b-gray-200 px-2 lg:px-5 py-1">
                 <div class="rounded-full w-13 h-13 grid place-items-center">
-                    <img src="../../../assets/icons/model.svg" v-if="screenWidth > 1023" class="w-full h-full" alt="">
+                    <img :src="props.chat.user.profilePicture" class="w-full h-full" alt="" v-if="screenWidth > 1023">
                     <svg xmlns="http://www.w3.org/2000/svg" @click="$emit('leaveChat')" v-else fill="none"
                         viewBox="0 0 24 24" stroke-width="1.5" stroke="#0A1045" class="w-6 h-6 cursor-pointer">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                     </svg>
                 </div>
                 <div class="flex flex-col items-center">
-                    <span class="text-lg text-left  text-webapp font-medium">Duke Carrick</span>
-                    <span class="text-sm text-sub-webapp">Online</span>
+                    <span class="text-lg text-left  text-webapp font-medium">{{ props.chat.user.fname + ' ' +
+                        props.chat.user.surname
+                    }}</span>
+                    <span class="text-sm text-sub-webapp" v-if="otherUserOnline">Online</span>
                 </div>
                 <img src="../../../assets/icons/phone.svg" class="cursor-pointer" @click="togglePhone" alt="">
 
                 <div v-if="onPhone && screenWidth > 1023"
                     class="flex flex-row items-center absolute right-0 -bottom-10  rounded-xl border border-gray-200 gap-x-2 py-2 px-3 cursor-pointer">
                     <img src="../../../assets/icons/phone.svg" alt="">
-                    <span class="text-sm text-primary font-medium">0906127484735</span>
+                    <span class="text-sm text-primary font-medium">{{ props.chat.user.phoneNumber }}</span>
                 </div>
             </div>
 
             <!-- messages -->
-            <div class="flex flex-col w-full h-full py-6 md:py-10 items-center">
-                <div class="flex flex-row items-center gap-x-2">
-                    <hr class="w-32">
-                    <span class="text-xs text-sub-webapp">Sat, 17/10</span>
-                    <hr class="w-32">
-                </div>
+            <div class="flex flex-col items-center w-full h-full overflow-y-auto">
+                <div class="flex flex-col w-full h-fit py-6 items-center justify-start"
+                    v-for="(chatGroup, index) in sortedChats()" :key="(chatGroup, index)">
+                    <div class="flex flex-row items-center gap-x-2">
+                        <hr class="w-32">
+                        <span class="text-xs text-sub-webapp">{{ index }}</span>
+                        <hr class="w-32">
+                    </div>
 
-                <div class="flex flex-col w-full items-center px-3" v-for="chat in chatsArray" :key="chat">
-                    <div class="w-full items-center my-2">
-                        <Message :data="chat" />
+                    <div class="flex flex-col w-full items-center px-3" v-for="chat in chatGroup" :key="chat">
+                        <div class="w-full items-center my-2">
+                            <Message :data="chat" :userId="$store.state.user._id" />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -50,54 +53,106 @@
                 <img src="../../../assets/icons/add-assets-chat.svg" alt="">
                 <input type="text" v-model="inputMsg"
                     class="message-input w-10/12 md:w-11/12 rounded-md h-11 border pl-3 border-gray-200"
-                    :class="{ 'border-red-500': inputMsgErr }" placeholder="Type something..."
-                    style="background: #F4F6FF;">
+                    :class="{ 'border-red-500': inputMsgErr }" placeholder="Type something..." style="background: #F4F6FF;">
                 <img src="../../../assets/icons/send-message.svg" class="cursor-pointer" @click="sendMessage" alt="">
             </div>
         </div>
     </div>
-
-   
 </template>
   
 <script setup>
 import Message from './Message.vue'
 import { ref, reactive } from 'vue'
 import { useRoute } from 'vue-router'
+import { io } from "socket.io-client";
+import { useStore } from 'vuex';
+import moment from 'moment'
 
 const route = useRoute()
+const store = useStore()
+const props = defineProps(['chat'])
+const emit = defineEmits(['showPhone', 'updateMsg'])
+const chat = props.chat
 
-const props = defineProps(['chatState'])
+let chatsArray = ref(chat.room.chats)
+const datedChats = ref([{}])
 
-const emit = defineEmits(['showPhone'])
+function sortedChats() {
+    let sortDatedChats = {}
+    Object.keys(datedChats.value[0]).sort(function (a, b, c) {
+        return moment(c, 'DD/MM/YYYY').toDate() - moment(b, 'DD/MM/YYYY').toDate() - moment(a, 'DD/MM/YYYY').toDate();
+    }).forEach(function (key) {
+        sortDatedChats[key] = datedChats.value[0][key];
+    })
+
+    return sortDatedChats
+
+}
+
+const socket = io("http://localhost:2023/", {
+    auth: {
+        token: store.state.sessionId
+    }
+});
+
+
+socket.on("connect", () => {
+    if (props.chat) {
+        socket.emit('joinRoom', { roomId: props.chat.room._id, users: props.chat.room.users })
+    }
+});
+
+socket.on("online", (user) => {
+    console.log(user, 'jll')
+    if (props.chat.room.users.includes(user) && user !== store.state.user._id) {
+        otherUserOnline.value = true
+    }
+})
+socket.on("offline", (user) => {
+    if (props.chat.room.users.includes(user) && user !== store.state.user._id) {
+        otherUserOnline.value = false
+    }
+})
+
+socket.on("message", (msg) => {
+    if (datedChats.value[0].hasOwnProperty(msg.dateCreated)) {
+        datedChats.value[0][msg.dateCreated].push(msg)
+    } else {
+        datedChats.value[0][msg.dateCreated] = [msg]
+    }
+    chatsArray.value.push(msg)
+})
+
+console.log(socket)
+
+const otherUserOnline = ref(false)
+
+
+function updateNewestMsg(msg) {
+    emit('updateMsg', msg)
+}
 
 const inputMsg = ref('')
 const inputMsgErr = ref(false)
 
 const screenWidth = ref(window.innerWidth)
-
 const onPhone = ref(false)
 
-let chatsArray = ref([
-    {
-        msg: 'Hello, i saw your ads and will like to see it',
-        time: '16:50',
-        status: true,
-        user: 'other'
-    },
-    {
-        msg: 'Helllo buddy, can we meet at crunchies?',
-        time: '16:50',
-        status: true,
-        user: 'other'
-    },
-    {
-        msg: 'I will be there in 30 minutes, thkk',
-        time: '16:50',
-        status: true,
-        user: 'me'
-    },
-])
+function formatDBMessages() {
+    props.chat.room.chats.forEach(chat => {
+        if (datedChats.value[0].hasOwnProperty(chat.dateCreated)) {
+            datedChats.value[0][chat.dateCreated].push(chat)
+        } else {
+            datedChats.value[0][chat.dateCreated] = [chat]
+        }
+        chatsArray.value.push(chat)
+    })
+}
+
+if (props.chat.room.chats.length > 0) {
+    formatDBMessages()
+}
+
 
 function sendMessage() {
     if (inputMsg.value.length < 1) {
@@ -108,13 +163,21 @@ function sendMessage() {
 
         let newMessage = {
             msg: inputMsg.value,
-            time: new Date().getTime(),
-            status: false,
-            user: 'me'
+            timeCreated: moment().format('LTS'),
+            dateCreated: moment().format('L'),
+            read: false,
+            userId: store.state.user._id
+        }
+
+
+        if (datedChats.value[0].hasOwnProperty(newMessage.dateCreated)) {
+            datedChats.value[0][newMessage.dateCreated].push(newMessage)
+        } else {
+            datedChats.value[0][newMessage.dateCreated] = [newMessage]
         }
 
         chatsArray.value.push(newMessage)
-
+        socket.emit("chatMessage", { roomId: chat.room._id, message: newMessage })
         inputMsg.value = ''
     }
 
@@ -127,6 +190,7 @@ function togglePhone() {
         emit('showPhone')
     }
 }
+
 
 </script>
   
