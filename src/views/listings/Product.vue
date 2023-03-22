@@ -18,7 +18,7 @@
                         autoplay muted></video>
 
                     <div class="w-full absolute flex flex-row top-5 items-center justify-between px-2">
-                        <img src="../../assets/icons/back-img.svg" class="cursor-pointer" alt="">
+                        <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
                         <div class="flex flex-row gap-x-3">
                             <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
                             <div class="grid place-items-center relative p-1" v-if="$store.state.isAuthenticated">
@@ -64,7 +64,7 @@
             <div class="product-img-carousel mobile-view xl:hidden flex items-center w-full relative">
 
                 <div class="w-full absolute flex flex-row top-5 items-center justify-between md:px-8 px-2 z-10">
-                    <img src="../../assets/icons/back-img.svg" class="cursor-pointer" alt="">
+                    <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
                     <div class="flex flex-row gap-x-3">
                         <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
                         <div class="grid place-items-center relative" v-if="$store.state.isAuthenticated">
