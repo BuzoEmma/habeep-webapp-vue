@@ -7,14 +7,14 @@
         <HomeNavbar v-if="screenWidth < 767 && !selectedChat" />
 
         <div class="main flex flex-row items-center justify-center mt-5 lg:mt-10 gap-x-5 w-full 2xl:px-44 md:px-20 my-4"
-            :class="{ 'justify-between': processing === false }" style="height: 80vh">
+            :class="{ 'justify-between': processing === false && allRooms.length < 1 }" style="height: 80vh">
             <Preloader v-if="allRooms.length < 1 && processing === true" />
 
             <ChatBar @selectChat="enterChatBox" :class="{ 'hidden': selectedChat && screenWidth < 1023 }" :rooms="allRooms"
                 v-if="!processing && allRooms.length > 0" />
 
 
-            <NoChat v-if="!processing && !selectedChat" :class="{ 'hidden': !selectedChat && screenWidth < 1023 }" />
+            <NoChat v-if="!processing && !selectedChat" :class="{ 'hidden': !selectedChat }" />
             <Chat @showPhone="togglePhone" v-if="!processing && selectedChat" @leaveChat="selectedChat = null"
                 :chat="selectedChat" :class="{ 'hidden': !selectedChat && screenWidth < 1023 }" />
         </div>
