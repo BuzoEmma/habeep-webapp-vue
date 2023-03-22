@@ -39,7 +39,7 @@
   
 <script setup>
 import { ref, reactive } from "vue"
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 
 import HomeNavbar from '../../components/HomeNavbar.vue'
@@ -50,6 +50,7 @@ import NoChat from "./components/NoChat.vue"
 
 
 const route = useRoute()
+const router = useRouter()
 
 // search variables
 const data = reactive({
@@ -81,6 +82,13 @@ async function getRooms() {
         const fetch = await axios.get('/messaging/get-rooms')
         allRooms.value = fetch.data.rooms
         processing.value = false
+        if (route.query.roomId) {
+            let filterId = allRooms.value.filter((room) => {
+                return room.room._id === route.query.roomId
+            })
+            enterChatBox(filterId[0])
+            router.replace({ query: null });
+        }
     } catch (error) {
         console.log(error)
     }

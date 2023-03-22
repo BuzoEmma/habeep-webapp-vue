@@ -233,13 +233,21 @@ import Referrals from './components/modal/Referrals.vue'
 
 
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const url2 = '/profile/get-agent/';
 const url = '/listings/ads/get/';
 
 const store = useStore()
 const route = useRoute()
+const router = useRouter()
+
+if (route.query.reloadApp) {
+    router.replace({ query: null });
+    setTimeout(() => {
+        router.go()
+    }, 1000);
+}
 
 const openTab = ref(2)
 const walletTab = ref(1)

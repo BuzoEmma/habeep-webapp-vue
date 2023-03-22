@@ -105,6 +105,7 @@ const data = reactive({
     pin: ''
 })
 
+
 const onError = ref(false)
 let errorMsg = ref({
     msg: '',
@@ -162,7 +163,7 @@ async function loginUser() {
                         if (route.query.redirect) {
                             router.push(route.query.redirect)
                         } else {
-                            router.push('/?reload=true')
+                            router.replace('/?reloadApp=true')
                         }
                     } else {
                         router.push('/verify-otp?email=' + login.data.data.user.email)

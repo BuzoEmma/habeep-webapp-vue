@@ -4,7 +4,7 @@
         @resize="changeWidth">
         <MainNavbar v-if="(screenWidth > 767)" />
 
-        <img src="../../assets/images/rhombus-preloader.gif" class="m-auto" v-if="!processingProduct && !product.price"
+        <img src="../../assets/images/rhombus-preloader.gif" class="m-auto" v-if="!processingProduct || !product.price"
             alt="">
         <div v-else
             class="body px-0 2xl:px-44 xl:px-20 mb-16 w-full flex flex-col h-fit items-center pb-10 md:items-start gap-y-8 mt-0 relative">
@@ -219,9 +219,11 @@
                         <button @click="$router.push('/agents/profile/' + product.agentId)"
                             class="agent-btn hidden xl:flex flex-row items-center justify-center text-sm font-medium text-primary w-1/2  bg-white">Visit
                             Profile</button>
-                        <button
-                            class="agent-btn flex flex-row items-center justify-center text-sm font-medium w-full text-white ml-2 bg-primary xl:w-1/2">Chat
-                            with agent</button>
+                        <button @click="createChatRoom()"
+                            class="agent-btn flex flex-row items-center cursor-pointer justify-center text-sm font-medium w-full text-white ml-2 bg-primary xl:w-1/2">
+                            <Preloader v-if="creatingRoom" />
+                            <span v-else>Chat with agent</span>
+                        </button>
                     </div>
                 </div>
 
@@ -274,9 +276,11 @@
                                 class="text-sub-webapp text-sm md:text-sm xl:text-lg product-duration flex flex-row justify-start ">
                                 Forever</p>
                         </div>
-                        <button
-                            class="agent-btn flex flex-row items-center justify-center text-sm font-medium w-3/5 mr-2 text-white ml-2 bg-primary xl:w-1/2">Chat
-                            with agent</button>
+                        <button @click="createChatRoom()"
+                            class="agent-btn cursor-pointer flex flex-row items-center justify-center text-sm font-medium w-3/5 mr-2 text-white ml-2 bg-primary xl:w-1/2">
+                            <Preloader v-if="creatingRoom" />
+                            <span v-else>Chat with agent</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -313,9 +317,10 @@ import { ref, onMounted } from 'vue'
 import MainNavbar from '../../components/MainNavbar.vue'
 import gsap from 'gsap'
 import axios from "../../composables/axios";
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import formatNumber from "number_formatter"
 import saveAd from '../../composables/saveAd'
+import { useStore } from 'vuex';
 
 
 const url = '/listings/ads/get/';
@@ -324,6 +329,8 @@ const url2 = '/profile/get-agent/';
 const carouselImg = ref(null)
 
 const route = useRoute()
+const router = useRouter()
+const store = useStore()
 const processingProduct = ref(false)
 const product = ref({})
 const agentDetails = ref({})
@@ -351,8 +358,22 @@ async function getAgent(agentId) {
     agentDetails.value = getAgent.data.agent
 }
 
+const creatingRoom = ref(false)
 
+async function createChatRoom() {
+    try {
+        creatingRoom.value = true
+        const create = await axios.post('/messaging/create-room', {
+            users: [store.state.user._id, agentDetails.value.userId]
+        })
 
+        creatingRoom.value = false
+        router.push('/chats?roomId=' + create.data.room._id)
+    } catch (error) {
+        creatingRoom.value = false
+        console.log(error)
+    }
+}
 
 function changeCarouselImg(value) {
     // changingCarousel.value = true

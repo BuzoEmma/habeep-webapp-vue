@@ -55,7 +55,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import MainNavbar from '../../components/MainNavbar.vue';
 
 // naira components
@@ -75,7 +75,14 @@ import DepositHBP from './components/modals/hbp/DepositHBP.vue';
 
 
 const route = useRoute()
+const router = useRouter()
 
+if (route.query.reloadApp) {
+    router.replace({ query: null });
+    setTimeout(() => {
+        router.go()
+    }, 1000);
+}
 // naira components
 const withdrawAmount = ref(0)
 function openWithdrawalModal(e) {
@@ -169,4 +176,5 @@ if (route.query.tab) {
 
 .main::-webkit-scrollbar-track {
     box-shadow: inset 0 0 10px white;
-}</style>
+}
+</style>

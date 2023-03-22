@@ -323,8 +323,12 @@ const store = useStore()
 
 const route = useRoute()
 const router = useRouter()
-if (route.query.loggedIn) {
-    router.push('/')
+
+if (route.query.reloadApp) {
+    router.replace({ query: null });
+    setTimeout(() => {
+        router.go()
+    }, 1000);
 }
 
 

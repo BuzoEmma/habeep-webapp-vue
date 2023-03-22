@@ -98,6 +98,13 @@ const router = useRouter()
 // Manage quick search
 const onSearch = ref(false)
 
+if (route.query.reloadApp) {
+  router.replace({ path: '/home', query: null });
+  setTimeout(() => {
+    router.go()
+  }, 1000);
+}
+
 const store = useStore()
 
 const data = reactive({
