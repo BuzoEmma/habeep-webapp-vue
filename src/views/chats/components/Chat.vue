@@ -4,7 +4,7 @@
             <img src="../../../assets/illustrations/no-conversation.svg" alt="">
             <p class="text-lg text-webapp">No conversation yet</p>
         </div>
-        <div class="flex flex-col h-5/6 w-full justify-between items-center" v-else>
+        <div class="flex flex-col w-full h-full justify-between items-center" v-else>
             <div
                 class="flex flex-row items-center justify-between w-full  relative border-b h-fit border-b-gray-200 px-2 lg:px-5 py-1">
                 <div class="rounded-full w-13 h-13 grid place-items-center">
@@ -31,7 +31,7 @@
             </div>
 
             <!-- messages -->
-            <div class="flex flex-col items-center w-full h-full overflow-y-auto messages-box" :ref="messagesBox">
+            <div class="flex flex-col items-center w-full h-max overflow-y-auto messages-box" :ref="messagesBox">
                 <div class="flex flex-col w-full h-fit py-6 items-center justify-start"
                     v-for="(chatGroup, index) in sortedChats()" :key="(chatGroup, index)">
                     <div class="flex flex-row items-center gap-x-2">
