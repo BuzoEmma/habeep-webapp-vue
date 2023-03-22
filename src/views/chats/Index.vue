@@ -21,11 +21,13 @@
 
         <div v-if="onPhone && screenWidth < 1024"
             class="absolute bottom-10 w-screen flex flex-col items-center justify-center z-20 gap-y-2 bg-transparent">
-            <div
-                class="flex flex-row items-center justify-center bg-white  rounded-xl border border-gray-100 gap-x-2 py-5 w-11/12 cursor-pointer">
+
+            <a class="flex flex-row items-center justify-center bg-white  rounded-xl border border-gray-100 gap-x-2 py-5 w-11/12 cursor-pointer"
+                :href="'tel:' + selectedChat.user.phoneNumber" v-if="selectedChat.user">
                 <img src="../../assets/icons/phone.svg" alt="">
-                <span class="text-sm text-primary font-medium">0906127484735</span>
-            </div>
+                <span class="text-sm text-primary font-medium">{{ selectedChat.user.phoneNumber
+                }}</span>
+            </a>
             <div @click="togglePhone"
                 class="flex flex-row items-center justify-center bg-white  rounded-xl border border-gray-100 gap-x-2 py-3 w-11/12 cursor-pointer">
                 <span class="text-xl text-black font-medium">Cancel</span>

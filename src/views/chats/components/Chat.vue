@@ -22,25 +22,26 @@
                 </div>
                 <img src="../../../assets/icons/phone.svg" class="cursor-pointer" @click="togglePhone" alt="">
 
-                <div v-if="onPhone && screenWidth > 1023"
-                    class="flex flex-row items-center absolute right-0 -bottom-10  rounded-xl border border-gray-200 gap-x-2 py-2 px-3 cursor-pointer">
+                <a v-if="onPhone && screenWidth > 1023"
+                    class="z-20 bg-white flex flex-row items-center absolute right-0 -bottom-10  rounded-xl border border-gray-200 gap-x-2 py-2 px-3 cursor-pointer"
+                    :href="'tel:' + props.chat.user.phoneNumber">
                     <img src="../../../assets/icons/phone.svg" alt="">
                     <span class="text-sm text-primary font-medium">{{ props.chat.user.phoneNumber }}</span>
-                </div>
+                </a>
             </div>
 
             <!-- messages -->
-            <div class="flex flex-col items-center w-full h-full overflow-y-auto">
+            <div class="flex flex-col items-center w-full h-full overflow-y-auto messages-box" :ref="messagesBox">
                 <div class="flex flex-col w-full h-fit py-6 items-center justify-start"
                     v-for="(chatGroup, index) in sortedChats()" :key="(chatGroup, index)">
                     <div class="flex flex-row items-center gap-x-2">
                         <hr class="w-32">
-                        <span class="text-xs text-sub-webapp">{{ index }}</span>
+                        <span class="text-xs text-sub-webapp">{{ moment(index).format('ll') }}</span>
                         <hr class="w-32">
                     </div>
 
                     <div class="flex flex-col w-full items-center px-3" v-for="chat in chatGroup" :key="chat">
-                        <div class="w-full items-center my-2">
+                        <div class="w-full items-center my-2" ref="messageBox">
                             <Message :data="chat" :userId="$store.state.user._id" />
                         </div>
                     </div>
@@ -51,7 +52,7 @@
             <div
                 class="flex flex-row items-center justify-between w-full  border-t h-fit border-t-gray-200  px-2 md:px-3 lg:px-10 py-3">
                 <img src="../../../assets/icons/add-assets-chat.svg" alt="">
-                <input type="text" v-model="inputMsg"
+                <input type="text" v-model="inputMsg" @keyup="checkForEnter"
                     class="message-input w-10/12 md:w-11/12 rounded-md h-11 border pl-3 border-gray-200"
                     :class="{ 'border-red-500': inputMsgErr }" placeholder="Type something..." style="background: #F4F6FF;">
                 <img src="../../../assets/icons/send-message.svg" class="cursor-pointer" @click="sendMessage" alt="">
@@ -73,6 +74,9 @@ const store = useStore()
 const props = defineProps(['chat'])
 const emit = defineEmits(['showPhone', 'updateMsg'])
 const chat = props.chat
+
+const messageBox = ref(null)
+const messagesBox = ref(null)
 
 let chatsArray = ref(chat.room.chats)
 const datedChats = ref([{}])
@@ -103,8 +107,7 @@ socket.on("connect", () => {
 });
 
 socket.on("online", (user) => {
-    console.log(user, 'jll')
-    if (props.chat.room.users.includes(user) && user !== store.state.user._id) {
+    if (props.chat.room.users.includes(user)) {
         otherUserOnline.value = true
     }
 })
@@ -115,15 +118,16 @@ socket.on("offline", (user) => {
 })
 
 socket.on("message", (msg) => {
+    otherUserOnline.value = true
     if (datedChats.value[0].hasOwnProperty(msg.dateCreated)) {
         datedChats.value[0][msg.dateCreated].push(msg)
     } else {
         datedChats.value[0][msg.dateCreated] = [msg]
     }
     chatsArray.value.push(msg)
+    scrollToView()
 })
 
-console.log(socket)
 
 const otherUserOnline = ref(false)
 
@@ -147,6 +151,7 @@ function formatDBMessages() {
         }
         chatsArray.value.push(chat)
     })
+    scrollToView()
 }
 
 if (props.chat.room.chats.length > 0) {
@@ -177,6 +182,7 @@ function sendMessage() {
         }
 
         chatsArray.value.push(newMessage)
+        scrollToView()
         socket.emit("chatMessage", { roomId: chat.room._id, message: newMessage })
         inputMsg.value = ''
     }
@@ -191,7 +197,31 @@ function togglePhone() {
     }
 }
 
+const checkForEnter = (e) => {
+    var key = e.keyCode || e.charCode || e.key || e.code;
+    if (key === 13 || key === 'Enter') {
+        sendMessage()
+    }
+}
 
+
+
+function scrollToView() {
+    if (messageBox.value !== null) {
+        messageBox.value.forEach(msg => {
+            msg.scrollIntoView({ behavior: "smooth" });
+        })
+    }
+
+}
+
+const scrollBlock = setInterval(() => {
+    scrollToView()
+}, 1000);
+
+setTimeout(() => {
+    clearInterval(scrollBlock)
+}, 5000);
 </script>
   
 <style scoped>
@@ -207,5 +237,20 @@ function togglePhone() {
 
 .message-input:focus {
     border: 1px solid #1B49FF;
+}
+
+.messages-box::-webkit-scrollbar {
+    width: 6px;
+}
+
+
+.messages-box::-webkit-scrollbar-thumb {
+    width: 10px;
+    background-color: #71759D;
+    border-radius: 10px;
+}
+
+.messages-box::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 10px white;
 }
 </style>

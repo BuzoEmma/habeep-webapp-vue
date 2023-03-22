@@ -2,7 +2,7 @@
     <div
         class="flex flex-col xl:pt-10 lg:pt-7 pb-3 px-3 lg:px-5 xl:px-8 items-start lg:border lg:border-gray-200 rounded-2xl w-full lg:w-1/3 h-full">
         <p class="w-full font-bold text-lg md:text-xl lg:text-2xl text-webapp">
-            Messages({{ unreadMessages }})
+            Messages({{ evaluate() }})
         </p>
 
         <div class="flex flex-row items-start chat justify-between mt-4  lg:mt-7 w-full py-2 lg:py-3 border-b cursor-pointer border-gray-200"
@@ -21,7 +21,8 @@
             </div>
             <div class="flex flex-col items-end gap-y-1">
                 <span class="text-xs md:text-sm text-webapp" :class="{ 'text-primary': newMessage }"
-                    v-if="chat.room.chats.length > 0">{{ moment(chat.room.chats[0].updatedAt).format('L') }}</span>
+                    v-if="chat.room.chats.length > 0">{{ moment(chat.room.chats[chat.room.chats.length -
+                        1].dateCreated).format('ll') }}</span>
                 <span class="text-xs md:text-sm text-webapp" :class="{ 'text-primary': newMessage }" v-else>Start a
                     chat</span>
                 <span class="py-1 px-2 rounded-full bg-primary text-xs text-white" v-if="newMessage">1</span>
@@ -36,17 +37,29 @@ import { ref, reactive } from 'vue'
 
 const props = defineProps(['rooms'])
 
-const unreadMessages = ref(0)
 
-function returnUnreadMessages() {
-    props.rooms.forEach(room => {
-        room.room.chats.forEach(chat => {
-            if (chat.read === false) {
-                unreadMessages.value += 1
-            }
-        })
+function returnUnreadMessages(roomId) {
+    let unreadMessages = ref(0)
+    let roomDetails = props.rooms.filter((room) => {
+        return room.room._id === roomId
     })
+    roomDetails[0].room.chats.forEach(chat => {
+        if (chat.read === false) {
+            unreadMessages.value += 1
+        }
+    })
+    return unreadMessages.value
 }
+
+function evaluate() {
+    let finalValue = ref(0)
+    props.rooms.forEach(room => {
+        finalValue.value += returnUnreadMessages(room.room._id)
+    })
+    return finalValue.value
+}
+
+
 
 </script>
 
