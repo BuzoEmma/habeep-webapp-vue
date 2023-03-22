@@ -4,7 +4,7 @@
             <img src="../../../assets/illustrations/no-conversation.svg" alt="">
             <p class="text-lg text-webapp">No conversation yet</p>
         </div>
-        <div class="flex flex-col h-full w-full justify-between items-center" v-else>
+        <div class="flex flex-col h-5/6 w-full justify-between items-center" v-else>
             <div
                 class="flex flex-row items-center justify-between w-full  relative border-b h-fit border-b-gray-200 px-2 lg:px-5 py-1">
                 <div class="rounded-full w-13 h-13 grid place-items-center">
@@ -52,7 +52,7 @@
             <div
                 class="flex flex-row items-center justify-between w-full  border-t h-fit border-t-gray-200  px-2 md:px-3 lg:px-10 py-3">
                 <img src="../../../assets/icons/add-assets-chat.svg" alt="">
-                <input type="text" v-model="inputMsg" @keypress="checkForEnter"
+                <input type="text" v-model="inputMsg" @keydown="checkForEnter"
                     class="message-input w-10/12 md:w-11/12 rounded-md h-11 border pl-3 border-gray-200"
                     :class="{ 'border-red-500': inputMsgErr }" placeholder="Type something..." style="background: #F4F6FF;">
                 <img src="../../../assets/icons/send-message.svg" class="cursor-pointer" @click="sendMessage" alt="">
@@ -198,7 +198,7 @@ function togglePhone() {
 }
 
 const checkForEnter = (e) => {
-    var key = e.keyCode || e.charCode || e.key || e.code;
+    var key = e.keyCode
     if (key === 13 || key === 'Enter') {
         sendMessage()
     }
