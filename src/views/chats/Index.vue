@@ -1,20 +1,21 @@
 <template>
     <div class="absolute w-screen h-screen top-0 opacity-50" v-if="onPhone && screenWidth < 1024"
         style="background: #161622"></div>
-    <div class="w-screen min-w-full flex flex-col items-center bg-white h-full min-h-screen overflow-y-none">
+    <div class="w-screen max-w-full flex flex-col items-center bg-white h-screen max-h-full overflow-x-hidden">
         <!-- Header / Navbar -->
         <HomeNavbar v-if="screenWidth > 425" />
         <HomeNavbar v-if="screenWidth < 767 && !selectedChat" />
 
-        <div class="main flex flex-row items-center justify-center mt-5 lg:mt-10 gap-x-5 w-full 2xl:px-44 md:px-20 my-4"
-            :class="{ 'justify-between': processing === false && allRooms.length < 1 }" style="height: 80vh">
+        <div class="main flex flex-row h-full items-center justify-center mt-5 lg:mt-10 gap-x-5 w-full 2xl:px-44 md:px-20 my-4"
+            :class="{ 'justify-between': processing === false && allRooms.length < 1 }">
             <Preloader v-if="allRooms.length < 1 && processing === true" />
 
             <ChatBar @selectChat="enterChatBox" :class="{ 'hidden': selectedChat && screenWidth < 1023 }" :rooms="allRooms"
                 v-if="!processing && allRooms.length > 0" />
 
 
-            <NoChat v-if="!processing && !selectedChat" />
+            <NoChat v-if="!processing && !selectedChat"
+                :class="{ 'hidden': allRooms.length > 0 && screenWidth < 1023 || selectedChat }" />
             <Chat @showPhone="togglePhone" v-if="!processing && selectedChat" @leaveChat="selectedChat = null"
                 :chat="selectedChat" :class="{ 'hidden': !selectedChat && screenWidth < 1023 }" />
         </div>
@@ -52,11 +53,6 @@ import NoChat from "./components/NoChat.vue"
 const route = useRoute()
 const router = useRouter()
 
-// search variables
-const data = reactive({
-    input: ''
-})
-
 const allRooms = ref([])
 
 // show phone modal
@@ -69,7 +65,14 @@ function togglePhone() {
 const selectedChat = ref(null)
 
 const enterChatBox = (data) => {
-    selectedChat.value = data
+    if (selectedChat.value !== null) {
+        selectedChat.value = null
+
+        setTimeout(() => {
+            selectedChat.value = data
+        }, 5);
+    } else selectedChat.value = data
+
 }
 
 const screenWidth = ref(window.innerWidth)
@@ -98,10 +101,4 @@ getRooms()
 
 </script>
   
-<style scoped>
-@media screen and (max-width: 768px) {
-    .main {
-        height: 95vh !important;
-    }
-}
-</style>
+<style scoped></style>

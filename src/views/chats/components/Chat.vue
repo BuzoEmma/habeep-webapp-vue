@@ -52,7 +52,7 @@
             <div
                 class="flex flex-row items-center justify-between w-full  border-t h-fit border-t-gray-200  px-2 md:px-3 lg:px-10 py-3">
                 <img src="../../../assets/icons/add-assets-chat.svg" alt="">
-                <input type="text" v-model="inputMsg" @keyup="checkForEnter"
+                <input type="text" v-model="inputMsg" @keypress="checkForEnter"
                     class="message-input w-10/12 md:w-11/12 rounded-md h-11 border pl-3 border-gray-200"
                     :class="{ 'border-red-500': inputMsgErr }" placeholder="Type something..." style="background: #F4F6FF;">
                 <img src="../../../assets/icons/send-message.svg" class="cursor-pointer" @click="sendMessage" alt="">
