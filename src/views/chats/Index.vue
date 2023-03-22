@@ -14,7 +14,7 @@
                 v-if="!processing && allRooms.length > 0" />
 
 
-            <NoChat v-if="!processing && !selectedChat" :class="{ 'hidden': !selectedChat }" />
+            <NoChat v-if="!processing && !selectedChat" />
             <Chat @showPhone="togglePhone" v-if="!processing && selectedChat" @leaveChat="selectedChat = null"
                 :chat="selectedChat" :class="{ 'hidden': !selectedChat && screenWidth < 1023 }" />
         </div>

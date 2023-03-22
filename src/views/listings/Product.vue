@@ -362,13 +362,17 @@ const creatingRoom = ref(false)
 
 async function createChatRoom() {
     try {
-        creatingRoom.value = true
-        const create = await axios.post('/messaging/create-room', {
-            users: [store.state.user._id, agentDetails.value.userId]
-        })
+        if (store.state.isAuthenticated) {
+            creatingRoom.value = true
+            const create = await axios.post('/messaging/create-room', {
+                users: [store.state.user._id, agentDetails.value.userId]
+            })
 
-        creatingRoom.value = false
-        router.push('/chats?roomId=' + create.data.room._id)
+            creatingRoom.value = false
+            router.push('/chats?roomId=' + create.data.room._id)
+        } else {
+            router.push('/login')
+        }
     } catch (error) {
         creatingRoom.value = false
         console.log(error)
