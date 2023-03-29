@@ -267,7 +267,7 @@
                     <div class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 feed">
                         <img :src="feed.images[0].link" @click="$router.push('/listings/products/' + feed._id)" alt=""
                             class="w-full feed-image rounded-t-md"
-                            v-if="feed.images[0].link.length > 0 && feed.images[0].link.includes('mp4') == false">
+                            v-if="feed.images[0].link && feed.images[0].link.includes('mp4') == false">
                         <video :src="feed.images[0].link" @click="$router.push('/listings/products/' + feed._id)"
                             class="w-full rounded-t-md" v-else autoplay muted></video>
                         <p class="text-webapp text-lg font-medium w-full px-2 cursor-pointer"

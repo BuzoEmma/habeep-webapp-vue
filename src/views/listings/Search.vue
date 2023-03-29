@@ -216,6 +216,7 @@ import { useStore } from 'vuex'
 import MainNavbar from '../../components/MainNavbar.vue'
 import formatNumber from 'number_formatter';
 import saveAd from '../../composables/saveAd'
+import axiosDefault from 'axios'
 import axios from "../../composables/axios";
 import { useRoute } from 'vue-router';
 

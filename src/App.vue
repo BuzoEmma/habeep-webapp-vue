@@ -45,7 +45,7 @@ const getUser = async () => {
     if (user.data === "Unauthorized" || !loggedIn) {
       store.dispatch("unsetAuth");
       if (verifyAllowedRoles(route, 'user') === false) {
-        router.push("/login?redirect=" + router.currentRoute.value.fullPath + "?reload=true");
+        router.replace("/login?redirect=" + router.currentRoute.value.fullPath + "?reload=true");
       }
     } else {
       let mutate = {
@@ -58,7 +58,7 @@ const getUser = async () => {
   } catch (error) {
     store.dispatch("unsetAuth");
     if (verifyAllowedRoles(route, 'user') === false || !loggedIn) {
-      router.push("/login?redirect=" + router.currentRoute.value.fullPath + "?reload=true");
+      router.replace("/login?redirect=" + router.currentRoute.value.fullPath + "?reload=true");
     }
   }
 };
