@@ -21,8 +21,8 @@
             </div>
             <div class="flex flex-col items-end gap-y-1">
                 <span class="text-xs md:text-sm text-webapp" :class="{ 'text-primary': newMessage }"
-                    v-if="chat.room.chats.length > 0">{{ moment(chat.room.chats[chat.room.chats.length -
-                        1].dateCreated).format('ll') }}</span>
+                    v-if="chat.room.chats.length > 0">{{ chat.room.chats[chat.room.chats.length -
+                        1].dateCreated }}</span>
                 <span class="text-xs md:text-sm text-webapp" :class="{ 'text-primary': newMessage }" v-else>Start a
                     chat</span>
                 <span class="py-1 px-2 rounded-full bg-primary text-xs text-white" v-if="newMessage">1</span>
