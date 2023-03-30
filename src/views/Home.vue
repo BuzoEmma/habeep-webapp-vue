@@ -122,13 +122,13 @@ const checkForEnter = (e) => {
 
 
 const locations = ref([
-  'Calabar',
-  'Lagos',
-  'Enugu',
   'Abuja',
-  'Ikom',
+  'Lagos',
+  'Calabar',
+  'Enugu',
   'Kano',
-  'Onitsha, Anambra',
+  'Onitsha',
+  'Ikom',
 ])
 </script>
 

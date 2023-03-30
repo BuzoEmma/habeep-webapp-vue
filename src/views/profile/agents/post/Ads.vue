@@ -209,7 +209,7 @@ import formatNumber from "number_formatter"
 
 const store = useStore()
 
-if (store.state.user.role !== "AGENT_IBO") {
+if (store.state.user.role !== "AGENT") {
     setTimeout(() => {
         router.go()
     }, 5000);

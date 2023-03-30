@@ -19,22 +19,22 @@
                         stroke="#0A1045" class="w-6 h-6 cursor-pointer" @click="$router.go(-1)">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                     </svg>
-                    <span>Choose the IBO category</span>
+                    <span>Choose the Affiliate category</span>
                 </p>
 
                 <div class="border-2 border-gray-200 w-full flex flex-col items-start p-5 gap-y-4 mt-14 md:mt-24 rounded-lg cursor-pointer" @click="$router.push('/account/IBO/category/agent')" style="background: #F9FAFF">
                     <img src="../../../../assets/icons/agent-ibo.svg" alt="">
 
-                    <span class="text-primary font-xl font-medium">Agent IBO</span>
+                    <span class="text-primary font-xl font-medium">Agent</span>
 
-                    <p class="text-sm text-webapp text-left w-full">Build your own financial wealth by owning your affiliate business. Click to join the agent IBO and start earning</p>
+                    <p class="text-sm text-webapp text-left w-full">Build your own financial wealth by owning your affiliate business. Click to join the Agent and start earning</p>
                 </div>
                 <div class="border-2 border-gray-200 w-full flex flex-col items-start p-5 gap-y-4 mt-10 rounded-lg cursor-pointer" @click="$router.push('/account/IBO/category/user')" style="background: #F7F7F7;">
                     <img src="../../../../assets/icons/user-ibo.svg" alt="">
 
-                    <span class="text-primary font-xl font-medium">User IBO</span>
+                    <span class="text-primary font-xl font-medium">Tenant</span>
 
-                    <p class="text-sm text-webapp text-left w-full">Build your own financial wealth by owning your affiliate business. Join the affiliate network as an independent buiness owner </p>
+                    <p class="text-sm text-webapp text-left w-full">Become a Tenant and earn with us. Join the affiliate network as an independent user </p>
                 </div>
             </div>
         </div>

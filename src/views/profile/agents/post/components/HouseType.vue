@@ -16,7 +16,7 @@
         </div>
 
         <div
-            class="form-container flex flex-col items-center justify-between relative bg-white gap-y-3 w-full lg:w-3/5 min-h-fit h-4/6 lg:h-full">
+            class="form-container flex flex-col items-center justify-between relative bg-white gap-y-3 w-full lg:w-3/5 min-h-fit h-full lg:h-full overflow-y-auto">
 
             <div class="flex flex-col gap-y-4 w-full justify-center p-5 md:p-16 2xl:p-24">
                 <div class="border-2 border-gray-200 w-full flex flex-row items-center justify-between p-3 rounded-lg cursor-pointer"
@@ -71,7 +71,7 @@
 
             </div>
 
-            <div class="bottom flex flex-col items-center w-full justify-between static bottom-0">
+            <div class="bottom flex flex-col items-center w-full justify-between static">
                 <div class="w-full bg-gray-200" style="height: 2px;">
                     <div class="bg-webapp h-full w-3/12"></div>
                 </div>
@@ -128,7 +128,7 @@ input:focus {
 
 .form-container::-webkit-scrollbar {
     height: .1rem;
-    width: 7px;
+    width: 3px;
 }
 
 .form-container::-webkit-scrollbar-track {

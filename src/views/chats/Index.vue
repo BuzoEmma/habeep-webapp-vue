@@ -7,7 +7,7 @@
         <HomeNavbar v-if="screenWidth < 767 && !selectedChat" />
 
         <div class="main flex flex-row h-full items-center justify-center mt-5 lg:mt-10 gap-x-5 w-full 2xl:px-44 md:px-20 my-4"
-            :class="{ 'justify-between': processing === false && allRooms.length < 1 }">
+            :class="{ 'justify-between': processing === false && allRooms.length > 0 }">
             <Preloader v-if="allRooms.length < 1 && processing === true" />
 
             <ChatBar @selectChat="enterChatBox" :class="{ 'hidden': selectedChat && screenWidth < 1023 }" :rooms="allRooms"

@@ -17,7 +17,7 @@
                         stroke="#0A1045" class="w-6 h-6 cursor-pointer" @click="$router.go(-1)">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                     </svg>
-                    <span>Become an IBO User</span>
+                    <span>Become an Tenant</span>
                 </p>
 
                 <!-- input fields -->
@@ -29,7 +29,7 @@
                 </div>
 
                 <p class="w-full text-left text-webapp  text-sm mt-10">
-                    By clicking on “Next” you agree to User IBO <span @click="$router.push('/terms-and-condtions')"
+                    By clicking on “Next” you agree to be a Tenant <span @click="$router.push('/terms-and-condtions')"
                         class="cursor-pointer text-primary underline">Terms and conditions</span>
                 </p>
                 <!-- submit btn -->
@@ -64,7 +64,7 @@ const store = useStore();
 const inputCompleted = ref(false)
 
 const data = reactive({
-    role: 'USER_IBO',
+    role: 'TENANT',
     bio: ''
 })
 

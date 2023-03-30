@@ -66,7 +66,7 @@
             <hr class="my-1">
             <p @click="$router.push('/agent/ads')" class="mobile-nav-item text-sm text-webapp mt-1 cursor-pointer"
                 :class="{ 'text-blue-700': $route.name === 'Agent-ads' || $route.name === 'Agent-ads-create' }"
-                v-if="$store.state.isAuthenticated && $store.state.user.role === 'AGENT_IBO'">Post an Ad</p>
+                v-if="$store.state.isAuthenticated && $store.state.user.role === 'AGENT'">Post an Ad</p>
             <p @click="$router.push('/account/IBO/category')"
                 class="mobile-nav-item text-sm text-webapp mt-1 cursor-pointer"
                 :class="{ 'text-blue-700': $route.name.includes('IBO') === true }"

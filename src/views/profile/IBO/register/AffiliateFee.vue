@@ -15,7 +15,7 @@
                     class="w-6 h-6 cursor-pointer" @click="$router.go(-1)">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                 </svg>
-                <span>IBO Affiliate fee</span>
+                <span>Affiliate fee</span>
             </p>
 
             <!-- input fields -->
@@ -97,7 +97,7 @@ async function getWallet() {
     }
 }
 
-let amountToDebit = 50 ? props.data.role == "AGENT_IBO" : 25
+let amountToDebit = 50 ? props.data.role == "AGENT" : 25
 if (amountToDebit === true) {
     amountToDebit = 50
 } else {
@@ -131,7 +131,7 @@ async function debitFee() {
 async function makeUserAnIBO() {
     try {
         processing.value = true
-        if (props.data.role === 'AGENT_IBO') {
+        if (props.data.role === 'AGENT') {
             props.data.state = props.data.state.state.name
         }
         const change = await axios.put(url, props.data)
@@ -150,7 +150,7 @@ async function makeUserAnIBO() {
             setTimeout(() => {
                 processing.value = false
                 newMsg.value = ''
-                if (props.data.role === "AGENT_IBO") {
+                if (props.data.role == "AGENT") {
                     router.push('/agent/ads?reload=true')
                 } else {
                     router.push('/?reload=true')

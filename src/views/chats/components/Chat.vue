@@ -31,7 +31,7 @@
             </div>
 
             <!-- messages -->
-            <div class="flex flex-col items-center w-full h-max overflow-y-auto messages-box" :ref="messagesBox">
+            <div class="flex flex-col items-center w-full h-full overflow-y-auto messages-box" :ref="messagesBox">
                 <div class="flex flex-col w-full h-fit py-6 items-center justify-start"
                     v-for="(chatGroup, index) in sortedChats()" :key="(chatGroup, index)">
                     <div class="flex flex-row items-center gap-x-2">
@@ -40,7 +40,7 @@
                         <hr class="w-32">
                     </div>
 
-                    <div class="flex flex-col w-full items-center px-3" v-for="chat in chatGroup" :key="chat">
+                    <div class="flex flex-col w-full items-center justify-start px-3" v-for="chat in chatGroup" :key="chat">
                         <div class="w-full items-center my-2" ref="messageBox">
                             <Message :data="chat" :userId="$store.state.user._id" />
                         </div>
@@ -93,7 +93,8 @@ function sortedChats() {
 
 }
 
-const socket = io("https://habeep.onrender.com/", {
+const socket = io("http://localhost:2023", {
+    path: '/backend',
     auth: {
         token: store.state.sessionId
     }

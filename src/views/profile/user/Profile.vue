@@ -34,7 +34,7 @@
 
                     <div class="flex flex-row items-center w-full gap-x-4 mt-3">
                         <p class="text-xl font-webapp font-medium flex flex-row gap-x-1"
-                            v-if="$store.state.user.role === 'AGENT_IBO' && agentDetails.ads">
+                            v-if="$store.state.user.role === 'AGENT' && agentDetails.ads">
                             {{ agentDetails.ads.length }}
                             <span class="text-sub-webapp text-lg">Ads
                             </span>
@@ -57,7 +57,7 @@
                             profile</button>
                         <button @click="openModal('editProfileModal')"
                             class="user-btn flex flex-row items-center justify-center text-sm font-medium  text-webapp ml-2 bg-white w-full"
-                            :class="{ 'w-full': $store.state.user.role === 'AGENT_IBO' }">Edit
+                            :class="{ 'w-full': $store.state.user.role === 'AGENT' }">Edit
                             profile</button>
                     </div>
                 </div>
@@ -94,7 +94,7 @@
             <div class="flex flex-col min-h-full items-start w-full h-full lg:w-4/5">
                 <div class="flex flex-row gap-x-3 border-b border-b-gray-200 w-full">
                     <div class="cursor-pointer flex flex-row items-center justify-center w-24  pb-1"
-                        v-if="$store.state.user.role === 'AGENT_IBO'" @click="changeTab(1)"
+                        v-if="$store.state.user.role === 'AGENT'" @click="changeTab(1)"
                         :class="{ 'text-blue-600 border-b-blue-700 border-b-2': openTab === 1 }">
                         Agent Ads
                     </div>
@@ -267,7 +267,7 @@ async function getAgent() {
     agentDetails.value = getAgent.data.agent
 }
 
-if (store.state.user.role == 'AGENT_IBO') {
+if (store.state.user.role == 'AGENT') {
     getAgent()
 }
 

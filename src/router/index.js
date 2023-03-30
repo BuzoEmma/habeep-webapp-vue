@@ -24,7 +24,7 @@ function guardMyrouteForAgent(to, from, next) {
         if (!createStore.state.user.verified) {
             next({ name: 'Verify' }) // go to '/verify';
         } else {
-            if (createStore.state.user.role === 'AGENT_IBO') {
+            if (createStore.state.user.role === 'AGENT') {
                 next()
             } else next({ name: 'IBO_Category_Agent' })
         } // allow to enter route
@@ -56,7 +56,7 @@ function guardMyrouteForUSERIBO(to, from, next) {
         if (!createStore.state.user.verified) {
             next({ name: 'Verify' }) // go to '/verify';
         } else {
-            if (createStore.state.user.role !== "USER_IBO") {
+            if (createStore.state.user.role !== "TENANT") {
                 next()
             } else next({ name: 'IBO_Category_Agent' })
         } // allow to enter route

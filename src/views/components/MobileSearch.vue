@@ -9,7 +9,7 @@
                         d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                 </svg>
 
-                <input type="text" v-model="data.input" @keydown="checkForEnter"
+                <input type="text" v-model="data.input" @keydown="checkForEnter" ref="input"
                     class=" rounded-sm w-full h-full outline-none" placeholder="Search by property type, location, price">
             </div>
             <!-- search results -->
@@ -41,7 +41,7 @@
 </template>
   
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useRoute, useRouter } from "vue-router";
 
 const router = useRouter()
@@ -57,16 +57,21 @@ const checkForEnter = (e) => {
     }
 }
 
+const input = ref(null)
 
 const locations = ref([
-    'Calabar',
-    'Lagos',
-    'Enugu',
     'Abuja',
-    'Ikom',
+    'Lagos',
+    'Calabar',
+    'Enugu',
     'Kano',
-    'Onitsha, Anambra',
+    'Onitsha',
+    'Ikom',
 ])
+
+onMounted(() => {
+    input.value.focus()
+})
 </script>
   
 <style scoped>
