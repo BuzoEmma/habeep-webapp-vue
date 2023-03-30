@@ -369,9 +369,9 @@ function filterType() {
 
         filteredFeeds.value = filtered
     }
+    return filteredFeeds.value
 
 
-    return filtered
 }
 
 async function getFeeds() {
