@@ -264,9 +264,9 @@ async function saveData() {
         processing.value = false
 
         if (adDetails.data.success) {
-            // store.commit('deleteListingData')
+            store.commit('deleteListingData')
 
-            // emit('postSuccess', adDetails.data.data._id)
+            emit('postSuccess', adDetails.data.data._id)
         } else {
             onError.value = true;
             errorMsg.value = adDetails.data.message;
