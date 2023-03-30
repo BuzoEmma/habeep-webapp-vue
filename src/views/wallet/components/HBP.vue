@@ -127,7 +127,9 @@ const emit = defineEmits(['openModal', 'sendWallet'])
 
 const transactions = ref([])
 const waitForWalletLoad = ref(true)
-const walletData = ref(null)
+const walletData = ref({
+    accountValue: 0
+})
 
 // pagination
 let currentPage = ref(1);
