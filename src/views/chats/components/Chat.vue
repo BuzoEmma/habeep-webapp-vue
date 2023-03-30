@@ -93,7 +93,7 @@ function sortedChats() {
 
 }
 
-const socket = io("http://localhost:2023", {
+const socket = io("https://habeep.org", {
     path: '/backend',
     auth: {
         token: store.state.sessionId
