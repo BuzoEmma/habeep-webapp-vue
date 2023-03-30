@@ -190,7 +190,6 @@ function callImgProcessor(value) {
 }
 
 const previewImg = async (event, value) => {
-    console.log('hello', event.files)
     currentBlock.value += 1
     // Reference to the DOM input element
     var input = event;
@@ -223,7 +222,6 @@ const previewImg = async (event, value) => {
         // Define a callback function to run, when FileReader finishes its job
         // reader.readAsDataURL(eval(`pic${value}`).value)
         reader.onload = (e) => {
-            console.log(e)
             // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
             // Read image as base64 and set to imageData
             eval(`imageData${currentImage.value}`).value = e.target.result;
@@ -258,7 +256,6 @@ const url = '/listings/agent/create-product';
 async function saveData() {
     try {
         processing.value = true
-        console.log(finalData)
         formData.append('data', JSON.stringify(finalData))
         const adDetails = await axios.post(url, formData, {
             headers: { 'Content-Type': 'multipart/form-data' },
@@ -267,9 +264,9 @@ async function saveData() {
         processing.value = false
 
         if (adDetails.data.success) {
-            store.commit('deleteListingData')
+            // store.commit('deleteListingData')
 
-            emit('postSuccess', adDetails.data.data._id)
+            // emit('postSuccess', adDetails.data.data._id)
         } else {
             onError.value = true;
             errorMsg.value = adDetails.data.message;
