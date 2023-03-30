@@ -94,7 +94,7 @@ function sortedChats() {
 }
 
 const socket = io("https://habeep.org", {
-    path: '/backend',
+    path: '/backend/sockets/',
     auth: {
         token: store.state.sessionId
     }
