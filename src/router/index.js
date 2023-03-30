@@ -261,7 +261,7 @@ const routes = [
         path: '/chats',
         name: 'Chat',
         beforeEnter: guardMyroute,
-        component: ChatIndex,
+        component: () =>  import('../views/chats/Index.vue'),
         meta: {
             title: "Messages"
         }

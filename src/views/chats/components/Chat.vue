@@ -65,7 +65,7 @@
 import Message from './Message.vue'
 import { ref, reactive } from 'vue'
 import { useRoute } from 'vue-router'
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 import { useStore } from 'vuex';
 import moment from 'moment'
 
@@ -93,41 +93,41 @@ function sortedChats() {
 
 }
 
-const socket = io("https://habeep.org", {
-    path: '/backend/sockets/',
-    auth: {
-        token: store.state.sessionId
-    }
-});
+// const socket = io("https://habeep.org", {
+//     path: '/backend/sockets/',
+//     auth: {
+//         token: store.state.sessionId
+//     }
+// });
 
 
-socket.on("connect", () => {
-    if (props.chat) {
-        socket.emit('joinRoom', { roomId: props.chat.room._id, users: props.chat.room.users })
-    }
-});
+// socket.on("connect", () => {
+//     if (props.chat) {
+//         socket.emit('joinRoom', { roomId: props.chat.room._id, users: props.chat.room.users })
+//     }
+// });
 
-socket.on("online", (user) => {
-    if (props.chat.room.users.includes(user)) {
-        otherUserOnline.value = true
-    }
-})
-socket.on("offline", (user) => {
-    if (props.chat.room.users.includes(user) && user !== store.state.user._id) {
-        otherUserOnline.value = false
-    }
-})
+// socket.on("online", (user) => {
+//     if (props.chat.room.users.includes(user)) {
+//         otherUserOnline.value = true
+//     }
+// })
+// socket.on("offline", (user) => {
+//     if (props.chat.room.users.includes(user) && user !== store.state.user._id) {
+//         otherUserOnline.value = false
+//     }
+// })
 
-socket.on("message", (msg) => {
-    otherUserOnline.value = true
-    if (datedChats.value[0].hasOwnProperty(msg.dateCreated)) {
-        datedChats.value[0][msg.dateCreated].push(msg)
-    } else {
-        datedChats.value[0][msg.dateCreated] = [msg]
-    }
-    chatsArray.value.push(msg)
-    scrollToView()
-})
+// socket.on("message", (msg) => {
+//     otherUserOnline.value = true
+//     if (datedChats.value[0].hasOwnProperty(msg.dateCreated)) {
+//         datedChats.value[0][msg.dateCreated].push(msg)
+//     } else {
+//         datedChats.value[0][msg.dateCreated] = [msg]
+//     }
+//     chatsArray.value.push(msg)
+//     scrollToView()
+// })
 
 
 const otherUserOnline = ref(false)
@@ -184,7 +184,7 @@ function sendMessage() {
 
         chatsArray.value.push(newMessage)
         scrollToView()
-        socket.emit("chatMessage", { roomId: chat.room._id, message: newMessage })
+        // socket.emit("chatMessage", { roomId: chat.room._id, message: newMessage })
         inputMsg.value = ''
     }
 
