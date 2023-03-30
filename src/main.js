@@ -17,19 +17,12 @@ globalCookiesConfig({
 
 
 const myApp = createApp(App);
-// const plugins = {
-//     install() {
-//         myApp.saveAd = saveAd;
-//         .prototype.$saveAd = saveAd;
-//     }
-//   }
 
-// myApp.use(plugins)
 
 myApp.component('Toast', Toast)
 myApp.component('Preloader', Preloader)
 
-myApp.use(router)
-myApp.use(store)
 myApp.use(MotionPlugin)
+myApp.use(store)
+myApp.use(router)
 myApp.mount('#app')
