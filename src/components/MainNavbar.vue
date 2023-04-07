@@ -19,7 +19,7 @@
             </svg>
 
             <input type="text" class="w-full h-full bg-transparent" v-model="searchInput"
-                @change="$emit('search', searchInput)" placeholder="Search">
+                @input="$emit('search', searchInput)" placeholder="Search">
         </div>
 
         <div class=" flex-row items-center w-fit gap-x-6 divide-x md:flex hidden">

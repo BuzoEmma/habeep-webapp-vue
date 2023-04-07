@@ -48,7 +48,7 @@
                         <div class="basis-full md:basis-2/3 photo-cover p-2 h-full" v-if="imageData1">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
                                 <img :src="imageData1" class="h-full w-full" v-if="pic1.type !== 'video/mp4'" alt="">
-                                <video :src="imageData1" class="h-full w-full rounded-lg" v-else height="100%" width="100%"
+                                <video :src="imageData1" class="h-full w-full rounded-lg feed-image" v-else height="100%" width="100%"
                                     autoplay muted></video>
                             </div>
                         </div>
@@ -65,7 +65,7 @@
                         <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" v-if="imageData2">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
                                 <img :src="imageData2" class="h-full w-full" v-if="pic2.type !== 'video/mp4'" alt="">
-                                <video :src="imageData2" class="h-full w-full rounded-lg" v-else height="100%" width="100%"
+                                <video :src="imageData2" class="h-full w-full rounded-lg feed-image" v-else height="100%" width="100%"
                                     autoplay muted></video>
                             </div>
                         </div>
@@ -78,7 +78,7 @@
                         <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" v-if="imageData3">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
                                 <img :src="imageData3" class="h-full w-full" v-if="pic3.type !== 'video/mp4'" alt="">
-                                <video :src="imageData3" class="h-full w-full rounded-lg" v-else height="100%" width="100%"
+                                <video :src="imageData3" class="h-full w-full rounded-lg feed-image" v-else height="100%" width="100%"
                                     autoplay muted></video>
                             </div>
                         </div>
@@ -91,7 +91,7 @@
                         <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" v-if="imageData4">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
                                 <img :src="imageData4" class="h-full w-full" v-if="pic4.type !== 'video/mp4'" alt="">
-                                <video :src="imageData4" class="h-full w-full rounded-lg" v-else height="100%" width="100%"
+                                <video :src="imageData4" class="h-full w-full rounded-lg feed-image" v-else height="100%" width="100%"
                                     autoplay muted></video>
                             </div>
                         </div>
@@ -104,7 +104,7 @@
                         <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" v-if="imageData5">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
                                 <img :src="imageData5" class="h-full w-full" v-if="pic5.type !== 'video/mp4'" alt="">
-                                <video :src="imageData5" class="h-full w-full rounded-lg" v-else height="100%" width="100%"
+                                <video :src="imageData5" class="h-full w-full rounded-lg feed-image" v-else height="100%" width="100%"
                                     autoplay muted></video>
                             </div>
                         </div>
@@ -382,23 +382,10 @@ let allCompleted = computed(() => {
     opacity: 0;
 }
 
-.on-active {
-    border: 1px solid #1B49FF;
-    color: #1B49FF;
-}
 
-.mapouter {
-    position: relative;
-    text-align: right;
-    height: 100%;
-    width: 100%;
-}
-
-.gmap_canvas {
-    overflow: hidden;
-    background: none !important;
-    height: 100%;
-    width: 100%;
+.feed-image {
+    width: 100% !important;
+    object-fit: fill;
 }
 
 @media screen and (max-width : 425px) {

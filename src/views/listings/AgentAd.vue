@@ -83,7 +83,7 @@
                             <p
                                 class="text-sub-webapp text-lg md:text-sm xl:text-lg product-location flex flex-row items-center gap-x-2">
                                 <img src="../../assets/images/map-pin.png" alt=""> 34 Marian Road, Calabar, Cross River
-                                State
+                                Statex
                             </p>
                         </div>
                     </div>
@@ -366,5 +366,11 @@ function changeWidth() {
 
 .image-container {
     height: 80vh;
+}
+
+.feed-image {
+    width: 100% !important;
+    object-fit: fill;
+    height: 100% !important;
 }
 </style>

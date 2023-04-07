@@ -537,7 +537,7 @@ onMounted(() => {
 })
 </script>
 
-<style>
+<style scoped>
 .location::-webkit-scrollbar {
     width: 6px;
 }
@@ -581,6 +581,8 @@ onMounted(() => {
 
 .feed-image {
     height: 164px;
+    width: 100% !important;
+    object-fit: fill;
     max-height: 164px !important;
 }
 

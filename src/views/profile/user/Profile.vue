@@ -11,11 +11,27 @@
 
     <div class="w-screen min-w-full flex flex-col items-center main bg-white h-screen min-h-screen overflow-y-auto"
         :class="{ 'max-h-screen overflow-y-hidden overflow-hidden opacity-40': onModal }" resize="changeWidth">
-        <ProfileNavbar />
+        <ProfileNavbar @toggleSearch="toggleSearch" />
 
 
         <div
             class="body px-6 2xl:px-44 md:px-20 mb-10 w-full flex flex-col gap-y-8 lg:flex-row h-full gap-x-3 items-center md:items-start  mt-10">
+
+            <!-- mobile search bar -->
+            <div class="flex flex-row items-center w-full px-2 relative" v-if="onSearchBar" v-motion
+                :initial="{ opacity: 0.2, y: -100 }" :enter="{ opacity: 1, y: 0 }" :leave="{ y: 100, opacity: 0, }">
+                <input type="text" placeholder="Search products" v-model="searchData"
+                    class=" border border-black pl-2 outline-none h-10 w-full">
+                <div class="search-btn w-8 h-8 bg-black absolute right-3 grid place-items-center cursor-pointer"
+                    @click="$router.push('/listings/search?name=' + searchData)">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-5 h-5 text-white">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                    </svg>
+                </div>
+            </div>
+            
             <!-- user basic info -->
             <div class="w-full lg:w-2/6 2xl:w-1/4 lg:ml-3 h-fit flex flex-col items-center gap-y-8 left">
                 <div class="user-info flex p-4 bg-white flex-col border items-start border-gray-200 rounded w-full h-full">
@@ -119,12 +135,12 @@
                         <div class="basis-full md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0"
                             v-for="ad in agentDetails.ads" :key="ad">
                             <div
-                                class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 ad">
+                                class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 ad feed">
                                 <img @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
                                     class="w-full h-full rounded-t-md" v-if="ad.images[0].link.includes('mp4') == false"
                                     alt="">
                                 <video @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
-                                    class="w-full rounded-t-md" v-else autoplay muted></video>
+                                    class="w-full rounded-t-md" v-else autoplay muted loop></video>
                                 <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
                                     @click="$router.push('/listings/products/' + ad._id)">
                                     {{ ad.title }}
@@ -167,16 +183,16 @@
                         <img src="../../../assets/icons/no-ad.svg" alt="">
                         <span class="text-gray-300 text-lg">No Saved ads yet</span>
                     </div>
-                    <div class="flex-row flex-auto h-full flex-wrap w-full flex overflow-y-auto" v-else>
+                    <div class="flex-row h-full flex-wrap w-full flex overflow-y-auto" v-else>
                         <!-- listing template -->
-                        <div class="md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0" v-for="ad in savedAds" :key="ad">
+                        <div class="basis-full md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0" v-for="ad in savedAds" :key="ad">
                             <div
-                                class="flex flex-col items-start gap-y-2 relative ad border rounded-md border-gray-200 pb-2">
+                                class="flex flex-col items-start gap-y-2 relative ad feed w-full border rounded-md border-gray-200 pb-2">
                                 <img @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
-                                    class="w-full h-full rounded-t-md" v-if="ad.images[0].link.includes('mp4') == false"
+                                    class="w-full h-full rounded-t-md feed-image" v-if="ad.images[0].link.includes('mp4') == false"
                                     alt="">
                                 <video @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
-                                    class="w-full rounded-t-md" v-else autoplay muted></video>
+                                    class="w-full rounded-t-md feed-image" v-else autoplay muted></video>
                                 <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
                                     @click="$router.push('/listings/products/' + ad._id)">
                                     {{ ad.title }}
@@ -290,7 +306,14 @@ async function getSavedAds() {
     }
 }
 
+const onSearchBar = ref(false)
 
+const searchData = ref('')
+
+
+function toggleSearch() {
+    onSearchBar.value = !onSearchBar.value
+}
 
 
 function changeTab(tab) {
@@ -383,5 +406,16 @@ function changeWidth() {
 .ads-tab::-webkit-scrollbar-track,
 .saved-ads-tab::-webkit-scrollbar-track {
     box-shadow: inset 0 0 10px white;
+}
+
+.feed-image {
+    height: 164px;
+    width: 100% !important;
+    object-fit: fill;
+    max-height: 164px !important;
+}
+.feed {
+    height: 291px !important;
+    max-height: 291px !important;
 }
 </style>

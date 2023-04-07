@@ -19,13 +19,14 @@
         </div>
 
 
-        <div class="body px-6 2xl:px-44 md:px-20 mb-10 w-full flex flex-col h-fit items-center md:items-start gap-y-8 mt-3">
+        <div
+            class="body px-6 2xl:px-44 md:px-20 mb-10 w-full flex flex-col h-full items-center md:items-start gap-y-8 mt-3">
             <div class="flex flex-row items-center w-full px-2 relative" v-if="onSearchBar" v-motion
                 :initial="{ opacity: 0.5, y: -100 }" :enter="{ opacity: 1, y: 0 }" :leave="{ y: 100, opacity: 0.2, }">
                 <input type="text" placeholder="Search products" v-model="searchData" @keydown="checkForEnter"
                     class=" border border-black pl-2 outline-none h-10 w-full">
                 <div class="search-btn w-8 h-8 bg-black absolute right-3 grid place-items-center cursor-pointer"
-                    @click="getSearch(currentState, searchData)">
+                    @click="searchDB(searchData)">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-5 h-5 text-white">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -165,13 +166,13 @@
                 <!-- listing template -->
                 <div class="basis-full md:basis-1/2 xl:basis-1/4 md:px-3 md:py-3 py-5 gap-y-4 px-0" v-else
                     v-for="product in products" :key="product">
-                    <div class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 feed">
+                    <div class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 h-fit feed">
                         <img @click="$router.push('/listings/products/' + product._id)" :src="product.images[0].link"
-                            class="w-full h-full rounded-t-md" v-if="product.images[0].link.includes('mp4') == false"
-                            alt="">
+                            class="w-full h-full feed-image rounded-t-md"
+                            v-if="product.images[0].link.includes('mp4') == false" alt="">
                         <video @click="$router.push('/listings/products/' + product._id)" :src="product.images[0].link"
-                            class="w-full rounded-t-md" v-else autoplay muted></video>
-                        <p class="text-webapp text-lg font-medium w-full mx-2 cursor-pointer"
+                            class="w-full rounded-t-md feed-image" v-else autoplay muted></video>
+                        <p class="text-webapp text-lg font-medium w-full mx-2 cursor-pointer feed-image"
                             @click="$router.push('/listings/products/' + ad._id)">
                             {{ product.title }}
 
@@ -243,7 +244,11 @@ const currentCity = ref('All')
 const searchingData = ref(false)
 
 const searchDB = (e) => {
-    getSearch(currentCity, e)
+    if(e.length > 0) {
+        getSearch(currentCity, e)
+    } else {
+        getSearch(currentCity, 'all')
+    }
 }
 
 const checkForEnter = (e) => {
@@ -286,6 +291,7 @@ function changeStateModal(state, type) {
 
 async function getSearch(location, query) {
     searchingData.value = true
+    products.value = []
     let data = reactive({
         location: location,
         string: query
@@ -407,4 +413,15 @@ onMounted(() => {
 })
 </script>
 
-<style></style>
+<style scoped>
+.feed-image {
+    height: 164px;
+    width: 100% !important;
+    object-fit: fill;
+    max-height: 164px !important;
+}
+.feed {
+    height: 291px !important;
+    max-height: 291px !important;
+}
+</style>

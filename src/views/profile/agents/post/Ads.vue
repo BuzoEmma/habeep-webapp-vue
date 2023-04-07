@@ -104,10 +104,10 @@
                     <div class="basis-full md:basis-1/2 2xl:basis-1/3 p-4" v-for="item in activeProducts" :key="item">
                         <div class="flex flex-col items-start gap-y-2 ad relative rounded-t-md">
                             <img @click="$router.push('/listings/products/' + item._id)" :src="item.images[0].link"
-                                class="w-full h-full rounded-t-md" v-if="item.images[0].link.includes('mp4') == false"
+                                class="w-full h-full rounded-md feed-image" v-if="item.images[0].link.includes('mp4') == false"
                                 alt="">
                             <video @click="$router.push('/listings/products/' + item._id)" :src="item.images[0].link"
-                                class="w-full rounded-t-md" v-else autoplay muted></video>
+                                class="w-full rounded-md feed-image" v-else autoplay muted></video>
                             <p class="text-webapp text-lg font-medium w-full  cursor-pointer"
                                 @click="$router.push('/listings/products/' + item._id)">
                                 {{ item.title }}
@@ -157,10 +157,10 @@
                     <div class="basis-full md:basis-1/2 2xl:basis-1/3 ad p-4" v-for="item in closedProducts" :key="item">
                         <div class="flex flex-col items-start gap-y-2 relative ad  rounded-t-md">
                             <img @click="$router.push('/listings/products/' + item._id)" :src="item.images[0].link"
-                                class="w-full h-full rounded-t-md" v-if="item.images[0].link.includes('mp4') == false"
+                                class="w-full h-full rounded-md feed-image" v-if="item.images[0].link.includes('mp4') == false"
                                 alt="">
                             <video @click="$router.push('/listings/products/' + item._id)" :src="item.images[0].link"
-                                class="w-full rounded-t-md" v-else autoplay muted></video>
+                                class="w-full rounded-md feed-image" v-else autoplay muted></video>
                             <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
                                 @click="$router.push('/listings/products/' + item._id)">
                                 {{ item.title }}
@@ -373,5 +373,12 @@ input:focus {
 .on-active {
     border: 1px solid #1B49FF;
     color: #1B49FF;
+}
+
+.feed-image {
+    height: 164px;
+    width: 100% !important;
+    object-fit: fill;
+    max-height: 164px !important;
 }
 </style>

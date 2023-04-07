@@ -12,9 +12,9 @@
             <!-- product display images for desktop view -->
             <div class="product-img-grid desktop-view xl:flex flex-row items-center w-full mt-10 hidden">
                 <div class="relative h-full display-img w-1/2 py-1">
-                    <img :src="carouselImg.link" class=" h-full rounded-lg main-img w-full"
+                    <img :src="carouselImg.link" class=" h-full rounded-lg feed-image w-full"
                         v-if="carouselImg.link.toString().includes('mp4') == false" @click="enterImageViewer()" alt="">
-                    <video :src="carouselImg.link" @click="enterImageViewer()" loop class="w-full h-full rounded-lg" v-else
+                    <video :src="carouselImg.link" @click="enterImageViewer()" loop class="w-full h-full rounded-lg feed-image" v-else
                         autoplay muted></video>
 
                     <div class="w-full absolute flex flex-row top-5 items-center justify-between px-2">
@@ -37,23 +37,23 @@
                 </div>
 
                 <div class="flex h-full flex-col w-1/2">
-                    <div class=" flex flex-row h-1/2 w-full pl-2 items-center">
-                        <div class="h-full w-1/2 m-1 cursor-pointer rounded-lg overflow-hidden"
+                    <div class=" flex flex-row h-1/2 w-full pl-2 items-center gap-2">
+                        <div class="h-full w-1/2 m-1 cursor-pointer gap-2 rounded-lg overflow-hidden"
                             v-for="image in images.slice(1, 3)" :key="image">
-                            <img :src="image.link" class=" h-full w-full rounded-lg"
+                            <img :src="image.link" class=" h-full w-full rounded-lg feed-image-short"
                                 v-if="image.link && image.link.toString().includes('mp4') === false"
                                 @click="enterImageViewer()" :key="image" alt="">
-                            <video :src="image.link" @click="enterImageViewer()" loop class="w-full rounded-lg" v-else
+                            <video :src="image.link" @click="enterImageViewer()" loop class="w-full rounded-lg feed-image" v-else
                                 autoplay muted></video>
                         </div>
                     </div>
                     <div class=" flex flex-row h-1/2 w-full pl-2 items-center">
-                        <div class="w-1/2 cursor-pointer m-1 rounded-lg overflow-hidden" style="height: 300px"
+                        <div class="w-1/2 cursor-pointer m-1 gap-2 rounded-lg overflow-hidden" style="height: 300px"
                             v-for="image in images.slice(3, 5)" :key="image">
-                            <img :src="image.link" class=" h-full w-full rounded-lg"
+                            <img :src="image.link" class=" h-full w-full rounded-lg feed-image-short"
                                 v-if="image.link && image.link.toString().includes('mp4') == false"
                                 @click="enterImageViewer()" alt="">
-                            <video :src="image.link" @click="enterImageViewer()" loop class="w-full rounded-lg" v-else
+                            <video :src="image.link" @click="enterImageViewer()" loop class="w-full rounded-lg feed-image" v-else
                                 autoplay muted></video>
                         </div>
                     </div>
@@ -82,10 +82,10 @@
                     </div>
                 </div>
 
-                <img :src="carouselImg.link" class=" h-full w-full rounded-lg main-img"
+                <img :src="carouselImg.link" class=" h-full w-full rounded-lg feed-image"
                     v-if="carouselImg.link && carouselImg.link.toString().includes('mp4') == false"
                     @click="enterImageViewer()" alt="">
-                <video :src="carouselImg.link" loop class="w-full rounded-lg" @click="enterImageViewer()" v-else autoplay
+                <video :src="carouselImg.link" loop class="w-full rounded-lg feed-image" @click="enterImageViewer()" v-else autoplay
                     muted></video>
                 <!-- <img :src="images[activeCarouselImg - 1].link" class="h-full w-full new-img" :class="{'hidden': changeCarouselImg}"> -->
 
@@ -304,8 +304,8 @@
                 alt="">
             <div class="image-container h-fit flex flex-col items-center justify-center w-full">
                 <img :src="carouselImg.link" style="object-fit: contain; object-position: center;"
-                    v-if="carouselImg && carouselImg.link.includes('mp4') == false" class="w-full h-full main-img" alt="">
-                <video :src="carouselImg.link" loop class="md:w-4/5 w-full rounded-lg" @click="enterImageViewer()" v-else
+                    v-if="carouselImg && carouselImg.link.includes('mp4') == false" class="w-full h-full feed-image" alt="">
+                <video :src="carouselImg.link" loop class="md:w-4/5 w-full rounded-lg feed-image" @click="enterImageViewer()" v-else
                     controls autoplay></video>
             </div>
             <img src="../../assets/icons/next-circle.svg" @click="changeCarouselImg(activeCarouselImg + 1)"
@@ -467,5 +467,15 @@ onMounted(() => {
 
 .image-container {
     height: 80vh;
+}
+
+.feed-image-short {
+    width: 100% !important;
+    object-fit: fill;
+}
+.feed-image {
+    width: 100% !important;
+    object-fit: fill;
+    height: 100% !important;
 }
 </style>

@@ -10,17 +10,6 @@
             <span class="text-primary text-2xl">Habeep</span>
         </div>
 
-        <!-- <div
-            class="search-bar lg:flex hidden w-1/4 flex-row rounded-full border border-gray-300 items-center bg-white pl-3 pr-1 h-12 py-1 gap-x-4">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="#B1B4CD"
-                class="w-4 h-4 mt-1">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-            </svg>
-
-            <input type="text" class="w-full h-full" placeholder="Search">
-        </div> -->
-
         <div class=" flex-row items-center w-fit gap-x-6 divide-x md:flex hidden">
             <!-- download app on stores -->
             <div class="flex flex-row items-center gap-x-4">
