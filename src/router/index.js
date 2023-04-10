@@ -193,7 +193,6 @@ const routes = [
     {
         path: '/agents/profile/:id',
         name: 'Agent-profile',
-        beforeEnter: guardMyrouteForAgent,
         component: AgentProfile,
         meta: {
             title: "Agent Profile"
