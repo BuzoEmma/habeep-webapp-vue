@@ -88,7 +88,7 @@
                             Ads
                         </div>
                         <div class="cursor-pointer hidden flex-row items-center justify-center w-24 pb-1"
-                            v-if="agentDetails.userId === $store.state.user._id" @click="changeTab(2)"
+                            v-if="$store.state.user._id && agentDetails.userId === $store.state.user._id" @click="changeTab(2)"
                             :class="{ 'text-blue-600 border-b-blue-700 border-b-2': openTab === 2 }">
                             Saved ads
                         </div>
