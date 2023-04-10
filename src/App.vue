@@ -41,8 +41,8 @@ function verifyAllowedRoles(route, role) {
 const getUser = async () => {
   try {
     const user = await axios.get("/auth/user");
-    const loggedIn = cookies.get("loggedIn");
-    if (user.data === "Unauthorized" || !loggedIn) {
+    let loggedIn = cookies.get("loggedIn");
+    if (user.data === "Unauthorized" || loggedIn === false) {
       store.dispatch("unsetAuth");
       if (verifyAllowedRoles(route, 'user') === false) {
         router.replace("/login?redirect=" + router.currentRoute.value.fullPath + "?reload=true");

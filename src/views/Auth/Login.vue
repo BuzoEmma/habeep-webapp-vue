@@ -163,7 +163,7 @@ async function loginUser() {
                         if (route.query.redirect) {
                             router.push(route.query.redirect)
                         } else {
-                            router.replace('/?reloadApp=true')
+                            router.replace('/feeds?reloadApp=true')
                         }
                     } else {
                         router.push('/verify-otp?email=' + login.data.data.user.email)

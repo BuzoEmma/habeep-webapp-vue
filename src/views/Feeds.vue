@@ -286,7 +286,7 @@
                                 <span v-if="feed.for === 'rent'">Year</span>
                                 <span v-if="feed.for === 'sale'">Forever</span>
                             </p>
-                            <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
+                            <svg xmlns="http://www.w3.org/2000/svg" v-motion  :initial="{ opacity: 0.8 }"
                                 v-if="$store.state.isAuthenticated" :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }"
                                 fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                 class="w-6 h-6 cursor-pointer" @click="saveAd(feed._id)"
@@ -580,10 +580,10 @@ onMounted(() => {
 }
 
 .feed-image {
-    height: 164px;
+    height: 100%;
     width: 100% !important;
     object-fit: fill;
-    max-height: 164px !important;
+    max-height: 185px !important;
 }
 
 .feed {

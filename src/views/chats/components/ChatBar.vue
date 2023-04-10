@@ -12,13 +12,13 @@
                     <img :src="chat.user.profilePicture" class="w-full h-full" alt="">
                 </div>
                 <div class="flex flex-col items-start">
-                    <span class="md:text-lg text-sm text-left  text-webapp font-medium">{{ chat.user.fname + ' ' +
-                        chat.user.surname }}</span>
+                    <span class="md:text-lg text-sm text-left text-webapp font-medium">{{ chat.user.fname + ' ' + chat.user.surname }}</span>
                     <span class="text-xs md:text-sm text-sub-webapp" v-if="chat.room.chats.length > 0">{{
                         chat.room.chats[chat.room.chats.length - 1].msg }}</span>
                     <span class="text-xs md:text-sm text-sub-webapp" v-else>No message yet</span>
                 </div>
             </div>
+
             <div class="flex flex-col items-end gap-y-1">
                 <span class="text-xs md:text-sm text-webapp" :class="{ 'text-primary': newMessage }"
                     v-if="chat.room.chats.length > 0">{{ chat.room.chats[chat.room.chats.length -
@@ -34,6 +34,9 @@
 <script setup>
 import moment from 'moment';
 import { ref, reactive } from 'vue'
+import { useStore } from 'vuex'
+
+const store = useStore()
 
 const props = defineProps(['rooms'])
 const evaluated = ref(0)
@@ -45,8 +48,10 @@ function returnUnreadMessages(roomId) {
         return room.room._id === roomId
     })
     roomDetails[0].room.chats.forEach(chat => {
-        if (chat.read === false) {
-            unreadMessages.value += 1
+        if(store.state.user._id !== chat.userId) {
+            if (chat.read === false) {
+                unreadMessages.value += 1
+            }
         }
     })
     return unreadMessages.value
@@ -55,7 +60,7 @@ function returnUnreadMessages(roomId) {
 function evaluate() {
     let finalValue = ref(0)
     props.rooms.forEach(room => {
-        finalValue.value += returnUnreadMessages(room.room._id)
+        finalValue.value = returnUnreadMessages(room.room._id)
     })
     return finalValue.value
 }

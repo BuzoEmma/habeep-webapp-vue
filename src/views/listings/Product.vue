@@ -70,7 +70,7 @@
                         <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
                         <div class="grid place-items-center relative" v-if="$store.state.isAuthenticated">
                             <img src="../../assets/icons/heart.svg" class="cursor-pointer" alt="">
-                            <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
+                            <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }" v-if="$store.state.user._id"
                                 :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor"
                                 class="w-6 h-6 absolute top-2 text-white cursor-pointer" @click="saveAd(product._id)"

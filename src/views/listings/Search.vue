@@ -152,7 +152,7 @@
             </div>
 
             <!-- listing -->
-            <div class="flex flex-row flex-auto h-full md:mt-10 w-full flex-wrap px-6"
+            <div class="flex flex-row flex-auto h-full md:mt-10 w-full flex-wrap"
                 :class="{ 'justify-center items-center': products.length < 1 }">
 
                 <div class="flex flex-col items-center gap-y-3 justify-center" v-if="products.length < 1 && !searchingData">
@@ -166,7 +166,8 @@
                 <!-- listing template -->
                 <div class="basis-full md:basis-1/2 xl:basis-1/4 md:px-3 md:py-3 py-5 gap-y-4 px-0" v-else
                     v-for="product in products" :key="product">
-                    <div class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 h-fit feed">
+                    <div
+                        class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 h-fit feed">
                         <img @click="$router.push('/listings/products/' + product._id)" :src="product.images[0].link"
                             class="w-full h-full feed-image rounded-t-md"
                             v-if="product.images[0].link.includes('mp4') == false" alt="">
@@ -189,11 +190,17 @@
                                 <span v-if="product.for === 'rent'">Year</span>
                                 <span v-if="product.for === 'sale'">Forever</span>
                             </p>
-                            <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
-                                :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6 cursor-pointer"
+                            <svg xmlns="http://www.w3.org/2000/svg" v-if="$store.state.isAuthenticated" v-motion
+                                :initial="{ opacity: 0.8 }" :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 cursor-pointer"
                                 @click="saveAd(product._id)"
                                 :class="{ 'text-orange-400': $store.state.user.savedAds.includes(product._id) }">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" v-else fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="w-6 h-6 cursor-pointer"
+                                @click="$router.push('/login')">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                             </svg>
@@ -244,7 +251,7 @@ const currentCity = ref('All')
 const searchingData = ref(false)
 
 const searchDB = (e) => {
-    if(e.length > 0) {
+    if (e.length > 0) {
         getSearch(currentCity, e)
     } else {
         getSearch(currentCity, 'all')
@@ -415,11 +422,12 @@ onMounted(() => {
 
 <style scoped>
 .feed-image {
-    height: 164px;
+    height: 100%;
     width: 100% !important;
     object-fit: fill;
-    max-height: 164px !important;
+    max-height: 185px !important;
 }
+
 .feed {
     height: 291px !important;
     max-height: 291px !important;
