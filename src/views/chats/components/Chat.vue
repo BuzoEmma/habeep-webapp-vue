@@ -1,12 +1,13 @@
 <template>
-    <div class="flex flex-col items-center justify-center md:border md:border-gray-200 rounded-2xl w-full lg:w-2/3 h-full">
+    <div
+        class="flex flex-col items-center justify-center md:border md:border-gray-200 rounded-2xl w-full lg:w-2/3 h-screen md:h-full overflow-hidden">
         <div class="flex flex-col gap-y-2 h-fit" v-if="!props.chat">
             <img src="../../../assets/illustrations/no-conversation.svg" alt="">
             <p class="text-lg text-webapp">No conversation yet</p>
         </div>
-        <div class="flex flex-col w-full h-full justify-between items-center" v-else>
+        <div class="flex flex-col w-full h-full justify-between items-center overflow-hidden" v-else>
             <div
-                class="flex flex-row items-center justify-between w-full  relative border-b h-fit border-b-gray-200 px-2 lg:px-5 py-1">
+                class="flex flex-row items-center justify-between w-full sticky border-b h-fit border-b-gray-200 px-2 lg:px-5 py-3">
                 <div class="rounded-full w-13 h-13 grid place-items-center">
                     <img :src="props.chat.user.profilePicture" class="w-full h-full" alt="" v-if="screenWidth > 1023">
                     <svg xmlns="http://www.w3.org/2000/svg" @click="$emit('leaveChat')" v-else fill="none"
@@ -31,7 +32,7 @@
             </div>
 
             <!-- messages -->
-            <div class="flex flex-col items-center w-full h-full overflow-y-auto messages-box" :ref="messagesBox">
+            <div class="flex flex-col items-center w-full overflow-y-auto messages-box" :ref="messagesBox">
                 <div class="flex flex-col w-full h-fit py-6 items-center justify-start"
                     v-for="(chatGroup, index) in sortedChats()" :key="(chatGroup, index)">
                     <div class="flex flex-row items-center gap-x-2">
@@ -50,7 +51,7 @@
 
             <!-- bottom chatbox -->
             <div
-                class="flex flex-row items-center justify-between w-full  border-t h-fit border-t-gray-200  px-2 md:px-3 lg:px-10 py-3">
+                class="flex flex-row items-center justify-between w-full  border-t h-14 border-t-gray-200 px-2 md:px-3 lg:px-10 py-3">
                 <img src="../../../assets/icons/add-assets-chat.svg" alt="">
                 <input type="text" v-model="inputMsg" @keydown="checkForEnter"
                     class="message-input w-10/12 md:w-11/12 rounded-md h-11 border pl-3 border-gray-200"
@@ -108,14 +109,10 @@ socket.on("connect", () => {
 });
 
 socket.on("online", (user) => {
-    if (props.chat.room.users.includes(user)) {
-        otherUserOnline.value = true
-    }
+    otherUserOnline.value = true
 })
 socket.on("offline", (user) => {
-    if (props.chat.room.users.includes(user) && user !== store.state.user._id) {
-        otherUserOnline.value = false
-    }
+    otherUserOnline.value = false
 })
 
 socket.on("message", (msg) => {
@@ -244,9 +241,13 @@ setTimeout(() => {
     width: 6px;
 }
 
+.messages-box {
+    height: 100%;
+}
+
 
 .messages-box::-webkit-scrollbar-thumb {
-    width: 10px;
+    width: 5px;
     background-color: #71759D;
     border-radius: 10px;
 }
