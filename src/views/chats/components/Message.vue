@@ -1,6 +1,6 @@
 <template>
   <div class="p-3 flex flex-col text-left h-fit items-end message bg-primary text-white float-right"
-  style="max-width: 90%"
+  style="max-width: 50%"
     :class="{ 'bg-gray-100 text-black float-left': props.data.userId !== props.userId }">
     <p class="text-left w-full text-sm font-medium h-full break-words">
       {{ props.data.msg }}
