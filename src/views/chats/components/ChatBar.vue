@@ -13,10 +13,10 @@
                 </div>
                 <div class="flex flex-col items-start">
                     <span class="md:text-lg text-sm text-left text-webapp font-medium">{{ chat.user.fname + ' ' + chat.user.surname }}</span>
-                    <span class="text-xs md:text-sm text-sub-webapp" v-if="chat.room.chats.length > 0 && chat.room.chats[chat.room.chats.length - 1].msg.length < 35">{{
+                    <span class="text-xs md:text-sm text-sub-webapp" v-if="chat.room.chats.length > 0 && chat.room.chats[chat.room.chats.length - 1].msg.length < 20">{{
                         chat.room.chats[chat.room.chats.length - 1].msg }}</span>
-                    <span class="text-xs md:text-sm text-sub-webapp" v-if="chat.room.chats.length > 0 && chat.room.chats[chat.room.chats.length - 1].msg.length > 34">{{
-                        chat.room.chats[chat.room.chats.length - 1].msg.slice(0, 35) + '....' }}</span>
+                    <span class="text-xs md:text-sm text-sub-webapp" v-if="chat.room.chats.length > 0 && chat.room.chats[chat.room.chats.length - 1].msg.length > 19">{{
+                        chat.room.chats[chat.room.chats.length - 1].msg.slice(0, 20) + '....' }}</span>
                     <span class="text-xs md:text-sm text-sub-webapp" v-else>No message yet</span>
                 </div>
             </div>
