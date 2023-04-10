@@ -17,7 +17,7 @@
                         chat.room.chats[chat.room.chats.length - 1].msg }}</span>
                     <span class="text-xs md:text-sm text-sub-webapp" v-if="chat.room.chats.length > 0 && chat.room.chats[chat.room.chats.length - 1].msg.length > 19">{{
                         chat.room.chats[chat.room.chats.length - 1].msg.slice(0, 20) + '....' }}</span>
-                    <span class="text-xs md:text-sm text-sub-webapp" v-else>No message yet</span>
+                    <span class="text-xs md:text-sm text-sub-webapp" v-if="chat.room.chats.length === 0">No message yet</span>
                 </div>
             </div>
 
