@@ -145,6 +145,7 @@ const routes = [
     {
         path: '/feeds',
         component: Feeds,
+        name: 'Feeds',
         meta: {
             title: 'Feeds'
         }
