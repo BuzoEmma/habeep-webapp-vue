@@ -68,7 +68,7 @@
 
             <p @click="$router.push('/account/IBO/category')" class="text-sm text-webapp mt-1 cursor-pointer"
                 :class="{ 'text-blue-700': $route.name.includes('IBO') === true }"
-                v-if="$store.state.isAuthenticated && $store.state.user.role !== 'AGENT'">Become an Agent</p>
+                v-if="$store.state.isAuthenticated && $store.state.user.role !== 'AGENT'">Become an Agent/Tenant</p>
 
             <p @click="$router.push('/wallet')" class="text-sm text-webapp mt-1 cursor-pointer"
                 :class="{ 'text-blue-700': $route.name === 'Wallet' }" v-if="$store.state.isAuthenticated">Wallet</p>
