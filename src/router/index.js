@@ -144,7 +144,10 @@ const routes = [
     },
     {
         path: '/feeds',
-        redirect: '/'
+        component: Feeds,
+        meta: {
+            title: 'Feeds'
+        }
     },
     // extras
     {

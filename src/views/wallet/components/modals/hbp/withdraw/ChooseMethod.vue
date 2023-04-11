@@ -25,8 +25,6 @@
                 style="background: #F2F4F9;" @click="$emit('gotoTransfer')">
                 <p class="flex flex-row items-center gap-x-1">
                     <span class="text-sm font-medium text-webapp">Transfer to beneficiary</span>
-                    <span class="bg-orange-300 px-1 rounded-lg text-white" style="font-size: 8px;">Coming
-                        soon</span>
                 </p>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">

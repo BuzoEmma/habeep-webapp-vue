@@ -13,7 +13,7 @@
             @gotoWithdrawal="openWithdrawalModal" />
 
         <DepositHBP v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }"
-            :wallet="tokenWallet" v-if="depositHBPModal" @close="closeModal" />
+            :wallet="tokenWallet" v-if="depositHBPModal" @close="closeModal" @gotoDeposit="openNewModal('depositModal')"/>
         <SwapHBP v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }"
             :wallet="tokenWallet" v-if="swapHBPModal" @close="closeModal" />
         <TransferHBP v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }"
@@ -94,6 +94,11 @@ function openWithdrawalModal(e) {
 // hbp components
 function openWithdrawalHBPModal(modal) {
     console.log(modal)
+    closeModal()
+    openModal(modal)
+}
+
+function openNewModal(modal) {
     closeModal()
     openModal(modal)
 }
