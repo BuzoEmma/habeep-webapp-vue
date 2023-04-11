@@ -145,9 +145,9 @@ const routes = [
     {
         path: '/feeds',
         component: Feeds,
-        name: 'Feeds',
+        name: changeHomeName(),
         meta: {
-            title: 'Feeds'
+            title: changeHomeName()
         }
     },
     // extras
