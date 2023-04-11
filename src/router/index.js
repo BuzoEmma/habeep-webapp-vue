@@ -71,8 +71,8 @@ import Feeds from '../views/Feeds.vue'
 
 function changeHomeRoute() {
     if (createStore.state.isAuthenticated) {
-        return Feeds
-    } else return Home
+        return '/feeds'
+    } else return '/home'
 }
 
 function changeHomeName() {
@@ -128,11 +128,8 @@ import WalletIndex from '../views/wallet/Index.vue'
 const routes = [
     {
         path: '/',
-        component: changeHomeRoute(),
-        name: changeHomeName(),
-        meta: {
-            title: changeHomeName()
-        }
+        redirect: changeHomeRoute()
+        
     },
     {
         path: '/home',
@@ -145,9 +142,9 @@ const routes = [
     {
         path: '/feeds',
         component: Feeds,
-        name: changeHomeName(),
+        name: 'Feeds',
         meta: {
-            title: changeHomeName()
+            title: 'Feeds'
         }
     },
     // extras
