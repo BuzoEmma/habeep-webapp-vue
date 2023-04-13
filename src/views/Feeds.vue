@@ -582,7 +582,7 @@ onMounted(() => {
 .feed-image {
     height: 100%;
     width: 100% !important;
-    object-fit: fill;
+    object-fit: cover;
     max-height: 185px !important;
 }
 

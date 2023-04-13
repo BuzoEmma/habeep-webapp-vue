@@ -67,12 +67,12 @@
                     </div>
 
 
-                    <div class="flex flex-row items-center w-full gap-y-1 xl:justify-between mt-4 xl:mt-3">
-                        <button v-if="$store.state.user.role.includes('IBO')" @click="openModal('affiliateModal')"
+                    <div class="flex flex-col md:flex-row items-center w-full gap-y-1 xl:justify-between mt-4 xl:mt-3">
+                        <button v-if="$store.state.user.role === 'AGENT' || $store.state.user.role === 'TENANT'" @click="openModal('affiliateModal')"
                             class="user-btn flex-row items-center justify-center text-sm font-medium text-webapp w-full bg-white">Affiliate
                             profile</button>
                         <button @click="openModal('editProfileModal')"
-                            class="user-btn flex flex-row items-center justify-center text-sm font-medium  text-webapp ml-2 bg-white w-full"
+                            class="user-btn flex flex-row items-center justify-center text-sm font-medium  text-webapp md:ml-2 bg-white w-full"
                             :class="{ 'w-full': $store.state.user.role === 'AGENT' }">Edit
                             profile</button>
                     </div>
@@ -137,10 +137,10 @@
                             <div
                                 class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 ad feed">
                                 <img @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
-                                    class="w-full h-full rounded-t-md" v-if="ad.images[0].link.includes('mp4') == false"
+                                    class="w-full rounded-t-md feed-image" v-if="ad.images[0].link.includes('mp4') == false"
                                     alt="">
                                 <video @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
-                                    class="w-full rounded-t-md" v-else autoplay muted loop></video>
+                                    class="w-full rounded-t-md feed-image" v-else autoplay muted loop></video>
                                 <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
                                     @click="$router.push('/listings/products/' + ad._id)">
                                     {{ ad.title }}
@@ -411,7 +411,7 @@ function changeWidth() {
 .feed-image {
     height: 164px;
     width: 100% !important;
-    object-fit: fill;
+    object-fit: cover;
     max-height: 164px !important;
 }
 .feed {

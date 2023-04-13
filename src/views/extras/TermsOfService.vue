@@ -6,38 +6,38 @@
         <div class="body px-6 2xl:px-44 md:px-20 w-full flex flex-col h-fit items-start gap-y-8">
             <div class="flex flex-col w-full items-start gap-y-4 mt-16">
                 <p class="text-webapp text-3xl md:text-4xl font-medium w-full">Terms of service</p>
-                <p class="text-sub-webapp text-xl xl:w-4/5 w-full ">PlEASE NOTE THAT YOUR USE OF AND ACCESS TO THE
-                    SERVICES (AS DEFINED BELOW) ARE SUBJECT TO THE FOLLOWING TERMS; IF YOU DO NOT AGREE TO ALL OF THESE
-                    TERMS, YOU MAY NOT USE OR ACCESS THE SERVICES </p>
+                <p class="text-sub-webapp text-xl xl:w-4/5 w-full ">Welcome to Habeep. These terms of service ("Terms") set
+                    out the terms and conditions that govern your access to and use of Habeep, an online platform for real
+                    estate management. By accessing or using Habeep, you agree to be bound by these Terms and our privacy
+                    policy ("Privacy Policy"). If you disagree with these Terms or the Privacy Policy, you should not access
+                    or use Habeep.
+                </p>
             </div>
 
 
-            <div class="flex flex-col w-full items-start gap-y-4 mt-16">
-                <p class="text-webapp text-2xl md:text-3xl font-medium w-full">Date of publication</p>
-                <p class="text-sub-webapp text-lg  w-full ">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cursus porta interdum elementum, aenean sit
-                    nisl posuere dui. Arcu vel dictumst faucibus nisi. A in proin urna senectus egestas fermentum,
-                    dictumst purus ac. Enim, donec magna gravida ultrices nunc nibh pharetra accumsan vel. Nulla
-                    volutpat, egestas cum nibh convallis nisi. Lectus ornare duis mauris nam euismod ipsum. Tortor
-                    maecenas nunc, faucibus est faucibus ut. Pulvinar nulla tristique eu quis elementum tristique vel.
-                    Auctor cum blandit massa luctus quis amet, arcu.
-
-                    Malesuada eu id quam at sollicitudin. Nunc dui leo eget ante. Venenatis massa, egestas malesuada
-                    quis eget amet augue sit auctor. Elementum tristique sit dui consectetur sit. Eget pretium dignissim
-                    interdum erat pretium id mollis sed facilisi. In lectus faucibus facilisis purus. Aliquam tincidunt
-                    id ipsum in ultrices non. Lectus vitae gravida morbi congue. Ipsum lorem dolor maecenas nibh viverra
-                    pellentesque. Ipsum vulputate eu pharetra, integer varius aliquam urna, sapien quis. Ac suspendisse
-                    dolor lorem ut. Mattis ullamcorper duis vel ultricies pretium mi ut vestibulum. Fermentum sapien
-                    sagittis turpis sapien nisl venenatis diam.
-
-                    Egestas morbi cursus et eget vitae pellentesque turpis. Faucibus euismod varius tempor at viverra
-                    mus laoreet aenean. Nisi feugiat aliquam molestie praesent a ultrices. Nunc nisl, at non pretium
-                    orci. Pellentesque etiam a mattis libero enim. Adipiscing quis ut pretium tempus. Egestas volutpat
-                    purus et sit tincidunt ridiculus. Scelerisque hendrerit ultricies convallis nisi, consectetur sed
-                    purus. Leo et, mattis adipiscing ac ut.
-                    Molestie diam proin in maecenas sit vitae quis urna, in. At sagittis tempor, ut odio lectus nulla
-                    commodo. Viverra habitasse congue erat metus et porttitor nec dolor dui.
+            <div class="flex flex-col w-full items-start gap-y-4 mt-10">
+                <p class="text-webapp text-2xl md:text-3xl font-medium w-full">1. Use of Habeep</p>
+                <p class="text-sub-webapp text-lg  w-full ">Habeep provides a platform for users to search for, list, and
+                    manage real estate properties. You must be at least 18 years old to use Habeep.
                 </p>
+            </div>
+
+            <div class="flex flex-col w-full items-start gap-y-4 mt-3">
+                <p class="text-webapp text-2xl md:text-3xl font-medium w-full">2. User Roles</p>
+                <p class="text-sub-webapp text-lg  w-full ">Habeep allows four types of users to access its platform:</p>
+
+                <li class="text-sub-webapp text-lg  w-full ml-5">Agents: registered and licensed real estate agents
+                    authorized to represent clients in real estate transactions.
+                </li>
+                <li class="text-sub-webapp text-lg  w-full ml-5">House seekers: individuals or families who are looking for properties to rent or buy.
+                </li>
+                <li class="text-sub-webapp text-lg  w-full ml-5">House owners: individuals or companies who own properties and want to list them for rent or sale.
+                </li>
+                <li class="text-sub-webapp text-lg  w-full ml-5">Real estate firms: companies that provide real estate services, such as property management, appraisal, or investment advice.
+                </li>
+
+                <p class="text-sub-webapp text-lg  w-full ">Each user type is subject to specific terms and conditions, which are detailed in the respective user agreement.</p>
+
             </div>
         </div>
 
@@ -54,6 +54,4 @@ import HomeNavbar from '../../components/HomeNavbar.vue'
 
 </script>
 
-<style>
-
-</style>
+<style></style>

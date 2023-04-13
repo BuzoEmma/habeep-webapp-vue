@@ -140,7 +140,7 @@ async function loginUser() {
             onError.value = false
             errorMsg.value.msg = ''
             errorMsg.value.field = null
-        }, 3000);
+        }, 5000);
     } else {
         try {
             processing.value = true
@@ -168,7 +168,7 @@ async function loginUser() {
                     } else {
                         router.push('/verify-otp?email=' + login.data.data.user.email)
                     }
-                }, 2000);
+                }, 5000);
             } else {
                 processing.value = false
                 onError.value = true
@@ -177,7 +177,7 @@ async function loginUser() {
                 setTimeout(() => {
                     onError.value = false
                     errorMsg.value.msg = ''
-                }, 3000);
+                }, 5000);
             }
         } catch (error) {
             onError.value = true
@@ -191,7 +191,7 @@ async function loginUser() {
 
             setTimeout(() => {
                 onError.value = false;
-            }, 3000);
+            }, 5000);
         }
 
 

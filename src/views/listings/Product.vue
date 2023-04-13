@@ -471,11 +471,11 @@ onMounted(() => {
 
 .feed-image-short {
     width: 100% !important;
-    object-fit: fill;
+    object-fit: contain;
 }
 .feed-image {
     width: 100% !important;
-    object-fit: fill;
+    object-fit: cover;
     height: 100% !important;
 }
 </style>
