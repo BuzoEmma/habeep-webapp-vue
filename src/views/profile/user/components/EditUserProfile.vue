@@ -1,6 +1,5 @@
 <template>
-  <div
-    class="main flex flex-col md:h-64 fixed md:absolute z-10 overflow-hidden md:right-1/4 md:top-1/6 bg-white h-full">
+  <div class="main flex flex-col md:h-64 fixed md:absolute z-10 overflow-hidden md:right-1/4 md:top-1/6 bg-white h-full">
     <div class="flex flex-row items-center justify-between w-full px-4 py-4 border-b border-b-gray-100">
       <span class="text-lg font-medium text-webapp">Edit profile</span>
       <img src="../../../../assets/icons/x.svg" class="cursor-pointer" @click="$emit('close')" alt="">
@@ -8,9 +7,15 @@
 
     <div class="profile relative flex flex-col w-full items-center gap-y-6 px-4">
       <div class="relative flex flex-row items-center justify-center w-24 h-24 rounded-full border border-gray-200">
-        <img src="../../../../assets/icons/memoji.svg" alt="">
+        <img :src="imageData" class="rounded-full w-full h-full" alt="">
 
-        <img src="../../../../assets/icons/edit-icon.svg" class="-right-2 bottom-1 absolute" alt="">
+        <!-- upload images -->
+        <form enctype="multipart/form-data" class="hidden">
+          <input type="file" ref="inputRef" accept="image/*" @change="previewImg($event.target, currentBlock)">
+        </form>
+
+        <img src="../../../../assets/icons/edit-icon.svg" @click="callImgProcessor"
+          class="-right-2 bottom-1 absolute cursor-pointer" alt="">
       </div>
       <!-- form -->
       <!-- input fields -->
@@ -82,6 +87,58 @@ const route = useRoute();
 const router = useRouter();
 
 const store = useStore();
+
+
+const formData = new FormData();
+
+const inputRef = ref(null)
+const pic = ref(null)
+const imageData = ref(store.state.user.userProfileImage)
+
+function callImgProcessor() {
+  inputRef.value.click()
+}
+
+const previewImg = async (event, value) => {
+  // Reference to the DOM input element
+  var input = event;
+
+  // Ensure that you have a file before attempting to read it
+  if (input.files) {
+    pic.value = input.files[0]
+    // create a new FileReader to read this image and convert to base64 format
+    var reader = new FileReader();
+    // Define a callback function to run, when FileReader finishes its job
+    // reader.readAsDataURL(eval(`pic${value}`).value)
+    reader.onload = (e) => {
+      // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
+      // Read image as base64 and set to imageData
+      imageData.value = e.target.result;
+    }
+
+    // Start the reader job - read file as a data url (base64 format)
+    reader.readAsDataURL(input.files[0]);
+  }
+}
+
+async function savePhoto() {
+  try {
+    formData.append('photo1', pic.value)
+    const body = {
+      description: 'profilePicture'
+    }
+    formData.append('data', JSON.stringify(body))
+
+    const saveImage = await axios.post('/utility/save-image', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+
+    return saveImage.data.data[0].link
+  } catch (error) {
+    console.log(error)
+    return 'https://i.ibb.co/gtpxMJz/21.png'
+  }
+}
 
 // get country codes
 let onContainer = ref(false)
@@ -188,14 +245,15 @@ function validateFormField(field, data) {
 async function updateProfile() {
   try {
     if (data.phoneNumber.toString().length >= 10) {
+      processing.value = true
       data.countryCode = selectedCountry.value.callingCode
       data.nationality = selectedCountry.value.name
+      data.profilePicture = await savePhoto()
       if (data.fullName.length > 5) {
         let name = formatNames(data.fullName)
         data.fname = name.fname
         data.surname = name.surname ? name.surname : store.state.user.surname
 
-        processing.value = true
         const update = await axios.put(url, data)
         if (!update.data.success) {
           onError.value = true
@@ -205,15 +263,15 @@ async function updateProfile() {
             processing.value = false
             onError.value = false
             errorMsg.value.msg = ''
-          }, 3000);
+          }, 2000);
         } else {
-          newMsg.value = update.data.message
+          newMsg.value = update.data.message + '. Changes will take effect in a few minutes'
 
           setTimeout(() => {
             processing.value = false
             newMsg.value = ''
             emit('close')
-          }, 5000);
+          }, 2000);
 
         }
       } else {
@@ -227,11 +285,11 @@ async function updateProfile() {
   } catch (error) {
     processing.value = false
     onError.value = true
-    errorMsg.value.msg = error.response.data.error
+    errorMsg.value.msg = error.response.data.error 
 
     setTimeout(() => {
       onError.value = false
-    }, 5000);
+    }, 2000);
   }
 }
 

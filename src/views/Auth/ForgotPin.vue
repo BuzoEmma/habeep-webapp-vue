@@ -23,7 +23,7 @@
                 </p>
 
                 <p class="w-full text-left text-webapp  text-sm mt-10">
-                    Please provide us with the email address, your new PIN will be sent to you if account exists
+                    Please provide us with the email address, a verification code wil be sent to you if the account exists
                 </p>
 
                 <!-- input fields -->
@@ -37,8 +37,8 @@
                 </div>
                 <!-- submit btn -->
                 <button class="bg-primary w-full rounded-lg grid place-items-center h-14 text-white mt-5"
-                    @click="resetUserPin">
-                    <span v-if="!processing">Send Pin</span>
+                    @click="$router.push('/verify-otp?email=' + data.email + '&reason=reset_pin')">
+                    <span v-if="!processing">Send OTP code</span>
                     <Preloader v-else />
                 </button>   
 
@@ -63,11 +63,6 @@ import { formValidator } from '../../composables/2-validator'
 const route = useRoute();
 const router = useRouter();
 
-const store = useStore();
-
-const url = '/auth/user/reset/password';
-
-
 const data = reactive({
     email: ''
 })
@@ -78,12 +73,10 @@ let errorMsg = ref({
     field: null
 })
 let newMsg = ref('')
-let warningMsg = ref('')
 const processing = ref(false)
 
 function validateFormField(field, data) {
     const validator = formValidator(field, data)
-
 
     if (!validator.success) {
         onError.value = true
@@ -93,40 +86,6 @@ function validateFormField(field, data) {
         onError.value = false
         errorMsg.value.msg = ''
         errorMsg.value.field = null
-    }
-}
-
-async function resetUserPin() {
-    try {
-        processing.value = true
-        const reset = await axios.patch(url, data)
-        if (!reset.data.success) {
-            onError.value = true
-            errorMsg.value.msg = create.data.message
-
-            setTimeout(() => {
-                processing.value = false
-                onError.value = false
-                errorMsg.value.msg = ''
-            }, 3000);
-        } else {
-            newMsg.value = reset.data.message
-
-            setTimeout(() => {
-                processing.value = false
-                newMsg.value = ''
-                router.push('/login')
-            }, 5000);
-
-        }
-    } catch (error) {
-        processing.value = false
-        onError.value = true
-        errorMsg.value.msg = error.response.data.error
-
-        setTimeout(() => {
-            onError.value = false
-        }, 5000);
     }
 }
 

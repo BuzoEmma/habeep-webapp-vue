@@ -34,7 +34,7 @@
                     class="agent-info flex p-4 bg-white flex-col border border-gray-300 rounded w-full lg:w-2/6 2xl:w-1/4 items-start lg:ml-3 h-fit">
                     <div class="flex flex-row gap-x-3 items-start">
                         <div class="rounded-full w-24 h-24 grid place-items-center border border-gray-100">
-                            <img :src="agentDetails.profileImg" class="w-full h-full" alt="">
+                            <img :src="agentDetails.profileImg" class="w-24 rounded-full h-24" alt="">
                         </div>
                         <div class="flex flex-col ">
                             <span class="text-xl md:text-center text-left agent-name text-webapp font-medium">{{

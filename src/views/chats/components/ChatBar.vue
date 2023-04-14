@@ -9,7 +9,7 @@
             @click="$emit('selectChat', chat)" v-for="chat in props.rooms" :key="chat">
             <div class="flex flex-row items-start gap-x-3 w-fit">
                 <div class="rounded-full w-11 h-11 grid place-items-center">
-                    <img :src="chat.user.profilePicture" class="w-full h-full" alt="">
+                    <img :src="chat.user.profilePicture" class="w-11 h-11 rounded-full" alt="">
                 </div>
                 <div class="flex flex-col items-start">
                     <span class="md:text-lg text-sm text-left text-webapp font-medium">{{ chat.user.fname + ' ' + chat.user.surname }}</span>
@@ -27,7 +27,7 @@
                         1].dateCreated }}</span>
                 <span class="text-xs md:text-sm text-webapp" :class="{ 'text-primary': newMessage }" v-else>Start a
                     chat</span>
-                <span class="py-1 px-2 rounded-full bg-primary text-xs text-white" v-if="newMessage">1</span>
+                <span class="px-2 py-0.5 rounded-full bg-primary text-xs text-white" style="font-size: 10px;" v-if="returnUnreadMessages(chat.room._id) > 0">{{ returnUnreadMessages(chat.room._id) }}</span>
             </div>
         </div>
     </div>

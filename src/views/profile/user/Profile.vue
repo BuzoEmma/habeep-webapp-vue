@@ -37,7 +37,7 @@
                 <div class="user-info flex p-4 bg-white flex-col border items-start border-gray-200 rounded w-full h-full">
                     <div class="flex flex-row gap-x-3 items-start">
                         <div class="rounded-full w-24 h-24 grid place-items-center border">
-                            <img src="../../../assets/icons/memoji.svg" class="w-full h-full" alt="">
+                            <img :src="$store.state.user.userProfileImage" class="w-24 h-24 rounded-full" alt="">
                         </div>
                         <div class="flex flex-col ">
                             <span class="text-xl md:text-center text-left agent-name text-webapp font-medium">{{

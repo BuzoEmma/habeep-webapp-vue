@@ -199,7 +199,7 @@
                         class="agent-desktop flex flex-row items-center  md:justify-between w-full border-t pt-2 mt-2 border-t-gray-300">
                         <div class="flex flex-row gap-x-2 items-center">
                             <div class="rounded-full w-12 h-12 xl:w-16 xl:h-16 grid place-items-center">
-                                <img :src="agentDetails.profileImg" class="w-full h-full" alt="">
+                                <img :src="agentDetails.profileImg" class="w-12 h-12 xl:w-16 xl:h-16 rounded-full" alt="">
                             </div>
                             <div class="flex flex-col ">
                                 <span
@@ -237,7 +237,7 @@
                         class="agent flex flex-row items-center justify-between w-full border-b py-3 my-3 border-b-gray-300">
                         <div class="flex flex-row gap-x-2 items-center">
                             <div class="rounded-full w-12 h-12  grid place-items-center">
-                                <img :src="agentDetails.profileImg" class="w-full h-full" alt="">
+                                <img :src="agentDetails.profileImg" class="w-12 h-12 rounded-full" alt="">
                             </div>
                             <div class="flex flex-col">
                                 <span class="text-sm xl:text-lg text-left agent-name text-webapp font-medium">{{

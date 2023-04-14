@@ -113,6 +113,8 @@ const back1 = (e) => {
 
 const data = reactive({
     email: '',
+    reason: '',
+    subject: ''
 })
 
 const processing = ref(false)
@@ -122,10 +124,18 @@ let msg = ref({
     text: '',
 })
 
-if (route.query.email) {
+if (route.query.email && route.query.reason) {
     data.email = route.query.email;
-} else {
+    data.reason = route.query.reason
+    if (data.reason === 'reset_pin') {
+        data.subject = 'Verify action to reset password'
+    } else data.subject = 'Verify user registration'
+} else if (store.state.user.isAuthenticated) {
     data.email = store.state.user.email;
+    data.subject = 'Verify user registration'
+    data.reason = 'user_verification'
+} else {
+    router.go(-1)
 }
 
 const getOTP = async () => {
@@ -164,6 +174,7 @@ const verifyOTP = async () => {
         const otpInput = [val1.value, val2.value, val3.value, val4.value, val5.value].join('');
         const info = {
             email: '',
+            reason: data.reason,
             otp: otpInput
         }
         if (route.query.email) {
@@ -181,7 +192,12 @@ const verifyOTP = async () => {
 
             setTimeout(() => {
                 processing.value = false
-                router.push('/login')
+
+                if (data.reason === 'reset_pin') {
+                    router.push('/reset-pin?otp=' + info.otp + '&email=' + info.email)
+                } else {
+                    router.push('/login')
+                }
             }, 3000);
         } else if (verify.data.errorMsg == null) {
             msg.value.type = 'success'
@@ -189,7 +205,12 @@ const verifyOTP = async () => {
 
             setTimeout(() => {
                 processing.value = false
-                router.push('/login')
+
+                if (data.reason === 'reset_pin') {
+                    router.push('/reset-pin?otp=' + info.otp + '&email=' + info.email)
+                } else {
+                    router.push('/login')
+                }
             }, 3000);
 
         } else {

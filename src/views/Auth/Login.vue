@@ -186,7 +186,6 @@ async function loginUser() {
             } else errorMsg.value.msg = error.message;
             processing.value = false
 
-            data.email = ''
             data.pin = ''
 
             setTimeout(() => {
