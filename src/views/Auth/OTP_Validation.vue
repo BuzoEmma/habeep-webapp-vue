@@ -134,8 +134,6 @@ if (route.query.email && route.query.reason) {
     data.email = store.state.user.email;
     data.subject = 'Verify user registration'
     data.reason = 'user_verification'
-} else {
-    router.go(-1)
 }
 
 const getOTP = async () => {

@@ -7,7 +7,7 @@ function guardMyroute(to, from, next) {
     if (createStore.state.isAuthenticated) { isAuthenticated = true } else { isAuthenticated = false }
     if (isAuthenticated) {
         if (!createStore.state.user.verified) {
-            next({ name: 'Verify' }) // go to '/verify';
+            next({ name: 'Verify', query: { reason: 'user_verification', email: createStore.state.user.email}}) // go to '/verify';
         } else next() // allow to enter route
     } else {
         // console.log(to)

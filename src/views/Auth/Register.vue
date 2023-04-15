@@ -276,7 +276,7 @@ async function createUser() {
             onError.value = false
         }, 3000);
     } else {
-
+p
         try {
             processing.value = true
             const create = await axios.post(url, data)
@@ -329,7 +329,7 @@ const nextPage = () => {
     closeModal()
 
     setTimeout(() => {
-        router.push('/verify-otp?email=' + data.email)
+        router.push('/verify-otp?email=' + data.email + '&reason=user_verification')
     }, 1000);
 }
 
