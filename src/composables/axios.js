@@ -1,7 +1,7 @@
 import axios from 'axios'
 import createStore from '../store/index'
 
-let URI = process.env.NODE_ENV === 'development' ? 'http://localhost:2023/backend/api/v1' : 'https://habeep.org/backend/api/v1'
+let URI = 'https://habeep.org/backend/api/v1'
 
 const axiosInstance = axios.create({
   baseURL: URI,
@@ -14,3 +14,5 @@ if (createStore.state.sessionId.length > 1) {
 }
 
 export default axiosInstance;
+
+// process.env.NODE_ENV === 'production' ? 'http://localhost:2023/backend/api/v1' :
