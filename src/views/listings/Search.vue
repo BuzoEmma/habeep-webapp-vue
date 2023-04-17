@@ -174,12 +174,12 @@
                         <video @click="$router.push('/listings/products/' + product._id)" :src="product.images[0].link"
                             class="w-full rounded-t-md feed-image" v-else autoplay muted></video>
                         <p class="text-webapp text-lg font-medium w-full mx-2 cursor-pointer feed-image"
-                            @click="$router.push('/listings/products/' + ad._id)">
+                            @click="$router.push('/listings/products/' + product._id)">
                             {{ product.title }}
 
                         </p>
 
-                        <div class="location flex flex-row items-center gap-x-2 px-2">
+                        <div class="location flex flex-row items-center gap-x-2 px-2" @click="$router.push('/listings/products/' + product._id)">
                             <img src="../../assets/images/map-pin.png" alt="">
                             <span class="text-sm text-webapp">{{ product.location.city || product.location.address.substr(0,
                                 20) }}</span>
@@ -426,10 +426,5 @@ onMounted(() => {
     width: 100% !important;
     object-fit: cover;
     max-height: 185px !important;
-}
-
-.feed {
-    height: 291px !important;
-    max-height: 291px !important;
 }
 </style>

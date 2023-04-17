@@ -282,7 +282,7 @@
 
                         <div class="flex flex-row items-center w-full justify-between px-2">
                             <p @click="$router.push('/listings/products/' + feed._id)"
-                                class="text-sm text-webapp font-medium">N{{ formatNumber(feed.price) }} /
+                                class="text-sm text-webapp font-medium">₦{{ formatNumber(feed.price) }} /
                                 <span v-if="feed.for === 'rent'">Year</span>
                                 <span v-if="feed.for === 'sale'">Forever</span>
                             </p>
@@ -584,10 +584,5 @@ onMounted(() => {
     width: 100% !important;
     object-fit: cover;
     max-height: 185px !important;
-}
-
-.feed {
-    height: 291px !important;
-    max-height: 291px !important;
 }
 </style>

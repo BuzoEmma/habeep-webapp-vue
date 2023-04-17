@@ -11,16 +11,21 @@
 
             <!-- product display images for desktop view -->
             <div class="product-img-grid desktop-view xl:flex flex-row items-center w-full mt-10 hidden">
-                <div class="relative h-full display-img w-1/2 py-1">
+                <div class="relative h-full display-img w-1/2">
                     <img :src="carouselImg.link" class=" h-full rounded-lg feed-image w-full"
                         v-if="carouselImg.link.toString().includes('mp4') == false" @click="enterImageViewer()" alt="">
-                    <video :src="carouselImg.link" @click="enterImageViewer()" loop class="w-full h-full rounded-lg feed-image" v-else
-                        autoplay muted></video>
+                    <video :src="carouselImg.link" @click="enterImageViewer()" loop
+                        class="w-full h-full rounded-lg feed-image" v-else autoplay muted></video>
 
                     <div class="w-full absolute flex flex-row top-5 items-center justify-between px-2">
                         <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
                         <div class="flex flex-row gap-x-3">
-                            <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
+                            <ShareNetwork network="whatsapp" popup.width="500px" popup.height="500px"
+                                :url="'https://habeep.org/' + $route.fullPath"
+                                :title="'Purchase this awesome house at ₦' + formatNumber(product.price)"
+                                :description="product.description" :media="product.images[0].link">
+                                <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
+                            </ShareNetwork>
                             <div class="grid place-items-center relative p-1" v-if="$store.state.isAuthenticated">
                                 <img src="../../assets/icons/heart.svg" class="cursor-pointer" alt="">
                                 <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
@@ -36,25 +41,25 @@
                     </div>
                 </div>
 
-                <div class="flex h-full flex-col w-1/2">
-                    <div class=" flex flex-row h-1/2 w-full pl-2 items-center gap-2">
-                        <div class="h-full w-1/2 m-1 cursor-pointer gap-2 rounded-lg overflow-hidden"
+                <div class="flex h-full flex-col w-1/2 pl-2 gap-y-2">
+                    <div class="flex flex-row h-1/2 w-full items-center gap-2">
+                        <div class="h-full w-1/2  cursor-pointer gap-2 overflow-hidden rounded-lg"
                             v-for="image in images.slice(1, 3)" :key="image">
                             <img :src="image.link" class=" h-full w-full rounded-lg feed-image-short"
                                 v-if="image.link && image.link.toString().includes('mp4') === false"
                                 @click="enterImageViewer()" :key="image" alt="">
-                            <video :src="image.link" @click="enterImageViewer()" loop class="w-full rounded-lg feed-image" v-else
-                                autoplay muted></video>
+                            <video :src="image.link" @click="enterImageViewer()" loop class="w-full rounded-lg feed-image-short"
+                                v-else autoplay muted></video>
                         </div>
                     </div>
-                    <div class=" flex flex-row h-1/2 w-full pl-2 items-center">
-                        <div class="w-1/2 cursor-pointer m-1 gap-2 rounded-lg overflow-hidden" style="height: 300px"
+                    <div class=" flex flex-row h-1/2 w-full items-center gap-2">
+                        <div class="w-1/2 cursor-pointer h-full overflow-hidden rounded-lg"
                             v-for="image in images.slice(3, 5)" :key="image">
-                            <img :src="image.link" class=" h-full w-full rounded-lg feed-image-short"
+                            <img :src="image.link" class=" h-full w-full rounded-md feed-image-short"
                                 v-if="image.link && image.link.toString().includes('mp4') == false"
                                 @click="enterImageViewer()" alt="">
-                            <video :src="image.link" @click="enterImageViewer()" loop class="w-full rounded-lg feed-image" v-else
-                                autoplay muted></video>
+                            <video :src="image.link" @click="enterImageViewer()" loop class="w-full rounded-md feed-image-short"
+                                v-else autoplay muted></video>
                         </div>
                     </div>
                 </div>
@@ -67,12 +72,18 @@
                 <div class="w-full absolute flex flex-row top-5 items-center justify-between md:px-8 px-2 z-10">
                     <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
                     <div class="flex flex-row gap-x-3">
-                        <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
+                        <ShareNetwork network="whatsapp" popup.width="500px" popup.height="500px"
+                            :url="'https://habeep.org/' + $route.fullPath"
+                            :title="'Purchase this awesome house at ₦' + formatNumber(product.price)"
+                            :description="product.description" :media="product.images[0].link">
+                            <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
+                        </ShareNetwork>
+
                         <div class="grid place-items-center relative" v-if="$store.state.isAuthenticated">
                             <img src="../../assets/icons/heart.svg" class="cursor-pointer" alt="">
-                            <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }" v-if="$store.state.user._id"
-                                :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor"
+                            <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
+                                v-if="$store.state.isAuthenticated" :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                 class="w-6 h-6 absolute top-2 text-white cursor-pointer" @click="saveAd(product._id)"
                                 :class="{ 'text-orange-400': $store.state.user.savedAds.includes(product._id) }">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -82,10 +93,10 @@
                     </div>
                 </div>
 
-                <img :src="carouselImg.link" class=" h-full w-full rounded-lg feed-image"
+                <img :src="carouselImg.link" class=" h-full w-full feed-image"
                     v-if="carouselImg.link && carouselImg.link.toString().includes('mp4') == false"
                     @click="enterImageViewer()" alt="">
-                <video :src="carouselImg.link" loop class="w-full rounded-lg feed-image" @click="enterImageViewer()" v-else autoplay
+                <video :src="carouselImg.link" loop class="w-full feed-image" @click="enterImageViewer()" v-else autoplay
                     muted></video>
                 <!-- <img :src="images[activeCarouselImg - 1].link" class="h-full w-full new-img" :class="{'hidden': changeCarouselImg}"> -->
 
@@ -130,16 +141,16 @@
                             </p>
                         </div>
                         <div class="md:flex hidden flex-col ">
-                            <p class="text-webapp text-2xl md:text-xl xl:text-2xl font-medium product-price">N{{
+                            <p class="text-webapp text-2xl md:text-xl xl:text-2xl font-medium product-price">₦{{
                                 formatNumber(product.price)
                             }}
                             </p>
                             <p v-if="product.for === 'rent'"
-                                class="text-sm  xl:text-lg font-medium product-price text-webapp">per Year
+                                class="text-sm  xl:text-lg font-medium product-price text-webapp">Yearly
                             </p>
                             <p v-else
                                 class="text-sub-webapp text-sm xl:text-lg product-duration flex flex-row justify-start ">
-                                forever</p>
+                            One time Payment</p>
                         </div>
                     </div>
 
@@ -189,9 +200,10 @@
                     class="agent-info md:flex hidden p-4 bg-white flex-col w-2/3 xl:w-2/6 2xl:w-1/4 items-start ml-3 h-fit">
                     <h3 class="text-lg xl:text-xl font-medium  text-webapp">Description</h3>
 
-                    <p class="text-sub-webapp text-xm xl:text-lg text-left w-full mt-1 xl:mt-3">
-                        {{ product.description }}
-                    </p>
+                    <div class="text-sub-webapp text-lg text-left mt-1 xl:mt-3">
+                        <pre class="w-full whitespace-pre-wrap" v-if="!openFullDesc">{{ product.description.slice(0, 250) }}<span class="text-primary cursor-pointer" v-if="product.description.length > 250" @click="openFullDesc = true">... Read more</span></pre>
+                        <pre class="w-full whitespace-pre-wrap" v-else>{{ product.description }} <span class="text-primary cursor-pointer" v-if="product.description.length > 250" @click="openFullDesc = false">..Hide</span></pre>
+                    </div>
 
                     <hr class="my-3">
 
@@ -221,10 +233,18 @@
                         <button @click="$router.push('/agents/profile/' + product.agentId)"
                             class="agent-btn hidden xl:flex flex-row items-center justify-center text-sm font-medium text-primary w-1/2  bg-white">Visit
                             Profile</button>
-                        <button @click="createChatRoom()"
-                            class="agent-btn flex flex-row items-center cursor-pointer justify-center text-sm font-medium w-full text-white ml-2 bg-primary xl:w-1/2">
+                        <button @click="$router.push('/login?redirect=' + $route.fullPath)" v-if="!$store.state.isAuthenticated"
+                            class="agent-btn cursor-pointer flex flex-row items-center justify-center text-sm font-medium w-full  text-white ml-2 bg-primary xl:w-1/2">
+                            <span>Chat with agent</span>
+                        </button>
+                        <button @click="createChatRoom()" v-else-if="agentDetails.id !== $store.state.user._id"
+                            class="agent-btn cursor-pointer flex flex-row items-center justify-center text-sm font-medium w-full text-white ml-2 bg-primary xl:w-1/2">
                             <Preloader v-if="creatingRoom" />
                             <span v-else>Chat with agent</span>
+                        </button>
+                        <button @click="$router.push('/listings/agent/products/' + product._id)" v-else
+                            class="agent-btn cursor-pointer flex flex-row items-center justify-center text-sm font-medium w-full text-white ml-2 border border-blue-500 xl:w-1/2">
+                            <span>Edit Listing</span>
                         </button>
                     </div>
                 </div>
@@ -256,32 +276,41 @@
                             Profile</button>
                     </div>
 
-                    <h3 class="text-lg font-medium  text-webapp">Description</h3>
+                    <h3 class="text-lg font-medium text-webapp">Description</h3>
 
-                    <p class="text-sub-webapp text-lg text-left w-full mt-1 xl:mt-3">
-                        {{ product.description }}
-                    </p>
+                    <div class="text-sub-webapp text-sm text-left mt-1 xl:mt-3">
+                        <pre class="w-full whitespace-pre-wrap" v-if="!openFullDesc">{{ product.description.slice(0, 250) }}<span class="text-primary" v-if="product.description.length > 250" @click="openFullDesc = true">... Read more</span></pre>
+                        <pre class="w-full whitespace-pre-wrap" v-else>{{ product.description }} <span class="text-primary" v-if="product.description.length > 250" @click="openFullDesc = false">..Hide</span></pre>
+                    </div>
 
 
 
                     <div
                         class="flex md:hidden py-5  flex-row items-center fixed bottom-0 px-4 z-10 left-0 bg-white w-screen justify-between mt-4 border-t pt-2 border-t-gray-300">
                         <div class="flex flex-col">
-                            <p class="text-webapp text-xl xl:text-2xl font-medium product-price">{{
+                            <p class="text-webapp text-xl xl:text-2xl font-medium product-price">₦{{
                                 formatNumber(product.price)
                             }}
                             </p>
                             <p v-if="product.for === 'rent'"
-                                class="text-sm md:text-xl xl:text-2xl font-medium product-price text-webapp">Per Year
+                                class="text-sm md:text-xl xl:text-2xl font-medium product-price text-webapp">Yearly
                             </p>
                             <p v-else
                                 class="text-sub-webapp text-sm md:text-sm xl:text-lg product-duration flex flex-row justify-start ">
                                 Forever</p>
                         </div>
-                        <button @click="createChatRoom()"
+                        <button @click="$router.push('/login?redirect=' + $route.fullPath)" v-if="!$store.state.isAuthenticated"
+                            class="agent-btn cursor-pointer flex flex-row items-center justify-center text-sm font-medium w-3/5 mr-2 text-white ml-2 bg-primary xl:w-1/2">
+                            <span>Chat with agent</span>
+                        </button>
+                        <button @click="createChatRoom()" v-else-if="agentDetails.id !== $store.state.user._id"
                             class="agent-btn cursor-pointer flex flex-row items-center justify-center text-sm font-medium w-3/5 mr-2 text-white ml-2 bg-primary xl:w-1/2">
                             <Preloader v-if="creatingRoom" />
                             <span v-else>Chat with agent</span>
+                        </button>
+                        <button @click="$router.push('/listings/agent/products/' + product._id)" v-else
+                            class="agent-btn cursor-pointer flex flex-row items-center justify-center text-sm font-medium w-3/5 mr-2 text-white ml-2 border border-blue-500 xl:w-1/2">
+                            <span>Edit Listing</span>
                         </button>
                     </div>
                 </div>
@@ -303,10 +332,10 @@
                 @click="changeCarouselImg(activeCarouselImg - 1)" class="cursor-pointer lg:block absolute left-3 z-10"
                 alt="">
             <div class="image-container h-fit flex flex-col items-center justify-center w-full">
-                <img :src="carouselImg.link" style="object-fit: contain; object-position: center;"
+                <img :src="carouselImg.link"
                     v-if="carouselImg && carouselImg.link.includes('mp4') == false" class="w-full h-full feed-image" alt="">
-                <video :src="carouselImg.link" loop class="md:w-4/5 w-full rounded-lg feed-image" @click="enterImageViewer()" v-else
-                    controls autoplay></video>
+                <video :src="carouselImg.link" loop class="md:w-4/5 w-full rounded-lg feed-image"
+                    @click="enterImageViewer()" v-else controls autoplay></video>
             </div>
             <img src="../../assets/icons/next-circle.svg" @click="changeCarouselImg(activeCarouselImg + 1)"
                 v-if="activeCarouselImg < images.length" class="cursor-pointer lg:block absolute right-3 z-10" alt="">
@@ -341,6 +370,7 @@ const changingCarousel = ref(false)
 const inNewCarousel = ref(false)
 const activeCarouselImg = ref(1)
 const onImageViewer = ref(false)
+const openFullDesc = ref(false)
 
 const images = ref(null)
 
@@ -373,7 +403,7 @@ async function createChatRoom() {
             creatingRoom.value = false
             router.push('/chats?roomId=' + create.data.room._id)
         } else {
-            router.push('/login')
+            router.push('/login?redirect=' + route.fullPath)
         }
     } catch (error) {
         creatingRoom.value = false
@@ -471,8 +501,9 @@ onMounted(() => {
 
 .feed-image-short {
     width: 100% !important;
-    object-fit: contain;
+    object-fit: cover;
 }
+
 .feed-image {
     width: 100% !important;
     object-fit: cover;

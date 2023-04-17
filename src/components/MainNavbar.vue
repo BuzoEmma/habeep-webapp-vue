@@ -19,7 +19,7 @@
             </svg>
 
             <input type="text" class="w-full h-full bg-transparent" v-model="searchInput"
-                @input="$emit('search', searchInput)" placeholder="Search">
+                @input="$emit('search', searchInput)" @keypress="checkForEnter" placeholder="Search">
         </div>
 
         <div class=" flex-row items-center w-fit gap-x-6 divide-x md:flex hidden">
@@ -99,9 +99,13 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const onNavDropdown = ref(false)
 const onMobileNav = ref(false)
+
+const route = useRoute()
+const router = useRouter()
 
 let searchInput = ref('')
 
@@ -110,6 +114,15 @@ function toggleNav() {
 }
 function toggleMobileNav() {
     onMobileNav.value = !onMobileNav.value
+}
+
+const checkForEnter = (e) => {
+    var key = e.keyCode || e.charCode || e.key || e.code;
+    if (key == 13 || key == 'Enter') {
+        if(route.path !== '/listings/search') {
+            router.push('/listings/search?name=' + searchInput.value)
+        }
+    }
 }
 
 </script>

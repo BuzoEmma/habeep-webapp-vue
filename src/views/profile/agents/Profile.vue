@@ -6,7 +6,7 @@
         </div> -->
 
     <div class="w-full min-h-screen flex-col h-screen flex items-center justify-center">
-        <img src="../../../assets/images/rhombus-preloader.gif"  v-if="!agentDetails.id" alt="">
+        <img src="../../../assets/images/rhombus-preloader.gif" v-if="!agentDetails.id" alt="">
         <div class="w-screen min-w-full flex flex-col items-center bg-white h-full min-h-screen overflow-y-auto" v-else
             :class="{ 'max-h-screen overflow-y-hidden': onModal }" resize="changeWidth">
             <MainNavbar v-if="(screenWidth > 767)" />
@@ -17,10 +17,10 @@
                         stroke="#0A1045" class="w-6 h-6 cursor-pointer" @click="$router.go(-1)">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                     </svg>
-                    <span class="text-xl text-webapp font-medium">Agent profile</span>
+                    <span class="text-xl text-webapp font-medium capitalize">{{ agentDetails.name.fname }} Profile</span>
                 </div>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0A1045"
-                    class="w-6 h-6">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none"  viewBox="0 0 24 24" stroke-width="1.5" stroke="#0A1045"
+                    class="w-6 h-6 collapse">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                 </svg>
@@ -51,7 +51,9 @@
                         <p class="text-xl font-webapp font-medium flex flex-row gap-x-1">{{
                             agentDetails.followers.length
                         }}<span class="text-sub-webapp text-lg">Followers</span></p>
-                        <p class="text-xl font-webapp font-medium flex flex-row gap-x-1 cursor-pointer" @click="openModal">
+                        <p class="text-xl font-webapp font-medium flex flex-row gap-x-1 cursor-pointer" v-if="$store.state.isAuthenticated" @click="openModal">
+                            {{ agentDetails.following.length }}<span class="text-sub-webapp text-lg">Following </span></p>
+                        <p class="text-xl font-webapp font-medium flex flex-row gap-x-1 cursor-pointer" v-else>
                             {{ agentDetails.following.length }}<span class="text-sub-webapp text-lg">Following </span></p>
                     </div>
 
@@ -65,11 +67,17 @@
 
                     <div class="flex flex-row items-center w-full gap-y-1 xl:justify-between mt-4 xl:mt-3"
                         v-if="$store.state.user._id !== agentDetails.userId">
-                        <button
-                            class="agent-btn flex-row items-center justify-center text-sm font-medium text-white text-primary w-1/2 bg-primary"
-                            @click="FollowUser">Follow</button>
-                        <button
-                            class="agent-btn flex flex-row items-center justify-center text-sm font-medium  text-primary ml-2 bg-white w-1/2">Message</button>
+                        <button @click="manageAgentFollow" v-if="agentDetails.followers.includes($store.state.user._id) === false"
+                            class="agent-btn flex-row items-center justify-center text-sm font-medium text-white w-1/2 bg-primary">Follow</button>
+                        <button @click="manageAgentFollow" v-else
+                            class="agent-btn flex-row items-center justify-center text-sm font-medium text-primary w-1/2">Unfollow</button>
+
+                            
+                        <button @click="createChatRoom()"
+                            class="agent-btn flex flex-row items-center justify-center text-sm font-medium  text-primary ml-2 bg-white w-1/2">
+                            <Preloader v-if="creatingRoom" />
+                            <span v-else>Message</span>
+                        </button>
                     </div>
                     <div class="flex flex-row items-center w-full mt-4 xl:mt-3" v-else>
                         <button @click="$router.push('/user/profile/' + $route.params.id)"
@@ -88,18 +96,18 @@
                             Ads
                         </div>
                         <div class="cursor-pointer hidden flex-row items-center justify-center w-24 pb-1"
-                            v-if="$store.state.user._id && agentDetails.userId === $store.state.user._id" @click="changeTab(2)"
-                            :class="{ 'text-blue-600 border-b-blue-700 border-b-2': openTab === 2 }">
+                            v-if="$store.state.user._id && agentDetails.userId === $store.state.user._id"
+                            @click="changeTab(2)" :class="{ 'text-blue-600 border-b-blue-700 border-b-2': openTab === 2 }">
                             Saved ads
                         </div>
                     </div>
 
                     <div class="ads-tab w-full h-full mt-6" v-if="(openTab === 1) && agentDetails.ads" id="ads-tab">
-                        <div class="flex flex-row flex-auto h-fit  flex-wrap">
+                        <div class="flex flex-row h-fit flex-wrap">
 
                             <!-- listing template -->
-                            <div class="md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0 " v-for="ad in agentDetails.ads"
-                                :key="ad">
+                            <div class="md:basis-1/2 xl:basis-1/3 basis-full md:px-3 md:py-3 py-5 px-0 "
+                                v-for="ad in agentDetails.ads" :key="ad">
                                 <div
                                     class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 feed">
                                     <img @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
@@ -122,11 +130,12 @@
 
                                     <div class="flex flex-row items-center w-full justify-between px-3">
                                         <span class="text-sm text-webapp font-medium">
-                                            N{{
+                                            ₦{{
                                                 formatNumber(ad.price)
                                             }}
                                         </span>
                                         <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
+                                            v-if="$store.state.isAuthenticated"
                                             :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="w-6 h-6 cursor-pointer"
                                             @click="saveAd(ad._id)"
@@ -147,21 +156,24 @@
                 </div>
 
             </div>
-            <Following @close="closeModal" v-if="onModal" />
+            <Following @close="closeModal" v-if="onModal" :users="agentDetails.following" />
         </div>
     </div>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import MainNavbar from '../../../components/MainNavbar.vue'
 import Following from './components/modal/Following.vue'
 import axios from "../../../composables/axios";
 import formatNumber from "number_formatter"
 import saveAd from '../../../composables/saveAd'
+import { useStore } from 'vuex';
 
 const route = useRoute()
+const router = useRouter()
+const store = useStore()
 
 const url1 = '/listings/ads/get/'
 const url2 = '/profile/get-agent/';
@@ -171,6 +183,7 @@ const onModal = ref(false)
 
 const agentDetails = ref({})
 const ads = ref([])
+
 
 async function getAgent() {
     const getAgent = await axios.get(url2 + route.params.id)
@@ -188,11 +201,50 @@ function closeModal() {
     onModal.value = false
 }
 
+const creatingRoom = ref(false)
+
+async function createChatRoom() {
+    try {
+        if (store.state.isAuthenticated) {
+            creatingRoom.value = true
+            const create = await axios.post('/messaging/create-room', {
+                users: [store.state.user._id, agentDetails.value.userId]
+            })
+
+            creatingRoom.value = false
+            router.push('/chats?roomId=' + create.data.room._id)
+        } else {
+            router.push('/login?redirect=' + route.fullPath)
+        }
+    } catch (error) {
+        creatingRoom.value = false
+    }
+}
 
 const screenWidth = ref(window.innerWidth)
 
 function changeWidth() {
     screenWidth.value = window.innerWidth
+}
+
+async function manageAgentFollow() {
+    if (!agentDetails.value.followers.includes(store.state.user._id)) {
+        let data = {
+            userId: agentDetails.value.userId,
+            activity: 'follow'
+        }
+        
+        agentDetails.value.followers.push(store.state.user._id)
+        await axios.post('/profile/follows/update', data)
+    } else {
+        let data = {
+            userId: agentDetails.value.userId,
+            activity: 'unfollow'
+        }
+
+        agentDetails.value.followers.splice(agentDetails.value.followers.indexOf(store.state.user._id))
+        await axios.post('/profile/follows/update', data)
+    }
 }
 
 onMounted(() => {
@@ -213,8 +265,4 @@ onMounted(() => {
     object-fit: cover;
     max-height: 164px !important;
 }
-
-.feed {
-    height: 291px !important;
-    max-height: 291px !important;
-}</style>
+</style>

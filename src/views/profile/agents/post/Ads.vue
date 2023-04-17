@@ -212,7 +212,7 @@ const store = useStore()
 if (store.state.user.role !== "AGENT") {
     setTimeout(() => {
         router.go()
-    }, 5000);
+    }, 2000);
 }
 
 const adsTab = ref(1)

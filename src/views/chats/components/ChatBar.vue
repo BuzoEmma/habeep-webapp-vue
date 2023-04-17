@@ -1,8 +1,8 @@
 <template>
     <div
         class="flex flex-col xl:pt-10 lg:pt-7 pb-3 px-3 lg:px-5 xl:px-8 items-start lg:border lg:border-gray-200 rounded-2xl w-full lg:w-1/3 h-full">
-        <p class="w-full font-bold text-lg md:text-xl lg:text-2xl text-webapp">
-            Messages({{ evaluated }})
+        <p class="w-full font-bold text-lg mt-2 md:text-xl lg:text-2xl text-webapp">
+            Messages({{ props.rooms.length }})
         </p>
 
         <div class="flex flex-row items-start chat justify-between mt-4  lg:mt-7 w-full py-2 lg:py-3 border-b cursor-pointer border-gray-200"

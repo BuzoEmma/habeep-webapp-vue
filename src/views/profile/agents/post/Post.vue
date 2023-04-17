@@ -4,7 +4,7 @@
     <AdUploadedModal v-if="successModal" @gotoProduct="$router.push('/listings/products/' + savedProductID)" />
     <Toast :msg="errorMsg" type="danger" v-if="onError" />
   </div>
-  <div class="h-screen w-screen">
+  <div class="h-screen max-w-screen">
     <component :is="currentComponent" @postSuccess="onDataSuccess" :data="data" @passData="getData" @goBack="back">
     </component>
 
@@ -18,6 +18,7 @@ import axios from "../../../../composables/axios";
 import { useStore } from "vuex";
 
 import AdUploadedModal from './components/AdUploadedModal.vue';
+import router from '../../../../router';
 
 const store = useStore();
 
@@ -76,6 +77,31 @@ let data = reactive({
 
 const back = () => {
   currentComponent.value = previousComponent.value
+
+  if(currentComponent.value == ForPage) {
+    router.go(-1)
+  }
+  if(currentComponent.value == HouseTypePage) {
+    previousComponent.value = ForPage
+  }
+  if(currentComponent.value == Location) {
+    previousComponent.value = HouseTypePage
+  }
+  if(currentComponent.value == TitlePrice) {
+    previousComponent.value = Location
+  }
+  if(currentComponent.value == Size) {
+    previousComponent.value = TitlePrice
+  }
+  if(currentComponent.value == Features) {
+    previousComponent.value = Size
+  }
+  if(currentComponent.value == Desc) {
+    previousComponent.value = Features
+  }
+  if(currentComponent.value == Photos) {
+    previousComponent.value = Desc
+  }
 }
 
 
