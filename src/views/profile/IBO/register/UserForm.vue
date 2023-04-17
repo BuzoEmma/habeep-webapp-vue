@@ -17,7 +17,7 @@
                         stroke="#0A1045" class="w-6 h-6 cursor-pointer" @click="$router.go(-1)">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                     </svg>
-                    <span>Become an Tenant</span>
+                    <span>Become a Tenant</span>
                 </p>
 
                 <!-- input fields -->

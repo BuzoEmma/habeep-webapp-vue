@@ -97,11 +97,11 @@ async function getWallet() {
     }
 }
 
-let amountToDebit = 50 ? props.data.role == "AGENT" : 25
+let amountToDebit = 50 ? props.data.role == "AGENT" : 120
 if (amountToDebit === true) {
     amountToDebit = 50
 } else {
-    amountToDebit = 25
+    amountToDebit = 120
 }
 async function debitFee() {
     if (walletData.value.accountValue < amountToDebit) {
@@ -109,7 +109,7 @@ async function debitFee() {
         errorMsg.value.msg = 'Swap naira to ' + (amountToDebit - walletData.value.accountValue) + ' to continue. Redirecting to swap page in 2sec'
 
         setTimeout(() => {
-            router.push('/wallet?tab=hbp&cont=deposit')
+            router.push('/wallet?tab=hbp&cont=deposit&reloadApp=true')
         }, 2000);
     } else {
         try {
@@ -151,9 +151,9 @@ async function makeUserAnIBO() {
                 processing.value = false
                 newMsg.value = ''
                 if (props.data.role == "AGENT") {
-                    router.push('/agent/ads?reload=true')
+                    router.push('/agent/ads?reloadApp=true')
                 } else {
-                    router.push('/?reload=true')
+                    router.push('/feeds?reloadApp=true')
                 }
             }, 2000);
 

@@ -26,7 +26,7 @@
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8">
                     <label for="" class="text-sm text-webapp">Agent category</label>
                     <select name="" v-model="data.category" class="w-full h-14 rounded-lg px-2" id="">
-                        <option value="Individual">Individual agent</option>
+                        <option value="Individual" selected >Individual agent</option>
                         <option value="Company">Company agent</option>
                     </select>
                 </div>
@@ -42,16 +42,18 @@
                         <label for="" class="text-sm text-webapp">City</label>
                         <select name="" v-model="data.city" class="w-full h-14 rounded-lg px-2" id="">
                             <option value="" v-if="!data.state.cities">Choose a state</option>
-                            <option v-else :value="city.name" v-for="city in data.state.cities" :key="city">
+                            <option v-else :value="city.name" v-for="city in data.state.cities.sort()" :key="city">
                                 {{ city.name }}
                             </option>
                         </select>
                     </div>
                     <div class="flex flex-col items-start  w-full sm:w-6/12 gap-y-1 mt-8">
                         <label for="" class="text-sm text-webapp">State</label>
-                        <select name="" v-model="data.state" class="w-full h-14 rounded-lg px-2" id="">
-                            <option :value="state" v-for="state in $store.state.allStates" :key="state">
-                                {{ state.state.name }}</option>
+                        <select name="" v-model="data.state" class="w-full h-14 rounded-lg px-2" id="" placeholder="Select state">
+                            <option :value="state" v-for="state in states" :key="state">
+                                <span v-if="state.state.name == 'Cross'">Cross River</span>
+                                <span v-else >{{ state.state.name }}</span>
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -119,6 +121,8 @@ let errorMsg = ref({
     msg: '',
     field: null
 })
+
+let states = store.state.allStates.reverse()
 
 
 let newMsg = ref('')
