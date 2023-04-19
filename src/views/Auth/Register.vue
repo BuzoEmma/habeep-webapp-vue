@@ -297,7 +297,7 @@ async function createUser() {
                     newMsg.value = ''
 
                     gotoModal('listings')
-                }, 2000);
+                }, 1000);
 
             }
         } catch (error) {

@@ -168,7 +168,7 @@ async function loginUser() {
                     } else {
                         router.push('/verify-otp?email=' + login.data.data.user.email)
                     }
-                }, 5000);
+                }, 2000);
             } else {
                 processing.value = false
                 onError.value = true
@@ -177,7 +177,7 @@ async function loginUser() {
                 setTimeout(() => {
                     onError.value = false
                     errorMsg.value.msg = ''
-                }, 5000);
+                }, 4000);
             }
         } catch (error) {
             onError.value = true

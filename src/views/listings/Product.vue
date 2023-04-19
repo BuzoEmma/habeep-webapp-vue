@@ -379,6 +379,9 @@ const getProduct = async () => {
     processingProduct.value = true
 
     product.value = getProduct.data.product
+    if(product.value.status === 'CLOSED') {
+        router.replace('/not-found')
+    }
     images.value = getProduct.data.product.images
     carouselImg.value = getProduct.data.product.images[0]
 
