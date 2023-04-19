@@ -286,7 +286,7 @@
                                 <span v-if="feed.for === 'rent'">Year</span>
                                 <span v-if="feed.for === 'sale'">Forever</span>
                             </p>
-                            <svg xmlns="http://www.w3.org/2000/svg" v-motion  :initial="{ opacity: 0.8 }"
+                            <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
                                 v-if="$store.state.isAuthenticated" :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }"
                                 fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                 class="w-6 h-6 cursor-pointer" @click="saveAd(feed._id)"
@@ -297,8 +297,8 @@
                         </div>
 
                         <!-- distance of listing from you -->
-                        <div class="rounded border border-white px-2 py-1 absolute top-5 right-5">
-                            <span class="text-white text-sm text-center">1.8km Away</span>
+                        <div class="rounded border border-white px-2 py-1 absolute top-5 right-5" v-if="feed.distance" style="background: rgba(211,211,211, 0.5);">
+                            <span class="text-white text-sm text-center">{{ Math.round(feed.distance) }} KM Away</span>
                         </div>
                     </div>
                 </div>
@@ -310,12 +310,13 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, computed } from 'vue'
 import axiosDefault from 'axios'
 import formatNumber from "number_formatter"
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from "vue-router";
 import MainNavbar from '../components/HomeNavbar.vue'
+import calculateDistance from '../composables/getAdDistance.js'
 import axios from "../composables/axios";
 import saveAd from "../composables/saveAd";
 
@@ -330,6 +331,7 @@ if (route.query.reloadApp) {
         router.go()
     }, 1000);
 }
+
 
 
 // ui conditionals
@@ -384,6 +386,12 @@ async function getFeeds() {
         if (getFeeds.data) {
             feeds.value = getFeeds.data.feed
         }
+
+        feeds.value.forEach(async feed => {
+            const distance = await calculateDistance(feed.location.address || feed.location.city || 'Abuja')
+
+            feed.distance = distance
+        })
 
         started.value = false
 
@@ -535,6 +543,7 @@ onMounted(() => {
     }
 
 })
+
 </script>
 
 <style scoped>

@@ -22,7 +22,7 @@ const myApp = createApp(App);
 
 myApp.component('Toast', Toast)
 myApp.component('Preloader', Preloader)
-
+ 
 myApp.use(MotionPlugin)
 myApp.use(VueSocialSharing)
 myApp.use(store)

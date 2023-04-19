@@ -2,7 +2,7 @@
 import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
 import axios from "./composables/axios";
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, computed } from "vue";
 import { useCookies } from "vue3-cookies";
 
 const { cookies } = useCookies();
@@ -10,6 +10,8 @@ const { cookies } = useCookies();
 const store = useStore();
 const router = useRouter();
 const route = useRoute();
+
+
 
 
 function verifyAllowedRoles(route, role) {

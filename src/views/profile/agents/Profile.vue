@@ -147,7 +147,7 @@
                                     </div>
 
                                     <div class="rounded border border-white px-2 py-1 absolute top-5 right-5">
-                                        <span class="text-white text-sm text-center">Around you</span>
+                                        <span class="text-white text-sm text-center">{{ Math.round(ad.distance) }} KM Away</span>
                                     </div>
                                 </div>
                             </div>
@@ -169,6 +169,7 @@ import Following from './components/modal/Following.vue'
 import axios from "../../../composables/axios";
 import formatNumber from "number_formatter"
 import saveAd from '../../../composables/saveAd'
+import calculateDistance from '../../../composables/getAdDistance.js'
 import { useStore } from 'vuex';
 
 const route = useRoute()
@@ -188,6 +189,11 @@ const ads = ref([])
 async function getAgent() {
     const getAgent = await axios.get(url2 + route.params.id)
     agentDetails.value = getAgent.data.agent
+
+    agentDetails.value.ads.forEach(async product => {
+        const distance = await calculateDistance(product.location.city || product.location.address + ', Nigeria')
+        product.distance = distance
+    })
 }
 
 function changeTab(tab) {

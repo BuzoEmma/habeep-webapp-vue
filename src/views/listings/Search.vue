@@ -186,8 +186,8 @@
                         </div>
 
                         <div class="flex flex-row items-center w-full justify-between px-2">
-                            <p class="text-sm text-webapp font-medium">N{{ formatNumber(product.price) }} /
-                                <span v-if="product.for === 'rent'">Year</span>
+                            <p class="text-sm text-webapp font-medium">₦{{ formatNumber(product.price) }} /
+                                <span v-if="product.for === 'rent'">Yearly</span>
                                 <span v-if="product.for === 'sale'">Forever</span>
                             </p>
                             <svg xmlns="http://www.w3.org/2000/svg" v-if="$store.state.isAuthenticated" v-motion
@@ -208,7 +208,7 @@
 
                         <!-- distance of listing from you -->
                         <div class="rounded border border-white px-2 py-1 absolute top-5 right-5">
-                            <span class="text-white text-sm text-center">1.8km Away</span>
+                            <span class="text-white text-sm text-center">{{ Math.round(product.distance) }} KM Away</span>
                         </div>
                     </div>
                 </div>
@@ -224,6 +224,7 @@ import { useStore } from 'vuex'
 import MainNavbar from '../../components/MainNavbar.vue'
 import formatNumber from 'number_formatter';
 import saveAd from '../../composables/saveAd'
+import calculateDistance from '../../composables/getAdDistance.js'
 import axiosDefault from 'axios'
 import axios from "../../composables/axios";
 import { useRoute } from 'vue-router';
@@ -306,7 +307,9 @@ async function getSearch(location, query) {
 
     const getProducts = await axios.post(url, data)
     products.value = []
-    getProducts.data.products.forEach(product => {
+    getProducts.data.products.forEach(async product => {
+        const distance = await calculateDistance(product.location.city || product.location.address + ', Nigeria')
+        product.distance = distance
         products.value.push(product)
     })
 

@@ -15,16 +15,16 @@
         </div>
 
         <div
-            class="form-container flex flex-col items-center relative bg-white gap-y-3 py-3 px-4 w-full lg:w-3/5 min-h-fit h-3/5 lg:h-full md:py-10 overflow-y-auto">
+            class="form-container flex flex-col items-center relative bg-white gap-y-3 py-3 px-4 w-full lg:w-3/5 min-h-fit h-3/5 lg:h-full md:py-10 overflow-y-auto overflow-x-hidden">
 
             <h3 class="text-webapp font-medium text-2xl w-full text-left">Your uploads</h3>
 
-            <div class="actions w-full flex flex-row items-center relative h-fit mt-5 px-1 justify-between">
+            <div class="actions w-full flex flex-row items-center relative mt-5 px-1 py-3 justify-between flex-nowrap overflow-x-scroll">
                 <div class="flex flex-row items-center h-fit gap-x-4 w-full md:w-1/3" v-if="!onSearch">
-                    <button class="px-4 py-2  rounded-full border border-gray-300 text-sm text-gray-400"
+                    <button class="px-4 py-2  rounded-full border border-gray-300 text-sm whitespace-nowrap text-gray-400"
                         @click="changeAdsTab(1)" :class="{ 'on-active': adsTab === 1 }">Active
                         ads</button>
-                    <button class="px-4 py-2 rounded-full border border-gray-300 text-sm text-gray-400" v-if="!onSearch"
+                    <button class="px-4 py-2 rounded-full border border-gray-300 text-sm whitespace-nowrap text-gray-400" v-if="!onSearch"
                         @click="changeAdsTab(2)" :class="{ 'on-active': adsTab === 2 }">Closed
                         ads</button>
 
@@ -44,7 +44,7 @@
                     </div>
 
                     <svg xmlns="http://www.w3.org/2000/svg" v-if="!onSearch" @click="onSearch = true" fill="none"
-                        viewBox="0 0 24 24" stroke-width="2" stroke="#71759D" class="w-6 h-6 md:hidden block">
+                        viewBox="0 0 24 24" stroke-width="2" stroke="#71759D" class="w-6 h-6 mx-4 md:hidden block">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                     </svg>
@@ -92,7 +92,7 @@
             </div>
 
             <!-- tab for active ads -->
-            <div class="ads-tab w-full h-full mt-6 flex flex-row"
+            <div class="ads-tab w-full h-fit mt-6 flex flex-row"
                 :class="{ 'justify-center items-center': activeProducts.length < 1 }" v-if="adsTab === 1">
                 <div class="flex flex-col items-center gap-y-3 md:justify-center" v-if="activeProducts.length < 1">
                     <img src="../../../../assets/icons/no-ad.svg" alt="">
@@ -101,7 +101,7 @@
                 <div class="flex flex-row w-full h-full flex-wrap" v-else>
 
                     <!-- listing template -->
-                    <div class="basis-full md:basis-1/2 2xl:basis-1/3 p-4" v-for="item in activeProducts" :key="item">
+                    <div class="basis-full md:basis-1/2 2xl:basis-1/3 p-4 border h-fit border-gray-200 rounded-lg" v-for="item in activeProducts" :key="item">
                         <div class="flex flex-col items-start gap-y-2 ad relative rounded-t-md">
                             <img @click="$router.push('/listings/products/' + item._id)" :src="item.images[0].link"
                                 class="w-full h-full rounded-md feed-image" v-if="item.images[0].link.includes('mp4') == false"
@@ -122,11 +122,11 @@
                             </div>
 
                             <div class="flex flex-row items-center w-full justify-start">
-                                <p v-if="item.for === 'rent'"><span class="text-lg text-webapp font-medium">N{{
+                                <p v-if="item.for === 'rent'"><span class="text-lg text-webapp font-medium">₦{{
                                     formatNumber(item.price)
-                                }}</span><span class="text-gray-400 text-sm">/ Year</span></p>
+                                }}</span><span class="text-gray-400 text-sm"> / Year</span></p>
                                 <p v-else><span class="text-lg text-webapp font-medium">N{{ formatNumber(item.price)
-                                }}</span><span class="text-gray-500 text-sm">/ Sale</span></p>
+                                }}</span><span class="text-gray-500 text-sm"> / Sale</span></p>
                             </div>
 
                             <div class="mt-3 flex flex-row items-center justify-between gap-x-2 w-full">
@@ -329,11 +329,6 @@ onMounted(() => {
 .ad-image {
     height: 164px;
     max-height: 164px !important;
-}
-
-.ad {
-    height: 370px !important;
-    max-height: 379px !important;
 }
 
 .flex-display {

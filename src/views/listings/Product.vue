@@ -72,9 +72,8 @@
                 <div class="w-full absolute flex flex-row top-5 items-center justify-between md:px-8 px-2 z-10">
                     <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
                     <div class="flex flex-row gap-x-3">
-                        <ShareNetwork network="whatsapp" popup.width="500px" popup.height="500px"
-                            :url="'https://habeep.org/' + $route.fullPath"
-                            :title="'Purchase this awesome house at ₦' + formatNumber(product.price)"
+                        <ShareNetwork :popup="{width: 400, height: 200}" network="twitter" :url="'https://habeep.org' + $route.fullPath"
+                            :title="product.title +  ' at ₦' + formatNumber(product.price)"
                             :description="product.description" :media="product.images[0].link">
                             <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
                         </ShareNetwork>

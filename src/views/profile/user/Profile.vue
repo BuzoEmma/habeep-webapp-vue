@@ -31,7 +31,7 @@
                     </svg>
                 </div>
             </div>
-            
+
             <!-- user basic info -->
             <div class="w-full lg:w-2/6 2xl:w-1/4 lg:ml-3 h-fit flex flex-col items-center gap-y-8 left">
                 <div class="user-info flex p-4 bg-white flex-col border items-start border-gray-200 rounded w-full h-full">
@@ -68,7 +68,8 @@
 
 
                     <div class="flex flex-col md:flex-row items-center w-full gap-y-1 xl:justify-between mt-4 xl:mt-3">
-                        <button v-if="$store.state.user.role === 'AGENT' || $store.state.user.role === 'TENANT'" @click="openModal('affiliateModal')"
+                        <button v-if="$store.state.user.role === 'AGENT' || $store.state.user.role === 'TENANT'"
+                            @click="openModal('affiliateModal')"
                             class="user-btn flex-row items-center justify-center text-sm font-medium text-webapp w-full bg-white">Affiliate
                             profile</button>
                         <button @click="openModal('editProfileModal')"
@@ -169,7 +170,7 @@
                                 </div>
 
                                 <div class="rounded border border-white px-2 py-1 absolute top-5 right-5">
-                                    <span class="text-white text-sm text-center">Around you</span>
+                                    <span class="text-white text-sm text-center">{{ Math.round(ad.distance) }} KM Away</span>
                                 </div>
                             </div>
                         </div>
@@ -185,12 +186,13 @@
                     </div>
                     <div class="flex-row h-full flex-wrap w-full flex overflow-y-auto" v-else>
                         <!-- listing template -->
-                        <div class="basis-full md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0" v-for="ad in savedAds" :key="ad">
+                        <div class="basis-full md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0" v-for="ad in savedAds"
+                            :key="ad">
                             <div
                                 class="flex flex-col items-start gap-y-2 relative ad feed w-full border rounded-md border-gray-200 pb-2">
                                 <img @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
-                                    class="w-full h-full rounded-t-md feed-image" v-if="ad.images[0].link.includes('mp4') == false"
-                                    alt="">
+                                    class="w-full h-full rounded-t-md feed-image"
+                                    v-if="ad.images[0].link.includes('mp4') == false" alt="">
                                 <video @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
                                     class="w-full rounded-t-md feed-image" v-else autoplay muted></video>
                                 <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
@@ -221,7 +223,7 @@
                                 </div>
 
                                 <div class="rounded border border-white px-2 py-1 absolute top-5 right-5">
-                                    <span class="text-white text-sm text-center">1.8km Away</span>
+                                    <span class="text-white text-sm text-center">{{ Math.round(ad.distance) }} KM Away</span>
                                 </div>
                             </div>
                         </div>
@@ -246,6 +248,7 @@ import saveAd from "../../../composables/saveAd";
 import axios from "../../../composables/axios"
 import formatNumber from "number_formatter"
 import Referrals from './components/modal/Referrals.vue'
+import calculateDistance from '../../../composables/getAdDistance.js'
 
 
 import { useStore } from 'vuex'
@@ -281,6 +284,11 @@ const savedAds = ref([])
 async function getAgent() {
     const getAgent = await axios.get(url2 + route.params.id)
     agentDetails.value = getAgent.data.agent
+
+    agentDetails.value.ads.forEach(async product => {
+        const distance = await calculateDistance(product.location.city || product.location.address + ', Nigeria')
+        product.distance = distance
+    })
 }
 
 if (store.state.user.role == 'AGENT') {
@@ -298,6 +306,11 @@ async function getSavedAds() {
                     const getAd = await axios.get(url + ad)
                     if (getAd.data.status == 200) {
                         savedAds.value.push(getAd.data.product)
+
+                        savedAds.value.forEach(async product => {
+                            const distance = await calculateDistance(product.location.city || product.location.address + ', Nigeria')
+                            product.distance = distance
+                        })
                     }
                 } catch (error) {
                 }
@@ -414,6 +427,7 @@ function changeWidth() {
     object-fit: cover;
     max-height: 164px !important;
 }
+
 .feed {
     height: 291px !important;
     max-height: 291px !important;
