@@ -148,8 +148,7 @@
                                 class="text-sm  xl:text-lg font-medium product-price text-webapp">Yearly
                             </p>
                             <p v-else
-                                class="text-sub-webapp text-sm xl:text-lg product-duration flex flex-row justify-start ">
-                            One time Payment</p>
+                                class="text-sub-webapp text-sm xl:text-lg product-duration flex flex-row justify-start ">Sale</p>
                         </div>
                     </div>
 
