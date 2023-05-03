@@ -106,6 +106,11 @@ export default createStore({
     },
     modules: {
     },
+    getters: {
+        sessionId(state) {
+            return state.sessionId
+        }
+    },
 
     plugins: [createPersistedState()]
 })

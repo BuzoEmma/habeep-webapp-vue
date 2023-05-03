@@ -9,7 +9,7 @@ const router = useRouter()
 
 store.dispatch("unsetAuth");
 
-router.push('/login?reloadApp=true')
+router.push('/login')
 </script>
 
 <style></style>

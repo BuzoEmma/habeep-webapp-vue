@@ -6,7 +6,7 @@
         </p>
 
         <div class="flex flex-row items-start chat justify-between mt-4  lg:mt-7 w-full py-2 lg:py-3 border-b cursor-pointer border-gray-200"
-            @click="$emit('selectChat', chat)" v-for="chat in props.rooms" :key="chat">
+            @click="$emit('selectChat', chat)" v-for="chat in allRooms" :key="chat">
             <div class="flex flex-row items-start gap-x-3 w-fit">
                 <div class="rounded-full w-11 h-11 grid place-items-center">
                     <img :src="chat.user.profilePicture" class="w-11 h-11 rounded-full" alt="">
@@ -23,11 +23,10 @@
 
             <div class="flex flex-col items-end gap-y-1">
                 <span class="text-xs md:text-sm text-webapp" :class="{ 'text-primary': newMessage }"
-                    v-if="chat.room.chats.length > 0">{{ chat.room.chats[chat.room.chats.length -
-                        1].dateCreated }}</span>
+                    v-if="chat.room.chats.length > 0">{{ moment(chat.room.chats[chat.room.chats.length -1].dateCreated).format('MMM D') }}</span>
                 <span class="text-xs md:text-sm text-webapp" :class="{ 'text-primary': newMessage }" v-else>Start a
                     chat</span>
-                <span class="px-2 py-0.5 rounded-full bg-primary text-xs text-white" style="font-size: 10px;" v-if="returnUnreadMessages(chat.room._id) > 0">{{ returnUnreadMessages(chat.room._id) }}</span>
+                <span class="px-2 py-0.5 rounded-full bg-primary text-xs text-white" style="font-size: 10px;" v-if="chat.room.unreadMessages > 0">{{ chat.room.unreadMessages }}</span>
             </div>
         </div>
     </div>
@@ -41,6 +40,7 @@ import { useStore } from 'vuex'
 const store = useStore()
 
 const props = defineProps(['rooms'])
+const allRooms = ref([])
 const evaluated = ref(0)
 
 
@@ -58,6 +58,11 @@ function returnUnreadMessages(roomId) {
     })
     return unreadMessages.value
 }
+
+props.rooms.forEach(chat => {
+    chat.room.unreadMessages = returnUnreadMessages(chat.room._id)
+    allRooms.value.push(chat)
+})
 
 function evaluate() {
     let finalValue = ref(0)

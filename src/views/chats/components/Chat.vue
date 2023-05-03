@@ -32,9 +32,9 @@
             </div>
 
             <!-- messages -->
-            <div class="flex flex-col items-center w-full overflow-y-auto messages-box" :ref="messagesBox">
+            <div class="flex flex-col items-center w-full overflow-y-auto messages-box scroll-smooth" ref="messagesBox" >
                 <div class="flex flex-col w-full h-fit py-6 items-center justify-start"
-                    v-for="(chatGroup, index) in sortedChats()" :key="(chatGroup, index)">
+                    v-for="(chatGroup, index) in sortedChats()" :key="(chatGroup, index)" ref="chats">
                     <div class="flex flex-row items-center gap-x-2">
                         <hr class="w-32">
                         <span class="text-xs text-sub-webapp">{{ moment(index).format('ll') }}</span>
@@ -205,10 +205,8 @@ const checkForEnter = (e) => {
 
 
 function scrollToView() {
-    if (messageBox.value !== null) {
-        messageBox.value.forEach(msg => {
-            msg.scrollIntoView({ behavior: "smooth" });
-        })
+    if(messagesBox.value !== null) {
+        messagesBox.value.scrollTop = messagesBox.value.scrollHeight + messagesBox.value.clientHeight
     }
 
 }

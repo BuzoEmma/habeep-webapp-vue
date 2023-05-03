@@ -12,7 +12,15 @@ const router = useRouter();
 const route = useRoute();
 
 
+const computedAccessToken = computed(() => {
+  return store.state.sessionId
+})
 
+watch(computedAccessToken, (newId) => {
+  if(newId.length > 0) {
+    updateToken(newId)
+  }
+})
 
 function verifyAllowedRoles(route, role) {
   if (role === 'random') {
@@ -64,6 +72,7 @@ const getUser = async () => {
     }
   }
 };
+
 
 onMounted(() => {
   getUser();
