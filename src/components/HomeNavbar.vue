@@ -15,7 +15,7 @@
             <div class="flex flex-row items-center gap-x-4">
                 <span class="text-sub-webapp text-lg font-normal">Download our app at</span>
                 <img src="../assets/icons/apple.svg" alt="">
-                <img src="../assets/icons/playstore.svg" alt="">
+                <a href="https://files.fm/down.php?i=8c927hykf" class="no-underline cursor-pointer" download="habeep-app"><img src="../assets/icons/playstore.svg" alt=""></a>
             </div>
 
             <div class="flex flex-row gap-x-10 items-start md:items-center pl-6">

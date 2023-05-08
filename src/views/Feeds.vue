@@ -283,8 +283,8 @@
                         <div class="flex flex-row items-center w-full justify-between px-2">
                             <p @click="$router.push('/listings/products/' + feed._id)"
                                 class="text-sm text-webapp font-medium">₦{{ formatNumber(feed.price) }} /
-                                <span v-if="feed.for === 'rent'">Year</span>
-                                <span v-if="feed.for === 'sale'">Forever</span>
+                                <span v-if="feed.for === 'rent'">Rent</span>
+                                <span v-if="feed.for === 'sale'">Sale</span>
                             </p>
                             <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
                                 v-if="$store.state.isAuthenticated" :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }"
@@ -311,8 +311,8 @@
 
 <script setup>
 import { ref, reactive, onMounted, computed } from 'vue'
-import axiosDefault from 'axios'
 import formatNumber from "number_formatter"
+import axiosDefault from 'axios'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from "vue-router";
 import MainNavbar from '../components/HomeNavbar.vue'
@@ -357,6 +357,27 @@ const feeds = ref([])
 const started = ref(false)
 const filteredFeeds = ref([])
 const errorMsg = ref('')
+
+onMounted(() => {
+    if (store.state.allStates.length !== 0) {
+        states.value = store.state.allStates.sort(function (a, b) {
+            const nameA = a.state.name.toUpperCase(); // ignore upper and lowercase
+            const nameB = b.state.name.toUpperCase(); // ignore upper and lowercase
+            if (nameA > nameB) {
+                return -1;
+            }
+            if (nameA < nameB) {
+                return 1;
+            }
+
+            // names must be equal
+            return 0;
+        });
+    } else {
+        getStates()
+    }
+
+})
 
 const url = '/listings/feeds';
 
@@ -522,27 +543,6 @@ async function getStates() {
     });
     store.dispatch('saveStates', states.value)
 }
-
-onMounted(() => {
-    if (store.state.allStates.length !== 0) {
-        states.value = store.state.allStates.sort(function (a, b) {
-            const nameA = a.state.name.toUpperCase(); // ignore upper and lowercase
-            const nameB = b.state.name.toUpperCase(); // ignore upper and lowercase
-            if (nameA > nameB) {
-                return -1;
-            }
-            if (nameA < nameB) {
-                return 1;
-            }
-
-            // names must be equal
-            return 0;
-        });
-    } else {
-        getStates()
-    }
-
-})
 
 </script>
 

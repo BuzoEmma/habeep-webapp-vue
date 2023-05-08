@@ -2,7 +2,7 @@
 import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
 import axios from "./composables/axios";
-import { ref, reactive, onMounted, computed } from "vue";
+import { ref, reactive, onMounted, computed, watch } from "vue";
 import { useCookies } from "vue3-cookies";
 
 const { cookies } = useCookies();

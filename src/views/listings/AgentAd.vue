@@ -128,10 +128,13 @@
                 <div class="flex flex-col items-start md:w-2/3 w-full xl:w-4/6 h-full pt-2">
                     <!-- top product info -->
                     <div class="flex flex-row main-info items-center w-full justify-between">
-                        <div class="flex flex-col gap-y-2">
-                            <p
-                                class="text-webapp text-2xl md:text-xl xl:text-2xl font-semibold xl:font-medium product-name">
+                        <div class="flex flex-col gap-y-2 w-fit">
+                            <p class="text-webapp text-2xl md:text-xl xl:text-2xl font-semibold xl:font-medium product-name"
+                                v-if="!onEditingMode">
                                 {{ product.title }}</p>
+                            <input type="text" v-model="data.title" placeholder="Type a title for this listing" v-else
+                                class="w-full h-12 rounded-lg pl-2 title outline-none border-2 border-gray-100 focus:border-blue-600">
+
                             <p
                                 class="text-sub-webapp text-lg md:text-sm xl:text-lg product-location flex flex-row items-center gap-x-2">
                                 <img src="../../assets/icons/map-pin-blue.svg" alt="">{{
@@ -141,16 +144,20 @@
                             </p>
                         </div>
                         <div class="md:flex hidden flex-col ">
-                            <p class="text-webapp text-2xl md:text-xl xl:text-2xl font-medium product-price">₦{{
-                                formatNumber(product.price)
-                            }}
+                            <p class="text-webapp text-2xl md:text-xl xl:text-2xl font-medium product-price" v-if="!onEditingMode">₦{{formatNumber(product.price)}}
                             </p>
+                            <input type="number" v-model="data.price" v-else placeholder="Type a price to this listing"
+                                class="w-full h-12 rounded-lg pl-2 title outline-none border-2 border-gray-100 focus:border-blue-600">
                             <p v-if="product.for === 'rent'"
-                                class="text-sm  xl:text-lg font-medium product-price text-webapp">Yearly
+                                class="text-sm  xl:text-lg font-medium product-price text-webapp flex flex-row justify-end">Rent
                             </p>
                             <p v-else
-                                class="text-sub-webapp text-sm xl:text-lg product-duration flex flex-row justify-start ">
-                                One time Payment</p>
+                                class="text-sub-webapp text-sm xl:text-lg product-duration flex flex-row justify-end ">Sale</p>
+
+                            <select name="for" id="">
+                                <option value="rent" :selected="product.for === 'rent'">Rent</option>
+                                <option value="sale" :selected="product.for === 'sale'">Sale</option>
+                            </select>
                         </div>
                     </div>
 
@@ -217,13 +224,13 @@
                             class="agent-btn flex-row items-center justify-center text-sm font-medium text-primary w-full bg-white">
                             <span>Edit ad</span>
                         </button>
-                        <button v-if="onEditingMode && data.description.length > product.description.length"
+                        <button v-if="onEditingMode && hasEdited()"
                             @click="saveEditedAd"
                             class="agent-btn flex-row items-center justify-center text-sm font-medium text-primary w-full  bg-white">
                             <span v-if="!savingUpdate">Save ad</span>
                             <Preloader v-else />
                         </button>
-                        <button @click="changeAdStatus('CLOSED')" v-if="product.status === 'AVAILABLE'"
+                        <button @click="changeAdStatus('CLOSED')" v-else-if="product.status === 'AVAILABLE' && !hasEdited() && !onEditingMode"
                             class="agent-btn cursor-pointer flex flex-row items-center justify-center text-sm font-medium  mr-2 text-white ml-2 bg-primary w-full">
                             <span v-if="!updatingStatus">Close ad</span>
                             <Preloader v-else />
@@ -254,27 +261,29 @@
                     <div
                         class="flex md:hidden py-5  flex-row items-center fixed bottom-0 px-4 z-10 left-0 bg-white w-screen justify-between mt-4 border-t pt-2 border-t-gray-300">
                         <div class="flex flex-col">
-                            <p class="text-webapp text-xl xl:text-2xl font-medium product-price">₦{{
+                            <p class="text-webapp text-xl xl:text-2xl font-medium product-price" v-if="!onEditingMode">₦{{
                                 formatNumber(product.price)
                             }}
                             </p>
+                            <input type="number" v-model="data.price" v-else placeholder="Type a price to this listing"
+                                class="w-11/12 h-10 rounded-lg pl-2 title outline-none border-2 border-gray-100 focus:border-blue-600">
                             <p v-if="product.for === 'rent'"
-                                class="text-sm md:text-xl xl:text-2xl font-medium product-price text-webapp">Yearly
+                                class="text-sm md:text-xl xl:text-2xl font-medium product-price text-webapp">Rent
                             </p>
                             <p v-else
                                 class="text-sub-webapp text-sm md:text-sm xl:text-lg product-duration flex flex-row justify-start ">
-                                Forever</p>
+                                Sale</p>
                         </div>
                         <button v-if="!onEditingMode" @click="enterEditingMode"
                             class="agent-btn flex-row items-center justify-center text-sm font-medium text-primary w-3/5 bg-white">
                             <span>Edit ad</span>
                         </button>
-                        <button v-else-if="data.description.length > product.description.length" @click="saveEditedAd"
+                        <button v-else-if="hasEdited()" @click="saveEditedAd"
                             class="agent-btn flex-row items-center justify-center text-sm font-medium text-primary w-1/2  bg-white">
                             <span v-if="!savingUpdate">Save ad</span>
                             <Preloader v-else />
                         </button>
-                        <button @click="changeAdStatus('CLOSED')" v-else-if="product.status === 'AVAILABLE'"
+                        <button @click="changeAdStatus('CLOSED')" v-else-if="product.status === 'AVAILABLE' && !hasEdited()"
                             class="agent-btn cursor-pointer flex flex-row items-center justify-center text-sm font-medium  w-3/5 mr-2 text-white ml-2 bg-primary xl:w-1/2">
                             <span v-if="!updatingStatus">Close ad</span>
                             <Preloader v-else />
@@ -361,6 +370,8 @@ const getProduct = async () => {
 
     data.description = product.value.description
     data.title = product.value.title
+    data.price = product.value.price
+    data.for = product.value.for
 
     getAgent(product.value.agentId)
 }
@@ -431,11 +442,19 @@ const savingUpdate = ref(false)
 
 const data = reactive({
     description: '',
-    title: ''
+    title: '',
+    price: 0,
+    for: ''
 })
 
 function enterEditingMode() {
     onEditingMode.value = true
+}
+
+function hasEdited() {
+    if(data.description !== product.value.description || data.title !== product.value.title || data.price !== product.value.price || data.for !== product.value.for) {
+        return true
+    } else return false
 }
 
 async function saveEditedAd() {
@@ -455,6 +474,8 @@ async function saveEditedAd() {
         // update data
         product.value.description = data.description
         product.value.title = data.title
+        product.value.price = data.price
+        product.value.for = data.for
     } catch (error) {
         savingUpdate.value = false
         if (error.response) {
