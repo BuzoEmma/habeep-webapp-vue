@@ -4,6 +4,7 @@ import { useRouter, useRoute } from "vue-router";
 import axios from "./composables/axios";
 import { ref, reactive, onMounted, computed, watch } from "vue";
 import { useCookies } from "vue3-cookies";
+import { updateToken } from "./composables/axios";
 
 const { cookies } = useCookies();
 
