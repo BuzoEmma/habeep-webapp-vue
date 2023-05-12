@@ -37,7 +37,7 @@
                     v-for="(chatGroup, index) in sortedChats()" :key="(chatGroup, index)" ref="chats">
                     <div class="flex flex-row items-center gap-x-2">
                         <hr class="w-32">
-                        <span class="text-xs text-sub-webapp">{{ moment(index).format('ll') }}</span>
+                        <span class="text-xs text-sub-webapp">{{ moment(new Date(index)).format('MMM D, YY') }}</span>
                         <hr class="w-32">
                     </div>
 
@@ -85,7 +85,7 @@ const datedChats = ref([{}])
 function sortedChats() {
     let sortDatedChats = {}
     Object.keys(datedChats.value[0]).sort(function (a, b, c) {
-        return moment(c, 'DD/MM/YYYY').toDate() - moment(b, 'DD/MM/YYYY').toDate() - moment(a, 'DD/MM/YYYY').toDate();
+        return moment(new Date(c)).format('DD/MM/YYYY') - moment(new Date(b)).format('DD/MM/YYYY') - moment(new Date(a)).format('DD/MM/YYYY');
     }).forEach(function (key) {
         sortDatedChats[key] = datedChats.value[0][key];
     })
@@ -98,7 +98,8 @@ const socket = io("https://habeep.org", {
     path: '/backend/sockets/',
     auth: {
         token: store.state.sessionId
-    }
+    },
+    transports: ['websocket']
 });
 
 
@@ -122,8 +123,8 @@ socket.on("message", (msg) => {
     } else {
         datedChats.value[0][msg.dateCreated] = [msg]
     }
-    chatsArray.value.push(msg)
     scrollToView()
+    chatsArray.value.push(msg)
 })
 
 
