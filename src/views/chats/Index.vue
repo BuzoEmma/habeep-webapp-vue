@@ -89,11 +89,15 @@ async function getRooms() {
             let filterId = allRooms.value.filter((room) => {
                 return room.room._id === route.query.roomId
             })
+            // // route.query.roomId = null
+            // router.replace({ query: { roomId: null } })
             enterChatBox(filterId[0])
-            router.replace({ query: null });
         }
+        return true
     } catch (error) {
         console.log(error)
+        router.go(-1)
+        return false
     }
 }
 

@@ -29,7 +29,7 @@
                 </div>
 
                 <p class="w-full text-left text-webapp  text-sm mt-10">
-                    By clicking on “Next” you agree to be a Tenant <span @click="$router.push('/terms-and-condtions')"
+                    By clicking on “Next” you agree to be a Tenant <span @click="$router.push('/terms-of-service')"
                         class="cursor-pointer text-primary underline">Terms and conditions</span>
                 </p>
                 <!-- submit btn -->

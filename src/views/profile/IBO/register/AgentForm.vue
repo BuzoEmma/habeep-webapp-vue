@@ -26,7 +26,7 @@
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8">
                     <label for="" class="text-sm text-webapp">Agent category</label>
                     <select name="" v-model="data.category" class="w-full h-14 rounded-lg px-2" id="">
-                        <option value="Individual" selected >Individual agent</option>
+                        <option value="Individual" selected>Individual agent</option>
                         <option value="Company">Company agent</option>
                     </select>
                 </div>
@@ -41,6 +41,7 @@
                     <div class="flex flex-col items-start w-full sm:w-6/12 gap-y-1 mt-8">
                         <label for="" class="text-sm text-webapp">City</label>
                         <select name="" v-model="data.city" class="w-full h-14 rounded-lg px-2" id="">
+                            <option value="Choose a city" selected>Choose a city</option>
                             <option value="" v-if="!data.state.cities">Choose a state</option>
                             <option v-else :value="city.name" v-for="city in data.state.cities.sort()" :key="city">
                                 {{ city.name }}
@@ -65,7 +66,7 @@
                 </div>
 
                 <p class="w-full text-left text-webapp  text-sm mt-10">
-                    By clicking on “Next” you agree to Agent IBO <span @click="$router.push('')"
+                    By clicking on “Next” you agree to Agent IBO <span @click="$router.push('/terms-of-service')"
                         class="cursor-pointer text-primary underline">Terms and conditions</span>
                 </p>
                 <!-- submit btn -->
@@ -105,14 +106,15 @@ const router = useRouter();
 const store = useStore();
 
 const inputCompleted = ref(false)
+let states = store.state.allStates.reverse()
 
 const currentState = ref('')
 const data = reactive({
     role: 'AGENT',
     bio: '',
-    state: '',
-    city: '',
-    category: '',
+    state: states[0],
+    city: 'Choose a city',
+    category: 'Individual',
     address: ''
 })
 
@@ -122,7 +124,6 @@ let errorMsg = ref({
     field: null
 })
 
-let states = store.state.allStates.reverse()
 
 
 let newMsg = ref('')

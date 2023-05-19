@@ -18,7 +18,7 @@ const computedAccessToken = computed(() => {
 })
 
 watch(computedAccessToken, (newId) => {
-  if(newId.length > 0) {
+  if (newId.length > 0) {
     updateToken(newId)
   }
 })
@@ -75,20 +75,125 @@ const getUser = async () => {
 };
 
 
+const allNotifications = ref([])
+
+async function getNotifications() {
+  allNotifications.value = []
+  try {
+    if (!store.state.isAuthenticated) {
+      axios.defaults.headers.common = {
+        Authorization: `bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDI0YjVhYmQ5OTliZTU3ODUwZDc0MmMiLCJyb2xlIjoiQUdFTlQiLCJpYXQiOjE2ODM3NTUxOTJ9.NdYOgcJ7fT8JPkaA8dueK8Wwn1hLTiR7WmRvxKEZ3o8`
+      };
+    }
+    const allnotifs = await axios.get('/notification/get/all')
+    allNotifications.value = allnotifs.data.data
+
+    if (store.state.isAuthenticated === true) {
+      const notifs = await axios.get('/notification/get/user')
+      notifs.data.data.forEach(notif => {
+        allNotifications.value.push(notif)
+      })
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+async function takeNotificationAction(notif) {
+  if (notif.additionalInfo) {
+    if (notif.additionalInfo.type === 'newProduct') {
+      await deleteNotification(notif, null)
+      router.push('/listings/products/' + notif.additionalInfo.id)
+    }
+  } else {
+    deleteNotification(notif, null)
+  }
+}
+
+async function deleteNotification(notif, limit) {
+  // console.log(allNotifications.value.indexOf(notif))
+  try {
+    if (limit !== 'all') {
+      allNotifications.value.splice(allNotifications.value.indexOf(notif))
+    }
+    if (notif.users !== ['all']) {
+      await axios.delete('/notification/delete/' + notif._id)
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+function deleteAllNotifications() {
+  const notifications = allNotifications.value
+  allNotifications.value = []
+  if (notifications.length > 1) {
+    for (const notif of notifications) {
+      deleteNotification(notif, 'all')
+    }
+  }
+}
+
 onMounted(() => {
   getUser();
+  getNotifications()
 });
 </script>
 
 <template>
-  <router-view class="wrapper" v-slot="{ Component }">
-    <transition name="scale-slide">
-      <component :is="Component" />
-    </transition>
-  </router-view>
+  <div class="w-screen h-screen relative">
+    <router-view class="wrapper" v-slot="{ Component }">
+      <transition name="scale-slide">
+        <component :is="Component" />
+      </transition>
+    </router-view>
+
+
+    <div class="md:flex hidden flex-col absolute bottom-10  h-fit items-center w-fit justify-end gap-y-3 p-2 backdrop-blur-lg  right-12"
+      v-if="allNotifications.length > 0">
+      <div class="flex-row-center w-full p-4 notif justify-between cursor-pointer" @click="takeNotificationAction(notif)" v-motion
+        :initial="{ y: -100, opacity: 0.1 }" :enter="{ y: 0, opacity: 1, transition: { delay: 40 } }"
+        :tapped="{ x: 100, opacity: 0.3, transition: { delay: 20 } }" v-for="notif of allNotifications" :key="notif">
+        <!-- transition: { type: 'spring', damping: 10, stiffness: 5, mass: 0.1} -->
+        <!-- :tapped="{x: 100, opacity: 0.3, transition: { delay: 10}}" -->
+        <div class="flex-row-center h-full w-full gap-x-4">
+          <img :src="notif.img" alt="" class="rounded-2xl w-12 h-12"
+            v-if="notif.img && notif.img.toString().includes('mp4') == false">
+          <video :src="notif.img" loop preload="auto" class="rounded-2xl w-12 h-12 notif-video" v-else autoplay
+            muted></video>
+          <div class="flex-col flex items-start gap-y-1">
+            <h3 class="text-webapp text-sm font-medium">{{ notif.subject }}</h3>
+            <span class="text-sub-webapp font-light text-xs">{{ notif.msg }}</span>
+          </div>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" v-if="!notif.additionalInfo" viewBox="0 0 20 20" fill="currentColor"
+          class="w-5 h-5">
+          <path
+            d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" v-else viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+          <path fill-rule="evenodd"
+            d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
+            clip-rule="evenodd" />
+        </svg>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style>
+.notif {
+  background: #F7F7F7;
+  border-radius: 16px;
+  max-width: 400px
+}
+
+.notif-video {
+  /* width: 37px !important;
+    height: 37px !important; */
+  object-fit: cover;
+}
+
 .wrapper {
   width: 100%;
   min-height: 100vh;
@@ -114,5 +219,4 @@ onMounted(() => {
 
 .scale-slide-leave-to {
   transform: scale(0.8);
-}
-</style>
+}</style>

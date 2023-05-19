@@ -69,7 +69,7 @@
             </div>
 
             <div v-if="onState" class="gap-y-2">
-                <div class="py-2" v-for="(state, index) in states" :key="(state, index)"
+                <div class="py-2" v-for="(state, index) in states.reverse()" :key="(state, index)"
                     @click="changeStateModal(state, 'state')">
                     <p class="text-sm mb-1 text-webapp cursor-pointer" v-if="state.state.name !== 'Cross'">{{
                         state.state.name }}</p>
@@ -409,7 +409,7 @@ async function getFeeds() {
         }
 
         feeds.value.forEach(async feed => {
-            const distance = await calculateDistance(feed.location.address || feed.location.city || 'Abuja')
+            const distance = await calculateDistance(feed.location.address + ', ' +  feed.location.city || 'Calabar')
 
             feed.distance = distance
         })
@@ -541,7 +541,7 @@ async function getStates() {
         // names must be equal
         return 0;
     });
-    store.dispatch('saveStates', states.value)
+    store.dispatch('saveStates', states.value.reverse())
 }
 
 </script>

@@ -124,7 +124,7 @@ async function resetUserPin() {
         const reset = await axios.patch(url, data)
         if (!reset.data.success) {
             onError.value = true
-            errorMsg.value.msg = create.data.message
+            errorMsg.value.msg = reset.data.message
 
             setTimeout(() => {
                 onError.value = false

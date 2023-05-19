@@ -166,7 +166,7 @@ async function loginUser() {
                             router.replace('/feeds')
                         }
                     } else {
-                        router.push('/verify-otp?email=' + login.data.data.user.email)
+                        router.push('/verify-otp?email=' + login.data.data.user.email + '&reason=user_verification')
                     }
                 }, 2000);
             } else {

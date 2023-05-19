@@ -24,7 +24,6 @@
                 <div class="flex flex-row items-center justify-between w-full h-14 rounded-lg px-2 gap-y-1 form-field "
                     style="background: #F9FAFF">
                     <span class="text-lg text-webapp">HBP Wallet</span>
-                    <img src="../../../../assets/icons/exchange.svg" alt="">
                 </div>
             </div>
 
@@ -37,16 +36,18 @@
             </div>
 
             <p class="w-full text-left text-webapp  text-sm mt-10">
-                By clicking on Pay {{ amountToDebit }}HBP, you agree to <span @click="$router.push('')"
+                By clicking on Pay {{ amountToDebit }}HBP, you agree to <span @click="$router.push('/terms-of-service')"
                     class="cursor-pointer text-primary underline">Terms and conditions</span> of the platform for
                 property listing and other affiliate structure put in place. This fee is mandatory for IBO and is been
                 used to reward the system. Kindly fund your wallet before clicking the active button.
             </p>
             <!-- submit btn -->
-            <button class="bg-primary w-full rounded-lg grid place-items-center h-14 text-white mt-5" @click="debitFee">
-                <span v-if="!processing">Pay {{ amountToDebit }}HBP</span>
-                <Preloader v-else />
-            </button>
+            <div class="bottom-10 absolute px-4 w-full">
+                <button class="bg-primary w-full rounded-lg grid place-items-center h-14 text-white mt-5" @click="debitFee">
+                    <span v-if="!processing">Pay {{ amountToDebit }}HBP</span>
+                    <Preloader v-else />
+                </button>
+            </div>
 
         </div>
 
@@ -85,6 +86,7 @@ const processing = ref(false)
 const walletData = ref({
     accountValue: 0
 })
+const alreadyDebited = ref(false)
 
 async function getWallet() {
     try {
@@ -104,26 +106,31 @@ if (amountToDebit === true) {
     amountToDebit = 120
 }
 async function debitFee() {
-    if (walletData.value.accountValue < amountToDebit) {
-        onError.value = true
-        errorMsg.value.msg = 'Swap naira to ' + (amountToDebit - walletData.value.accountValue) + ' to continue. Redirecting to swap page in 2sec'
-
-        setTimeout(() => {
-            router.push('/wallet?tab=hbp&cont=deposit&reloadApp=true')
-        }, 2000);
-    } else {
-        try {
-            let data = {
-                amount: amountToDebit,
-                description: 'Purchase ' + props.data.role + ' plan'
-            }
-            const debit = await axios.post('/wallet/debit-wallet', data)
-
-            makeUserAnIBO()
-        } catch (error) {
+    if (alreadyDebited.value === false) {
+        if (walletData.value.accountValue < amountToDebit) {
             onError.value = true
-            errorMsg.value.msg = 'Unable to debit user wallet. Try again later'
+            errorMsg.value.msg = 'Swap naira to ' + (amountToDebit - walletData.value.accountValue) + 'HBP to continue. Redirecting to swap page in 2sec'
+
+            setTimeout(() => {
+                router.push('/wallet?tab=hbp&cont=deposit&reloadApp=true')
+            }, 2000);
+        } else {
+            try {
+                let data = {
+                    amount: amountToDebit,
+                    description: 'Purchase ' + props.data.role + ' plan'
+                }
+                await axios.post('/wallet/debit-wallet', data)
+                walletData.value.accountValue -= amountToDebit
+                alreadyDebited.value = true
+                makeUserAnIBO()
+            } catch (error) {
+                onError.value = true
+                errorMsg.value.msg = 'Unable to debit user wallet. Try again later'
+            }
         }
+    } else {
+        makeUserAnIBO()
     }
 }
 
@@ -143,19 +150,19 @@ async function makeUserAnIBO() {
                 processing.value = false
                 onError.value = false
                 errorMsg.value.msg = ''
-            }, 2000);
+            }, 3000);
         } else {
             newMsg.value = change.data.message
-
+            console.log('here')
             setTimeout(() => {
                 processing.value = false
                 newMsg.value = ''
-                if (props.data.role == "AGENT") {
+                if (props.data.role == 'AGENT') {
                     router.push('/agent/ads?reloadApp=true')
                 } else {
                     router.push('/feeds?reloadApp=true')
                 }
-            }, 2000);
+            }, 1500);
 
         }
     } catch (error) {

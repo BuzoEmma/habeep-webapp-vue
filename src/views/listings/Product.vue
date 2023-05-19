@@ -49,7 +49,7 @@
                                 v-if="image.link && image.link.toString().includes('mp4') === false"
                                 @click="enterImageViewer()" :key="image" alt="">
                             <video :src="image.link" @click="enterImageViewer()" loop class="w-full rounded-lg feed-image-short"
-                                v-else autoplay muted></video>
+                                v-else autoplay muted preload="metadata"></video>
                         </div>
                     </div>
                     <div class=" flex flex-row h-1/2 w-full items-center gap-2">
@@ -59,7 +59,7 @@
                                 v-if="image.link && image.link.toString().includes('mp4') == false"
                                 @click="enterImageViewer()" alt="">
                             <video :src="image.link" @click="enterImageViewer()" loop class="w-full rounded-md feed-image-short"
-                                v-else autoplay muted></video>
+                                v-else autoplay muted preload="metadata"></video>
                         </div>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
                     v-if="carouselImg.link && carouselImg.link.toString().includes('mp4') == false"
                     @click="enterImageViewer()" alt="">
                 <video :src="carouselImg.link" loop class="w-full feed-image" @click="enterImageViewer()" v-else autoplay
-                    muted></video>
+                    muted preload="metadata"></video>
                 <!-- <img :src="images[activeCarouselImg - 1].link" class="h-full w-full new-img" :class="{'hidden': changeCarouselImg}"> -->
 
                 <div class="flex flex-row items-center w-full absolute bottom-5 justify-between md:px-8 px-2">
@@ -213,9 +213,11 @@
                             </div>
                             <div class="flex flex-col ">
                                 <span
-                                    class="text-sm xl:text-lg md:text-center text-left agent-name text-webapp font-medium">{{
+                                    class="text-sm xl:text-lg md:text-center text-left agent-name text-webapp font-medium" v-if="agentDetails.name">
+                                    {{
                                         agentDetails.name.fname + ' ' + agentDetails.name.surname
-                                    }}</span>
+                                    }}
+                                    </span>
                                 <span
                                     class="text-sm agent-ads-count md:text-center xl:text-left text-left text-sub-webapp">{{
                                         agentDetails.ads.length
