@@ -1,4 +1,4 @@
-FROM node:lts-alpine as build-stage
+FROM node:lts-alpine
 
 WORKDIR /habeep/habeep-webapp
 
@@ -9,5 +9,3 @@ RUN npm install
 COPY . .
 
 RUN npm run build
-
-COPY --from=build-stage /habeep/habeep-webapp/dist /var/www/habeep-web
