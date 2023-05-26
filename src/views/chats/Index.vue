@@ -16,7 +16,7 @@
 
             <NoChat v-if="!processing && !selectedChat"
                 :class="{ 'hidden': allRooms.length > 0 && screenWidth < 1023 || selectedChat }" />
-            <Chat @showPhone="togglePhone" v-if="!processing && selectedChat" @leaveChat="selectedChat = null"
+            <Chat @showPhone="togglePhone" v-if="!processing && selectedChat" @leaveChat="leaveChat"
                 :chat="selectedChat" :class="{ 'hidden': !selectedChat && screenWidth < 1023 }" />
         </div>
 
@@ -73,6 +73,16 @@ const enterChatBox = (data) => {
         }, 5);
     } else selectedChat.value = data
 
+}
+
+const leaveChat = (data) => {
+    selectedChat.value = null
+    const getRoom = allRooms.value.filter(chatroom => {
+        return chatroom.room._id == data.room._id
+    })
+    allRooms.value[getRooms[0]] = data
+    
+    console.log(getRoom[0].room, data.room)
 }
 
 const screenWidth = ref(window.innerWidth)

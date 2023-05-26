@@ -269,7 +269,7 @@
                             class="w-full feed-image rounded-t-md"
                             v-if="feed.images[0].link && feed.images[0].link.includes('mp4') == false">
                         <video :src="feed.images[0].link" @click="$router.push('/listings/products/' + feed._id)"
-                            class="w-full rounded-t-md feed-image" v-else autoplay muted loop></video>
+                            class="w-full rounded-t-md feed-image" v-else autoplay muted loop preload="metadata"></video>
                         <p class="text-webapp text-lg font-medium w-full px-2 cursor-pointer"
                             @click="$router.push('/listings/products/' + feed._id)">{{ feed.title }}</p>
 

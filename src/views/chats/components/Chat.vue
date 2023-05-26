@@ -10,7 +10,7 @@
                 class="flex flex-row items-center justify-between w-full sticky border-b h-fit border-b-gray-200 px-2 lg:px-5 py-3">
                 <div class="rounded-full w-13 h-13 grid place-items-center">
                     <img :src="props.chat.user.profilePicture" style="width: 45px; height: 45px;" class="w-13 h-13 rounded-full" alt="" v-if="screenWidth > 1023">
-                    <svg xmlns="http://www.w3.org/2000/svg" @click="$emit('leaveChat')" v-else fill="none"
+                    <svg xmlns="http://www.w3.org/2000/svg" @click="$emit('leaveChat', props.chat)" v-else fill="none"
                         viewBox="0 0 24 24" stroke-width="1.5" stroke="#0A1045" class="w-6 h-6 cursor-pointer">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                     </svg>
@@ -156,8 +156,22 @@ socket.on("message", (msg) => {
         datedChats.value[0][msg.dateCreated] = [msg]
     }
     chatsArray.value.push(msg)
+    returnUnreadMessages()
     scrollToView()
 })
+
+function returnUnreadMessages() {
+    const unreadMessages = ref(0)
+    props.chat.room.chats.forEach(chat => {
+        if (store.state.user._id !== chat.userId) {
+            if (chat.read === false) {
+                unreadMessages.value += 1
+            }
+        }
+    })
+    props.chat.room.unreadMessages = unreadMessages.value
+    return unreadMessages.value
+}
 
 
 const otherUserOnline = ref(false)
@@ -247,9 +261,11 @@ function scrollToView() {
         }
     }, 200);
 
+    
     setTimeout(() => {
         clearInterval(scrollBlock)
     }, 600);
+    returnUnreadMessages()
 
 }
 
