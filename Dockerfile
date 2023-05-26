@@ -10,4 +10,4 @@ COPY . .
 
 RUN npm run build
 
-COPY --from=build-stage /usr/src/habeep-webapp/dist /var/www/habeep-web
+COPY --from=build-stage /habeep/habeep-webapp/dist /var/www/habeep-web
