@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Publish Docker image
+name: Publish Docker image to Contabo
 
 on:
   push:
@@ -12,7 +12,7 @@ on:
 
 jobs:
   push_to_registry:
-    name: Push Docker image of Webapp to Docker Hub
+    name: Push Docker image of Habeep to Docker Hub
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
@@ -30,15 +30,15 @@ jobs:
         with:
           images: beastyag/habeep-webapp
       
-      - name: Build and push Docker image
+      - name: Build and push Docker image to Habeep Web
         uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
         with:
           context: .
           push: true
-          tags: latest
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
   update_ssh_contabo:
-    name: Telling Contabo Server to Update Webapp
+    name: Telling Contabo Server to Update
     needs: "push_to_registry"
     runs-on: ubuntu-latest
     steps:
@@ -49,4 +49,4 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
-        script: cd habeep && bash update-web.sh  
+        script: cd habeep && bash update-web.sh
