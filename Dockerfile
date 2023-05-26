@@ -11,5 +11,3 @@ COPY . .
 RUN npm run build
 
 COPY --from=build-stage /usr/src/habeep-webapp/dist /var/www/habeep-web
-
-RUN systemctl reload nginx
