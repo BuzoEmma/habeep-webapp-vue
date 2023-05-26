@@ -10,6 +10,6 @@ COPY . .
 
 RUN npm run build
 
-RUN cp -r dist/* /var/www/habeep-webapp
+# RUN cp -r dist/* /var/www/habeep-webapp
 
 EXPOSE 80
