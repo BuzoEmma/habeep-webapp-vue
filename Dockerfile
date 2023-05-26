@@ -1,8 +1,6 @@
-FROM node:16
+FROM node:lts-alpine as build-stage
 
-RUN npm install -g http-server 
-
-WORKDIR /usr/src/habeep-webapp
+WORKDIR /habeep/habeep-webapp
 
 COPY package*.json ./
 
@@ -10,11 +8,8 @@ RUN npm install
 
 COPY . .
 
-RUN ls -l 
-
 RUN npm run build
 
-# RUN cp -r dist/* /var/www/habeep-web
+COPY --from=build-stage /usr/src/habeep-webapp/dist /var/www/habeep-web
 
-EXPOSE 8080
-CMD [ "http-server", "dist"]
+RUN systemctl reload nginx
