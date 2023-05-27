@@ -13,7 +13,9 @@ COPY . ./
    
 EXPOSE 80
 
-WORKDIR /habeep//habeep-webapp
+WORKDIR /habeep/habeep-webapp
+
+RUN ls -la
 
 RUN cp -r dist/* /var/www/habeep/client
 
