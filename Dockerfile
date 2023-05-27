@@ -17,10 +17,10 @@ WORKDIR /habeep/habeep-webapp
 
 RUN ls -la
 
-RUN cp -r dist/* /var/www/habeep/client
-
+COPY dist /var/www/habeep/client
 
 EXPOSE 80
+
 RUN nginx -s reload
 
 # CMD [ "http-server", "dist"]
