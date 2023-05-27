@@ -13,9 +13,9 @@ COPY . ./
    
 RUN npm run build
 
-RUN ls -la
+WORKDIR /habeep/habeep-webapp/dist
 
-COPY dist /var/www/habeep/client
+COPY .  /var/www/habeep/client
 
 EXPOSE 80
 
