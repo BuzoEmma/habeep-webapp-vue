@@ -13,8 +13,6 @@ COPY . ./
    
 RUN npm run build
 
-WORKDIR /habeep/habeep-webapp
-
 RUN ls -la
 
 COPY dist /var/www/habeep/client
