@@ -6,12 +6,17 @@ COPY package*.json ./
 
 RUN npm install
 
-RUN npm install -g http-server
-
+# RUN npm install -g http-server
 COPY . ./
 
 # RUN cp -r dist/* /var/www/habeep-webapp
    
-EXPOSE 8080
+EXPOSE 80
 
-CMD [ "http-server", "./dist"]
+WORKDIR /habeep//habeep-webapp
+
+RUN cp -r dist/* /var/www/habeep/client
+
+RUN nginx -s reload
+
+# CMD [ "http-server", "dist"]
