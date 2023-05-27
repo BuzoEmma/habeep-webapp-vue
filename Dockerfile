@@ -14,6 +14,6 @@ RUN npm run build
 
 # RUN cp -r dist/* /var/www/habeep-webapp
 
-EXPOSE 8080
+EXPOSE 80
 
 CMD [ "http-server", "dist"]
