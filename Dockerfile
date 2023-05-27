@@ -6,10 +6,10 @@ COPY package*.json ./
 
 RUN npm install
 
-COPY . .
+RUN ls -la
+
+COPY . ./
 
 RUN npm run build
-
-COPY /dist /var/www/habeep/client
 
 EXPOSE 80
