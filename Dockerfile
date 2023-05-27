@@ -8,10 +8,10 @@ RUN npm install
 
 RUN npm install -g http-server
 
-COPY . ./
+COPY . .
 
 # RUN cp -r dist/* /var/www/habeep-webapp
    
-EXPOSE 80
+EXPOSE 8080
 
 CMD [ "http-server", "dist"]
