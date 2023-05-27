@@ -1,4 +1,4 @@
-FROM node:lts-alpine AS build
+FROM node:lts-alpine
 
 WORKDIR /habeep/habeep-webapp
 
@@ -8,12 +8,8 @@ RUN npm install
 
 COPY . ./
 
-   
 RUN npm run build
 
-WORKDIR /habeep/habeep-webapp/dist
-
-RUN ls -la
-COPY .  /var/www/habeep/client
+COPY dist  /var/www/habeep/client
 
 EXPOSE 80
