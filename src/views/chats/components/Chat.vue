@@ -2,7 +2,7 @@
     <div
         class="flex flex-col items-center justify-center md:border no-scroll-btn relative md:border-gray-200 w-full lg:w-2/3 h-screen md:h-full overflow-hidden">
         <div class="flex flex-col gap-y-2 h-fit" v-if="!props.chat">
-            <img src="../../../assets/images/illustrations/no-conversation.svg" alt="">
+            <img src="../../../assets/illustrations/no-conversation.svg" alt="">
             <p class="text-lg text-webapp">No conversation yet</p>
         </div>
 
