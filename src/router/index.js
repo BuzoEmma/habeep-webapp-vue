@@ -158,6 +158,14 @@ const routes = [
         }
     },
     {
+        path: '/help',
+        name: 'FAQ',
+        component: () => import('../views/extras/FAQ.vue'),
+        meta: {
+            title: "Help"
+        }
+    },
+    {
         path: '/terms-of-service',
         name: 'Terms-Of-Service',
         component: TOS,

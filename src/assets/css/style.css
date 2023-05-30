@@ -50,6 +50,11 @@ input[type=number] {
   color: #0A1045;
 }
 
+.grid-center {
+  display:grid;
+  place-items: center;
+}
+
 .ubuntu {
   font-family: 'Ubuntu', sans-serif;
 }

@@ -9,3 +9,11 @@
 .flex-row-center {
     @apply flex flex-row items-center;
 }
+
+.div-center-row {
+    @apply flex flex-row items-center justify-center;
+}
+
+.div-center-col {
+    @apply flex flex-col items-center justify-center;
+}
