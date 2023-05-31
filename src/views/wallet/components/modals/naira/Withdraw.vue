@@ -91,6 +91,7 @@ import { useStore } from 'vuex'
 import uniqid from 'uniqid'
 import axios from '../../../../../composables/axios'
 import axiosDefault from 'axios'
+import moment from 'moment'
 
 axiosDefault.defaults.headers.common = {
     Authorization: `bearer ${import.meta.env.PAYSTACK_SECRET_KEY}`,
@@ -229,7 +230,12 @@ const processWithdrawal = async (response) => {
             reference: paystackReference.value,
             status: response.status,
             userId: store.state.user._id,
-            paymentMethod: withdrawalDetails.paymentMethod
+            paymentMethod: withdrawalDetails.paymentMethod,
+            dates: {
+                createdAt: moment().format('LLL'),
+                time: moment().format('LTS'),
+                date: moment().format('LL')
+            }
         }
 
         const saveDeposit = await axios.post('/wallet/withdraw/naira', data)

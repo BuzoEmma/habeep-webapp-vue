@@ -17,7 +17,7 @@
                 <div class="following flex flex-row items-center justify-between w-full py-4 px-4" v-else
                     v-for="agent in discoveredAgents" :key="agent">
                     <div class="flex flex-row gap-x-2 items-center">
-                        <div class="rounded-full w-12 h-112 grid place-items-center">
+                        <div class="rounded-full w-12 h-12 grid place-items-center">
                             <img :src="agent.details.profileImage" class="w-12 rounded-full h-12" alt="">
                         </div>
                         <div class="flex flex-col items-start">

@@ -63,6 +63,7 @@ import { useRouter, useRoute } from "vue-router";
 import axios from "../../../../composables/axios";
 import axiosDefault from 'axios'
 import { useStore } from "vuex";
+import moment from 'moment'
 
 const props = defineProps(['data'])
 const emit = defineEmits(['pushToWallet'])
@@ -109,7 +110,7 @@ async function debitFee() {
     if (alreadyDebited.value === false) {
         if (walletData.value.accountValue < amountToDebit) {
             onError.value = true
-            errorMsg.value.msg = 'Swap naira to ' + (amountToDebit - walletData.value.accountValue) + 'HBP to continue. Redirecting to swap page in 2sec'
+            errorMsg.value.msg = 'Swap naira to ' + (amountToDebit - walletData.value.accountValue) + ' HBP to continue. Redirecting to swap page in 2sec'
 
             setTimeout(() => {
                 router.push('/wallet?tab=hbp&cont=deposit&reloadApp=true')
@@ -118,7 +119,12 @@ async function debitFee() {
             try {
                 let data = {
                     amount: amountToDebit,
-                    description: 'Purchase ' + props.data.role + ' plan'
+                    description: 'Purchase ' + props.data.role + ' plan',
+                    dates: {
+                        createdAt: moment().format('LLL'),
+                        time: moment().format('LTS'),
+                        date: moment().format('LL')
+                    }
                 }
                 await axios.post('/wallet/debit-wallet', data)
                 walletData.value.accountValue -= amountToDebit

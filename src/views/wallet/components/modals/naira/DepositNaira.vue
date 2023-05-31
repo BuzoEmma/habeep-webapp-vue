@@ -89,6 +89,7 @@ import { useStore } from 'vuex'
 import uniqid from 'uniqid'
 import paystack from 'vue3-paystack'
 import axios from '../../../../../composables/axios'
+import moment from 'moment'
 
 const store = useStore()
 const router = useRouter()
@@ -142,7 +143,12 @@ const processSuccessPayment = async (response) => {
             status: true,
             fee: getFee(),
             userId: store.state.user._id,
-            paymentMethod: depositData.paymentMethod
+            paymentMethod: depositData.paymentMethod,
+            dates: {
+                createdAt: moment().format('LLL'),
+                time: moment().format('LTS'),
+                date: moment().format('LL')
+            }
         }
 
         const saveDeposit = await axios.post('/wallet/deposit/naira', data)
@@ -169,7 +175,6 @@ const processSuccessPayment = async (response) => {
 }
 
 const processCanceledPayment = async () => {
-    console.log('canceled')
     try {
         paystackReference.value = genRef()
         processingDeposit.value = true
@@ -180,10 +185,15 @@ const processCanceledPayment = async () => {
             referenceId: paystackReference.value,
             status: false,
             userId: store.state.user._id,
-            paymentMethod: depositData.paymentMethod
+            paymentMethod: depositData.paymentMethod,
+            dates: {
+                createdAt: moment().format('LLL'),
+                time: moment().format('LTS'),
+                date: moment().format('LL')
+            }
         }
 
-        const saveDeposit = await axios.post('/wallet/deposit/naira', data)
+        await axios.post('/wallet/deposit/naira', data)
     } catch (error) {
         onError.value = true
         errorMsg.value = error.response.data.message

@@ -51,6 +51,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import axios from '../../../../../composables/axios'
 import formatNumber from 'number_formatter'
+import moment from 'moment'
 
 const props = defineProps(['wallet'])
 const store = useStore()
@@ -101,7 +102,12 @@ const processSwap = async () => {
         let mainData = {
             wallet: props.wallet.accountID,
             amount: data.hbp,
-            tokenToSwap: 'hbp'
+            tokenToSwap: 'hbp',
+            dates: {
+                createdAt: moment().format('LLL'),
+                time: moment().format('LTS'),
+                date: moment().format('LL')
+            },
         }
 
         const swapToken = await axios.post('/wallet/swap', mainData)
@@ -115,7 +121,6 @@ const processSwap = async () => {
         }, 3000);
     } catch (error) {
         onError.value = true
-        console.log(error)
         errorMsg.value = error.message
 
         processingSwap.value = false

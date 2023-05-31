@@ -149,10 +149,11 @@ onMounted(() => {
     </router-view>
 
 
-    <div class="md:flex hidden flex-col absolute bottom-10  h-fit items-center w-fit justify-end gap-y-3 p-2 backdrop-blur-lg  right-12"
+    <div
+      class="flex-col absolute bottom-10  h-fit items-center w-full sm:w-fit justify-end gap-y-3 p-2 backdrop-blur-lg  right-12"
       v-if="allNotifications.length > 0">
-      <div class="flex-row-center w-full p-4 notif justify-between cursor-pointer" @click="takeNotificationAction(notif)" v-motion
-        :initial="{ y: -100, opacity: 0.1 }" :enter="{ y: 0, opacity: 1, transition: { delay: 40 } }"
+      <div class="flex-row-center w-full p-4 notif justify-between cursor-pointer" @click="takeNotificationAction(notif)"
+        v-motion :initial="{ y: -100, opacity: 0.1 }" :enter="{ y: 0, opacity: 1, transition: { delay: 40 } }"
         :tapped="{ x: 100, opacity: 0.3, transition: { delay: 20 } }" v-for="notif of allNotifications" :key="notif">
         <!-- transition: { type: 'spring', damping: 10, stiffness: 5, mass: 0.1} -->
         <!-- :tapped="{x: 100, opacity: 0.3, transition: { delay: 10}}" -->
@@ -219,4 +220,5 @@ onMounted(() => {
 
 .scale-slide-leave-to {
   transform: scale(0.8);
-}</style>
+}
+</style>

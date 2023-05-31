@@ -51,6 +51,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import axios from '../../../../../composables/axios'
 import formatNumber from 'number_formatter'
+import moment from 'moment'
 
 const store = useStore()
 const router = useRouter()
@@ -118,11 +119,15 @@ const processSwap = async () => {
         let mainData = {
             wallet: walletData.value.accountID,
             amount: data.naira,
-            tokenToSwap: 'naira'
+            tokenToSwap: 'naira',
+            dates: {
+                createdAt: moment().format('LLL'),
+                time: moment().format('LTS'),
+                date: moment().format('LL')
+            }
         }
 
         const swapToken = await axios.post('/wallet/swap', mainData)
-        console.log(swapToken)
         newMsg.value = swapToken.data.message
 
         setTimeout(() => {
