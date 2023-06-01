@@ -163,11 +163,7 @@ async function makeUserAnIBO() {
             setTimeout(() => {
                 processing.value = false
                 newMsg.value = ''
-                if (props.data.role == 'AGENT') {
-                    router.push('/agent/ads?reloadApp=true')
-                } else {
-                    router.push('/feeds?reloadApp=true')
-                }
+                router.push('/feeds?reloadApp=true')
             }, 1500);
 
         }

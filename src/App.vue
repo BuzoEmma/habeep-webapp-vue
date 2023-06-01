@@ -100,14 +100,16 @@ async function getNotifications() {
 }
 
 async function takeNotificationAction(notif) {
-  if (notif.additionalInfo) {
-    if (notif.additionalInfo.type === 'newProduct') {
-      await deleteNotification(notif, null)
-      router.push('/listings/products/' + notif.additionalInfo.id)
+    if (notif.additionalInfo) {
+        if (notif.additionalInfo.type === 'newProduct') {
+            await deleteNotification(notif, null)
+            router.push('/listings/products/' + notif.additionalInfo.id)
+        }
+    } else if (notif.msg === 'Verify your account to access all habeep features') {
+        router.push('/verify-otp?reason=user_verification&email=' + store.state.user.email)
+    } else {
+        deleteNotification(notif, null)
     }
-  } else {
-    deleteNotification(notif, null)
-  }
 }
 
 async function deleteNotification(notif, limit) {
@@ -121,16 +123,6 @@ async function deleteNotification(notif, limit) {
     }
   } catch (error) {
     console.log(error)
-  }
-}
-
-function deleteAllNotifications() {
-  const notifications = allNotifications.value
-  allNotifications.value = []
-  if (notifications.length > 1) {
-    for (const notif of notifications) {
-      deleteNotification(notif, 'all')
-    }
   }
 }
 
@@ -150,7 +142,7 @@ onMounted(() => {
 
 
     <div
-      class="flex-col absolute bottom-10  h-fit items-center w-full sm:w-fit justify-end gap-y-3 p-2 backdrop-blur-lg  right-12"
+      class="flex-col absolute bottom-10  h-fit items-center w-full sm:w-fit justify-end gap-y-3 p-2 backdrop-blur-lg right-2 md:right-12"
       v-if="allNotifications.length > 0">
       <div class="flex-row-center w-full p-4 notif justify-between cursor-pointer" @click="takeNotificationAction(notif)"
         v-motion :initial="{ y: -100, opacity: 0.1 }" :enter="{ y: 0, opacity: 1, transition: { delay: 40 } }"
@@ -167,8 +159,9 @@ onMounted(() => {
             <span class="text-sub-webapp font-light text-xs">{{ notif.msg }}</span>
           </div>
         </div>
-        <svg xmlns="http://www.w3.org/2000/svg" v-if="!notif.additionalInfo" viewBox="0 0 20 20" fill="currentColor"
-          class="w-5 h-5">
+        <svg xmlns="http://www.w3.org/2000/svg"
+          v-if="!notif.additionalInfo && !notif.msg === 'Verify your account to access all habeep features'"
+          viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
           <path
             d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
         </svg>

@@ -27,7 +27,7 @@ export function loginValidate(email, pin) {
         if (noWhitespace.length < 4 ) {
             return {
                 success: false,
-                message: 'Password length must be at least 6 characters',
+                message: 'Pin must be 4 characters',
                 field: 'pin',
             }
         } else {
@@ -108,7 +108,7 @@ export function registerValidate(data) {
         if (noWhitespace.length < 4) {
             return {
                 success: false,
-                message: 'Pin length must be 4 characters',
+                message: 'Pin must be 4 characters',
                 field: 'pin',
             }
         } else {
