@@ -158,10 +158,8 @@ const getOTP = async () => {
             msg.value.type = 'success'
             msg.value.text = result.data.message;
 
-            if(timer.value.isExpired.value) {
-                timer.value = useTimer(time)
-                timer.value.start()
-            } else timer.value.start()
+            timer.value = ref(useTimer(time));
+            timer.value.start()
 
             setTimeout(() => {
                 msg.value.type = ''
