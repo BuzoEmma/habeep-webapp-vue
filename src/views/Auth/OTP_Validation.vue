@@ -43,14 +43,16 @@
                 </div>
 
                 <p class="flex-row-center w-full gap-x-1 text-sm px-2">
-                    <span class="text-webapp font-medium">Resend OTP in:</span> 
-                    <span class="underline text-blue-600 cursor-pointer" v-if="timer.isExpired === true && !timer.isRunning" @click="getOTP()">Send</span>
-                    <span class="text-orange-400 pl-1" v-if="timer.isRunning">{{ timer.seconds }}</span>
+                    <span class="text-webapp font-medium">Resend OTP in:</span>
+                    <span class="underline text-blue-600 cursor-pointer" v-if="timer.isExpired.value"
+                        @click="getOTP()">Send</span>
+                    <span class="text-orange-400 pl-1" v-else>{{ timer.seconds }}</span>
                 </p>
 
                 <!-- submit btn -->
                 <div class="bottom-0 absolute px-4 w-full">
-                    <button class="bg-primary w-full rounded-lg grid place-items-center h-14 mt-5 text-white" @click="verifyOTP">
+                    <button class="bg-primary w-full rounded-lg grid place-items-center h-14 mt-5 text-white"
+                        @click="verifyOTP">
                         <span v-if="!processing">Continue</span>
                         <Preloader v-else />
                     </button>
@@ -86,7 +88,13 @@ const val5 = ref()
 
 const time = new Date();
 time.setSeconds(time.getSeconds() + 40); // 40 sec timer
-const timer = ref(useTimer(time));
+const timer = useTimer(time);
+
+const restartTimer = () => {
+    const time = new Date();
+    time.setSeconds(time.getSeconds() + 40);
+    timer.restart(time);
+}
 
 const next = (e) => {
     if (!e.target.value < 1) {
@@ -158,8 +166,11 @@ const getOTP = async () => {
             msg.value.type = 'success'
             msg.value.text = result.data.message;
 
-            timer.value = ref(useTimer(time));
-            timer.value.start()
+            if (timer.isExpired.value) {
+                restartTimer()
+            } else {
+                timer.start()
+            }
 
             setTimeout(() => {
                 msg.value.type = ''
