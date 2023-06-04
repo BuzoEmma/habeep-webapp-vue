@@ -26,7 +26,8 @@
             <div class="flex flex-row items-center gap-x-4">
                 <span class="text-sub-webapp text-lg font-normal">Download our app at</span>
                 <img src="../assets/icons/apple.svg" alt="">
-                <a href="https://files.fm/down.php?i=8c927hykf" class="no-underline cursor-pointer" download="habeep-app"><img src="../assets/icons/playstore.svg" alt=""></a>
+                <a href="https://play.google.com/store/apps/details?id=org.habeep" class="no-underline cursor-pointer"><img
+                        src="../assets/icons/playstore.svg" alt=""></a>
             </div>
 
             <div class="flex flex-row gap-x-10 items-start md:items-center pl-6">
@@ -44,8 +45,8 @@
         </div>
 
         <div class="flex flex-row items-center gap-x-5 dlex md:hidden">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" @click="$emit('toggleSearch')" stroke-width="1.5" stroke="currentColor"
-                class="w-6 h-6">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" @click="$emit('toggleSearch')"
+                stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round"
                     d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
             </svg>
