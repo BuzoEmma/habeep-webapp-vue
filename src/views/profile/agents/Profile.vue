@@ -42,9 +42,9 @@
                             }}</span>
                             <p class="text-lg agent-ads-count text-sub-webapp flex flex-row gap-x-2 items-center"><img
                                     src="../../../assets/images/map-pin.png" alt="">
-                                    <span v-if="agentDetails.city">{{ agentDetails.city }}</span>
-                                    <span class="capaitalize" v-else>{{ agentDetails.nationality }}</span>
-                                </p>
+                                <span v-if="agentDetails.city">{{ agentDetails.city }}</span>
+                                <span class="capaitalize" v-else>{{ agentDetails.nationality }}</span>
+                            </p>
                         </div>
                     </div>
 
@@ -92,8 +92,16 @@
                     <div class="flex flex-row items-center w-full mt-4 xl:mt-3"
                         v-if="$store.state.isAuthenticated && $store.state.user._id === agentDetails.userId">
                         <button @click="$router.push('/user/profile/' + agentDetails.userId)"
-                            class="agent-btn flex flex-row items-center justify-center text-sm font-medium  text-primary ml-2 bg-white w-full">View
+                            class="user-btn flex flex-row items-center justify-center text-sm font-medium text-black ml-2 bg-white w-full">View
                             Profile</button>
+                    </div>
+                    <div class="flex flex-row items-center w-full mt-4 xl:mt-3 px-1">
+                        <ShareNetwork :popup="{ width: 400, height: 200 }" network="whatsapp" class="w-full"
+                            :url="'https://habeep.org/' + agentDetails.name.username" title="Share this profile">
+                            <button
+                                class="agent-btn flex flex-row items-center justify-center text-sm font-medium ml-1 text-primary bg-white w-full">Share
+                                Profile</button>
+                        </ShareNetwork>
                     </div>
                 </div>
 
@@ -161,8 +169,8 @@
 
                                     </div>
 
-                                    <div class="rounded border border-white px-2 py-1 absolute top-5 right-5">
-                                        <span class="text-white text-sm text-center">{{ Math.round(ad.distance) }} KM
+                                    <div class="rounded border border-white px-2 py-1 absolute top-5 right-5" v-if="ad.distance">
+                                        <span class="text-white text-sm text-center" v-if="ad.distance">{{ Math.round(ad.distance) }} KM
                                             Away</span>
                                     </div>
                                 </div>
@@ -220,7 +228,7 @@
 
                                     </div>
 
-                                    <div class="rounded border border-white px-2 py-1 absolute top-5 right-5">
+                                    <div class="rounded border border-white px-2 py-1 absolute top-5 right-5" v-if="ad.distance">
                                         <span class="text-white text-sm text-center">{{ Math.round(ad.distance) }} KM
                                             Away</span>
                                     </div>
@@ -282,6 +290,8 @@ function closeModal() {
     onModal.value = false
 }
 
+
+
 const creatingRoom = ref(false)
 
 async function createChatRoom() {
@@ -336,6 +346,11 @@ onMounted(() => {
 <style scoped>
 .agent-btn {
     border: 1px solid #3E64F9;
+    border-radius: 5px;
+    height: 50px;
+}
+.user-btn {
+    border: 1px solid #D9DDEE;
     border-radius: 5px;
     height: 50px;
 }

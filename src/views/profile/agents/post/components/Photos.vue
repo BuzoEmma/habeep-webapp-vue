@@ -126,10 +126,11 @@
                     <span class="text-xl font-medium text-webapp underline cursor-pointer"
                         @click="$emit('goBack', { to: 'Desc', from: 'Photos'})">Back</span>
                     <button @click="sendData()" :class="{ 'bg-slate-400 text-white': allCompleted === false }"
-                        class="h-10 w-24 rounded-lg bg-primary text-white text-sm text-medium"
+                        class="h-10 rounded-lg w-fit px-2 bg-primary text-white text-sm flex flex-row justify-center items-center font-extralight gap-x-2" style="min-width: 96px"
                         :disabled="allCompleted === false">
                         <span v-if="!processing">Post AD</span>
-                        <Preloader v-else />
+                        <span v-if="processing && uploadingWord" v-motion :initial="{opacity: 0.2, scale: 0.5}" :enter="{opacity: 1, scale: 1}" class="text-white">{{ uploadingWord }}</span>
+                        <Preloader v-if="processing" class="scale-75" />
                     </button>
                 </div>
             </div>
@@ -161,7 +162,7 @@ const data = reactive({
     data: '',
 })
 
-
+const uploadingWord = ref('Loading')
 
 const formData = new FormData();
 
@@ -183,6 +184,7 @@ const imageData5 = ref('')
 
 const noPicture = ref(true)
 
+const uploadingVocabulary = ['Loading','Uploading assets', 'Optimizing Assets', 'Formatting Product', 'Uploaded']
 
 function callImgProcessor(value) {
     currentBlock.value = value
@@ -254,9 +256,15 @@ const previewImg = async (event, value) => {
 const url = '/listings/agent/create-product';
 
 async function saveData() {
+    let interval = null
     try {
         processing.value = true
         formData.append('data', JSON.stringify(finalData))
+
+        interval = setInterval(() => {
+            uploadingWord.value = uploadingVocabulary[uploadingVocabulary.indexOf(uploadingWord.value) + 1]
+        }, 5000);
+
         const adDetails = await axios.post(url, formData, {
             headers: { 'Content-Type': 'multipart/form-data' },
         });
@@ -267,6 +275,7 @@ async function saveData() {
             store.commit('deleteListingData')
 
             emit('postSuccess', adDetails.data.data._id)
+            clearInterval(interval)
         } else {
             onError.value = true;
             errorMsg.value = adDetails.data.message;
@@ -280,6 +289,7 @@ async function saveData() {
         }
     } catch (error) {
         processing.value = false
+        clearInterval(interval)
 
         onError.value = true;
         if (error.response) {

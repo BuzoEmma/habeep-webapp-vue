@@ -24,10 +24,10 @@
 
             <div class="flex flex-col items-start gap-y-1 w-full mt-5 relative">
                 <span class="text-webapp text-sm">Deposit fee</span>
-                <input type="text" disabled value="0.00" placeholder="0.00"
+                <!-- <input type="text" disabled value="0.00" placeholder="0.00"
                     v-if="depositData.paymentMethod !== 'bank-transfer'"
-                    class="w-full outline-none h-14 rounded-lg border border-gray p-2">
-                <input type="text" disabled value="100.00" v-else
+                    class="w-full outline-none h-14 rounded-lg border border-gray p-2"> -->
+                <input type="text" disabled value="0.00"
                     class="w-full outline-none h-14 rounded-lg border border-gray p-2">
 
                 <div class="absolute top-8 h-10 px-2 right-2 rounded grid place-items-center" style="background: #EBEBEB;">
@@ -42,12 +42,10 @@
                     class="flex flex-row items-center w-full justify-between h-14 rounded-lg border border-gray p-2">
                     <span class="text-sm text-webapp" v-if="depositData.paymentMethod.length < 1">Select deposit
                         method</span>
-                    <span class="text-sm text-webapp" v-if="depositData.paymentMethod === 'paystack'">Pay via debit
-                        card</span>
-                    <span class="text-sm text-webapp" v-if="depositData.paymentMethod === 'bank-transfer'">Pay via
-                        direct bank transfers</span>
+                    <span class="text-sm text-webapp" v-if="depositData.paymentMethod === 'paystack'">Pay with Paystack</span>
+                    <span class="text-sm text-webapp" v-if="depositData.paymentMethod === 'flutterwave'">Pay with Flutterwave</span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="#71759D" class="w-6 h-6">
+                        stroke="#71759D" class="w-6 h-6 ">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                     </svg>
 
@@ -55,17 +53,21 @@
 
                 <div class="absolute z-20 top-14 right-2 p-5 flex flex-col items-start gap-y-5 rounded-lg bg-white select-method"
                     v-if="onSelectMethod">
-                    <span class="text-sm text-webapp cursor-pointer" @click="choosePaymentMethod('paystack')">Pay via debit
-                        card</span>
-                    <span class="text-sm text-webapp cursor-pointer" @click="choosePaymentMethod('bank-transfer')">Pay via
-                        direct bank transfers</span>
-
+                    <span class="text-sm text-webapp cursor-pointer" @click="choosePaymentMethod('paystack')">Pay with Paystack</span>
+                    <p class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer">
+                        <span>Pay with Flutterwave</span>
+                        <span class="text-xs font-extralight text-webapp">#comingsoon</span>
+                    </p>
+                    <p class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer">
+                        <span>Pay with E-naira</span>
+                        <span class="text-xs font-extralight text-webapp">#comingsoon</span>
+                    </p>
                 </div>
             </div>
 
             <paystack buttonClass="paystack-btn" publicKey="pk_live_9a894022d4b6e6016264145e3a6e3ce80eeb1288"
                 :email="$store.state.user.email" :amount="depositData.amount * 100" :reference="paystackReference"
-                :onSuccess="processSuccessPayment" :onClose="processCanceledPayment" :channels="channels()">
+                :onSuccess="processSuccessPayment" :on-cancel="processCanceledPayment" :channels="channels()">
             </paystack>
             <button @click="proceedToPayment"
                 :class="{ 'bg-blue-600 text-white': depositData.amount > 0 && depositData.paymentMethod.length > 1, 'bg-gray-300': depositData.amount < 1 || depositData.paymentMethod.length < 1, }"
@@ -115,7 +117,7 @@ const choosePaymentMethod = (method) => {
 }
 
 function proceedToPayment() {
-    if (depositData.paymentMethod === 'paystack' || depositData.paymentMethod === 'bank-transfer') {
+    if (depositData.paymentMethod === 'paystack') {
         paystackBtn.value.click()
     }
 }
@@ -129,7 +131,7 @@ function channels() { return ["card", "bank", "ussd", "qr", "mobile_money", "ban
 const processSuccessPayment = async (response) => {
     function getFee() {
         if (depositData.paymentMethod === "bank-transfer") {
-            return 100
+            return 0
         } else return 0
     }
 

@@ -58,3 +58,7 @@ input[type=number] {
 .ubuntu {
   font-family: 'Ubuntu', sans-serif;
 }
+
+.no-scroll-btn::-webkit-scrollbar {
+  display: none !important;
+}

@@ -209,7 +209,7 @@
                         </div>
 
                         <!-- distance of listing from you -->
-                        <div class="rounded border border-white px-2 py-1 absolute top-5 right-5">
+                        <div class="rounded border border-white px-2 py-1 absolute top-5 right-5" v-if="product.distance">
                             <span class="text-white text-sm text-center">{{ Math.round(product.distance) }} KM Away</span>
                         </div>
                     </div>
@@ -221,7 +221,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, watch } from 'vue'
 import { useStore } from 'vuex'
 import MainNavbar from '../../components/MainNavbar.vue'
 import formatNumber from 'number_formatter';
@@ -242,6 +242,20 @@ const store = useStore()
 const route = useRoute()
 const url = '/listings/query';
 const products = ref([])
+
+watch(products, (newProducts) => {
+    const uniqueIds = [];
+    const uniqueFeeds = newProducts.filter(element => {
+        const isDuplicate = uniqueIds.includes(element._id);
+
+        if (!isDuplicate) {
+            uniqueIds.push(element._id);
+            return true;
+        }
+        return false;
+    });
+    products.value = uniqueFeeds
+})
 
 
 

@@ -48,14 +48,14 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-row items-center w-full gap-x-4 mt-3">
-                        <p class="text-xl font-webapp font-medium flex flex-row gap-x-1"
+                    <div class="flex flex-row items-center w-full gap-x-4 mt-3 overflow-x-auto no-scrool-btn">
+                        <p class="text-xl font-webapp font-medium flex items-center flex-row gap-x-1"
                             v-if="$store.state.user.role === 'AGENT' && agentDetails.ads">
                             {{ agentDetails.ads.length }}
                             <span class="text-sub-webapp text-sm">Ads
                             </span>
                         </p>
-                        <p class="text-lg font-webapp font-medium items-center flex flex-row gap-x-1">
+                        <p class="text-lg font-webapp font-medium whitespace-nowrap items-center flex flex-row gap-x-1">
                             {{ $store.state.user.savedAds.length }}
                             <span class="text-sub-webapp text-sm">Saved Ads
                             </span>
@@ -80,6 +80,14 @@
                             class="user-btn flex flex-row items-center justify-center text-sm font-medium  text-webapp md:ml-2 bg-white w-full"
                             :class="{ 'w-full': $store.state.user.role === 'AGENT' }">Edit
                             profile</button>
+                    </div>
+                    <div class="flex flex-row items-center relative w-full mt-2">
+                        <ShareNetwork :popup="{ width: 400, height: 200 }" network="whatsapp" class="w-full"
+                            :url="'https://habeep.org/' + $store.state.user.username" title="Share this profile">
+                            <button
+                                class="agent-btn flex flex-row items-center justify-center text-sm font-medium text-primary bg-white w-full">Share
+                                Profile</button>
+                        </ShareNetwork>
                     </div>
                 </div>
 
@@ -159,8 +167,8 @@
 
                                 <div class="flex flex-row items-center w-full justify-between px-3">
                                     <p class="text-sm text-webapp font-medium">N{{ formatNumber(ad.price) }} /
-                                        <span v-if="ad.for === 'rent'">Year</span>
-                                        <span v-if="ad.for === 'sale'">Forever</span>
+                                        <span v-if="ad.for === 'rent'">Rent</span>
+                                        <span v-if="ad.for === 'sale'">Sale</span>
                                     </p>
                                     <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
                                         :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none" viewBox="0 0 24 24"
@@ -173,7 +181,7 @@
 
                                 </div>
 
-                                <div class="rounded border border-white px-2 py-1 absolute top-5 right-5">
+                                <div class="rounded border border-white px-2 py-1 absolute top-5 right-5" v-if="ad.distance">
                                     <span class="text-white text-sm text-center">{{ Math.round(ad.distance) }} KM Away</span>
                                 </div>
                             </div>
@@ -212,8 +220,8 @@
 
                                 <div class="flex flex-row items-center w-full justify-between px-3">
                                     <p class="text-sm text-webapp font-medium">N{{ formatNumber(ad.price) }} /
-                                        <span v-if="ad.for === 'rent'">Year</span>
-                                        <span v-if="ad.for === 'sale'">Forever</span>
+                                        <span v-if="ad.for === 'rent'">Rent</span>
+                                        <span v-if="ad.for === 'sale'">Sale</span>
                                     </p>
                                     <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
                                         :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none" viewBox="0 0 24 24"
@@ -373,11 +381,19 @@ function changeWidth() {
     screenWidth.value = window.innerWidth
 }
 
+if (store.state.isAuthenticated && store.state.user.role === "AGENT") {
+        openTab.value = 1
+    }
 </script>
 
 <style scoped>
 .user-btn {
     border: 1px solid #D9DDEE;
+    border-radius: 5px;
+    height: 50px;
+}
+.agent-btn {
+    border: 1px solid #3E64F9;
     border-radius: 5px;
     height: 50px;
 }

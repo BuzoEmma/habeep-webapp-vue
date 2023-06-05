@@ -310,7 +310,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, computed } from 'vue'
+import { ref, reactive, onMounted, computed, watch } from 'vue'
 import formatNumber from "number_formatter"
 import axiosDefault from 'axios'
 import { useStore } from 'vuex'
@@ -357,6 +357,20 @@ const feeds = ref([])
 const started = ref(false)
 const filteredFeeds = ref([])
 const errorMsg = ref('')
+
+watch(filteredFeeds, (newProducts) => {
+    const uniqueIds = [];
+    const uniqueFeeds = newProducts.filter(element => {
+        const isDuplicate = uniqueIds.includes(element._id);
+
+        if (!isDuplicate) {
+            uniqueIds.push(element._id);
+            return true;
+        }
+        return false;
+    });
+    filteredFeeds.value = uniqueFeeds
+})
 
 onMounted(() => {
     if (store.state.allStates.length !== 0) {
