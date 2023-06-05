@@ -124,6 +124,7 @@ import Error404 from '../views/fallbacks/404.vue'
 
 // wallet
 import WalletIndex from '../views/wallet/Index.vue'
+import { get } from 'lodash'
 
 const routes = [
     {
@@ -201,11 +202,11 @@ const routes = [
     },
     // profile
     {
-        path: '/agents/profile/:id',
-        name: 'Agent-profile',
+        path: '/:username',
+        name: 'UserProfiles',
         component: AgentProfile,
         meta: {
-            title: "Agent Profile"
+            title: 'Profile'
         }
     },
     {

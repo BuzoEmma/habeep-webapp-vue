@@ -19,7 +19,7 @@
             class="form-container flex flex-col items-center justify-between relative bg-white w-full lg:w-3/5 min-h-fit h-4/6 lg:h-full">
 
             <div class="form-fields w-full flex flex-col h-full items-center px-5 justify-center gap-y-5">
-                <div class="flex flex-row items-center justify-between w-full md:w-4/6 xl:w-3/5">
+                <div class="flex flex-row items-center justify-between w-full md:w-4/6 xl:w-3/5" v-if="$store.state.listingProcess.type !== 'land'">
                     <span class="text-xl text-webapp font-medium">Bedrooms</span>
                     <div class="flex flex-row items-center gap-x-3">
                         <img src="../../../../../assets/icons/listings/minus-light.svg" v-if="data.data.bedrooms > 0"
@@ -31,7 +31,7 @@
                             class="cursor-pointer" alt="">
                     </div>
                 </div>
-                <div class="flex flex-row items-center justify-between w-full md:w-4/6 xl:w-3/5">
+                <div class="flex flex-row items-center justify-between w-full md:w-4/6 xl:w-3/5" v-if="$store.state.listingProcess.type !== 'land'">
                     <span class="text-xl text-webapp font-medium">Bathrooms</span>
                     <div class="flex flex-row items-center gap-x-3">
                         <img src="../../../../../assets/icons/listings/minus-light.svg" v-if="data.data.bathrooms > 0"
@@ -41,6 +41,18 @@
                         <span class="text-lg text-webapp">{{ data.data.bathrooms }}</span>
                         <img src="../../../../../assets/icons/listings/add.svg" @click="add('bathroom')"
                             class="cursor-pointer" alt="">
+                    </div>
+                </div>
+                <div class="flex flex-row items-center justify-between w-full md:w-4/6 xl:w-3/5" v-if="$store.state.listingProcess.type === 'land'">
+                    <span class="text-xl text-webapp font-medium">Number of plots</span>
+                    <div class="flex flex-row items-center gap-x-3">
+                        <img src="../../../../../assets/icons/listings/minus-light.svg" v-if="data.data.plots > 0"
+                            @click="subtract('plots')" class="cursor-pointer" alt="">
+                        <img src="../../../../../assets/icons/listings/minus-light.svg" v-else class="cursor-pointer"
+                            alt="">
+                        <span class="text-lg text-webapp">{{ data.data.plots }}</span>
+                        <img src="../../../../../assets/icons/listings/add.svg" @click="add('plots')" class="cursor-pointer"
+                            alt="">
                     </div>
                 </div>
                 <div class="flex flex-col items-start w-full gap-y-1 md:w-4/6 xl:w-3/5">
@@ -56,10 +68,14 @@
                 </div>
                 <div class="flex flex-row p-6 w-full items-center justify-between static bottom-0">
                     <span class="text-xl font-medium text-webapp underline cursor-pointer"
-                        @click="$emit('goBack')">Back</span>
-                    <button @click="$emit('passData', data)"
+                        @click="$emit('goBack', { to: 'TitlePrice', from: 'Size'})">Back</span>
+                    <button @click="$emit('passData', data)" v-if="$store.state.listingProcess.type !== 'land'"
                         :disabled="data.data.bedrooms < 1 && data.data.bathrooms < 1 && data.data.size < 1"
                         :class="{ 'bg-slate-400 text-white': data.data.bedrooms < 1 || data.data.bathrooms < 1 || data.data.size < 1 }"
+                        class="h-10 w-24 rounded-lg bg-primary text-white text-sm text-medium">Next</button>
+                    <button @click="$emit('passData', data)" v-else
+                        :disabled="data.data.plots < 1 || data.data.size < 1"
+                        :class="{ 'bg-slate-400 text-white': data.data.plots < 1 || data.data.size < 1  }"
                         class="h-10 w-24 rounded-lg bg-primary text-white text-sm text-medium">Next</button>
                 </div>
             </div>
@@ -82,6 +98,7 @@ const data = reactive({
     data: {
         bathrooms: 0,
         bedrooms: 0,
+        plots: 0,
         size: '',
     }
 })
@@ -89,11 +106,15 @@ const data = reactive({
 const add = (type) => {
     if (type === 'bathroom') {
         data.data.bathrooms += 1
+    } else if (type === 'plots') {
+        data.data.plots+= 1
     } else data.data.bedrooms += 1
 }
 const subtract = (type) => {
     if (type === 'bathroom') {
         data.data.bathrooms -= 1
+    } else if (type === 'plots') {
+        data.data.plots -= 1
     } else data.data.bedrooms -= 1
 }
 
@@ -101,7 +122,10 @@ if (store.state.listingProcess.size > 0) {
     data.data.size = store.state.listingProcess.size
     data.data.bathrooms = store.state.listingProcess.bathrooms
     data.data.bedrooms = store.state.listingProcess.bedrooms
+    data.data.plots= store.state.listingProcess.plots
 }
+
+console.log(store.state.listingProcess)
 
 </script>
 

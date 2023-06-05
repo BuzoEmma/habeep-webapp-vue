@@ -99,7 +99,7 @@
                 </div>
                 <div class="flex flex-row p-6 w-full items-center justify-between">
                     <span class="text-xl font-medium text-webapp underline cursor-pointer"
-                        @click="$emit('goBack')">Back</span>
+                        @click="$emit('goBack', { to: 'HouseTypePage', from: 'Location'})">Back</span>
                     <button @click="$emit('passData', data)" :disabled="data.data.address.length < 1"
                         :class="{ 'bg-slate-400 text-white': data.data.address.length < 1 }"
                         class="h-10 w-24 rounded-lg bg-primary text-white text-sm text-medium">Next</button>

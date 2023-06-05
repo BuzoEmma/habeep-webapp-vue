@@ -19,7 +19,7 @@
 
                     <div class="w-full absolute flex flex-row top-5 items-center justify-between px-2">
                         <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
-                        <div class="flex flex-row gap-x-3">
+                        <div class="flex flex-row gap-x-3 items-center">
                             <ShareNetwork network="whatsapp" popup.width="500px" popup.height="500px"
                                 :url="'https://habeep.org/' + $route.fullPath"
                                 :title="'Purchase this awesome house at ₦' + formatNumber(product.price)"
@@ -48,8 +48,8 @@
                             <img :src="image.link" class=" h-full w-full rounded-lg feed-image-short"
                                 v-if="image.link && image.link.toString().includes('mp4') === false"
                                 @click="enterImageViewer()" :key="image" alt="">
-                            <video :src="image.link" @click="enterImageViewer()" loop class="w-full rounded-lg feed-image-short"
-                                v-else autoplay muted preload="metadata"></video>
+                            <video :src="image.link" @click="enterImageViewer()" loop
+                                class="w-full rounded-lg feed-image-short" v-else autoplay muted preload="metadata"></video>
                         </div>
                     </div>
                     <div class=" flex flex-row h-1/2 w-full items-center gap-2">
@@ -58,8 +58,8 @@
                             <img :src="image.link" class=" h-full w-full rounded-md feed-image-short"
                                 v-if="image.link && image.link.toString().includes('mp4') == false"
                                 @click="enterImageViewer()" alt="">
-                            <video :src="image.link" @click="enterImageViewer()" loop class="w-full rounded-md feed-image-short"
-                                v-else autoplay muted preload="metadata"></video>
+                            <video :src="image.link" @click="enterImageViewer()" loop
+                                class="w-full rounded-md feed-image-short" v-else autoplay muted preload="metadata"></video>
                         </div>
                     </div>
                 </div>
@@ -71,9 +71,10 @@
 
                 <div class="w-full absolute flex flex-row top-5 items-center justify-between md:px-8 px-2 z-10">
                     <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
-                    <div class="flex flex-row gap-x-3">
-                        <ShareNetwork :popup="{width: 400, height: 200}" network="twitter" :url="'https://habeep.org' + $route.fullPath"
-                            :title="product.title +  ' at ₦' + formatNumber(product.price)"
+                    <div class="flex flex-row gap-x-3 items-center">
+                        <ShareNetwork :popup="{ width: 400, height: 200 }" network="whatsapp"
+                            :url="'https://habeep.org' + $route.fullPath"
+                            :title="product.title + ' at ₦' + formatNumber(product.price)"
                             :description="product.description" :media="product.images[0].link">
                             <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
                         </ShareNetwork>
@@ -81,8 +82,8 @@
                         <div class="grid place-items-center relative" v-if="$store.state.isAuthenticated">
                             <img src="../../assets/icons/heart.svg" class="cursor-pointer" alt="">
                             <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
-                                v-if="$store.state.isAuthenticated" :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none"
-                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                v-if="$store.state.isAuthenticated" :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }"
+                                fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                 class="w-6 h-6 absolute top-2 text-white cursor-pointer" @click="saveAd(product._id)"
                                 :class="{ 'text-orange-400': $store.state.user.savedAds.includes(product._id) }">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -148,18 +149,23 @@
                                 class="text-sm  xl:text-lg font-medium product-price text-webapp">Yearly
                             </p>
                             <p v-else
-                                class="text-sub-webapp text-sm xl:text-lg product-duration flex flex-row justify-start ">Sale</p>
+                                class="text-sub-webapp text-sm xl:text-lg product-duration flex flex-row justify-start ">
+                                Sale</p>
                         </div>
                     </div>
 
                     <div class="flex flex-row py-2 border-y mt-8 border-y-gray-200 w-full divide-x">
-                        <div class="flex flex-col gap-y-2 items-center w-64 md:w-auto md:pr-20">
+                        <div class="flex flex-col gap-y-2 items-center w-64 md:w-auto md:pr-20" v-if="product.type !== 'land'">
                             <span class="text-2xl font-medium text-webapp">{{ product.bedrooms }}</span>
                             <span class="text-sm text-sub-webapp">Bedroom</span>
                         </div>
-                        <div class="flex flex-col gap-y-2 items-center w-64">
+                        <div class="flex flex-col gap-y-2 items-center w-64" v-if="product.type !== 'land'">
                             <span class="text-2xl font-medium text-webapp">{{ product.bedrooms }}</span>
                             <span class="text-sm text-sub-webapp">Bathroom</span>
+                        </div>
+                        <div class="flex flex-col gap-y-2 items-center w-64" v-if="product.type === 'land'">
+                            <span class="text-2xl font-medium text-webapp">{{ product.plots }}</span>
+                            <span class="text-sm text-sub-webapp">Plots</span>
                         </div>
                         <div class="flex flex-col gap-y-2 items-center w-64">
                             <span class="text-2xl font-medium text-webapp">{{ formatNumber(product.size) }}</span>
@@ -168,8 +174,8 @@
                     </div>
 
                     <p class="text-xl font-medium mt-8 text-webapp">Features</p>
-                    <div
-                        class="flex flex-row py-3 border-y mt-2 border-y-gray-200 w-full gap-x-3 overflow-x-auto flex-no-wrap">
+                    <div class="flex flex-row py-3 border-y mt-2 border-y-gray-200 w-full gap-x-3 overflow-x-auto flex-no-wrap"
+                        v-if="product.type !== 'land'">
                         <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
                             v-if="product.features.includes('electricity')">
                             <img src="../../assets/icons/light.svg" alt="">
@@ -191,6 +197,33 @@
                             <span class="text-sm text-sub-webapp">Pool</span>
                         </div>
                     </div>
+                    <div class="flex flex-row py-3 border-y mt-2 border-y-gray-200 w-full gap-x-3 overflow-x-auto flex-no-wrap"
+                        v-else>
+                        <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
+                            v-if="product.features.includes('access_road')">
+                            <img src="../../assets/icons/listings/road.svg" class="w-5 h-5" alt="">
+                            <span class="text-sm text-sub-webapp text-center">Access road</span>
+                        </div>
+                        <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
+                            v-if="product.features.includes('security')">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6 text-webapp">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                            </svg>
+                            <span class="text-sm text-sub-webapp">Security</span>
+                        </div>
+                        <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
+                            v-if="product.features.includes('surveyed')">
+                            <img src="../../assets/icons/listings/surveyed.svg" class="w-6 h-6" alt="">
+                    <span class="text-sm text-sub-webapp">Surveyed</span>
+                        </div>
+                        <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
+                            v-if="product.features.includes('c-of-o')">
+                            <img src="../../assets/icons/listings/certificate.svg" class="w-6 h-6" alt="">
+                    <span class="text-sm text-sub-webapp">C of O</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- agent info desktop -->
@@ -199,8 +232,10 @@
                     <h3 class="text-lg xl:text-xl font-medium  text-webapp">Description</h3>
 
                     <div class="text-sub-webapp text-lg text-left mt-1 xl:mt-3">
-                        <pre class="w-full whitespace-pre-wrap" v-if="!openFullDesc">{{ product.description.slice(0, 250) }}<span class="text-primary cursor-pointer" v-if="product.description.length > 250" @click="openFullDesc = true">... Read more</span></pre>
-                        <pre class="w-full whitespace-pre-wrap" v-else>{{ product.description }} <span class="text-primary cursor-pointer" v-if="product.description.length > 250" @click="openFullDesc = false">..Hide</span></pre>
+                        <pre class="w-full whitespace-pre-wrap"
+                            v-if="!openFullDesc">{{ product.description.slice(0, 250) }}<span class="text-primary cursor-pointer" v-if="product.description.length > 250" @click="openFullDesc = true">... Read more</span></pre>
+                        <pre class="w-full whitespace-pre-wrap"
+                            v-else>{{ product.description }} <span class="text-primary cursor-pointer" v-if="product.description.length > 250" @click="openFullDesc = false">..Hide</span></pre>
                     </div>
 
                     <hr class="my-3">
@@ -212,12 +247,12 @@
                                 <img :src="agentDetails.profileImg" class="w-12 h-12 xl:w-16 xl:h-16 rounded-full" alt="">
                             </div>
                             <div class="flex flex-col ">
-                                <span
-                                    class="text-sm xl:text-lg md:text-center text-left agent-name text-webapp font-medium" v-if="agentDetails.name">
+                                <span class="text-sm xl:text-lg md:text-center text-left agent-name text-webapp font-medium"
+                                    v-if="agentDetails.name">
                                     {{
                                         agentDetails.name.fname + ' ' + agentDetails.name.surname
                                     }}
-                                    </span>
+                                </span>
                                 <span
                                     class="text-sm agent-ads-count md:text-center xl:text-left text-left text-sub-webapp">{{
                                         agentDetails.ads.length
@@ -230,10 +265,11 @@
                     </div>
 
                     <div class="flex flex-col xl:flex-row items-center w-full gap-y-1 xl:justify-between mt-1 xl:mt-3">
-                        <button @click="$router.push('/agents/profile/' + product.agentId)"
+                        <button @click="$router.push('/' + product.agentId)"
                             class="agent-btn hidden xl:flex flex-row items-center justify-center text-sm font-medium text-primary w-1/2  bg-white">Visit
                             Profile</button>
-                        <button @click="$router.push('/login?redirect=' + $route.fullPath)" v-if="!$store.state.isAuthenticated"
+                        <button @click="$router.push('/login?redirect=' + $route.fullPath)"
+                            v-if="!$store.state.isAuthenticated"
                             class="agent-btn cursor-pointer flex flex-row items-center justify-center text-sm font-medium w-full  text-white ml-2 bg-primary xl:w-1/2">
                             <span>Chat with agent</span>
                         </button>
@@ -272,15 +308,17 @@
                                 src="../../assets/icons/call-btn.svg" alt=""></a>
                         <button
                             class="w-24 flex ml-2 flex-row border border-blue-700 h-8 rounded-sm items-center justify-center text-sm font-medium text-primary bg-white"
-                            @click="$router.push('/agents/profile/' + product.agentId)">Visit
+                            @click="$router.push('/' + product.agentId)">Visit
                             Profile</button>
                     </div>
 
                     <h3 class="text-lg font-medium text-webapp">Description</h3>
 
                     <div class="text-sub-webapp text-sm text-left mt-1 xl:mt-3">
-                        <pre class="w-full whitespace-pre-wrap" v-if="!openFullDesc">{{ product.description.slice(0, 250) }}<span class="text-primary" v-if="product.description.length > 250" @click="openFullDesc = true">... Read more</span></pre>
-                        <pre class="w-full whitespace-pre-wrap" v-else>{{ product.description }} <span class="text-primary" v-if="product.description.length > 250" @click="openFullDesc = false">..Hide</span></pre>
+                        <pre class="w-full whitespace-pre-wrap"
+                            v-if="!openFullDesc">{{ product.description.slice(0, 250) }}<span class="text-primary" v-if="product.description.length > 250" @click="openFullDesc = true">... Read more</span></pre>
+                        <pre class="w-full whitespace-pre-wrap"
+                            v-else>{{ product.description }} <span class="text-primary" v-if="product.description.length > 250" @click="openFullDesc = false">..Hide</span></pre>
                     </div>
 
 
@@ -299,7 +337,8 @@
                                 class="text-sub-webapp text-sm md:text-sm xl:text-lg product-duration flex flex-row justify-start ">
                                 Forever</p>
                         </div>
-                        <button @click="$router.push('/login?redirect=' + $route.fullPath)" v-if="!$store.state.isAuthenticated"
+                        <button @click="$router.push('/login?redirect=' + $route.fullPath)"
+                            v-if="!$store.state.isAuthenticated"
                             class="agent-btn cursor-pointer flex flex-row items-center justify-center text-sm font-medium w-3/5 mr-2 text-white ml-2 bg-primary xl:w-1/2">
                             <span>Chat with agent</span>
                         </button>
@@ -332,8 +371,8 @@
                 @click="changeCarouselImg(activeCarouselImg - 1)" class="cursor-pointer lg:block absolute left-3 z-10"
                 alt="">
             <div class="image-container h-fit flex flex-col items-center justify-center w-full">
-                <img :src="carouselImg.link"
-                    v-if="carouselImg && carouselImg.link.includes('mp4') == false" class="w-full h-full feed-image" alt="">
+                <img :src="carouselImg.link" v-if="carouselImg && carouselImg.link.includes('mp4') == false"
+                    class="w-full h-full feed-image" alt="">
                 <video :src="carouselImg.link" loop class="md:w-4/5 w-full rounded-lg feed-image"
                     @click="enterImageViewer()" v-else controls autoplay></video>
             </div>
@@ -380,7 +419,7 @@ const getProduct = async () => {
     processingProduct.value = true
 
     product.value = getProduct.data.product
-    if(product.value.status === 'CLOSED') {
+    if (product.value.status === 'CLOSED') {
         router.replace('/not-found')
     }
     images.value = getProduct.data.product.images

@@ -73,37 +73,13 @@ let data = reactive({
   bedrooms: 0,
   bathrooms: 0,
   size: 0,
+  plots: 0,
 })
 
-const back = () => {
-  currentComponent.value = previousComponent.value
-
-  if(currentComponent.value == ForPage) {
-    router.go(-1)
-  }
-  if(currentComponent.value == HouseTypePage) {
-    previousComponent.value = ForPage
-  }
-  if(currentComponent.value == Location) {
-    previousComponent.value = HouseTypePage
-  }
-  if(currentComponent.value == TitlePrice) {
-    previousComponent.value = Location
-  }
-  if(currentComponent.value == Size) {
-    previousComponent.value = TitlePrice
-  }
-  if(currentComponent.value == Features) {
-    previousComponent.value = Size
-  }
-  if(currentComponent.value == Desc) {
-    previousComponent.value = Features
-  }
-  if(currentComponent.value == Photos) {
-    previousComponent.value = Desc
-  }
+const back = (e) => {
+  currentComponent.value = eval(e.to)
+  previousComponent.value = eval(e.from)
 }
-
 
 // save ad data to db
 async function onDataSuccess(e) {

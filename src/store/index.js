@@ -25,6 +25,7 @@ export default createStore({
             bedrooms: 0,
             description: '',
             bathrooms: 0,
+            plots: 0,
             size: 0,
             images: new FormData()
         }

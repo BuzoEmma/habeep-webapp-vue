@@ -52,17 +52,21 @@
                         <p class="text-xl font-webapp font-medium flex flex-row gap-x-1"
                             v-if="$store.state.user.role === 'AGENT' && agentDetails.ads">
                             {{ agentDetails.ads.length }}
-                            <span class="text-sub-webapp text-lg">Ads
+                            <span class="text-sub-webapp text-sm">Ads
                             </span>
                         </p>
-                        <p class="text-xl font-webapp font-medium flex flex-row gap-x-1">
+                        <p class="text-lg font-webapp font-medium items-center flex flex-row gap-x-1">
                             {{ $store.state.user.savedAds.length }}
-                            <span class="text-sub-webapp text-lg">Saved Ads
+                            <span class="text-sub-webapp text-sm">Saved Ads
                             </span>
                         </p>
-                        <p class="text-xl font-webapp font-medium flex flex-row gap-x-1 cursor-pointer">{{
+                        <p class="text-lg font-webapp font-medium flex items-center flex-row gap-x-1 cursor-pointer">{{
                             $store.state.user.following.length
-                        }}<span class="text-sub-webapp text-lg">Following </span>
+                        }}<span class="text-sub-webapp text-sm">Following </span>
+                        </p>
+                        <p class="text-lg font-webapp font-medium flex items-center flex-row gap-x-1 cursor-pointer">{{
+                            $store.state.user.followers.length
+                        }}<span class="text-sub-webapp text-sm">Followers </span>
                         </p>
                     </div>
 

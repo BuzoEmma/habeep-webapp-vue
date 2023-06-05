@@ -124,7 +124,7 @@
                 </div>
                 <div class="flex flex-row p-6 w-full items-center justify-between">
                     <span class="text-xl font-medium text-webapp underline cursor-pointer"
-                        @click="$emit('goBack')">Back</span>
+                        @click="$emit('goBack', { to: 'Desc', from: 'Photos'})">Back</span>
                     <button @click="sendData()" :class="{ 'bg-slate-400 text-white': allCompleted === false }"
                         class="h-10 w-24 rounded-lg bg-primary text-white text-sm text-medium"
                         :disabled="allCompleted === false">

@@ -15,7 +15,8 @@
             <div class="flex flex-row items-center gap-x-4">
                 <span class="text-sub-webapp text-lg font-normal">Download our app at</span>
                 <img src="../assets/icons/apple.svg" alt="">
-                <a href="https://files.fm/down.php?i=8c927hykf" class="no-underline cursor-pointer" download="habeep-app"><img src="../assets/icons/playstore.svg" alt=""></a>
+                <a href="https://play.google.com/store/apps/details?id=org.habeep" class="no-underline cursor-pointer"><img
+                        src="../assets/icons/playstore.svg" alt=""></a>
             </div>
 
             <div class="flex flex-row gap-x-10 items-start md:items-center pl-6">
@@ -66,7 +67,7 @@
                 :class="{ 'text-blue-700': $route.name.includes === 'Agent-ads' || $route.name === 'Agent-ads-create' }"
                 v-if="$store.state.isAuthenticated && $store.state.user.role === 'AGENT'">Post an Ad</p>
 
-                <p @click="$router.push('/account/IBO/category')" class="text-sm text-webapp mt-1 cursor-pointer"
+            <p @click="$router.push('/account/IBO/category')" class="text-sm text-webapp mt-1 cursor-pointer"
                 :class="{ 'text-blue-700': $route.name.includes('IBO') === true }"
                 v-if="$store.state.isAuthenticated && $store.state.user.role === 'USER'">Become an Agent/Tenant</p>
             <p @click="$router.push('/account/IBO/category/agent')" class="text-sm text-webapp mt-1 cursor-pointer"

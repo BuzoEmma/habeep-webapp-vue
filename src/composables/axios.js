@@ -9,7 +9,7 @@ function getToken() {
 }
 let token = getToken()
 
-const axiosInstance = axios.create({
+const axiosInstance = axios.create({ 
   baseURL: URI,
 });
 

@@ -16,7 +16,7 @@
         <div :class="{ 'relative': screenWidth < 768 }"
             class="form-container flex flex-col items-center bg-white gap-y-3 w-full xl:w-2/3 h-full pb-6 md:py-10 overflow-y-auto overflow-x-hidden">
 
-            <div class="flex flex-col items-center w-full md:w-2/3 px-4">
+            <form class="flex flex-col items-center w-full md:w-2/3 px-4">
                 <!-- logo -->
                 <div class="logo md:flex hidden flex-row items-center justify-end w-full gap-x-2 cursor-pointer"
                     @click="$router.push('/')">
@@ -34,27 +34,35 @@
 
                 <!-- input fields -->
                 <div class="flex flex-col items-start w-full gap-y-1 mt-10">
+                    <label for="username" class="text-sm text-webapp">Username(Handle)</label>
+                    <input type="text" name="username" v-model="data.username" placeholder="@"
+                        class="w-full h-14 rounded-lg"
+                        :class="{ 'bg-bg': onModal, 'invalidField': data.username.length < 6 && data.username.length > 0 }">
+                </div>
+                <div class="flex flex-col items-start w-full gap-y-1 mt-10">
                     <label for="" class="text-sm text-webapp">First name</label>
-                    <input type="text" v-model="data.fname" placeholder="Enter your first name"
-                        class="w-full h-14 rounded-lg">
+                    <input type="text" name="firstname" v-model="data.fname" placeholder="Enter your first name"
+                        class="w-full h-14 rounded-lg"
+                        :class="{ 'bg-bg': onModal, 'invalidField': data.fname.length < 2 && data.fname.length > 0 }">
                 </div>
 
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8">
                     <label for="" class="text-sm text-webapp">Surname</label>
-                    <input type="text" v-model="data.surname" placeholder="Enter your Surname"
-                        class="w-full h-14 rounded-lg">
+                    <input type="text" name="surname" v-model="data.surname" placeholder="Enter your Surname"
+                        class="w-full h-14 rounded-lg"
+                        :class="{ 'bg-bg': onModal, 'invalidField': data.surname.length < 2 && data.surname.length > 0 }">
                 </div>
 
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8">
-                    <label for="" class="text-sm text-webapp">Email address</label>
-                    <input type="email" v-model="data.email" @input="validateFormField('email', data.email)"
+                    <label for="email" class="text-sm text-webapp">Email address</label>
+                    <input type="email" name="email" v-model="data.email" @input="validateFormField('email', data.email)"
                         placeholder="Enter Email address" :class="{ 'invalidField': errorMsg.field === 'email' }"
                         class="w-full h-14 rounded-lg">
                 </div>
 
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8 relative">
                     <label for="" class="text-sm text-webapp">Phone number</label>
-                    <input type="number" v-model="data.phoneNumber" maxlength="12"
+                    <input type="number" name="tel" v-model="data.phoneNumber" maxlength="12"
                         @input="validateFormField('phone', data.phoneNumber.toString())" placeholder="Phone number"
                         class="w-full h-14 rounded-lg bg-transaparent"
                         :class="{ 'bg-bg': onModal, 'invalidField': errorMsg.field === 'phone' }"
@@ -83,16 +91,16 @@
 
                 <div class="flex flex-col sm:flex-row items-center relative w-full gap-x-3 justify-between">
                     <div class="flex flex-col items-start w-full sm:w-6/12 gap-y-1 mt-8">
-                        <label for="" class="text-sm text-webapp">Create a secure pin</label>
-                        <input type="number" maxlength="4" v-model="data.pin"
+                        <label for="password" class="text-sm text-webapp">Create a secure pin</label>
+                        <input type="number" name="pin" maxlength="4" v-model="data.pin"
                             @input="validateFormField('pin', data.pin.toString())" placeholder="Enter a 4 digit pin"
                             class="w-full h-14 rounded-lg bg-transaparent"
                             :class="{ 'bg-bg': onModal, 'invalidField': errorMsg.field === 'pin' }">
                     </div>
                     <div class="flex flex-col items-start w-full sm:w-6/12 gap-y-1 mt-8">
-                        <label for="" class="text-sm text-webapp">Refferal code(optional)</label>
-                        <input type="text" v-model="data.referralCode" placeholder="Enter a refferal code"
-                            class="w-full  h-14 rounded-lg bg-transparent">
+                        <label for="referralcode" class="text-sm text-webapp">Refferal code(optional)</label>
+                        <input type="text" name="referralcode" v-model="data.referralCode"
+                            placeholder="Enter a refferal code" class="w-full  h-14 rounded-lg bg-transparent">
                     </div>
                 </div>
 
@@ -103,12 +111,15 @@
                 </p>
 
                 <!-- submit btn -->
-                <button class="bg-primary w-full rounded-lg grid place-items-center h-14 text-white" @click="createUser">
-                    <span v-if="!processing">Next</span>
+                <button @click.prevent="createUser"
+                    class="w-full rounded-lg grid place-items-center h-14 text-white"
+                    :disabled="errorMsg.field === 'email'"
+                    :class="{ 'bg-blue-600': data.pin.toString().length === 4 && data.username.length > 5, 'bg-gray-300': data.pin.toString().length < 4 || data.username.length < 5}">
+                    <span v-if="!processing">Continue</span>
                     <Preloader v-else />
                 </button>
 
-            </div>
+            </form>
 
             <!-- components -->
             <Toast :msg="errorMsg.msg" type="danger" v-if="onError" />
@@ -222,6 +233,7 @@ const url = '/auth/register';
 
 
 const data = reactive({
+    username: '',
     fname: '',
     surname: '',
     email: '',
@@ -229,7 +241,7 @@ const data = reactive({
     nationality: '',
     pin: '',
     phoneNumber: '',
-    referralCode: ''
+    referralCode: '',
 })
 
 
@@ -322,7 +334,7 @@ const addHouseSuggestions = async (e) => {
         types: e.types
     })
 
-    const save = await axios.post('/profile/add-suggestedhousetype', fields)
+    await axios.post('/profile/add-suggestedhousetype', fields)
 }
 
 const nextPage = () => {
@@ -378,5 +390,4 @@ input:focus {
 .bg-bg {
     background: #161622;
     opacity: 0.5;
-}
-</style>
+}</style>

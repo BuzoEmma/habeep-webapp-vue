@@ -6,7 +6,7 @@
         </div> -->
 
     <div class="w-full min-h-screen flex-col h-screen flex items-center justify-center">
-        <img src="../../../assets/images/rhombus-preloader.gif" v-if="!agentDetails.id" alt="">
+        <img src="../../../assets/images/rhombus-preloader.gif" v-if="!agentDetails.userId" alt="">
         <div class="w-screen min-w-full flex flex-col items-center bg-white h-full min-h-screen overflow-y-auto" v-else
             :class="{ 'max-h-screen overflow-y-hidden': onModal }" resize="changeWidth">
             <MainNavbar v-if="(screenWidth > 767)" />
@@ -19,7 +19,7 @@
                     </svg>
                     <span class="text-xl text-webapp font-medium capitalize">{{ agentDetails.name.fname }} Profile</span>
                 </div>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none"  viewBox="0 0 24 24" stroke-width="1.5" stroke="#0A1045"
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0A1045"
                     class="w-6 h-6 collapse">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
@@ -41,7 +41,10 @@
                                 agentDetails.name.fname + ' ' + agentDetails.name.surname
                             }}</span>
                             <p class="text-lg agent-ads-count text-sub-webapp flex flex-row gap-x-2 items-center"><img
-                                    src="../../../assets/images/map-pin.png" alt="">{{ agentDetails.city }}</p>
+                                    src="../../../assets/images/map-pin.png" alt="">
+                                    <span v-if="agentDetails.city">{{ agentDetails.city }}</span>
+                                    <span class="capaitalize" v-else>{{ agentDetails.nationality }}</span>
+                                </p>
                         </div>
                     </div>
 
@@ -51,7 +54,8 @@
                         <p class="text-xl font-webapp font-medium flex flex-row gap-x-1">{{
                             agentDetails.followers.length
                         }}<span class="text-sub-webapp text-lg">Followers</span></p>
-                        <p class="text-xl font-webapp font-medium flex flex-row gap-x-1 cursor-pointer" v-if="$store.state.isAuthenticated" @click="openModal">
+                        <p class="text-xl font-webapp font-medium flex flex-row gap-x-1 cursor-pointer"
+                            v-if="$store.state.isAuthenticated" @click="openModal">
                             {{ agentDetails.following.length }}<span class="text-sub-webapp text-lg">Following </span></p>
                         <p class="text-xl font-webapp font-medium flex flex-row gap-x-1 cursor-pointer" v-else>
                             {{ agentDetails.following.length }}<span class="text-sub-webapp text-lg">Following </span></p>
@@ -59,28 +63,35 @@
 
                     <h3 class="text-lg xl:text-xl font-medium  text-webapp mt-3">Bio</h3>
 
-                    <p class="text-sub-webapp text-sm text-left w-full sm:w-5/6 lg:w-full mt-1 xl:mt-2">{{
-                        agentDetails.bio
-                    }}
+                    <p class="text-sub-webapp text-sm text-left w-full sm:w-5/6 lg:w-full mt-1 xl:mt-2"
+                        v-if="agentDetails.bio">{{
+                            agentDetails.bio
+                        }}
+                    </p>
+                    <p class="text-sub-webapp text-sm text-left w-full sm:w-5/6 lg:w-full mt-1 xl:mt-2" v-else>
+                        I'm <span v-if="agentDetails.role === 'AGENT'">an</span><span v-else>a</span> <span
+                            class="font-black text-primary uppercase">{{ agentDetails.role }}</span>
                     </p>
 
 
                     <div class="flex flex-row items-center w-full gap-y-1 xl:justify-between mt-4 xl:mt-3"
-                        v-if="$store.state.user._id !== agentDetails.userId">
-                        <button @click="manageAgentFollow" v-if="agentDetails.followers.includes($store.state.user._id) === false"
+                        v-if="$store.state.isAuthenticated && $store.state.user._id !== agentDetails.userId">
+                        <button @click="manageAgentFollow"
+                            v-if="agentDetails.followers.includes($store.state.user._id) === false"
                             class="agent-btn flex-row items-center justify-center text-sm font-medium text-white w-1/2 bg-primary">Follow</button>
                         <button @click="manageAgentFollow" v-else
                             class="agent-btn flex-row items-center justify-center text-sm font-medium text-primary w-1/2">Unfollow</button>
 
-                            
+
                         <button @click="createChatRoom()"
                             class="agent-btn flex flex-row items-center justify-center text-sm font-medium  text-primary ml-2 bg-white w-1/2">
                             <Preloader v-if="creatingRoom" />
                             <span v-else>Message</span>
                         </button>
                     </div>
-                    <div class="flex flex-row items-center w-full mt-4 xl:mt-3" v-else>
-                        <button @click="$router.push('/user/profile/' + $route.params.id)"
+                    <div class="flex flex-row items-center w-full mt-4 xl:mt-3"
+                        v-if="$store.state.isAuthenticated && $store.state.user._id === agentDetails.userId">
+                        <button @click="$router.push('/user/profile/' + agentDetails.userId)"
                             class="agent-btn flex flex-row items-center justify-center text-sm font-medium  text-primary ml-2 bg-white w-full">View
                             Profile</button>
                     </div>
@@ -95,16 +106,20 @@
                             @click="changeTab(1)" :class="{ 'text-blue-600 border-b-blue-700 border-b-2': openTab === 1 }">
                             Ads
                         </div>
-                        <div class="cursor-pointer hidden flex-row items-center justify-center w-24 pb-1"
-                            v-if="$store.state.user._id && agentDetails.userId === $store.state.user._id"
+                        <div class="cursor-pointer flex flex-row items-center justify-center w-24 pb-1"
                             @click="changeTab(2)" :class="{ 'text-blue-600 border-b-blue-700 border-b-2': openTab === 2 }">
                             Saved ads
                         </div>
                     </div>
 
                     <div class="ads-tab w-full h-full mt-6" v-if="(openTab === 1) && agentDetails.ads" id="ads-tab">
-                        <div class="flex flex-row h-fit flex-wrap">
+                        <div class="flex flex-col h-full w-full items-center gap-y-3 justify-center"
+                            v-if="agentDetails.ads.length === 0">
+                            <img src="../../../assets/icons/no-ad.svg" alt="">
+                            <span class="text-gray-300 text-lg">No ads yet</span>
+                        </div>
 
+                        <div class="flex flex-row h-fit flex-wrap" v-else>
                             <!-- listing template -->
                             <div class="md:basis-1/2 xl:basis-1/3 basis-full md:px-3 md:py-3 py-5 px-0 "
                                 v-for="ad in agentDetails.ads" :key="ad">
@@ -147,7 +162,67 @@
                                     </div>
 
                                     <div class="rounded border border-white px-2 py-1 absolute top-5 right-5">
-                                        <span class="text-white text-sm text-center">{{ Math.round(ad.distance) }} KM Away</span>
+                                        <span class="text-white text-sm text-center">{{ Math.round(ad.distance) }} KM
+                                            Away</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="saved-ads-tab w-full h-full mt-6" v-if="(openTab === 2) && agentDetails.savedAds"
+                        id="ads-tab">
+                        <div class="flex flex-col h-full w-full items-center gap-y-3 justify-center"
+                            v-if="agentDetails.savedAds.length === 0">
+                            <img src="../../../assets/icons/no-ad.svg" alt="">
+                            <span class="text-gray-300 text-lg">No saved ads yet</span>
+                        </div>
+                        <div class="flex flex-row h-fit flex-wrap">
+
+                            <!-- listing template -->
+                            <div class="md:basis-1/2 xl:basis-1/3 basis-full md:px-3 md:py-3 py-5 px-0 "
+                                v-for="ad in agentDetails.savedAds" :key="ad">
+                                <div
+                                    class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 feed">
+                                    <img @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
+                                        class="w-full h-full rounded-t-md feed-image"
+                                        v-if="ad.images[0].link.includes('mp4') == false" alt="">
+                                    <video @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
+                                        class="w-full rounded-t-md feed-image" v-else autoplay muted></video>
+                                    <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
+                                        @click="$router.push('/listings/products/' + ad._id)">
+                                        {{ ad.title }}
+                                        <span class="text-sm ">at</span>
+                                        {{ (ad.location.city || ad.location.address.substr(0, 20)) }}
+                                    </p>
+
+                                    <div class="location flex flex-row items-center gap-x-2 px-2">
+                                        <img src="../../../assets/images/map-pin.png" alt="">
+                                        <span class="text-sm text-webapp capitalize">{{ ad.location.city ||
+                                            ad.location.address.substr(0, 20) }}</span>
+                                    </div>
+
+                                    <div class="flex flex-row items-center w-full justify-between px-3">
+                                        <span class="text-sm text-webapp font-medium">
+                                            ₦{{
+                                                formatNumber(ad.price)
+                                            }}
+                                        </span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
+                                            v-if="$store.state.isAuthenticated"
+                                            :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6 cursor-pointer"
+                                            @click="saveAd(ad._id)"
+                                            :class="{ 'text-orange-400': $store.state.user.savedAds.includes(ad._id) }">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                                        </svg>
+
+                                    </div>
+
+                                    <div class="rounded border border-white px-2 py-1 absolute top-5 right-5">
+                                        <span class="text-white text-sm text-center">{{ Math.round(ad.distance) }} KM
+                                            Away</span>
                                     </div>
                                 </div>
                             </div>
@@ -187,7 +262,7 @@ const ads = ref([])
 
 
 async function getAgent() {
-    const getAgent = await axios.get(url2 + route.params.id)
+    const getAgent = await axios.get(url2 + route.params.username)
     agentDetails.value = getAgent.data.agent
 
     agentDetails.value.ads.forEach(async product => {
@@ -239,7 +314,7 @@ async function manageAgentFollow() {
             userId: agentDetails.value.userId,
             activity: 'follow'
         }
-        
+
         agentDetails.value.followers.push(store.state.user._id)
         await axios.post('/profile/follows/update', data)
     } else {

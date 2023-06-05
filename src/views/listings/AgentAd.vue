@@ -19,7 +19,7 @@
 
                     <div class="w-full absolute flex flex-row top-5 items-center justify-between px-2">
                         <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
-                        <div class="flex flex-row gap-x-3">
+                        <div class="flex flex-row gap-x-3 items-center">
                             <ShareNetwork network="whatsapp" popup.width="500px" popup.height="500px"
                                 :url="'https://habeep.org/' + $route.fullPath"
                                 :title="'Purchase this awesome house at ₦' + formatNumber(product.price)"
@@ -71,7 +71,7 @@
 
                 <div class="w-full absolute flex flex-row top-5 items-center justify-between md:px-8 px-2 z-10">
                     <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
-                    <div class="flex flex-row gap-x-3">
+                    <div class="flex flex-row gap-x-3 items-center">
                         <ShareNetwork :popup="{ width: 400, height: 200 }" network="twitter"
                             :url="'https://habeep.org' + $route.fullPath"
                             :title="product.title + ' at ₦' + formatNumber(product.price)"
@@ -154,7 +154,7 @@
                             <p v-else
                                 class="text-sub-webapp text-sm xl:text-lg product-duration flex flex-row justify-end ">Sale</p>
 
-                            <select name="for" id="">
+                            <select name="for" id="" v-if="onEditingMode">
                                 <option value="rent" :selected="product.for === 'rent'">Rent</option>
                                 <option value="sale" :selected="product.for === 'sale'">Sale</option>
                             </select>
@@ -162,13 +162,17 @@
                     </div>
 
                     <div class="flex flex-row py-2 border-y mt-8 border-y-gray-200 w-full divide-x">
-                        <div class="flex flex-col gap-y-2 items-center w-64 md:w-auto md:pr-20">
+                        <div class="flex flex-col gap-y-2 items-center w-64 md:w-auto md:pr-20" v-if="product.type !== 'land'">
                             <span class="text-2xl font-medium text-webapp">{{ product.bedrooms }}</span>
                             <span class="text-sm text-sub-webapp">Bedroom</span>
                         </div>
-                        <div class="flex flex-col gap-y-2 items-center w-64">
+                        <div class="flex flex-col gap-y-2 items-center w-64" v-if="product.type !== 'land'">
                             <span class="text-2xl font-medium text-webapp">{{ product.bedrooms }}</span>
                             <span class="text-sm text-sub-webapp">Bathroom</span>
+                        </div>
+                        <div class="flex flex-col gap-y-2 items-center w-64" v-if="product.type === 'land'">
+                            <span class="text-2xl font-medium text-webapp">{{ product.plots }}</span>
+                            <span class="text-sm text-sub-webapp">Plots</span>
                         </div>
                         <div class="flex flex-col gap-y-2 items-center w-64">
                             <span class="text-2xl font-medium text-webapp">{{ formatNumber(product.size) }}</span>
@@ -177,8 +181,8 @@
                     </div>
 
                     <p class="text-xl font-medium mt-8 text-webapp">Features</p>
-                    <div
-                        class="flex flex-row py-3 border-y mt-2 border-y-gray-200 w-full gap-x-3 overflow-x-auto flex-no-wrap">
+                    <div class="flex flex-row py-3 border-y mt-2 border-y-gray-200 w-full gap-x-3 overflow-x-auto flex-no-wrap"
+                        v-if="product.type !== 'land'">
                         <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
                             v-if="product.features.includes('electricity')">
                             <img src="../../assets/icons/light.svg" alt="">
@@ -198,6 +202,33 @@
                             v-if="product.features.includes('pool')">
                             <img src="../../assets/icons/pool.svg" alt="">
                             <span class="text-sm text-sub-webapp">Pool</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-row py-3 border-y mt-2 border-y-gray-200 w-full gap-x-3 overflow-x-auto flex-no-wrap"
+                        v-else>
+                        <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
+                            v-if="product.features.includes('access_road')">
+                            <img src="../../assets/icons/listings/road.svg" class="w-5 h-5" alt="">
+                            <span class="text-sm text-sub-webapp text-center">Access road</span>
+                        </div>
+                        <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
+                            v-if="product.features.includes('security')">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6 text-webapp">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                            </svg>
+                            <span class="text-sm text-sub-webapp">Security</span>
+                        </div>
+                        <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
+                            v-if="product.features.includes('surveyed')">
+                            <img src="../../assets/icons/listings/surveyed.svg" class="w-6 h-6" alt="">
+                    <span class="text-sm text-sub-webapp">Surveyed</span>
+                        </div>
+                        <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
+                            v-if="product.features.includes('c-of-o')">
+                            <img src="../../assets/icons/listings/certificate.svg" class="w-6 h-6" alt="">
+                    <span class="text-sm text-sub-webapp">C of O</span>
                         </div>
                     </div>
                 </div>

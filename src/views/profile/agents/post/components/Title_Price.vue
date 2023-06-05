@@ -29,8 +29,8 @@
                     <label for="" class="text-lg font-medium text-webapp">Price in Naira</label>
                     <div class="flex flex-row gap-x-2 items-center w-full border border-gray-200 rounded-lg h-16 p-3">
                         <img src="../../../../../assets/icons/listings/naira.svg" alt="">
-                        <input type="number" v-model="data.data.price" placeholder="Type a price for this listing"
-                            class="w-full h-full rounded-lg price">
+                        <input inputmode="numeric" @keyup="formatPrice" v-model="data.data.price" type="text" data-type="number"
+                            placeholder="Type a price for this listing" class="w-full h-full rounded-lg price">
                     </div>
                 </div>
             </div>
@@ -41,8 +41,8 @@
                 </div>
                 <div class="flex flex-row p-6 w-full items-center justify-between">
                     <span class="text-xl font-medium text-webapp underline cursor-pointer"
-                        @click="$emit('goBack')">Back</span>
-                    <button @click="$emit('passData', data)"
+                        @click="$emit('goBack', { to: 'Location', from: 'TitlePrice'})">Back</span>
+                    <button @click="passData"
                         :disabled="data.data.price.length < 1 && data.data.title.length < 1"
                         :class="{ 'bg-slate-400 text-white': data.data.price.length < 1 || data.data.title.length < 1 }"
                         class="h-10 w-24 rounded-lg bg-primary text-white text-sm text-medium">Next</button>
@@ -59,7 +59,26 @@ import MainNavbarVue from "../../../../../components/MainNavbar.vue";
 import axiosDefault from 'axios'
 
 const store = useStore()
+const emit = defineEmits(['passData'])
 
+function passData() {
+    const num = parseFloat(data.data.price.replaceAll(',', ''));
+
+    data.data.price = num
+
+    emit('passData', data)
+}
+
+function formatPrice(e) {
+    if (e.which >= 37 && e.which <= 40) {
+        e.preventDefault();
+    }
+
+    var tempNumber = data.data.price.replace(/,/gi, "");
+    var commaSeparatedNumber = tempNumber.split(/(?=(?:\d{3})+$)/).join(",");
+
+    data.data.price = commaSeparatedNumber
+}
 
 const data = reactive({
     type: 'title_price',

@@ -155,7 +155,8 @@
             <div class="flex flex-row flex-auto h-full md:mt-10 w-full flex-wrap"
                 :class="{ 'justify-center items-center': products.length < 1 }">
 
-                <div class="flex flex-col items-center gap-y-3 justify-center" v-if="products.length < 1 && !searchingData">
+                <div class="flex flex-col items-center gap-y-3 justify-center"
+                    v-if="products.length === 0 && !searchingData">
                     <img src="../../assets/icons/no-ad.svg" alt="">
                     <span class="text-gray-300 text-lg">No match for search yet</span>
                 </div>
@@ -179,7 +180,8 @@
 
                         </p>
 
-                        <div class="location flex flex-row items-center gap-x-2 px-2" @click="$router.push('/listings/products/' + product._id)">
+                        <div class="location flex flex-row items-center gap-x-2 px-2"
+                            @click="$router.push('/listings/products/' + product._id)">
                             <img src="../../assets/images/map-pin.png" alt="">
                             <span class="text-sm text-webapp">{{ product.location.city || product.location.address.substr(0,
                                 20) }}</span>
@@ -187,8 +189,8 @@
 
                         <div class="flex flex-row items-center w-full justify-between px-2">
                             <p class="text-sm text-webapp font-medium">₦{{ formatNumber(product.price) }} /
-                                <span v-if="product.for === 'rent'">Yearly</span>
-                                <span v-if="product.for === 'sale'">Forever</span>
+                                <span v-if="product.for === 'rent'">Rent</span>
+                                <span v-if="product.for === 'sale'">Sale</span>
                             </p>
                             <svg xmlns="http://www.w3.org/2000/svg" v-if="$store.state.isAuthenticated" v-motion
                                 :initial="{ opacity: 0.8 }" :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none"
@@ -298,22 +300,28 @@ function changeStateModal(state, type) {
 }
 
 async function getSearch(location, query) {
-    searchingData.value = true
-    products.value = []
-    let data = reactive({
-        location: location,
-        string: query
-    })
+    try {
+        searchingData.value = true
+        products.value = []
+        let data = reactive({
+            location: location,
+            string: query
+        })
 
-    const getProducts = await axios.post(url, data)
-    products.value = []
-    getProducts.data.products.forEach(async product => {
-        const distance = await calculateDistance(product.location.city || product.location.address + ', Nigeria')
-        product.distance = distance
-        products.value.push(product)
-    })
+        const getProducts = await axios.post(url, data)
+        products.value = []
+        products.value = getProducts.data.products
+        products.value.forEach(async product => {
+            const distance = await calculateDistance(product.location.city || product.location.address + ', Nigeria')
+            if (distance) {
+                product.distance = distance
+            }
+        })
 
-    searchingData.value = false
+        searchingData.value = false
+    } catch (error) {
+        console.log('error getting location')
+    }
 
 }
 

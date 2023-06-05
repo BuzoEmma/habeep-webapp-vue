@@ -22,15 +22,6 @@
 
                 <!-- input fields -->
 
-
-                <div class="flex flex-col items-start w-full gap-y-1 mt-8">
-                    <label for="" class="text-sm text-webapp">Agent category</label>
-                    <select name="" v-model="data.category" class="w-full h-14 rounded-lg px-2" id="">
-                        <option value="Individual" selected>Individual agent</option>
-                        <option value="Company">Company agent</option>
-                    </select>
-                </div>
-
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8">
                     <label for="" class="text-sm text-webapp">Street address</label>
                     <input type="text" name="" v-model="data.address" class="w-full h-14 rounded-lg"
