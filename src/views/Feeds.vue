@@ -1,5 +1,5 @@
 <template>
-    <div class="absolute w-screen h-screen  flex flex-row items-center justify-center xl:hidden" v-if="onDropdown"
+    <div class="absolute w-screen h-screen  flex flex-row items-center justify-center lg:hidden" v-if="onDropdown"
         style="background: rgb(22, 22, 34, 0.5)">
 
         <div v-if="(onSortDropdown && onDropdown)"
@@ -69,7 +69,7 @@
             </div>
 
             <div v-if="onState" class="gap-y-2">
-                <div class="py-2" v-for="(state, index) in states.reverse()" :key="(state, index)"
+                <div class="py-2" v-for="(state, index) in states" :key="(state, index)"
                     @click="changeStateModal(state, 'state')">
                     <p class="text-sm mb-1 text-webapp cursor-pointer" v-if="state.state.name !== 'Cross'">{{
                         state.state.name }}</p>
@@ -129,19 +129,19 @@
                         :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': activeType === 'flat' }">Flat</span>
                     <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg" @click="changeHouseType('office')"
                         :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': activeType === 'office' }">Office</span>
-                    <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg w-full md:hidden block"
+                    <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg whitespace-nowrap w-full"
                         @click="changeHouseType('room_parlor')"
-                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary md:hidden block': activeType === 'room_parlor' }">Room&Parlour</span>
-                    <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg w-full md:block hidden"
-                        @click="changeHouseType('room_parlor')"
-                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary ': activeType === 'room_parlor' }">Room
+                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': activeType === 'room_parlor' }">Room
                         & Parlour</span>
+                    <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg whitespace-nowrap w-full"
+                        @click="changeHouseType('land')"
+                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': activeType === 'land' }">Land</span>
                 </div>
 
                 <!-- filters -->
                 <div class="flex flex-row items-center h-fit gap-x-4 relative transition-all">
                     <div @click="toggleDropdown('sort')"
-                        class="border border-gray-300 w-56 py-1 justify-center hidden xl:flex flex-row items-center gap-x-2 rounded-full cursor-pointer ">
+                        class="border border-gray-300 w-56 py-1 justify-center hidden lg:flex flex-row items-center gap-x-2 rounded-full cursor-pointer ">
                         <span class="md:text-lg text-webapp text-sm flex flex-row gap-x-1"> Sort:
                             <span class="hidden md:flex flex-row items-center w-full flex-nowrap">{{ sortValue }}</span>
                         </span>
@@ -162,7 +162,7 @@
 
                     <!-- sort dropdown -->
                     <div v-if="(onSortDropdown && onDropdown)"
-                        class="xl:flex hidden flex-col drop-shadow-md shadow-xl bg-white rounded-xl gap-y-3 border p-4 border-gray-300 absolute top-16 z-10"
+                        class="lg:flex hidden flex-col drop-shadow-md shadow-xl bg-white rounded-xl gap-y-3 border p-4 border-gray-300 absolute top-16 z-10"
                         style="width: 220px">
                         <div class="flex flex-row items-center justify-between">
                             <span class="text-sm font-medium">Sort by</span>
@@ -348,7 +348,7 @@ const currentState = ref('Cross River')
 const currentCity = ref('Calabar')
 
 currentState.value = store.state.feedLocation.state
-currentCity.value = store.state.feedLocation.city
+currentCity.value = store.state.feedLocation.city || 'Calabar'
 
 // fetch feeds
 
@@ -410,7 +410,6 @@ async function getFeeds() {
 
         feeds.value.forEach(async feed => {
             const distance = await calculateDistance(feed.location.address + ', ' +  feed.location.city || 'Calabar')
-
             feed.distance = distance
         })
 
