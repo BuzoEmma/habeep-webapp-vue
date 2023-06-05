@@ -10,11 +10,17 @@ const currPos = computed(() => ({
 }))
 
 async function getOtherPostion(address) {
-    const getCoords = await axiosDefault.get(`https://api.geoapify.com/v1/geocode/search?text=${address.toLowerCase()}&apiKey=cc38699e9c01400eaacbaef549b67acc`)
+    try {
+        const getCoords = await axiosDefault.get(`https://api.geoapify.com/v1/geocode/search?text=${address.toLowerCase()}&apiKey=cc38699e9c01400eaacbaef549b67acc`)
 
-    return {
-        lat: getCoords.data.features[0].geometry.coordinates[0],
-        lng: getCoords.data.features[0].geometry.coordinates[1]
+        return {
+            lat: getCoords.data.features[0].geometry.coordinates[0],
+            lng: getCoords.data.features[0].geometry.coordinates[1]
+        }
+    } catch (error) {
+        console.log('Cannot get Location')
+        return false
+
     }
 }
 
@@ -42,8 +48,10 @@ function haversineDistance(pos1, pos2) {
 
 async function calculateDistance(address) {
     const otherPos = await getOtherPostion(address)
-    const distance = haversineDistance(currPos.value, otherPos)
-    return distance * 1.609
+    if (otherPos) {
+        const distance = haversineDistance(currPos.value, otherPos)
+        return distance * 1.609
+    } else return null
 }
 
 

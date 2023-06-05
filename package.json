@@ -30,6 +30,7 @@
     "vue-social-sharing": "^4.0.0-alpha4",
     "vue-timer-hook": "^1.0.82",
     "vue3-cookies": "^1.0.6",
+    "vue3-flutterwave": "^1.0.0",
     "vue3-geolocation": "^1.0.0",
     "vue3-paystack": "^0.0.5",
     "vuex": "^4.1.0",

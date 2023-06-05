@@ -27,8 +27,7 @@
                 <!-- <input type="text" disabled value="0.00" placeholder="0.00"
                     v-if="depositData.paymentMethod !== 'bank-transfer'"
                     class="w-full outline-none h-14 rounded-lg border border-gray p-2"> -->
-                <input type="text" disabled value="0.00"
-                    class="w-full outline-none h-14 rounded-lg border border-gray p-2">
+                <input type="text" disabled value="0.00" class="w-full outline-none h-14 rounded-lg border border-gray p-2">
 
                 <div class="absolute top-8 h-10 px-2 right-2 rounded grid place-items-center" style="background: #EBEBEB;">
                     <p class="flex flex-row items-center gap-x-4"><span
@@ -42,8 +41,10 @@
                     class="flex flex-row items-center w-full justify-between h-14 rounded-lg border border-gray p-2">
                     <span class="text-sm text-webapp" v-if="depositData.paymentMethod.length < 1">Select deposit
                         method</span>
-                    <span class="text-sm text-webapp" v-if="depositData.paymentMethod === 'paystack'">Pay with Paystack</span>
-                    <span class="text-sm text-webapp" v-if="depositData.paymentMethod === 'flutterwave'">Pay with Flutterwave</span>
+                    <span class="text-sm text-webapp" v-if="depositData.paymentMethod === 'paystack'">Pay with
+                        Paystack</span>
+                    <span class="text-sm text-webapp" v-if="depositData.paymentMethod === 'flutterwave'">Pay with
+                        Flutterwave</span>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="#71759D" class="w-6 h-6 ">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -53,8 +54,10 @@
 
                 <div class="absolute z-20 top-14 right-2 p-5 flex flex-col items-start gap-y-5 rounded-lg bg-white select-method"
                     v-if="onSelectMethod">
-                    <span class="text-sm text-webapp cursor-pointer" @click="choosePaymentMethod('paystack')">Pay with Paystack</span>
-                    <p class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer">
+                    <span class="text-sm text-webapp cursor-pointer" @click="choosePaymentMethod('paystack')">Pay with
+                        Paystack</span>
+                    <p class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer"
+                        @click="choosePaymentMethod('flutterwave')">
                         <span>Pay with Flutterwave</span>
                         <span class="text-xs font-extralight text-webapp">#comingsoon</span>
                     </p>
@@ -69,6 +72,8 @@
                 :email="$store.state.user.email" :amount="depositData.amount * 100" :reference="paystackReference"
                 :onSuccess="processSuccessPayment" :on-cancel="processCanceledPayment" :channels="channels()">
             </paystack>
+            <!-- <Flutterwave class="paystack-btn" :options="flwParams" /> -->
+
             <button @click="proceedToPayment"
                 :class="{ 'bg-blue-600 text-white': depositData.amount > 0 && depositData.paymentMethod.length > 1, 'bg-gray-300': depositData.amount < 1 || depositData.paymentMethod.length < 1, }"
                 class="grid rounded-lg place-items-center h-14 my-6 w-full">
@@ -92,6 +97,9 @@ import uniqid from 'uniqid'
 import paystack from 'vue3-paystack'
 import axios from '../../../../../composables/axios'
 import moment from 'moment'
+// import Flutterwave from "vue3-flutterwave"
+
+
 
 const store = useStore()
 const router = useRouter()
@@ -107,6 +115,7 @@ const emit = defineEmits(['close'])
 let paystackReference = ref(genRef())
 
 const paystackBtn = ref(null)
+const flwBtn = ref(null)
 const processingDeposit = ref(false)
 
 const onSelectMethod = ref(false)
@@ -120,6 +129,11 @@ function proceedToPayment() {
     if (depositData.paymentMethod === 'paystack') {
         paystackBtn.value.click()
     }
+
+    if (depositData.paymentMethod === 'flutterwave') {
+        flwBtn.value.click()
+    }
+
 }
 
 const onError = ref(false)
@@ -176,6 +190,32 @@ const processSuccessPayment = async (response) => {
 
 }
 
+const flwParams = ref({
+    amount: depositData.amount,//amount
+    callback: handleFlwCallback,
+    country: "NG",
+    currency: "NGN",
+    customer: { email: store.state.user.email, name: store.state.user.username, phone_number: '+' + store.state.user.countryCode + store.state.user.phoneNumber.toString() },
+    customizations: { description: "Deposit money into your naira wallet", logo: "https://i.ibb.co/BnG8VLy/logo-white.png", title: "Habeep Naira deposit" },
+    meta: {
+        consumer_id: store.state.user._id,
+        consumer_mac: "deposit"
+    },
+    onclose: handleFlwClose(),
+    payment_options: "card,ussd,bank_transfer",
+    public_key: "FLWPUBK_TEST-56e035a21c74f39d9e25eebfc6a5b77f-X",
+    redirect_url: undefined,
+    tx_ref: genFlwRef()
+})
+
+
+function handleFlwCallback(data) {
+    console.log(data)
+}
+function handleFlwClose(data) {
+    console.log(data)
+}
+
 const processCanceledPayment = async () => {
     try {
         paystackReference.value = genRef()
@@ -213,6 +253,9 @@ const processCanceledPayment = async () => {
 
 function genRef() {
     return uniqid("dep-pstk-");
+}
+function genFlwRef() {
+    return uniqid("dep-flw-");
 }
 
 onMounted(() => {

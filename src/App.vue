@@ -3,10 +3,7 @@ import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
 import axios from "./composables/axios";
 import { ref, reactive, onMounted, computed, watch } from "vue";
-import { useCookies } from "vue3-cookies";
 import { updateToken } from "./composables/axios";
-
-const { cookies } = useCookies();
 
 const store = useStore();
 const router = useRouter();
@@ -52,8 +49,8 @@ function verifyAllowedRoles(route, role) {
 const getUser = async () => {
   try {
     const user = await axios.get("/auth/user");
-    let loggedIn = cookies.get("loggedIn");
-    if (user.data === "Unauthorized" || loggedIn === false) {
+    
+    if (user.data === "Unauthorized") {
       store.dispatch("unsetAuth");
       if (verifyAllowedRoles(route, 'user') === false) {
         router.replace("/login?redirect=" + router.currentRoute.value.fullPath + "?reload=true");
@@ -68,7 +65,7 @@ const getUser = async () => {
     }
   } catch (error) {
     store.dispatch("unsetAuth");
-    if (verifyAllowedRoles(route, 'user') === false || !loggedIn) {
+    if (verifyAllowedRoles(route, 'user') === false) {
       router.replace("/login?redirect=" + router.currentRoute.value.fullPath + "?reload=true");
     }
   }

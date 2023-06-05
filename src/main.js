@@ -10,7 +10,6 @@ import { MotionPlugin } from '@vueuse/motion'
 import VueSocialSharing from 'vue-social-sharing'
 
 
-
 import { globalCookiesConfig } from "vue3-cookies";
 globalCookiesConfig({
     expireTimes: 60 * 60 * 3,
