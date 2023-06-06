@@ -1,13 +1,12 @@
 <template>
-    <div class="absolute w-screen h-screen  flex flex-row items-center justify-center lg:hidden" v-if="onDropdown"
-        style="background: rgb(22, 22, 34, 0.5)">
+    <div class="absolute w-screen h-screen flex flex-row items-center justify-center lg:hidden" v-if="onDropdown" style="background-color: rgb(22, 22, 34, 0.5)">
 
         <div v-if="(onSortDropdown && onDropdown)"
             class="flex flex-col drop-shadow-md shadow-xl my-auto bg-white rounded-xl gap-y-3 border p-4 border-gray-300 z-10"
             style="width: 220px">
-            <div class="flex flex-row items-center justify-between">
+            <div class="flex flex-row items-center justify-between" @click="toggleDropdown('sort')">
                 <span class="text-lg text-webapp font-medium">Sort:</span>
-                <svg xmlns="http://www.w3.org/2000/svg" @click="toggleDropdown('sort')" fill="none" viewBox="0 0 24 24"
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                     stroke-width="1.5" stroke="#71759D" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
@@ -23,10 +22,10 @@
             <hr class="my-4">
 
             <span class="text-webapp text-lg font-medium">Location:</span>
-            <div class="flex flex-row items-center justify-between mt-4 w-full">
+            <div class="flex flex-row items-center justify-between mt-4 w-full" @click="toggleDropdown('location')">
                 <span class="text-primary text-lg font-medium ">{{ currentCity }}</span>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-6 h-6 text-gray-300 cursor-pointer" @click="toggleDropdown('location')">
+                    stroke="currentColor" class="w-6 h-6 text-gray-300 cursor-pointer">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                 </svg>
             </div>
@@ -297,7 +296,8 @@
                         </div>
 
                         <!-- distance of listing from you -->
-                        <div class="rounded border border-white px-2 py-1 absolute top-5 right-5" v-if="feed.distance" style="background: rgba(211,211,211, 0.5);">
+                        <div class="rounded border border-white px-2 py-1 absolute top-5 right-5" v-if="feed.distance"
+                            style="background: rgba(211,211,211, 0.5);">
                             <span class="text-white text-sm text-center">{{ Math.round(feed.distance) }} KM Away</span>
                         </div>
                     </div>
@@ -310,7 +310,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, computed, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import formatNumber from "number_formatter"
 import axiosDefault from 'axios'
 import { useStore } from 'vuex'
@@ -338,17 +338,24 @@ if (route.query.reloadApp) {
 const onSortDropdown = ref(false)
 const onLocationDropdown = ref(false)
 const onDropdown = ref(false)
-const locationValue = ref(false)
+
 
 const activeType = ref('all')
 const states = ref([])
 const cities = ref([])
 let onState = ref(true)
-const currentState = ref('Cross River')
-const currentCity = ref('Calabar')
+const currentState = ref('Abuja')
+const currentCity = ref('Gwagwalada')
 
 currentState.value = store.state.feedLocation.state
-currentCity.value = store.state.feedLocation.city || 'Calabar'
+
+if(store.state.feedLocation.state) {
+    currentState.value = store.state.feedLocation.state
+}
+if(store.state.feedLocation.city) {
+    currentCity.value = store.state.feedLocation.city
+}
+
 
 // fetch feeds
 
@@ -357,41 +364,6 @@ const feeds = ref([])
 const started = ref(false)
 const filteredFeeds = ref([])
 const errorMsg = ref('')
-
-watch(filteredFeeds, (newProducts) => {
-    const uniqueIds = [];
-    const uniqueFeeds = newProducts.filter(element => {
-        const isDuplicate = uniqueIds.includes(element._id);
-
-        if (!isDuplicate) {
-            uniqueIds.push(element._id);
-            return true;
-        }
-        return false;
-    });
-    filteredFeeds.value = uniqueFeeds
-})
-
-onMounted(() => {
-    if (store.state.allStates.length !== 0) {
-        states.value = store.state.allStates.sort(function (a, b) {
-            const nameA = a.state.name.toUpperCase(); // ignore upper and lowercase
-            const nameB = b.state.name.toUpperCase(); // ignore upper and lowercase
-            if (nameA > nameB) {
-                return -1;
-            }
-            if (nameA < nameB) {
-                return 1;
-            }
-
-            // names must be equal
-            return 0;
-        });
-    } else {
-        getStates()
-    }
-
-})
 
 const url = '/listings/feeds';
 
@@ -406,9 +378,18 @@ function filterType() {
 
         filteredFeeds.value = filtered
     }
-    return filteredFeeds.value
 
+    const uniqueIds = [];
+    const uniqueFeeds = filteredFeeds.value.filter(element => {
+        const isDuplicate = uniqueIds.includes(element._id);
+        if (!isDuplicate) {
+            uniqueIds.push(element._id);
+            return true;
+        }
+        return false;
+    });
 
+    filteredFeeds.value = uniqueFeeds
 }
 
 async function getFeeds() {
@@ -422,10 +403,10 @@ async function getFeeds() {
             feeds.value = getFeeds.data.feed
         }
 
-        feeds.value.forEach(async feed => {
-            const distance = await calculateDistance(feed.location.address + ', ' +  feed.location.city || 'Calabar')
-            feed.distance = distance
-        })
+        // feeds.value.forEach(async feed => {
+        //     const distance = await calculateDistance(feed.location.address + ', ' + feed.location.city || 'Calabar')
+        //     feed.distance = distance
+        // })
 
         started.value = false
 
@@ -436,7 +417,6 @@ async function getFeeds() {
     }
 }
 
-getFeeds()
 
 
 // filters
@@ -504,19 +484,7 @@ function changeSortValue(index) {
     } else {
         sortValue.value = 'Oldest first'
     }
-
     toggleDropdown('sort')
-}
-function changeLocationValue(place) {
-    locationValue.value = place
-
-    toggleDropdown('location')
-}
-
-const screenWidth = ref(window.innerWidth)
-
-function changeWidth() {
-    screenWidth.value = window.innerWidth
 }
 
 function saveFeedLocation() {
@@ -554,8 +522,31 @@ async function getStates() {
         // names must be equal
         return 0;
     });
-    store.dispatch('saveStates', states.value.reverse())
+    store.dispatch('saveStates', states.value)
 }
+
+onMounted(() => {
+    getFeeds()
+    if (store.state.allStates.length !== 0) {
+        states.value = store.state.allStates.sort(function (a, b) {
+            const nameA = a.state.name.toUpperCase(); // ignore upper and lowercase
+            const nameB = b.state.name.toUpperCase(); // ignore upper and lowercase
+            if (nameA > nameB) {
+                return -1;
+            }
+            if (nameA < nameB) {
+                return 1;
+            }
+
+            // names must be equal
+            return 0;
+        });
+    } else {
+        getStates()
+    }
+
+
+})
 
 </script>
 

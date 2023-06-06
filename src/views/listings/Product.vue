@@ -385,7 +385,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import MainNavbar from '../../components/MainNavbar.vue'
-import gsap from 'gsap'
 import axios from "../../composables/axios";
 import { useRoute, useRouter } from 'vue-router'
 import formatNumber from "number_formatter"
@@ -457,17 +456,7 @@ function changeCarouselImg(value) {
     // changingCarousel.value = true
     let image = images.value[value - 1]
     activeCarouselImg.value = value
-
-    animateImgCarousel()
     carouselImg.value = image
-}
-
-function animateImgCarousel() {
-    // changingCarousel.value = false
-    gsap.from('.main-img', {
-        scale: 1.2,
-    })
-
 }
 
 // manage images viewer

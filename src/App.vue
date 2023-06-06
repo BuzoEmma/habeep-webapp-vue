@@ -48,20 +48,22 @@ function verifyAllowedRoles(route, role) {
 
 const getUser = async () => {
   try {
-    const user = await axios.get("/auth/user");
-    
-    if (user.data === "Unauthorized") {
-      store.dispatch("unsetAuth");
-      if (verifyAllowedRoles(route, 'user') === false) {
-        router.replace("/login?redirect=" + router.currentRoute.value.fullPath + "?reload=true");
+    if (store.state.isAuthenticated) {
+      const user = await axios.get("/auth/user");
+
+      if (user.data === "Unauthorized") {
+        store.dispatch("unsetAuth");
+        if (verifyAllowedRoles(route, 'user') === false) {
+          router.replace("/login?redirect=" + router.currentRoute.value.fullPath + "?reload=true");
+        }
+      } else {
+        let mutate = {
+          sessionId: store.state.sessionId,
+          authState: true,
+          userDetails: user.data,
+        };
+        store.dispatch("setAuth", mutate);
       }
-    } else {
-      let mutate = {
-        sessionId: store.state.sessionId,
-        authState: true,
-        userDetails: user.data,
-      };
-      store.dispatch("setAuth", mutate);
     }
   } catch (error) {
     store.dispatch("unsetAuth");
@@ -97,16 +99,16 @@ async function getNotifications() {
 }
 
 async function takeNotificationAction(notif) {
-    if (notif.additionalInfo) {
-        if (notif.additionalInfo.type === 'newProduct') {
-            await deleteNotification(notif, null)
-            router.push('/listings/products/' + notif.additionalInfo.id)
-        }
-    } else if (notif.msg === 'Verify your account to access all habeep features') {
-        router.push('/verify-otp?reason=user_verification&email=' + store.state.user.email)
-    } else {
-        deleteNotification(notif, null)
+  if (notif.additionalInfo) {
+    if (notif.additionalInfo.type === 'newProduct') {
+      await deleteNotification(notif, null)
+      router.push('/listings/products/' + notif.additionalInfo.id)
     }
+  } else if (notif.msg === 'Verify your account to access all habeep features') {
+    router.push('/verify-otp?reason=user_verification&email=' + store.state.user.email)
+  } else {
+    deleteNotification(notif, null)
+  }
 }
 
 async function deleteNotification(notif, limit) {

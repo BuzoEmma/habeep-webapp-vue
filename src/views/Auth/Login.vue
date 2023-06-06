@@ -66,10 +66,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { loginValidate, formValidator } from '../../composables/2-validator'
-import { useCookies } from "vue3-cookies";
 import SuggestedCategory from './components/SuggestedCategory.vue'
-
-const { cookies } = useCookies();
 
 
 const onModal = ref(false)
@@ -154,7 +151,6 @@ async function loginUser() {
                 }
                 store.dispatch('setAuth', mutate)
 
-                cookies.set('loggedIn', true)
                 newMsg.value = login.data.data.message
 
                 setTimeout(() => {

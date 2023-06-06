@@ -33,22 +33,6 @@ function guardMyrouteForAgent(to, from, next) {
     }
 }
 
-function guardMyrouteForIBO(to, from, next) {
-    var isAuthenticated = false
-    if (createStore.state.isAuthenticated) { isAuthenticated = true } else { isAuthenticated = false }
-    if (isAuthenticated) {
-        if (!createStore.state.user.verified) {
-            next({ name: 'OTP', query: { reason: 'user_verification', email: createStore.state.user.email}}) // go to '/verify'; // go to '/verify';
-        } else {
-            if (createStore.state.user.role.includes('IBO')) {
-                next()
-            } else next({ name: 'IBO_Category_Agent' })
-        } // allow to enter route
-    } else {
-        next("/login?redirect=" + to.path + "?reloadApp=true") // go to '/login';
-    }
-}
-
 function guardMyrouteForUSERIBO(to, from, next) {
     var isAuthenticated = false
     if (createStore.state.isAuthenticated) { isAuthenticated = true } else { isAuthenticated = false }
@@ -75,39 +59,6 @@ function changeHomeRoute() {
     } else return '/home'
 }
 
-function changeHomeName() {
-    if (createStore.state.isAuthenticated) {
-        return 'Feeds'
-    } else return 'Main'
-}
-
-// listings
-import ListingSearch from '../views/listings/Search.vue'
-import ListingProduct from '../views/listings/Product.vue'
-import ListingAgent from '../views/listings/AgentAd.vue'
-
-// posts
-import AgentAds from '../views/profile/agents/post/Ads.vue'
-import PostAd from '../views/profile/agents/post/Post.vue'
-
-
-// profile
-// user
-import UserProfile from '../views/profile/user/Profile.vue'
-
-// agents
-import AgentProfile from '../views/profile/agents/Profile.vue'
-
-// IBO
-import IBO_ChooseCategory from '../views/profile/IBO/register/ChooseCategory.vue'
-import IBO_Agent from '../views/profile/IBO/register/AgentForm.vue'
-import IBO_User from '../views/profile/IBO/register/UserForm.vue'
-
-
-
-// chats
-import ChatIndex from '../views/chats/Index.vue'
-
 // extras
 import Blog from '../views/extras/BlogRoom.vue'
 import TOS from '../views/extras/TermsOfService.vue'
@@ -118,13 +69,6 @@ import Login from '../views/Auth/Login.vue'
 import Logout from '../views/Auth/Logout.vue'
 import ForgotPin from '../views/Auth/ForgotPin.vue'
 import OTP from '../views/Auth/OTP_Validation.vue'
-
-// fallbacks
-import Error404 from '../views/fallbacks/404.vue'
-
-// wallet
-import WalletIndex from '../views/wallet/Index.vue'
-import { get } from 'lodash'
 
 const routes = [
     {
@@ -178,7 +122,7 @@ const routes = [
     {
         path: '/listings/search',
         name: 'Listings-search',
-        component: ListingSearch,
+        component: () => import('../views/listings/Search.vue'),
         meta: {
             title: "Search ads"
         }
@@ -186,7 +130,7 @@ const routes = [
     {
         path: '/listings/products/:id',
         name: 'Listings-product',
-        component: ListingProduct,
+        component: () => import('../views/listings/Product.vue'),
         meta: {
             title: "Product"
         }
@@ -195,7 +139,7 @@ const routes = [
         path: '/listings/agent/products/:id',
         name: 'Listings-product-Agent',
         beforeEnter: guardMyrouteForAgent,
-        component: ListingAgent,
+        component: () => import('../views/listings/AgentAd.vue'),
         meta: {
             title: "Agent Listing"
         }
@@ -204,7 +148,7 @@ const routes = [
     {
         path: '/:username',
         name: 'UserProfiles',
-        component: AgentProfile,
+        component: () => import('../views/profile/agents/Profile.vue'),
         meta: {
             title: 'Profile'
         }
@@ -213,7 +157,7 @@ const routes = [
         path: '/agent/ads',
         beforeEnter: guardMyrouteForAgent,
         name: 'Agent-ads',
-        component: AgentAds,
+        component: () => import('../views/profile/agents/post/Ads.vue'),
         meta: {
             title: "Agent Listings"
         }
@@ -222,7 +166,7 @@ const routes = [
         path: '/agent/ads/create',
         beforeEnter: guardMyrouteForAgent,
         name: 'Agent-ads-create',
-        component: PostAd,
+        component: () => import('../views/profile/agents/post/Post.vue'),
         meta: {
             title: "Create Ad"
         }
@@ -231,7 +175,7 @@ const routes = [
         path: '/user/profile/:id',
         name: 'User-profile',
         beforeEnter: guardMyroute,
-        component: UserProfile,
+        component: () => import('../views/profile/user/Profile.vue'),
         meta: {
             title: "Profile"
         }
@@ -242,7 +186,7 @@ const routes = [
         path: '/account/IBO/category',
         name: 'IBO_ChooseCategory',
         beforeEnter: guardMyrouteForUSERIBO,
-        component: IBO_ChooseCategory,
+        component: () => import('../views/profile/IBO/register/ChooseCategory.vue'),
         meta: {
             title: "Become an IBO"
         }
@@ -251,7 +195,7 @@ const routes = [
         path: '/account/IBO/category/agent',
         name: 'IBO_Category_Agent',
         beforeEnter: guardMyroute,
-        component: IBO_Agent,
+        component: () => import('../views/profile/IBO/register/AgentForm.vue'),
         meta: {
             title: "Become an Agent"
         }
@@ -260,7 +204,7 @@ const routes = [
         path: '/account/IBO/category/user',
         name: 'IBO_Category_User',
         beforeEnter: guardMyroute,
-        component: IBO_User,
+        component: () => import('../views/profile/IBO/register/UserForm.vue'),
         meta: {
             title: "Become an IBO User"
         }
@@ -326,14 +270,14 @@ const routes = [
     {
         path: '/wallet',
         name: 'Wallet',
-        component: WalletIndex,
+        component: () => import('../views/wallet/Index.vue'),
         beforeEnter: guardMyroute,
         meta: {
             title: "Wallet"
         }
     },
 
-    { path: '/:pathMatch(.*)*', name: 'not-found', component: Error404, meta: { title: 'Page not Found' } },
+    { path: '/:pathMatch(.*)*', name: 'not-found', component: () => import('../views/fallbacks/404.vue'), meta: { title: 'Page not Found' } },
 ]
 
 

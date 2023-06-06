@@ -243,20 +243,6 @@ const route = useRoute()
 const url = '/listings/query';
 const products = ref([])
 
-watch(products, (newProducts) => {
-    const uniqueIds = [];
-    const uniqueFeeds = newProducts.filter(element => {
-        const isDuplicate = uniqueIds.includes(element._id);
-
-        if (!isDuplicate) {
-            uniqueIds.push(element._id);
-            return true;
-        }
-        return false;
-    });
-    products.value = uniqueFeeds
-})
-
 
 
 const states = ref([])
@@ -332,14 +318,24 @@ async function getSearch(location, query) {
             }
         })
 
+        const uniqueIds = [];
+        const uniqueFeeds = products.value.filter(element => {
+            const isDuplicate = uniqueIds.includes(element._id);
+
+            if (!isDuplicate) {
+                uniqueIds.push(element._id);
+                return true;
+            }
+            return false;
+        });
+        products.value = uniqueFeeds
+
         searchingData.value = false
     } catch (error) {
         console.log('error getting location')
     }
 
 }
-
-getSearch(route.query.location, route.query.name || 'all')
 
 // filters
 const sortValue = ref('Recommended')
@@ -380,17 +376,6 @@ function changeSortValue(index) {
 
     toggleDropdown('sort')
 }
-function changeLocationValue(place) {
-    locationValue.value = place
-
-    toggleDropdown('location')
-}
-
-const screenWidth = ref(window.innerWidth)
-
-function changeWidth() {
-    screenWidth.value = window.innerWidth
-}
 
 async function getStates() {
     const getState = await axiosDefault.get('https://locus.fkkas.com/api/states');
@@ -424,6 +409,8 @@ async function getStates() {
 }
 
 onMounted(() => {
+    getSearch(route.query.location, route.query.name || 'all')
+
     if (store.state.allStates.length !== 0) {
         states.value = store.state.allStates.sort(function (a, b) {
             const nameA = a.state.name.toUpperCase(); // ignore upper and lowercase
