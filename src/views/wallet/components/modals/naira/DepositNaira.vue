@@ -54,11 +54,14 @@
 
                 <div class="absolute z-20 top-14 right-2 p-5 flex flex-col items-start gap-y-5 rounded-lg bg-white select-method"
                     v-if="onSelectMethod">
-                    <span class="text-sm text-webapp cursor-pointer" @click="choosePaymentMethod('paystack')">Pay with
-                        Paystack</span>
+                    <!-- <span class="text-sm text-webapp cursor-pointer" @click="choosePaymentMethod('paystack')">Pay with
+                        Paystack</span> -->
                     <p class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer"
                         @click="choosePaymentMethod('flutterwave')">
                         <span>Pay with Flutterwave</span>
+                    </p>
+                    <p class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer">
+                        <span>Pay with Paystack</span>
                         <span class="text-xs font-extralight text-webapp">#comingsoon</span>
                     </p>
                     <p class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer">
@@ -72,9 +75,8 @@
                 :email="$store.state.user.email" :amount="depositData.amount * 100" :reference="paystackReference"
                 :onSuccess="processSuccessPayment" :on-cancel="processCanceledPayment" :channels="channels()">
             </paystack>
-            <!-- <Flutterwave class="paystack-btn" :options="flwParams" /> -->
 
-            <button @click="proceedToPayment"
+            <button @click="proceedToPayment" :disabled="depositData.amount < 1 || depositData.paymentMethod.length < 1"
                 :class="{ 'bg-blue-600 text-white': depositData.amount > 0 && depositData.paymentMethod.length > 1, 'bg-gray-300': depositData.amount < 1 || depositData.paymentMethod.length < 1, }"
                 class="grid rounded-lg place-items-center h-14 my-6 w-full">
                 <span v-if="!processingDeposit">Continue</span>
@@ -97,7 +99,6 @@ import uniqid from 'uniqid'
 import paystack from 'vue3-paystack'
 import axios from '../../../../../composables/axios'
 import moment from 'moment'
-// import Flutterwave from "vue3-flutterwave"
 
 
 
@@ -112,10 +113,9 @@ const depositData = reactive({
 
 const emit = defineEmits(['close'])
 
-let paystackReference = ref(genRef())
+let paystackReference = ref('')
 
 const paystackBtn = ref(null)
-const flwBtn = ref(null)
 const processingDeposit = ref(false)
 
 const onSelectMethod = ref(false)
@@ -126,15 +126,35 @@ const choosePaymentMethod = (method) => {
 }
 
 function proceedToPayment() {
-    if (depositData.paymentMethod === 'paystack') {
-        paystackBtn.value.click()
-    }
+    try {
+        processingDeposit.value = true
+        if (depositData.paymentMethod === 'paystack') {
+            paystackReference.value = genRef()
+            paystackBtn.value.click()
+        }
 
-    if (depositData.paymentMethod === 'flutterwave') {
-        flwBtn.value.click()
+        if (depositData.paymentMethod === 'flutterwave') {
+            const findScript = document.getElementById('flw')
+            if (!findScript) {
+                const script = document.createElement('script')
+                script.id = 'flw'
+                script.src = 'https://checkout.flutterwave.com/v3.js'
+                document.getElementsByTagName('head')[0].appendChild(script)
+
+                setTimeout(() => {
+                    makeFlwPayment()
+                }, 2000);
+
+            } else {
+                makeFlwPayment()
+            }
+        }
+    } catch (error) {
+        processingDeposit.value = false
     }
 
 }
+
 
 const onError = ref(false)
 let errorMsg = ref('')
@@ -142,22 +162,61 @@ let newMsg = ref('')
 
 function channels() { return ["card", "bank", "ussd", "qr", "mobile_money", "bank_transfer"]; }
 
-const processSuccessPayment = async (response) => {
-    function getFee() {
-        if (depositData.paymentMethod === "bank-transfer") {
-            return 0
-        } else return 0
-    }
+const flwRef = ref('')
 
+function makeFlwPayment() {
+    flwRef.value = genFlwRef()
+    window.FlutterwaveCheckout({
+        public_key: "FLWPUBK-b70b771118852881f687c804a6ece671-X",
+        amount: depositData.amount,//amount
+        callback: handleFlwCallback,
+        country: "NG",
+        currency: "NGN",
+        customer: { email: store.state.user.email, name: store.state.user.username, phone_number: '+' + store.state.user.countryCode + store.state.user.phoneNumber.toString() },
+        customizations: { description: "Deposit money into your naira wallet", logo: "https://i.ibb.co/BnG8VLy/logo-white.png", title: "Habeep Naira deposit" },
+        meta: {
+            consumer_id: store.state.user._id
+        },
+        onclose: handleFlwClose,
+        payment_options: "card,ussd,banktransfer,account,nqr",
+        redirect_url: null,
+        tx_ref: flwRef.value
+    });
+}
+
+function handleFlwCallback(data) {
+    if (data.status === 'successful') {
+        processSuccessPayment(data)
+    } else if (data.status === 'pending') {
+        processPendingPayment(data)
+    }
+}
+
+function handleFlwClose(data) {
+    if (data === true) {
+        processCanceledPayment('flutterwave', flwRef.value)
+    }
+}
+
+
+
+// handle payments
+const processSuccessPayment = async (response) => {
     try {
         processingDeposit.value = true
+        let reference;
+        if (depositData.paymentMethod === 'paystack') {
+            reference = response.reference
+        } else if (depositData.paymentMethod === 'flutterwave') {
+            reference = response.tx_ref
+        } else reference = 'deposit payment'
 
         let data = {
             accountId: store.state.user.wallet.naira,
             amount: depositData.amount,
-            referenceId: response.reference,
+            referenceId: reference,
             status: true,
-            fee: getFee(),
+            fee: 0,
             userId: store.state.user._id,
             paymentMethod: depositData.paymentMethod,
             dates: {
@@ -175,56 +234,84 @@ const processSuccessPayment = async (response) => {
             emit('close')
             router.go()
             newMsg.value = ''
-        }, 3000);
+        }, 100);
     } catch (error) {
         onError.value = true
         errorMsg.value = error.response.data.message
-        paystackReference.value = genRef()
+
+        processCanceledPayment('paystack', paystackReference.value)
 
         processingDeposit.value = false
         setTimeout(() => {
             onError.value = false
             errorMsg.value = ''
-        }, 3000);
+        }, 2000);
     }
 
 }
 
-const flwParams = ref({
-    amount: depositData.amount,//amount
-    callback: handleFlwCallback,
-    country: "NG",
-    currency: "NGN",
-    customer: { email: store.state.user.email, name: store.state.user.username, phone_number: '+' + store.state.user.countryCode + store.state.user.phoneNumber.toString() },
-    customizations: { description: "Deposit money into your naira wallet", logo: "https://i.ibb.co/BnG8VLy/logo-white.png", title: "Habeep Naira deposit" },
-    meta: {
-        consumer_id: store.state.user._id,
-        consumer_mac: "deposit"
-    },
-    onclose: handleFlwClose(),
-    payment_options: "card,ussd,bank_transfer",
-    public_key: "FLWPUBK_TEST-56e035a21c74f39d9e25eebfc6a5b77f-X",
-    redirect_url: undefined,
-    tx_ref: genFlwRef()
-})
-
-
-function handleFlwCallback(data) {
-    console.log(data)
-}
-function handleFlwClose(data) {
-    console.log(data)
-}
-
-const processCanceledPayment = async () => {
+const processPendingPayment = async (response) => {
     try {
+        processingDeposit.value = true
+
+        let reference;
+        if (depositData.paymentMethod === 'paystack') {
+            reference = response.reference
+        } else if (depositData.paymentMethod === 'flutterwave') {
+            reference = response.tx_ref
+        } else reference = 'deposit payment'
+
+        let data = {
+            accountId: store.state.user.wallet.naira,
+            amount: depositData.amount,
+            referenceId: reference,
+            status: 'PENDING',
+            fee: 0,
+            userId: store.state.user._id,
+            paymentMethod: depositData.paymentMethod,
+            dates: {
+                createdAt: moment().format('LLL'),
+                time: moment().format('LTS'),
+                date: moment().format('LL')
+            }
+        }
+
+        const saveDeposit = await axios.post('/wallet/deposit/naira', data)
+        newMsg.value = saveDeposit.data.message
+
+        setTimeout(() => {
+            processingDeposit.value = false
+            emit('close')
+            router.go()
+            newMsg.value = ''
+        }, 2000);
+    } catch (error) {
+        onError.value = true
+        errorMsg.value = error.response.data.message
+
+        processCanceledPayment('paystack', paystackReference.value)
+
+        processingDeposit.value = false
+        setTimeout(() => {
+            onError.value = false
+            errorMsg.value = ''
+        }, 2000);
+    }
+
+}
+
+const processCanceledPayment = async (method, reference) => {
+    try {
+        if (method !== 'flutterwave' && reference === null) {
+            reference = paystackReference.value
+        }
         paystackReference.value = genRef()
         processingDeposit.value = true
 
         let data = {
             accountId: store.state.user.wallet.naira,
             amount: depositData.amount,
-            referenceId: paystackReference.value,
+            referenceId: reference,
             status: false,
             userId: store.state.user._id,
             paymentMethod: depositData.paymentMethod,
@@ -236,6 +323,8 @@ const processCanceledPayment = async () => {
         }
 
         await axios.post('/wallet/deposit/naira', data)
+
+        processingDeposit.value = false
     } catch (error) {
         onError.value = true
         errorMsg.value = error.response.data.message
@@ -245,8 +334,7 @@ const processCanceledPayment = async () => {
             onError.value = false
             emit('close')
             router.go()
-            errorMsg.value = 'saveDeposit.data.message'
-        }, 3000);
+        }, 2000);
     }
 
 }

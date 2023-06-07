@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-y-5 h-full items-center w-full" v-if="walletData !== null">
-        <div class="flex flex-col border border-gray-200 w-full divide-y rounded-lg h-full gap-y-6">
+        <div class="flex flex-col border border-gray-200 w-full divide-y rounded-lg h-fit gap-y-6">
             <div class="top justify-center items-center h-1/2 w-full flex flex-col py-7">
                 <p class="text-6xl font-bold text-webapp flex flex-row items-end">{{ formatNumber(walletData.accountValue)
                 }}

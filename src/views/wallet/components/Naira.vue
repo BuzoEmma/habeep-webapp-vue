@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-y-5 h-full items-center w-full" v-if="walletData !== null">
-        <div class="flex flex-col border border-gray-200 w-full divide-y rounded-lg h-full gap-y-6">
+        <div class="flex flex-col border border-gray-200 w-full divide-y rounded-lg h-fit gap-y-6">
             <div class="top justify-center items-center h-1/2 w-full flex flex-col py-7">
                 <p class="text-6xl font-bold text-webapp flex flex-row items-end">{{ formatNumber(walletData.accountValue)
                 }}
@@ -27,10 +27,10 @@
             </div>
         </div>
 
-        <div class="flex flex-col w-full rounded-lg border border-gray-200">
+        <div class="flex flex-col w-full h-full rounded-lg border border-gray-200">
             <div class="pb-5 pt-2 flex-auto w-full h-full">
                 <span class="text-xl ml-2 font-medium text-webapp">Transactions</span>
-                <div class="tab-content tab-space w-full flex flex-col items-center justify-center">
+                <div class="tab-content tab-space w-full flex flex-col items-center justify-center h-full">
                     <!-- WALLET -->
                     <div class="h-full w-full">
                         <div class="overflow-x-auto txn-body w-full">
@@ -214,6 +214,7 @@ getWallet()
 table {
     border-collapse: collapse;
     table-layout: auto;
+    height: 100%;
 }
 
 .main::-webkit-scrollbar {

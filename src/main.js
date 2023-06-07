@@ -10,6 +10,7 @@ import { MotionPlugin } from '@vueuse/motion'
 import VueSocialSharing from 'vue-social-sharing'
 
 
+
 const myApp = createApp(App);
 
 
