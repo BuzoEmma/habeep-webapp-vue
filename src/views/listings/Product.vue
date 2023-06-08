@@ -146,7 +146,7 @@
                             }}
                             </p>
                             <p v-if="product.for === 'rent'"
-                                class="text-sm  xl:text-lg font-medium product-price text-webapp">Yearly
+                                class="text-sm  xl:text-lg font-medium product-price text-webapp">Rent
                             </p>
                             <p v-else
                                 class="text-sub-webapp text-sm xl:text-lg product-duration flex flex-row justify-start ">
@@ -155,7 +155,8 @@
                     </div>
 
                     <div class="flex flex-row py-2 border-y mt-8 border-y-gray-200 w-full divide-x">
-                        <div class="flex flex-col gap-y-2 items-center w-64 md:w-auto md:pr-20" v-if="product.type !== 'land'">
+                        <div class="flex flex-col gap-y-2 items-center w-64 md:w-auto md:pr-20"
+                            v-if="product.type !== 'land'">
                             <span class="text-2xl font-medium text-webapp">{{ product.bedrooms }}</span>
                             <span class="text-sm text-sub-webapp">Bedroom</span>
                         </div>
@@ -216,12 +217,12 @@
                         <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
                             v-if="product.features.includes('surveyed')">
                             <img src="../../assets/icons/listings/surveyed.svg" class="w-6 h-6" alt="">
-                    <span class="text-sm text-sub-webapp">Surveyed</span>
+                            <span class="text-sm text-sub-webapp">Surveyed</span>
                         </div>
                         <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
                             v-if="product.features.includes('c-of-o')">
                             <img src="../../assets/icons/listings/certificate.svg" class="w-6 h-6" alt="">
-                    <span class="text-sm text-sub-webapp">C of O</span>
+                            <span class="text-sm text-sub-webapp">C of O</span>
                         </div>
                     </div>
                 </div>
@@ -463,7 +464,7 @@ function changeCarouselImg(value) {
 function exitImageViewer() {
     onImageViewer.value = false
 
-    const carouselInt = setInterval(() => {
+    setInterval(() => {
         let value = activeCarouselImg.value + 1
         if (activeCarouselImg.value == images.value.length) {
             value = 1
