@@ -76,8 +76,8 @@
                 :onSuccess="processSuccessPayment" :on-cancel="processCanceledPayment" :channels="channels()">
             </paystack>
 
-            <button @click="proceedToPayment" :disabled="depositData.amount < 1 || depositData.paymentMethod.length < 1"
-                :class="{ 'bg-blue-600 text-white': depositData.amount > 0 && depositData.paymentMethod.length > 1, 'bg-gray-300': depositData.amount < 1 || depositData.paymentMethod.length < 1, }"
+            <button @click="proceedToPayment" :disabled="depositData.amount < 100 || depositData.paymentMethod.length < 1"
+                :class="{ 'bg-blue-600 text-white': depositData.amount > 99 && depositData.paymentMethod.length > 1, 'bg-gray-300': depositData.amount < 1 || depositData.paymentMethod.length < 1, }"
                 class="grid rounded-lg place-items-center h-14 my-6 w-full">
                 <span v-if="!processingDeposit">Continue</span>
                 <Preloader v-else />

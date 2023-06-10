@@ -16,9 +16,9 @@
         </div>
 
         <div
-            class="form-container flex flex-col items-center justify-between relative bg-white w-full lg:w-3/5 min-h-fit h-4/6 lg:h-full">
+            class="form-container flex flex-col items-center justify-between bg-white w-full lg:w-3/5 min-h-fit h-4/6 lg:h-full">
 
-            <div class="form-fields w-full flex flex-row h-full items-center px-5 gap-3 flex-auto justify-center"
+            <div class="form-fields w-full flex flex-row md:basic-full basic-2/4 flex-wrap self-center h-fit items-center px-5 gap-3 justify-center"
                 v-if="$store.state.listingProcess.type !== 'land'">
 
                 <div class="flex cursor-pointer flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
@@ -46,7 +46,7 @@
             </div>
 
             <!-- land features -->
-            <div class="form-fields w-full flex flex-row h-full items-center px-5 gap-3 flex-auto justify-center" v-else>
+            <div class="form-fields w-full flex flex-row md:basic-full basic-2/4 flex-wrap self-center h-fit items-center px-5 gap-3 justify-center" v-else>
 
                 <div class="flex cursor-pointer flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
                     :class="{ 'border-blue-500 border-2': data.data.includes('access_road') }"

@@ -48,8 +48,8 @@
                         <div class="basis-full md:basis-2/3 photo-cover p-2 h-full" v-if="imageData1">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
                                 <img :src="imageData1" class="h-full w-full" v-if="pic1.type !== 'video/mp4'" alt="">
-                                <video :src="imageData1" class="h-full w-full rounded-lg feed-image" v-else height="100%" width="100%"
-                                    autoplay muted></video>
+                                <video :src="imageData1" class="h-full w-full rounded-lg feed-image" v-else height="100%"
+                                    width="100%" autoplay muted></video>
                             </div>
                         </div>
                         <div class="gap-x-2 basis-full p-2 md:basis-2/3 h-full photo-cover" @click="callImgProcessor(1)"
@@ -65,8 +65,8 @@
                         <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" v-if="imageData2">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
                                 <img :src="imageData2" class="h-full w-full" v-if="pic2.type !== 'video/mp4'" alt="">
-                                <video :src="imageData2" class="h-full w-full rounded-lg feed-image" v-else height="100%" width="100%"
-                                    autoplay muted></video>
+                                <video :src="imageData2" class="h-full w-full rounded-lg feed-image" v-else height="100%"
+                                    width="100%" autoplay muted></video>
                             </div>
                         </div>
                         <div v-else class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(2)">
@@ -78,8 +78,8 @@
                         <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" v-if="imageData3">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
                                 <img :src="imageData3" class="h-full w-full" v-if="pic3.type !== 'video/mp4'" alt="">
-                                <video :src="imageData3" class="h-full w-full rounded-lg feed-image" v-else height="100%" width="100%"
-                                    autoplay muted></video>
+                                <video :src="imageData3" class="h-full w-full rounded-lg feed-image" v-else height="100%"
+                                    width="100%" autoplay muted></video>
                             </div>
                         </div>
                         <div v-else class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(3)">
@@ -91,8 +91,8 @@
                         <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" v-if="imageData4">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
                                 <img :src="imageData4" class="h-full w-full" v-if="pic4.type !== 'video/mp4'" alt="">
-                                <video :src="imageData4" class="h-full w-full rounded-lg feed-image" v-else height="100%" width="100%"
-                                    autoplay muted></video>
+                                <video :src="imageData4" class="h-full w-full rounded-lg feed-image" v-else height="100%"
+                                    width="100%" autoplay muted></video>
                             </div>
                         </div>
                         <div v-else class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(4)">
@@ -104,8 +104,8 @@
                         <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" v-if="imageData5">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
                                 <img :src="imageData5" class="h-full w-full" v-if="pic5.type !== 'video/mp4'" alt="">
-                                <video :src="imageData5" class="h-full w-full rounded-lg feed-image" v-else height="100%" width="100%"
-                                    autoplay muted></video>
+                                <video :src="imageData5" class="h-full w-full rounded-lg feed-image" v-else height="100%"
+                                    width="100%" autoplay muted></video>
                             </div>
                         </div>
                         <div v-else class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(5)">
@@ -124,12 +124,13 @@
                 </div>
                 <div class="flex flex-row p-6 w-full items-center justify-between">
                     <span class="text-xl font-medium text-webapp underline cursor-pointer"
-                        @click="$emit('goBack', { to: 'Desc', from: 'Photos'})">Back</span>
+                        @click="$emit('goBack', { to: 'Desc', from: 'Photos' })">Back</span>
                     <button @click="sendData()" :class="{ 'bg-slate-400 text-white': allCompleted === false }"
-                        class="h-10 rounded-lg w-fit px-2 bg-primary text-white text-sm flex flex-row justify-center items-center font-extralight gap-x-2" style="min-width: 96px"
-                        :disabled="allCompleted === false">
+                        class="h-10 rounded-lg w-fit px-2 bg-primary text-white text-sm flex flex-row justify-center items-center font-extralight gap-x-2"
+                        style="min-width: 96px" :disabled="allCompleted === false">
                         <span v-if="!processing">Post AD</span>
-                        <span v-if="processing && uploadingWord" v-motion :initial="{opacity: 0.2, scale: 0.5}" :enter="{opacity: 1, scale: 1}" class="text-white">{{ uploadingWord }}</span>
+                        <span v-if="processing && uploadingWord" v-motion :initial="{ opacity: 0.2, scale: 0.5 }"
+                            :enter="{ opacity: 1, scale: 1 }" class="text-white">{{ uploadingWord }}</span>
                         <Preloader v-if="processing" class="scale-75" />
                     </button>
                 </div>
@@ -184,7 +185,7 @@ const imageData5 = ref('')
 
 const noPicture = ref(true)
 
-const uploadingVocabulary = ['Loading','Uploading assets', 'Optimizing Assets', 'Formatting Product', 'Uploaded']
+const uploadingVocabulary = ['Loading', 'Uploading assets', 'Optimizing Assets', 'Formatting Product']
 
 function callImgProcessor(value) {
     currentBlock.value = value
@@ -262,23 +263,38 @@ async function saveData() {
         formData.append('data', JSON.stringify(finalData))
 
         interval = setInterval(() => {
-            uploadingWord.value = uploadingVocabulary[uploadingVocabulary.indexOf(uploadingWord.value) + 1]
+            if (uploadingWord.value !== 'Formatting Product') {
+                uploadingWord.value = uploadingVocabulary[uploadingVocabulary.indexOf(uploadingWord.value) + 1]
+            } else clearInterval(interval)
         }, 5000);
 
         const adDetails = await axios.post(url, formData, {
             headers: { 'Content-Type': 'multipart/form-data' },
         });
 
-        processing.value = false
 
         if (adDetails.data.success) {
             store.commit('deleteListingData')
-
+            uploadingWord.value = 'Uploaded'
             emit('postSuccess', adDetails.data.data._id)
-            clearInterval(interval)
+            if (interval !== null) {
+                clearInterval(interval)
+            }
+            setTimeout(() => {
+                uploadingWord.value = ''
+                processing.value = false
+            }, 2000);
         } else {
             onError.value = true;
             errorMsg.value = adDetails.data.message;
+            if (interval !== null) {
+                clearInterval(interval)
+            }
+            uploadingWord.value = 'Failed'
+            setTimeout(() => {
+                uploadingWord.value = ''
+                processing.value = false
+            }, 2000);
         }
 
         if (onError.value === true) {
@@ -288,8 +304,15 @@ async function saveData() {
             }, 4000);
         }
     } catch (error) {
-        processing.value = false
-        clearInterval(interval)
+        if (interval !== null) {
+            clearInterval(interval)
+        }
+        
+        uploadingWord.value = 'Failed'
+        setTimeout(() => {
+            uploadingWord.value = ''
+            processing.value = false
+        }, 2000);
 
         onError.value = true;
         if (error.response) {

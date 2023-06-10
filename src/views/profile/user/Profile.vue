@@ -48,7 +48,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-row items-center w-full gap-x-4 mt-3 overflow-x-auto no-scrool-btn">
+                    <div class="flex flex-row items-center w-full gap-x-4 mt-3 overflow-x-auto no-scroll-btn">
                         <p class="text-xl font-webapp font-medium flex items-center flex-row gap-x-1"
                             v-if="$store.state.user.role === 'AGENT' && agentDetails.ads">
                             {{ agentDetails.ads.length }}
