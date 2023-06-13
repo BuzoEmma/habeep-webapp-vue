@@ -43,7 +43,7 @@
                         'Nigeria' }}</span></p>
 
                 <!-- filters -->
-                <div class="flex flex-row items-center h-fit gap-x-4 w-full md:w-min relative transition-all">
+                <div class="flex flex-row items-center h-fit gap-x-4 w-full md:w-min  transition-all" :class="{'relative': onDropdown}">
                     <div @click="toggleDropdown('sort')"
                         class="border border-gray-300 md:w-56 w-1/2 py-2 justify-center flex flex-row items-center gap-x-2 rounded-full cursor-pointer ">
                         <span class="md:text-lg text-webapp text-sm flex flex-row gap-x-1"> Sort:
