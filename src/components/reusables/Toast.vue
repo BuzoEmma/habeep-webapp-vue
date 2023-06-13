@@ -1,5 +1,5 @@
 <template>
-    <div id="toast-success"
+    <div id="toast-success" v-motion-slide-top :delay="200"
         class="flex items-center z-20 w-full max-w-xs p-4 mb-4 fixed top-5 right-5 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
         role="alert" v-if="props.type == 'success'">
         <div
@@ -26,7 +26,7 @@
         </button>
     </div>
 
-    <div id="toast-danger"
+    <div id="toast-danger" v-motion-slide-top :delay="200"
         class="flex items-center z-20 w-full max-w-xs fixed top-5 right-5 p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
         role="alert" v-if="props.type == 'danger'">
         <div
@@ -54,7 +54,7 @@
     </div>
 
 
-    <div id="toast-warning"
+    <div id="toast-warning" v-motion-slide-top :delay="200"
         class="flex z-20 items-center w-full absolute top-5 right-5 max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
         role="alert" v-if="props.type == 'warning'">
         <div

@@ -3,17 +3,17 @@
         <p class="text-webapp text-3xl font-bold">{{ formatNumber(walletData.accountValue) }}<sub
                 class="text-webapp text-sm font-bold">NGN</sub></p>
 
-        <div class="w-full flex flex-row items-center justify-between">
-            <div class="flex flex-col gap-y-1 items-center cursor-pointer"
+        <div class="w-full flex flex-row items-center gap-x-2 justify-between">
+            <div class="flex flex-col gap-y-1 items-center cursor-pointer" v-motion-slide-left :delay="200"
                 @click="$router.push('/wallet?tab=naira&cont=deposit')">
                 <img src="../../../../../assets/icons/wallet/deposit.svg" alt="">
                 <span class="text-xs text-webapp">Deposit</span>
             </div>
-            <div class="flex flex-col gap-y-1 items-center">
+            <div class="flex flex-col gap-y-1 items-center" v-motion-slide-left :delay="300">
                 <img src="../../../../../assets/icons/wallet/withdraw.svg" alt="">
                 <span class="text-xs text-webapp">Withdraw</span>
             </div>
-            <div class="flex flex-col gap-y-1 items-center cursor-pointer"
+            <div class="flex flex-col gap-y-1 items-center cursor-pointer" v-motion-slide-left :delay="400"
                 @click="$router.push('/wallet?tab=naira&cont=swap')">
                 <img src="../../../../../assets/icons/wallet/swap.svg" alt="">
                 <span class="text-xs text-webapp">Swap</span>

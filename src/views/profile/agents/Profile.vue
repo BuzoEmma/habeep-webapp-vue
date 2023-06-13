@@ -34,7 +34,11 @@
                     class="agent-info flex p-4 bg-white flex-col border border-gray-300 rounded w-full lg:w-2/6 2xl:w-1/4 items-start lg:ml-3 h-fit">
                     <div class="flex flex-row gap-x-3 items-start">
                         <div class="rounded-full w-24 h-24 grid place-items-center border border-gray-100">
-                            <img :src="agentDetails.profileImg" class="w-24 rounded-full h-24" alt="">
+                            <img :src="agentDetails.profileImg"
+                                class="w-24 h-24 min-h-full min-w-full rounded-full cursor-pointer"
+                                v-if="agentDetails.profileImg !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
+                            <Avatar size="100%" v-else :fname="agentDetails.name.fname"
+                                :lname="agentDetails.name.surname" />
                         </div>
                         <div class="flex flex-col ">
                             <span class="text-xl md:text-center text-left agent-name text-webapp font-medium">{{
@@ -95,11 +99,11 @@
                             class="user-btn flex flex-row items-center justify-center text-sm font-medium text-black ml-2 bg-white w-full">View
                             Profile</button>
                     </div>
-                    <div class="flex flex-row items-center w-full mt-4 xl:mt-3 px-1">
+                    <div class="flex flex-row items-center w-full mt-4 xl:mt-3 ">
                         <ShareNetwork :popup="{ width: 400, height: 200 }" network="whatsapp" class="w-full"
                             :url="'https://habeep.org/' + agentDetails.name.username" title="Share this profile">
                             <button
-                                class="agent-btn flex flex-row items-center justify-center text-sm font-medium ml-1 text-primary bg-white w-full">Share
+                                class="agent-btn flex flex-row items-center justify-center text-sm font-medium text-primary bg-white w-full">Share
                                 Profile</button>
                         </ShareNetwork>
                     </div>

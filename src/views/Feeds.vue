@@ -1,5 +1,5 @@
 <template>
-    <div class="absolute w-screen h-screen flex flex-row items-center justify-center lg:hidden" v-if="onDropdown" style="background-color: rgb(22, 22, 34, 0.5)">
+    <div class="absolute w-screen h-screen flex flex-row items-center justify-center lg:hidden z-10" v-if="onDropdown" style="background-color: rgb(22, 22, 34, 0.5)">
 
         <div v-if="(onSortDropdown && onDropdown)"
             class="flex flex-col drop-shadow-md shadow-xl my-auto bg-white rounded-xl gap-y-3 border p-4 border-gray-300 z-10"
@@ -138,7 +138,7 @@
                 </div>
 
                 <!-- filters -->
-                <div class="flex flex-row items-center h-fit gap-x-4 relative transition-all">
+                <div class="flex flex-row items-center h-fit gap-x-4 transition-all" :class="{'relative': onDropdown}">
                     <div @click="toggleDropdown('sort')"
                         class="border border-gray-300 w-56 py-1 justify-center hidden lg:flex flex-row items-center gap-x-2 rounded-full cursor-pointer ">
                         <span class="md:text-lg text-webapp text-sm flex flex-row gap-x-1"> Sort:
@@ -263,7 +263,7 @@
                 <!-- listing template -->
                 <div class="basis-full md:basis-1/2 xl:basis-1/4 md:px-3 md:py-3 py-5 gap-y-4 px-0" v-else
                     v-for="feed in filteredFeeds" :key="feed">
-                    <div class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 feed">
+                    <div class="flex flex-col items-start gap-y-2 border rounded-md border-gray-200 pb-2 feed">
                         <img :src="feed.images[0].link" @click="$router.push('/listings/products/' + feed._id)" alt=""
                             class="w-full feed-image rounded-t-md"
                             v-if="feed.images[0].link && feed.images[0].link.includes('mp4') == false">

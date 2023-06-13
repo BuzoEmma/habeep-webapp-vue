@@ -9,6 +9,9 @@ import Preloader from './components/reusables/Preloader.vue'
 import { MotionPlugin } from '@vueuse/motion'
 import VueSocialSharing from 'vue-social-sharing'
 
+import AvatarInitials from './components/reusables/AvatarInitials.vue'
+
+
 
 
 const myApp = createApp(App);
@@ -16,6 +19,7 @@ const myApp = createApp(App);
 
 myApp.component('Toast', Toast)
 myApp.component('Preloader', Preloader)
+myApp.component('Avatar', AvatarInitials)
  
 myApp.use(MotionPlugin)
 myApp.use(VueSocialSharing)

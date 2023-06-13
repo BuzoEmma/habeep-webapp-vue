@@ -9,20 +9,53 @@
         <div class="flex flex-col w-full h-full justify-between items-center overflow-hidden no-scroll-btn"
             v-else-if="onMainPage && viewFullImage.length === 0">
             <div
-                class="flex flex-row items-center justify-between w-full sticky border-b h-fit border-b-gray-200 px-2 lg:px-5 py-3">
+                class="flex flex-row items-center justify-between w-full sticky border-b h-fit border-b-gray-200 px-2 lg:px-5 py-1">
                 <div class="rounded-full w-13 h-13 grid place-items-center">
-                    <img :src="props.chat.user.profilePicture" style="width: 45px; height: 45px;"
-                        class="w-13 h-13 rounded-full" alt="" v-if="screenWidth > 1023">
-                    <svg xmlns="http://www.w3.org/2000/svg" @click="$emit('leaveChat', props.chat)" v-else fill="none"
-                        viewBox="0 0 24 24" stroke-width="1.5" stroke="#0A1045" class="w-6 h-6 cursor-pointer">
+                    <img :src="props.chat.user.profilePicture" style="width: 40px; height: 40px;"
+                        class="w-13 h-13 rounded-full" alt=""
+                        v-if="screenWidth > 1023 && props.chat.user.profilePicture !== 'https://i.ibb.co/gtpxMJz/21.png'">
+                    <Avatar size="100%" style="width: 40px; height: 40px;"
+                        v-if="screenWidth > 1023 && props.chat.user.profilePicture === 'https://i.ibb.co/gtpxMJz/21.png'"
+                        :fname="props.chat.user.fname" :lname="props.chat.user.surname" />
+                    <svg xmlns="http://www.w3.org/2000/svg" @click="$emit('leaveChat', props.chat)"
+                        v-if="screenWidth < 1024" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0A1045"
+                        class="w-6 h-6 cursor-pointer">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                     </svg>
                 </div>
-                <div class="flex flex-col items-center">
-                    <span class="text-lg text-left  text-webapp font-medium">{{ props.chat.user.fname + ' ' +
-                        props.chat.user.surname
-                    }}</span>
-                    <span class="text-sm text-sub-webapp" v-if="otherUserOnline">Online</span>
+                <div class="flex flex-col items-center w-full h-full">
+                    <img :src="props.chat.user.profilePicture" class="w-16 h-16 rounded-full"
+                        style="width: 45px; height:45px;" alt=""
+                        v-if="screenWidth < 1024 && props.chat.user.profilePicture !== 'https://i.ibb.co/gtpxMJz/21.png'">
+                    <Avatar size="100%" class="w-16 h-16" style="max-width: 40px; height:40px; max-height: 40px;"
+                        v-if="screenWidth < 1024 && props.chat.user.profilePicture === 'https://i.ibb.co/gtpxMJz/21.png'"
+                        :fname="props.chat.user.fname" :lname="props.chat.user.surname" />
+
+
+                    <span class="text-lg text-left  text-webapp font-medium" v-if="screenWidth > 1023">{{
+                        props.chat.user.fname + ' ' +
+                        props.chat.user.surname }}
+                    </span>
+
+                    <div class="w-fit h-fit flex-row-center gap-x-1" v-if="otherUserOnline">
+                        <span 
+                        v-motion 
+                        :initial="{ scale: 0.5, opacity: 0.2 }"  :delay="20"
+                        :enter="{scale: 1.2, opacity: 1, transition: {repeat: Infinity, delay: 50, type: 'spring', mass: 2}}" 
+                        class="w-1 h-1 bg-green-400 rounded-full text-webapp"></span>
+
+                        <p class="text-sm text-sub-webapp font-medium">Online</p>
+                    </div>
+                    <div class="w-fit h-fit flex-row-center gap-x-1" v-else>
+                        <span 
+                        v-motion 
+                        :initial="{ scale: 0.5, opacity: 0.2 }"  :delay="20"
+                        :enter="{scale: 1.2, opacity: 1, transition: {repeat: Infinity, delay: 50, type: 'spring', mass: 2}}" 
+                        class="w-1 h-1 bg-red-400 rounded-full text-webapp"></span>
+
+                        <p class="text-sm text-sub-webapp font-medium">Offline</p>
+                    </div>
+                
                 </div>
                 <img src="../../../assets/icons/phone.svg" class="cursor-pointer" @click="togglePhone" alt="">
 
@@ -140,7 +173,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M14.25 9v6m-4.5 0V9M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <img src="../../../assets/icons/send-message.svg" class="cursor-pointer" @click="stopAndSendRecording" alt="">
+                    <img src="../../../assets/icons/send-message.svg" class="cursor-pointer" @click="stopAndSendRecording"
+                        alt="">
                 </div>
             </div>
         </div>
@@ -315,10 +349,10 @@ async function stopAndSendRecording() {
     onUploadingImage.value = true
 
     const link = await uploadVoiceNote(newAudioURL.value)
-    
+
     onUploadingImage.value = false
 
-    if (typeof(link) === 'string') {
+    if (typeof (link) === 'string') {
         inputMsg.value = 'VN'
         sendMessage({ media: link, show: false })
     }

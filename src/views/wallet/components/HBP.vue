@@ -150,19 +150,19 @@ function paginateTxns(array, newArray, pageType) {
     let perPage = array.length >= 10 ? 10 : array.length
     let from = (pageType * perPage) - perPage;
     let to = (pageType * perPage);
-    if (array.length < 10) {
+
+
+    let sortedArray = array.sort((a, c) => {
+        return c.createdAt - a.createdAt
+    })
+
+    if (sortedArray.length < 11) {
         newArray.value = []
-        array.forEach(txn => {
-            newArray.value.push(txn)
-        })
+        newArray.value = sortedArray
     } else {
-        let reference = array
         newArray.value = []
-        reference.slice(from, to).forEach(txn => {
-            if (newArray.value.length < 11) {
-                newArray.value.push(txn)
-            }
-        })
+        const filtered = sortedArray.slice(from, to)
+        newArray.value = filtered
     }
 }
 

@@ -7,7 +7,7 @@
         <img src="../../assets/images/rhombus-preloader.gif" class="m-auto" v-if="!processingProduct || !product.price"
             alt="">
         <div v-else
-            class="body px-0 2xl:px-44 xl:px-20 mb-16 w-full flex flex-col h-fit items-center pb-10 md:items-start gap-y-8 mt-0 relative">
+            class="body px-0 2xl:px-44 xl:px-20 mb-16 w-full flex flex-col h-fit items-center pb-10 md:items-start gap-y-8 mt-0">
 
             <!-- product display images for desktop view -->
             <div class="product-img-grid desktop-view xl:flex flex-row items-center w-full mt-10 hidden">
@@ -245,7 +245,10 @@
                         class="agent-desktop flex flex-row items-center  md:justify-between w-full border-t pt-2 mt-2 border-t-gray-300">
                         <div class="flex flex-row gap-x-2 items-center">
                             <div class="rounded-full w-12 h-12 xl:w-16 xl:h-16 grid place-items-center">
-                                <img :src="agentDetails.profileImg" class="w-12 h-12 xl:w-16 xl:h-16 rounded-full" alt="">
+                                <img :src="agentDetails.profileImg" class="w-12 h-12 xl:w-16 xl:h-16 rounded-full"
+                                    v-if="agentDetails.profileImg !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
+                                <Avatar size="100%" v-else :fname="agentDetails.name.fname"
+                                    :lname="agentDetails.name.surname" />
                             </div>
                             <div class="flex flex-col ">
                                 <span class="text-sm xl:text-lg md:text-center text-left agent-name text-webapp font-medium"
@@ -294,7 +297,10 @@
                         class="agent flex flex-row items-center justify-between w-full border-b py-3 my-3 border-b-gray-300">
                         <div class="flex flex-row gap-x-2 items-center">
                             <div class="rounded-full w-12 h-12  grid place-items-center">
-                                <img :src="agentDetails.profileImg" class="w-12 h-12 rounded-full" alt="">
+                                <img :src="agentDetails.profileImg" class="w-12 h-12 rounded-full"
+                                            v-if="agentDetails.profileImg !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
+                                        <Avatar size="100%" v-else :fname="agentDetails.name.fname"
+                                            :lname="agentDetails.name.surname" />
                             </div>
                             <div class="flex flex-col">
                                 <span class="text-sm xl:text-lg text-left agent-name text-webapp font-medium">{{

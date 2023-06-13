@@ -1,5 +1,5 @@
 <template>
-  <div class="main flex flex-col md:h-64 fixed md:absolute z-10 overflow-hidden md:right-1/4 md:top-1/6 bg-white h-full">
+  <div class="main flex flex-col md:h-64 z-10 overflow-y-auto no-scroll-btn  bg-white h-full">
     <div class="flex flex-row items-center justify-between w-full px-4 py-4 border-b border-b-gray-100">
       <span class="text-lg font-medium text-webapp">Edit profile</span>
       <img src="../../../../assets/icons/x.svg" class="cursor-pointer" @click="$emit('close')" alt="">
@@ -7,7 +7,9 @@
 
     <div class="profile relative flex flex-col w-full items-center gap-y-6 px-4">
       <div class="relative flex flex-row items-center justify-center w-24 h-24 rounded-full border border-gray-200">
-        <img :src="imageData" class="rounded-full w-full h-full" alt="">
+        <img :src="imageData" class="w-24 h-24 min-h-full min-w-full  object-cover rounded-full cursor-pointer"
+          v-if="imageData !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
+        <Avatar size="100%" v-else :fname="$store.state.user.fname" :lname="$store.state.user.surname" />
 
         <!-- upload images -->
         <form enctype="multipart/form-data" class="hidden">
@@ -285,7 +287,7 @@ async function updateProfile() {
   } catch (error) {
     processing.value = false
     onError.value = true
-    errorMsg.value.msg = error.response.data.error 
+    errorMsg.value.msg = error.response.data.error
 
     setTimeout(() => {
       onError.value = false

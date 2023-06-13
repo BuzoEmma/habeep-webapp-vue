@@ -1,5 +1,5 @@
 <template>
-    <div class="main flex flex-col h-screen min-h-full  md:h-64 z-10 overflow-hidden bg-white">
+    <div class="main flex flex-col h-screen min-h-full  md:h-64 z-10  pb-10 overflow-hidden bg-white">
         <div class="flex flex-row items-center justify-between w-full px-4 py-4 border-b border-b-gray-100">
             <div class="flex flex-row items-center gap-x-2" @click="($emit('enterAgents'))">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0A1045"
@@ -10,7 +10,7 @@
             <img src="../../../assets/icons/x.svg" class="cursor-pointer md:block hidden" @click="$emit('close')" alt="">
         </div>
 
-        <div class="flex flex-col items-center w-full h-full overflow-y-auto px-2 pb-8">
+        <div class="flex flex-col items-center w-full h-full overflow-y-auto px-2 pb-8 relative">
             <div class="agents-to-follow flex w-full flex-col overflow-y-auto items-center h-5/6 my-1"
                 :class="{ 'justify-center': discoveredAgents.length === 0 }">
                 <img src="../../../assets/images/rhombus-preloader.gif" class="m-auto" v-if="discoveredAgents.length === 0">
@@ -18,7 +18,11 @@
                     v-for="agent in discoveredAgents" :key="agent">
                     <div class="flex flex-row gap-x-2 items-center">
                         <div class="rounded-full w-12 h-12 grid place-items-center">
-                            <img :src="agent.details.profileImage" class="w-12 rounded-full h-12" alt="">
+                            <img :src="agent.details.profileImage"
+                                class="w-12 h-12 min-h-full min-w-full rounded-full cursor-pointer"
+                                v-if="agent.details.profileImage !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
+                            <Avatar size="100%" v-else :fname="agent.details.name.split(' ')[0]"
+                                :lname="agent.details.name.split(' ')[1]" />
                         </div>
                         <div class="flex flex-col items-start">
                             <span
@@ -40,8 +44,10 @@
                 </div>
             </div>
 
-            <button class="bg-primary rounded-lg w-full grid place-items-center h-14 text-white"
-                @click="$emit('finish')">Continue</button>
+            <div class="bottom-0 absolute md:static px-2 w-full">
+                <button class="bg-primary rounded-lg w-full grid place-items-center h-14 text-white"
+                    @click="$emit('finish')">Continue</button>
+            </div>
         </div>
     </div>
 </template>

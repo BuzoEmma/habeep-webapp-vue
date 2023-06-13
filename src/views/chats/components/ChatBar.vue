@@ -9,8 +9,10 @@
             @click="selectChat(index, chat)" v-for="(chat, index) in props.rooms" :key="(chat, index)"
             :class="{ 'active-bg': activeChat === chat }">
             <div class="flex flex-row items-start gap-x-3 w-fit h-full">
-                <div class="rounded-full w-12 h-12 grid place-items-center">
-                    <img :src="chat.user.profilePicture" class="w-12 h-12 rounded-full" alt="">
+                <div class="rounded-full w-12 h-12 grid place-items-center"  v-motion-slide-left :delay="Number((index + 2) + '30')">
+                    <img :src="chat.user.profilePicture" v-if="chat.user.profilePicture !== 'https://i.ibb.co/gtpxMJz/21.png'" class="w-12 h-12 rounded-full" alt="">
+                    <Avatar size="100%" v-else :fname="chat.user.fname"
+                        :lname="chat.user.surname" />
                 </div>
                 <div class="flex flex-col items-start h-full">
                     <span class="md:text-lg text-sm text-left text-webapp font-medium">{{ chat.user.fname + ' ' +

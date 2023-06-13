@@ -3,19 +3,19 @@
         <p class="text-webapp text-3xl font-bold">{{ formatNumber(walletData.accountValue) }}<sub
                 class="text-webapp text-sm font-bold">HBP</sub></p>
 
-        <div class="w-full flex flex-row items-center justify-between">
-            <div class="flex flex-col gap-y-1 items-center cursor-pointer"
+        <div class="w-full flex flex-row h-fit  items-end justify-between gap-x-3">
+            <div class="flex flex-col gap-y-1 items-center cursor-pointer" v-motion-slide-left :delay="200"
                 @click="$router.push('/wallet?tab=hbp&cont=deposit')">
                 <img src="../../../../../assets/icons/wallet/deposit.svg" alt="">
                 <span class="text-xs text-webapp">Deposit</span>
             </div>
-            <div class="flex flex-col gap-y-1 items-center cursor-pointer"
+            <div class="flex flex-col gap-y-1 items-center cursor-pointer" v-motion-slide-left :delay="300"
                 @click="$router.push('/wallet?tab=hbp&cont=withdraw')">
                 <img src="../../../../../assets/icons/wallet/withdraw.svg" alt="">
                 <span class="text-xs text-webapp">Withdraw</span>
             </div>
-            <div class="flex flex-col pb-1 items-center">
-                <img src="../../../../../assets/icons/wallet/staking.svg" alt="">
+            <div class="flex flex-col items-center gap-y-1" v-motion-slide-left :delay="400">
+                <img src="../../../../../assets/icons/wallet/staking.svg" class="" alt="">
                 <span class="text-xs text-webapp">Staking</span>
             </div>
         </div>
