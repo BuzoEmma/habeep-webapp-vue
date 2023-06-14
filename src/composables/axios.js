@@ -9,11 +9,12 @@ function getToken() {
 }
 let token = getToken()
 
-const axiosInstance = axios.create({ 
+const axiosInstance = axios.create({
   baseURL: URI,
+  timeout: 10000
 });
 
-if(token.length > 1) {
+if (token.length > 1) {
   axiosInstance.defaults.headers.common = {
     Authorization: `bearer ${token}`
   };
