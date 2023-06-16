@@ -56,12 +56,12 @@
                     v-if="onSelectMethod">
                     <!-- <span class="text-sm text-webapp cursor-pointer" @click="choosePaymentMethod('paystack')">Pay with
                         Paystack</span> -->
-                    <p class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer"
-                        @click="choosePaymentMethod('flutterwave')">
-                        <span>Pay with Flutterwave</span>
+                    <p @click="choosePaymentMethod('paystack')"
+                        class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer">
+                        <span>Pay with Paystack</span>
                     </p>
                     <p class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer">
-                        <span>Pay with Paystack</span>
+                        <span>Pay with Flutterwave</span>
                         <span class="text-xs font-extralight text-webapp">#comingsoon</span>
                     </p>
                     <p class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer">

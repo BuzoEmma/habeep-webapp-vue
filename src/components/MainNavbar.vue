@@ -35,8 +35,8 @@
             <div class="flex flex-row gap-x-10 items-start md:items-center pl-6">
                 <span class="uppercase text-lg text-webapp" @click="$router.push('/blog')">BLOG</span>
                 <div class="flex flex-row items-center cursor-pointer gap-x-2" @click="toggleNav">
-                    <img :src="$store.state.user.userProfileImage && $store.state.isAuthenticated"
-                        class="w-10 h-10 min-h-full min-w-full rounded-full cursor-pointer"
+                    <img :src="$store.state.user.userProfileImage"
+                        class="w-10 h-10 rounded-full cursor-pointer"
                         v-if="$store.state.user.userProfileImage !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
                     <Avatar size="100%" class="w-10 h-10" v-if="$store.state.user.userProfileImage === 'https://i.ibb.co/gtpxMJz/21.png' && $store.state.isAuthenticated" :fname="$store.state.user.fname" :lname="$store.state.user.surname" />
                     <img src="../assets/icons/user.svg" alt="" v-if="!$store.state.isAuthenticated">
