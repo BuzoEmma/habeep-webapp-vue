@@ -10,7 +10,7 @@ RUN ls -la
 
 COPY . ./
 
-COPY ./sitemap.xml ./dist/
+COPY /sitemap.xml /dist/.
 
 RUN npm run build
 
