@@ -3,6 +3,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
    <url>
+      <loc>https://habeep.org/</loc>
+      <changefreq>always</changefreq>
+      <priority>1.0</priority>
+   </url>
+
+   <url>
 
       <loc>https://habeep.org/home/</loc>
 
@@ -47,14 +53,6 @@
       <priority>0.7</priority>
 
    </url>
-
-   <url>
-
-      <loc>https://habeep.org/Beasty/</loc>
-
-      <changefreq>always</changefreq>
-
-   </url>
    <url>
 
       <loc>https://habeep.org/chats/</loc>
@@ -78,11 +76,20 @@
 
    </url>
    <url>
-
       <loc>https://habeep.org/listings/products/</loc>
-
       <changefreq>always</changefreq>
-
+   </url>
+   <url>
+      <loc>https://habeep.org/listings/feeds/</loc>
+      <changefreq>always</changefreq>
+   </url>
+   <url>
+      <loc>https://habeep.org/listings/account/</loc>
+      <changefreq>always</changefreq>
+   </url>
+   <url>
+      <loc>https://habeep.org/listings/chats/</loc>
+      <changefreq>always</changefreq>
    </url>
 
 </urlset>
