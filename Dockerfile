@@ -13,6 +13,6 @@ COPY . ./
 
 RUN npm run build
 
-COPY /sitemap.xml /dist/.
+COPY ./sitemap.xml ./dist/
 
 EXPOSE 8080
