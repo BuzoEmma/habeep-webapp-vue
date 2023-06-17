@@ -35,11 +35,12 @@
             <div class="flex flex-row gap-x-10 items-start md:items-center pl-6">
                 <span class="uppercase text-lg text-webapp" @click="$router.push('/blog')">BLOG</span>
                 <div class="flex flex-row items-center cursor-pointer gap-x-2" @click="toggleNav">
+                    <img src="../assets/icons/user.svg" alt="" v-if="!$store.state.isAuthenticated">
+
                     <img :src="$store.state.user.userProfileImage"
                         class="w-10 h-10 rounded-full cursor-pointer"
-                        v-if="$store.state.user.userProfileImage !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
+                        v-else-if="$store.state.user.userProfileImage !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
                     <Avatar size="100%" class="w-10 h-10" v-if="$store.state.user.userProfileImage === 'https://i.ibb.co/gtpxMJz/21.png' && $store.state.isAuthenticated" :fname="$store.state.user.fname" :lname="$store.state.user.surname" />
-                    <img src="../assets/icons/user.svg" alt="" v-if="!$store.state.isAuthenticated">
                     <svg xmlns="http://www.w3.org/2000/svg" :class="{ 'rotate-180': onNavDropdown }" fill="none"
                         viewBox="0 0 24 24" stroke-width="2" stroke="#0A1045" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />

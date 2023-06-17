@@ -243,9 +243,11 @@ const route = useRoute()
 const url = '/listings/query';
 const products = ref([])
 
-const title = ref('Habeep | ' + route.query.name + ' results')
+const title = ref('Habeep | All listings results')
 
-if(route.query.location && !route.query.name) {
+if(route.query.name) {
+    title.value = 'Habeep | ' + route.query.name + ' results'
+} else if(route.query.location) {
     title.value = 'Habeep | ' + route.query.location + ' results'
 }
 

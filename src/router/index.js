@@ -140,9 +140,9 @@ const routes = [
         name: 'Listings-product-Agent',
         beforeEnter: guardMyrouteForAgent,
         component: () => import('../views/listings/AgentAd.vue'),
-        // meta: {
-        //     title: "Agent Listing"
-        // }
+        meta: {
+            title: "Agent Listing"
+        }
     },
     // profile
     {
@@ -158,18 +158,18 @@ const routes = [
         beforeEnter: guardMyrouteForAgent,
         name: 'Agent-ads',
         component: () => import('../views/profile/agents/post/Ads.vue'),
-        // meta: {
-        //     title: "Agent Listings"
-        // }
+        meta: {
+            title: "Agent Listings"
+        }
     },
     {
         path: '/agent/ads/create',
         beforeEnter: guardMyrouteForAgent,
         name: 'Agent-ads-create',
         component: () => import('../views/profile/agents/post/Post.vue'),
-        // meta: {
-        //     title: "Create Ad"
-        // }
+        meta: {
+            title: "Create Ad"
+        }
     },
     {
         path: '/user/profile/:id',
@@ -187,18 +187,18 @@ const routes = [
         name: 'IBO_ChooseCategory',
         beforeEnter: guardMyrouteForUSERIBO,
         component: () => import('../views/profile/IBO/register/ChooseCategory.vue'),
-        // meta: {
-        //     title: "Become an IBO"
-        // }
+        meta: {
+            title: "Become an Affiliated User"
+        }
     },
     {
         path: '/account/IBO/category/agent',
         name: 'IBO_Category_Agent',
         beforeEnter: guardMyroute,
         component: () => import('../views/profile/IBO/register/AgentForm.vue'),
-        // meta: {
-        //     title: "Become an Agent"
-        // }
+        meta: {
+            title: "Become an Agent"
+        }
     },
     {
         path: '/account/IBO/category/user',

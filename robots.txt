@@ -1,13 +1,11 @@
 User-agent: *
-allow: /home
 Disallow: /verify-otp
 Disallow: /reset-pin
 Disallow: /logout
 Disallow: /login
 Disallow: /forgot-pin
 
-User-agent: magicsearchbot
-allow: /home
+User-agent: googlebot
 Disallow: /verify-otp
 Disallow: /reset-pin
 Disallow: /logout
