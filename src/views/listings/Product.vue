@@ -13,9 +13,9 @@
             <div class="product-img-grid desktop-view xl:flex flex-row items-center w-full mt-10 hidden">
                 <div class="relative h-full display-img w-1/2">
                     <img :src="carouselImg.link" class=" h-full rounded-lg feed-image w-full"
-                        v-if="carouselImg.link.toString().includes('mp4') == false" @click="enterImageViewer()" alt="">
+                        v-if="carouselImg.link.toString().includes('mp4') == false" @click="enterImageViewer()" :alt="product.title">
                     <video :src="carouselImg.link" @click="enterImageViewer()" loop
-                        class="w-full h-full rounded-lg feed-image" v-else autoplay muted></video>
+                        class="w-full h-full rounded-lg feed-image" :alt="product.title" v-else autoplay muted></video>
 
                     <div class="w-full absolute flex flex-row top-5 items-center justify-between px-2">
                         <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
@@ -45,10 +45,10 @@
                     <div class="flex flex-row h-1/2 w-full items-center gap-2">
                         <div class="h-full w-1/2  cursor-pointer gap-2 overflow-hidden rounded-lg"
                             v-for="image in images.slice(1, 3)" :key="image">
-                            <img :src="image.link" class=" h-full w-full rounded-lg feed-image-short"
+                            <img :alt="product.title" :src="image.link" class=" h-full w-full rounded-lg feed-image-short"
                                 v-if="image.link && image.link.toString().includes('mp4') === false"
-                                @click="enterImageViewer()" :key="image" alt="">
-                            <video :src="image.link" @click="enterImageViewer()" loop
+                                @click="enterImageViewer()" :key="image" >
+                            <video :alt="product.title" :src="image.link" @click="enterImageViewer()" loop
                                 class="w-full rounded-lg feed-image-short" v-else autoplay muted preload="metadata"></video>
                         </div>
                     </div>
@@ -57,8 +57,8 @@
                             v-for="image in images.slice(3, 5)" :key="image">
                             <img :src="image.link" class=" h-full w-full rounded-md feed-image-short"
                                 v-if="image.link && image.link.toString().includes('mp4') == false"
-                                @click="enterImageViewer()" alt="">
-                            <video :src="image.link" @click="enterImageViewer()" loop
+                                @click="enterImageViewer()" :alt="product.title">
+                            <video :alt="product.title" :src="image.link" @click="enterImageViewer()" loop
                                 class="w-full rounded-md feed-image-short" v-else autoplay muted preload="metadata"></video>
                         </div>
                     </div>
@@ -93,10 +93,10 @@
                     </div>
                 </div>
 
-                <img :src="carouselImg.link" class=" h-full w-full feed-image"
+                <img :alt="product.title" :src="carouselImg.link" class=" h-full w-full feed-image"
                     v-if="carouselImg.link && carouselImg.link.toString().includes('mp4') == false"
-                    @click="enterImageViewer()" alt="">
-                <video :src="carouselImg.link" loop class="w-full feed-image" @click="enterImageViewer()" v-else autoplay
+                    @click="enterImageViewer()">
+                <video :alt="product.title" :src="carouselImg.link" loop class="w-full feed-image" @click="enterImageViewer()" v-else autoplay
                     muted preload="metadata"></video>
                 <!-- <img :src="images[activeCarouselImg - 1].link" class="h-full w-full new-img" :class="{'hidden': changeCarouselImg}"> -->
 
@@ -298,14 +298,15 @@
                         <div class="flex flex-row gap-x-2 items-center">
                             <div class="rounded-full w-12 h-12  grid place-items-center">
                                 <img :src="agentDetails.profileImg" class="w-12 h-12 rounded-full"
-                                            v-if="agentDetails.profileImg !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
-                                        <Avatar size="100%" v-else :fname="agentDetails.name.fname"
-                                            :lname="agentDetails.name.surname" />
+                                    v-if="agentDetails.profileImg !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
+                                <Avatar size="100%" v-else :fname="agentDetails.name.fname"
+                                    :lname="agentDetails.name.surname" />
                             </div>
                             <div class="flex flex-col">
-                                <span class="text-sm xl:text-lg text-left agent-name text-webapp font-medium">{{
-                                    agentDetails.name.fname + ' ' + agentDetails.name.surname
-                                }}</span>
+                                <span class="text-sm xl:text-lg text-left agent-name text-webapp font-medium"
+                                    v-if="agentDetails.name && agentDetails.name.fname">{{
+                                        agentDetails.name.fname + ' ' + agentDetails.name.surname
+                                    }}</span>
                                 <span class="text-sm agent-ads-count text-left text-sub-webapp">{{
                                     agentDetails.ads.length
                                 }} ads</span>
@@ -398,18 +399,43 @@ import formatNumber from "number_formatter"
 import saveAd from '../../composables/saveAd'
 import { useStore } from 'vuex';
 
+const route = useRoute()
+const router = useRouter()
+const store = useStore()
+
+
+const title = ref('Habeep | ' + route.params.id + ' Product')
+const content = ref('This is ' + route.params.id + ' Product')
+const img = ref('https://i.ibb.co/BnG8VLy/logo-white.png')
+import { useHead } from '@vueuse/head'
+
+useHead({
+    title: () => title.value,
+    meta: [
+        { charset: 'utf-8' },
+        { name: 'description', content: () => content.value },
+
+        { name: 'og:title', content: () => title.value },
+        { name: 'og:image', content: () => img.value },
+        { name: 'og:url', content: 'https://habeep.org/listings/product/' + route.params.id },
+        { name: 'og:website', content: 'website' },
+        { name: 'og:description', content: () => content.value },
+        { name: 'canonical', content: 'https://habeep.org/listings/product/' + route.params.id },
+
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+    ]
+})
+
 
 const url = '/listings/ads/get/';
 const url2 = '/profile/get-agent/';
 
 const carouselImg = ref(null)
 
-const route = useRoute()
-const router = useRouter()
-const store = useStore()
+
 const processingProduct = ref(false)
 const product = ref({})
-const agentDetails = ref({})
+const agentDetails = ref({ ads: [] })
 
 const changingCarousel = ref(false)
 const inNewCarousel = ref(false)
@@ -420,22 +446,79 @@ const openFullDesc = ref(false)
 const images = ref(null)
 
 const getProduct = async () => {
-    processingProduct.value = true
-    const getProduct = await axios.get(url + route.params.id)
-    processingProduct.value = true
+    try {
+        processingProduct.value = true
+        const getProduct = await axios.get(url + route.params.id)
+        title.value = `Habeep | ${getProduct.data.product.title}`
 
-    product.value = getProduct.data.product
-    if (product.value.status === 'CLOSED') {
-        router.replace('/not-found')
+        processingProduct.value = true
+
+        product.value = getProduct.data.product
+        if (product.value.status === 'CLOSED') {
+            router.replace({ name: 'not-found' })
+        }
+        images.value = getProduct.data.product.images
+        img.value = getProduct.data.product.images[0]
+        carouselImg.value = getProduct.data.product.images[0]
+
+        getAgent(product.value.agentId)
+    } catch (error) {
+        router.replace({ name: 'not-found-route' })
     }
-    images.value = getProduct.data.product.images
-    carouselImg.value = getProduct.data.product.images[0]
-
-    getAgent(product.value.agentId)
 }
 async function getAgent(agentId) {
-    const getAgent = await axios.get(url2 + agentId)
-    agentDetails.value = getAgent.data.agent
+    try {
+        const getAgent = await axios.get(url2 + agentId)
+        agentDetails.value = getAgent.data.agent
+        // set google seo
+        const structuredData = {
+            "@context": "https://schema.org/",
+            "@type": "Product",
+            name: product.value.title,
+            image: product.value.images,
+            description: product.value.description,
+            sku: product.value._id,
+            mpn: product.value._id,
+            brand: {
+                "@type": "Brand",
+                name: agentDetails.value.name.fname + ' ' + agentDetails.value.name.surname
+            },
+            "review": {
+                "@type": "Review",
+                "reviewRating": {
+                    "@type": "Rating",
+                    "ratingValue": 5,
+                    "bestRating": 5
+                },
+                "author": {
+                    "@type": "Person",
+                    "name": "Habeep LLC"
+                }
+            },
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": 5,
+                "reviewCount": 1
+            },
+            "offers": {
+                "@type": "Offer",
+                url: `https://habeep.org/listings/products/${product.value._id}`,
+                "priceCurrency": "NGN",
+                price: product.value.price,
+                "itemCondition": "https://schema.org/NewCondition",
+                "availability": "https://schema.org/InStock"
+            }
+        }
+
+        const script = document.createElement('script');
+        script.setAttribute('type', 'application/ld+json');
+        script.textContent = JSON.stringify(structuredData);
+        document.head.appendChild(script);
+
+
+    } catch (error) {
+        router.replace({ name: 'not-found-route' })
+    }
 }
 
 const creatingRoom = ref(false)

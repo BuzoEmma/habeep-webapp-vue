@@ -1,10 +1,39 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import viteImagemin from 'vite-plugin-imagemin'
+import viteCompression from 'vite-plugin-compression'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()],
-  define: {
-    'import.meta.env.PAYSTACK_SECRET_KEY': JSON.stringify('sk_live_8990dd21e112e7c5f4c74ece341c87c3c38ff2f3')
-  }
+  plugins: [
+    vue(),
+    viteCompression(),
+    viteImagemin({
+      gifsicle: {
+        optimizationLevel: 7,
+        interlaced: false,
+      },
+      optipng: {
+        optimizationLevel: 7,
+      },
+      mozjpeg: {
+        quality: 20,
+      },
+      pngquant: {
+        quality: [0.8, 0.9],
+        speed: 4,
+      },
+      svgo: {
+        plugins: [
+          {
+            name: 'removeViewBox',
+          },
+          {
+            name: 'removeEmptyAttrs',
+            active: false,
+          },
+        ],
+      },
+    }),
+  ]
 })

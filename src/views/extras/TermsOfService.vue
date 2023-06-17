@@ -230,6 +230,24 @@
 <script setup>
 import HomeNavbar from '../../components/HomeNavbar.vue'
 
+import { useHead } from '@vueuse/head'
+useHead({
+  title: 'Habeep - Terms of Service',
+  meta: [
+      { charset: 'utf-8' },
+      { name: 'description', content: 'Read our Legal Documents' },
+
+      { name: 'og:title', content: 'Habeep Terms of Service' },
+      { name: 'og:image', content: 'https://media.istockphoto.com/id/1179640294/vector/contract-or-document-signing-icon-document-folder-with-stamp-and-text-contract-conditions.jpg?s=612x612&w=0&k=20&c=87Bu41EuMtdXDfJbm1YrquzUmHtPjFiCb9PCsrsWP1c=' },
+      { name: 'og:url', content: 'https://habeep.org/terms-of-service' },
+      { name: 'og:website', content: 'website' },
+      { name: 'og:description', content: 'Read our Legal Documents including Privacy Policy' },
+      { name: 'canonical', content: 'https://habeep.org/terms-of-service' },
+
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+    ]
+})
+
 </script>
 
 <style scoped>@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');

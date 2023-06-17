@@ -1,6 +1,9 @@
 @font-face {
   font-family: Aeonik;
+  font-style: normal;
+  font-weight: 400;
   src: url(../fonts/AeonikTRIAL-Regular.otf);
+  font-display: swap;
 }
 
 :root {

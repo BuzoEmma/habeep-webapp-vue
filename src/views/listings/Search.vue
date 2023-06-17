@@ -243,6 +243,33 @@ const route = useRoute()
 const url = '/listings/query';
 const products = ref([])
 
+const title = ref('Habeep | ' + route.query.name + ' results')
+
+if(route.query.location && !route.query.name) {
+    title.value = 'Habeep | ' + route.query.location + ' results'
+}
+
+const content = ref('View results for ' + route.query.name || 'All' + 'search')
+const img = ref('https://i.ibb.co/BnG8VLy/logo-white.png')
+import { useHead } from '@vueuse/head'
+
+useHead({
+    title: () => title.value,
+    meta: [
+        { charset: 'utf-8' },
+        { name: 'description', content: () => content.value },
+
+        { name: 'og:title', content: () => title.value },
+        { name: 'og:image', content: () => img.value },
+        { name: 'og:url', content: 'https://habeep.org/listings/search/?' + route.query.name || 'All' },
+        { name: 'og:website', content: 'website' },
+        { name: 'og:description', content: () => content.value },
+        { name: 'canonical', content: 'https://habeep.org/listings/search/?' + route.query.name || 'All' },
+
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+    ]
+})
+
 
 
 const states = ref([])

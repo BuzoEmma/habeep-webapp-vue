@@ -145,7 +145,7 @@
                                     <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
                                         @click="$router.push('/listings/products/' + ad._id)">
                                         {{ ad.title }}
-                                        <span class="text-sm ">at</span>
+                                        <span class="text-sm ">@</span>
                                         {{ (ad.location.city || ad.location.address.substr(0, 20)) }}
                                     </p>
 
@@ -173,8 +173,10 @@
 
                                     </div>
 
-                                    <div class="rounded border border-white px-2 py-1 absolute top-5 right-5" v-if="ad.distance">
-                                        <span class="text-white text-sm text-center" v-if="ad.distance">{{ Math.round(ad.distance) }} KM
+                                    <div class="rounded border border-white px-2 py-1 absolute top-5 right-5"
+                                        v-if="ad.distance">
+                                        <span class="text-white text-sm text-center" v-if="ad.distance">{{
+                                            Math.round(ad.distance) }} KM
                                             Away</span>
                                     </div>
                                 </div>
@@ -204,7 +206,7 @@
                                     <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
                                         @click="$router.push('/listings/products/' + ad._id)">
                                         {{ ad.title }}
-                                        <span class="text-sm ">at</span>
+                                        <span class="text-sm ">@</span>
                                         {{ (ad.location.city || ad.location.address.substr(0, 20)) }}
                                     </p>
 
@@ -232,7 +234,8 @@
 
                                     </div>
 
-                                    <div class="rounded border border-white px-2 py-1 absolute top-5 right-5" v-if="ad.distance">
+                                    <div class="rounded border border-white px-2 py-1 absolute top-5 right-5"
+                                        v-if="ad.distance">
                                         <span class="text-white text-sm text-center">{{ Math.round(ad.distance) }} KM
                                             Away</span>
                                     </div>
@@ -263,6 +266,29 @@ const route = useRoute()
 const router = useRouter()
 const store = useStore()
 
+const title = ref('Habeep | ' + route.params.username + ' Profile')
+const content = ref('This is ' + route.params.username + ' Profile')
+const img = ref('https://i.ibb.co/BnG8VLy/logo-white.png')
+import { useHead } from '@vueuse/head'
+
+useHead({
+    title: () => title.value,
+    meta: [
+        { charset: 'utf-8' },
+        { name: 'description', content: () => content.value },
+
+        { name: 'og:title', content: () => title.value },
+        { name: 'og:image', content: () => img.value },
+        { name: 'og:url', content: 'https://habeep.org/' + route.params.username },
+        { name: 'og:website', content: 'website' },
+        { name: 'og:description', content: () => content.value },
+        { name: 'canonical', content: 'https://habeep.org/' + route.params.username },
+
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+    ]
+})
+
+
 const url1 = '/listings/ads/get/'
 const url2 = '/profile/get-agent/';
 
@@ -274,13 +300,35 @@ const ads = ref([])
 
 
 async function getAgent() {
-    const getAgent = await axios.get(url2 + route.params.username)
-    agentDetails.value = getAgent.data.agent
+    try {
+        const getAgent = await axios.get(url2 + route.params.username)
+        agentDetails.value = getAgent.data.agent
+        title.value = 'Habeep | ' + agentDetails.value.name.username + ' Profile'
+        img.value = agentDetails.value.profileImg
 
-    agentDetails.value.ads.forEach(async product => {
-        const distance = await calculateDistance(product.location.city || product.location.address + ', Nigeria')
-        product.distance = distance
-    })
+        // set google seo
+        const structuredData = {
+            "@context": "http:\/\/schema.org\/",
+            "name": agentDetails.value.name.fname + ' ' + agentDetails.value.name.surname,
+            "@type": "Person",
+            "email": agentDetails.value.email,
+            "sameAs": [
+                `https:\/\/habeep.org\/${agentDetails.value.name.username}`,
+            ]
+        }
+
+        const script = document.createElement('script');
+        script.setAttribute('type', 'application/ld+json');
+        script.textContent = JSON.stringify(structuredData);
+        document.head.appendChild(script);
+
+        agentDetails.value.ads.forEach(async product => {
+            const distance = await calculateDistance(product.location.city || product.location.address + ', Nigeria')
+            product.distance = distance
+        })
+    } catch (error) {
+        router.replace({ name: 'not-found-route' })
+    }
 }
 
 function changeTab(tab) {
@@ -353,6 +401,7 @@ onMounted(() => {
     border-radius: 5px;
     height: 50px;
 }
+
 .user-btn {
     border: 1px solid #D9DDEE;
     border-radius: 5px;

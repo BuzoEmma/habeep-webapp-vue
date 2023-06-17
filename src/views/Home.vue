@@ -12,7 +12,7 @@
         Quick way to Find your dream Property</p>
 
       <!-- Quick search -->
-      <div class="flex flex-col quick-search no-wrap relative">
+      <div class="flex flex-col quick-search no-wrap">
         <!-- Search bar -->
         <!-- desktop -->
         <div class="search-bar w-full hidden md:flex flex-row items-center bg-white pl-3 pr-1 h-12 py-1 gap-x-4">
@@ -42,7 +42,7 @@
 
         <!-- search results -->
         <div
-          class="flex flex-col gap-y-4 search-results relative sm:absolute bg-white z-10 w-full py-5 px-3 top-12 md:top-20"
+          class="flex flex-col gap-y-4 search-results sm:absolute bg-white z-10 w-full py-5 px-3 top-12 md:top-20"
           v-if="(data.input.length > 0)">
           <div class="flex flex-row items-center result justify-between w-full cursor-pointer"
             @click="$router.push('/listings/search?name=' + data.input)">
@@ -71,16 +71,16 @@
 
     <!-- iLLUSTRATIONS ?  Footer-->
     <div class="flex flex-row items-end xl:justify-between justify-center  w-full z-0">
-      <img src="../assets/illustrations/home-left.svg" class="xl:flex hidden" alt="">
+      <img v-lazy src="../assets/illustrations/home-left.svg" class="xl:flex hidden" alt="">
       <div class="flex flex-row md:mb-10 mb-4 items-center gap-x-4">
         <router-link to="/terms-of-service" class="underline text-webapp">Terms of service</router-link>
         <router-link to="/listings/search?name=Houses" class="underline text-webapp">Products</router-link>
         <router-link to="/help" class="underline text-webapp">Help</router-link>
       </div>
-      <img src="../assets/illustrations/home-right.svg" class="xl:flex hidden" alt="">
+      <img src="../assets/illustrations/home-right.svg" v-lazy class="xl:flex hidden" alt="">
     </div>
 
-    <MobileSearch v-if="onSearch" v-motion :initial="{ opacity: 0.5, y: 100 }" :enter="{ opacity: 1, y: 0 }" />
+    <MobileSearch v-if="onSearch" @leaveSearch="onSearch = false" :delay="100" v-motion :initial="{ opacity: 0.5, y: 100 }" :enter="{ opacity: 1, y: 0 }" />
   </div>
 </template>
 
@@ -88,6 +88,25 @@
 import { ref, reactive } from "vue"
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
+
+import { useHead } from '@vueuse/head'
+useHead({
+  title: 'Habeep',
+  titleTemplate: '%s | Search Ads',
+  meta: [
+      { charset: 'utf-8' },
+      { name: 'description', content: 'Search for new listings' },
+
+      { name: 'og:title', content: 'Search Ads' },
+      { name: 'og:image', content: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
+      { name: 'og:url', content: 'https://habeep.org/home' },
+      { name: 'og:website', content: 'website' },
+      { name: 'og:description', content: 'Search for Ads in the home page' },
+      { name: 'canonical', content: 'https://habeep.org/home' },
+
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+    ]
+})
 
 
 import HomeNavbar from '../components/HomeNavbar.vue'

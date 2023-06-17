@@ -1,13 +1,14 @@
 <template>
-    <div class="absolute w-screen h-screen flex flex-row items-center justify-center lg:hidden z-10" v-if="onDropdown" style="background-color: rgb(22, 22, 34, 0.5)">
+    <div class="absolute w-screen h-screen flex flex-row items-center justify-center lg:hidden z-10" v-if="onDropdown"
+        style="background-color: rgb(22, 22, 34, 0.5)">
 
         <div v-if="(onSortDropdown && onDropdown)"
             class="flex flex-col drop-shadow-md shadow-xl my-auto bg-white rounded-xl gap-y-3 border p-4 border-gray-300 z-10"
             style="width: 220px">
             <div class="flex flex-row items-center justify-between" @click="toggleDropdown('sort')">
                 <span class="text-lg text-webapp font-medium">Sort:</span>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                    stroke-width="1.5" stroke="#71759D" class="w-6 h-6">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#71759D"
+                    class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </div>
@@ -138,7 +139,7 @@
                 </div>
 
                 <!-- filters -->
-                <div class="flex flex-row items-center h-fit gap-x-4 transition-all" :class="{'relative': onDropdown}">
+                <div class="flex flex-row items-center h-fit gap-x-4 transition-all" :class="{ 'relative': onDropdown }">
                     <div @click="toggleDropdown('sort')"
                         class="border border-gray-300 w-56 py-1 justify-center hidden lg:flex flex-row items-center gap-x-2 rounded-full cursor-pointer ">
                         <span class="md:text-lg text-webapp text-sm flex flex-row gap-x-1"> Sort:
@@ -250,7 +251,7 @@
 
 
             <!-- feeds sections -->
-            <div class="flex flex-row flex-auto h-full md:mt-10 w-full flex-wrap px-6"
+            <div class="flex flex-row flex-auto h-full md:mt-10 w-full flex-wrap px-4"
                 :class="{ 'justify-center items-center': filteredFeeds.length < 1 }">
 
                 <img src="../assets/images/rhombus-preloader.gif" class="m-auto" v-if="fetchingFeeds === true" alt="">
@@ -264,11 +265,13 @@
                 <div class="basis-full md:basis-1/2 xl:basis-1/4 md:px-3 md:py-3 py-5 gap-y-4 px-0" v-else
                     v-for="feed in filteredFeeds" :key="feed">
                     <div class="flex flex-col items-start gap-y-2 border rounded-md border-gray-200 pb-2 feed">
-                        <img :src="feed.images[0].link" @click="$router.push('/listings/products/' + feed._id)" alt=""
+                        <img fetchpriority="high" :src="feed.images[0].link"
+                            @click="$router.push('/listings/products/' + feed._id)" alt=""
                             class="w-full feed-image rounded-t-md"
                             v-if="feed.images[0].link && feed.images[0].link.includes('mp4') == false">
-                        <video :src="feed.images[0].link" @click="$router.push('/listings/products/' + feed._id)"
-                            class="w-full rounded-t-md feed-image" v-else autoplay muted loop preload="metadata"></video>
+                        <video fetchpriority="high" :src="feed.images[0].link"
+                            @click="$router.push('/listings/products/' + feed._id)" class="w-full rounded-t-md feed-image"
+                            v-else autoplay muted loop preload="metadata"></video>
                         <p class="text-webapp text-lg font-medium w-full px-2 cursor-pointer"
                             @click="$router.push('/listings/products/' + feed._id)">{{ feed.title }}</p>
 
@@ -285,8 +288,8 @@
                                 <span v-if="feed.for === 'rent'">Rent</span>
                                 <span v-if="feed.for === 'sale'">Sale</span>
                             </p>
-                            <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
-                                v-if="$store.state.isAuthenticated" :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }"
+                            <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }" :delay="200"
+                                v-if="$store.state.isAuthenticated" :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2}"
                                 fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                 class="w-6 h-6 cursor-pointer" @click="saveAd(feed._id)"
                                 :class="{ 'text-orange-400': $store.state.user.savedAds.includes(feed._id) }">
@@ -320,6 +323,26 @@ import calculateDistance from '../composables/getAdDistance.js'
 import axios from "../composables/axios";
 import saveAd from "../composables/saveAd";
 
+const title = ref('Habeep | Feeds(0)')
+import { useHead } from '@vueuse/head'
+
+useHead({
+    title: () => title.value,
+    meta: [
+        { charset: 'utf-8' },
+        { name: 'description', content: 'Specific User Feeds' },
+
+        { name: 'og:title', content: 'Feeds' },
+        { name: 'og:image', content: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
+        { name: 'og:url', content: 'https://habeep.org/feeds' },
+        { name: 'og:website', content: 'website' },
+        { name: 'og:description', content: 'View your Feeds ' },
+        { name: 'canonical', content: 'https://habeep.org/feeds' },
+
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+    ]
+})
+
 const store = useStore()
 
 const route = useRoute()
@@ -349,10 +372,10 @@ const currentCity = ref('Gwagwalada')
 
 currentState.value = store.state.feedLocation.state
 
-if(store.state.feedLocation.state) {
+if (store.state.feedLocation.state) {
     currentState.value = store.state.feedLocation.state
 }
-if(store.state.feedLocation.city) {
+if (store.state.feedLocation.city) {
     currentCity.value = store.state.feedLocation.city
 }
 
@@ -401,6 +424,7 @@ async function getFeeds() {
 
         if (getFeeds.data) {
             feeds.value = getFeeds.data.feed
+            title.value = `Habeep | Feeds(${feeds.value.length })`
         }
 
         // feeds.value.forEach(async feed => {
@@ -525,8 +549,9 @@ async function getStates() {
     store.dispatch('saveStates', states.value)
 }
 
-onMounted(() => {
-    getFeeds()
+onMounted(async () => {
+    await getFeeds()
+
     if (store.state.allStates.length !== 0) {
         states.value = store.state.allStates.sort(function (a, b) {
             const nameA = a.state.name.toUpperCase(); // ignore upper and lowercase

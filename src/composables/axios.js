@@ -11,7 +11,7 @@ let token = getToken()
 
 const axiosInstance = axios.create({
   baseURL: URI,
-  timeout: 10000
+  timeout: 100000
 });
 
 if (token.length > 1) {

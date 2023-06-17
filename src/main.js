@@ -11,17 +11,28 @@ import VueSocialSharing from 'vue-social-sharing'
 
 import AvatarInitials from './components/reusables/AvatarInitials.vue'
 
+import VueLazyLoad from 'vue3-lazyload'
+import { createHead } from "@vueuse/head"
+
 
 
 
 const myApp = createApp(App);
 
+const head = createHead()
+
 
 myApp.component('Toast', Toast)
 myApp.component('Preloader', Preloader)
 myApp.component('Avatar', AvatarInitials)
- 
+
+myApp.use(VueLazyLoad, {
+    loading: 'Loading Media',
+    error: 'Failed to load media',
+})
+
 myApp.use(MotionPlugin)
+myApp.use(head)
 myApp.use(VueSocialSharing)
 myApp.use(store)
 myApp.use(router)

@@ -1,6 +1,6 @@
 <template>
     <div class="main flex flex-col h-screen min-h-full absolute w-screen z-10 overflow-hidden bg-white">
-        <div class="flex flex-col w-full quick-search no-wrap relative mt-6 items-center">
+        <div class="flex flex-col w-full quick-search no-wrap relative no-scroll-btn mt-6 items-center">
             <!-- Search bar -->
             <div class="search-bar w-11/12 flex flex-row items-center bg-white pl-3 pr-1 h-12 py-1 gap-x-4">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="#B1B4CD"
@@ -9,7 +9,7 @@
                         d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                 </svg>
 
-                <input type="text" v-model="data.input" @keydown="checkForEnter" ref="input"
+                <input type="text" v-model="data.input" @keyup="checkForEnter" ref="input"
                     class=" rounded-sm w-full h-full outline-none" placeholder="Search by property type, location, price">
             </div>
             <!-- search results -->
@@ -50,10 +50,16 @@ const data = reactive({
     input: ''
 })
 
+const emit = defineEmits(['leaveSearch'])
+
 const checkForEnter = (e) => {
-    var key = e.keyCode || e.charCode || e.key || e.code;
-    if (key === 13 || key === 'Enter') {
-        router.push('/listings/search?name=' + data.input)
+    if (data.input.length > 0) {
+        var key = e.keyCode || e.charCode || e.key || e.code;
+        if (key === 13 || key === 'Enter') {
+            router.push('/listings/search?name=' + data.input)
+        }
+    } else {
+        emit('leaveSearch')
     }
 }
 

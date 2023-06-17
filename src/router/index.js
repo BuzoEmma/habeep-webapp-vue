@@ -80,105 +80,105 @@ const routes = [
         path: '/home',
         name: 'Home',
         component: Home,
-        meta: {
-            title: "Search"
-        }
+        // meta: {
+        //     title: "Search"
+        // }
     },
     {
         path: '/feeds',
         component: Feeds,
         beforeEnter: guardMyroute,
         name: 'Feeds',
-        meta: {
-            title: 'Feeds'
-        }
+        // meta: {
+        //     title: 'Feeds'
+        // }
     },
     // extras
     {
         path: '/blog',
         name: 'Blog',
         component: Blog,
-        meta: {
-            title: "Blog"
-        }
+        // meta: {
+        //     title: "Blog"
+        // }
     },
     {
         path: '/help',
         name: 'FAQ',
         component: () => import('../views/extras/FAQ.vue'),
-        meta: {
-            title: "Help"
-        }
+        // meta: {
+        //     title: "Help"
+        // }
     },
     {
         path: '/terms-of-service',
         name: 'Terms-Of-Service',
         component: TOS,
-        meta: {
-            title: "Terms of Service"
-        }
+        // meta: {
+        //     title: "Terms of Service"
+        // }
     },
     // listings
     {
         path: '/listings/search',
         name: 'Listings-search',
         component: () => import('../views/listings/Search.vue'),
-        meta: {
-            title: "Search ads"
-        }
+        // meta: {
+        //     title: "Search ads"
+        // }
     },
     {
         path: '/listings/products/:id',
         name: 'Listings-product',
         component: () => import('../views/listings/Product.vue'),
-        meta: {
-            title: "Product"
-        }
+        // meta: {
+        //     title: "Product"
+        // }
     },
     {
         path: '/listings/agent/products/:id',
         name: 'Listings-product-Agent',
         beforeEnter: guardMyrouteForAgent,
         component: () => import('../views/listings/AgentAd.vue'),
-        meta: {
-            title: "Agent Listing"
-        }
+        // meta: {
+        //     title: "Agent Listing"
+        // }
     },
     // profile
     {
         path: '/:username',
         name: 'UserProfiles',
         component: () => import('../views/profile/agents/Profile.vue'),
-        meta: {
-            title: 'Profile'
-        }
+        // meta: {
+        //     title: 'Profile'
+        // }
     },
     {
         path: '/agent/ads',
         beforeEnter: guardMyrouteForAgent,
         name: 'Agent-ads',
         component: () => import('../views/profile/agents/post/Ads.vue'),
-        meta: {
-            title: "Agent Listings"
-        }
+        // meta: {
+        //     title: "Agent Listings"
+        // }
     },
     {
         path: '/agent/ads/create',
         beforeEnter: guardMyrouteForAgent,
         name: 'Agent-ads-create',
         component: () => import('../views/profile/agents/post/Post.vue'),
-        meta: {
-            title: "Create Ad"
-        }
+        // meta: {
+        //     title: "Create Ad"
+        // }
     },
     {
         path: '/user/profile/:id',
         name: 'User-profile',
         beforeEnter: guardMyroute,
         component: () => import('../views/profile/user/Profile.vue'),
-        meta: {
-            title: "Profile"
-        }
+        // meta: {
+        //     title: "Profile"
+        // }
     },
 
     // IBO
@@ -187,27 +187,27 @@ const routes = [
         name: 'IBO_ChooseCategory',
         beforeEnter: guardMyrouteForUSERIBO,
         component: () => import('../views/profile/IBO/register/ChooseCategory.vue'),
-        meta: {
-            title: "Become an IBO"
-        }
+        // meta: {
+        //     title: "Become an IBO"
+        // }
     },
     {
         path: '/account/IBO/category/agent',
         name: 'IBO_Category_Agent',
         beforeEnter: guardMyroute,
         component: () => import('../views/profile/IBO/register/AgentForm.vue'),
-        meta: {
-            title: "Become an Agent"
-        }
+        // meta: {
+        //     title: "Become an Agent"
+        // }
     },
     {
         path: '/account/IBO/category/user',
         name: 'IBO_Category_User',
         beforeEnter: guardMyroute,
         component: () => import('../views/profile/IBO/register/UserForm.vue'),
-        meta: {
-            title: "Become an IBO User"
-        }
+        // meta: {
+        //     title: "Become an IBO User"
+        // }
     },
 
     // chats
@@ -216,9 +216,9 @@ const routes = [
         name: 'Chat',
         beforeEnter: guardMyroute,
         component: () =>  import('../views/chats/Index.vue'),
-        meta: {
-            title: "Messages"
-        }
+        // meta: {
+        //     title: "Messages"
+        // }
     },
     // authentication
     {
@@ -277,6 +277,12 @@ const routes = [
         }
     },
 
+    {
+        path: '/not-found',
+        name: 'not-found-route',
+        component: () => import('../views/fallbacks/404.vue')
+      },
+
     { path: '/:pathMatch(.*)*', name: 'not-found', component: () => import('../views/fallbacks/404.vue'), meta: { title: 'Page not Found' } },
 ]
 
@@ -288,7 +294,9 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    document.title = `Habeep - ${to.meta.title}`;
+    if(to.meta && to.meta.title) {
+        document.title = `Habeep | ${to.meta.title }`;
+    }
     if (to.query.reload) {
         next({
             query: null,

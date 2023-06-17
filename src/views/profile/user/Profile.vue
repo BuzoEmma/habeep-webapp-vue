@@ -294,6 +294,29 @@ const store = useStore()
 const route = useRoute()
 const router = useRouter()
 
+const title = ref('Habeep | ' + store.state.user.fname + ' Profile')
+const content = ref('This is ' + store.state.user.fname + ' Profile')
+const img = ref(store.state.user.userProfileImage)
+
+import { useHead } from '@vueuse/head'
+
+useHead({
+    title: () => title.value,
+    meta: [
+        { charset: 'utf-8' },
+        { name: 'description', content: () => content.value },
+
+        { name: 'og:title', content: () => title.value },
+        { name: 'og:image', content: () => img.value },
+        { name: 'og:url', content: 'https://habeep.org/user/profile/' + route.params.id },
+        { name: 'og:website', content: 'website' },
+        { name: 'og:description', content: () => content.value },
+        { name: 'canonical', content: 'https://habeep.org/user/profile/' + route.params.id },
+
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+    ]
+})
+
 if (route.query.reloadApp) {
     router.replace({ query: null });
     setTimeout(() => {

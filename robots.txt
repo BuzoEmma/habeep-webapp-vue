@@ -1,0 +1,17 @@
+User-agent: *
+allow: /home
+Disallow: /verify-otp
+Disallow: /reset-pin
+Disallow: /logout
+Disallow: /login
+Disallow: /forgot-pin
+
+User-agent: magicsearchbot
+allow: /home
+Disallow: /verify-otp
+Disallow: /reset-pin
+Disallow: /logout
+Disallow: /login
+Disallow: /forgot-pin
+
+Sitemap: https://habeep.org/sitemap.xml

@@ -47,7 +47,7 @@
         <!-- Navigation Menu -->
 
         <div v-if="(onNavDropdown || onMobileNav)" :class="{ 'right-2 top-20': onMobileNav }" v-motion-slide-top :delay="200"
-            class="flex flex-col drop-shadow-lg shadow-xl bg-white rounded-xl gap-y-3 border p-6 border-gray-300 absolute top-16 right-20 z-10"
+            class="flex flex-col drop-shadow-lg shadow-xl bg-white rounded-xl gap-y-3 border p-6 border-gray-300 absolute top-16 right-20 z-30"
             style="width: 250px">
 
             <p @click="$router.push('/home')" class="text-sm text-webapp mt-1 cursor-pointer"

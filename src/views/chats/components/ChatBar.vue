@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col  items-start lg:border lg:border-gray-200 rounded-2xl w-full lg:w-1/3 h-full">
         <div
-            class="w-full text-left text-webapp justify-between relative font-bold text-xl flex flex-row px-4 items-center pb-3 pt-5 border-b border-b-gray-200">
+            class="w-full text-left text-webapp justify-between font-bold text-xl flex flex-row px-4 items-center pb-3 pt-5 border-b border-b-gray-200">
             <span class="capitalize text-primary text-2xl">Chats</span>
         </div>
 
@@ -80,6 +80,12 @@
 import { onMounted, ref, watchEffect, watch } from 'vue'
 import moment from 'moment'
 import { useStore } from 'vuex'
+
+import { useHead } from '@vueuse/head'
+
+useHead({
+    title: 'Habeep | Chats',
+})
 
 // moment(chat.room.chats[chat.room.chats.length -1].dateCreated).format('MMM D')
 const store = useStore()

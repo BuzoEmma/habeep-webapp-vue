@@ -71,13 +71,13 @@
                 </div>
             </div>
 
-            <paystack buttonClass="paystack-btn" publicKey="pk_live_9a894022d4b6e6016264145e3a6e3ce80eeb1288"
-                :email="$store.state.user.email" :amount="depositData.amount * 100" :reference="paystackReference"
-                :onSuccess="processSuccessPayment" :on-cancel="processCanceledPayment" :channels="channels()">
+            <paystack buttonClass="paystack-btn" :publicKey="secret_key"
+                :email="$store.state.user.email" :amount="depositData.amount * 100" :reference="genRef()"
+                :onSuccess="processSuccessPayment" :onCancel="processCanceledPayment" :channels="channels()">
             </paystack>
 
             <button @click="proceedToPayment" :disabled="depositData.amount < 100 || depositData.paymentMethod.length < 1"
-                :class="{ 'bg-blue-600 text-white': depositData.amount > 99 && depositData.paymentMethod.length > 1, 'bg-gray-300': depositData.amount < 1 || depositData.paymentMethod.length < 1, }"
+                :class="{ 'bg-blue-600 text-white': depositData.amount > 99 && depositData.paymentMethod.length > 1, 'bg-gray-300': depositData.amount < 100 || depositData.paymentMethod.length < 1, }"
                 class="grid rounded-lg place-items-center h-14 my-6 w-full">
                 <span v-if="!processingDeposit">Continue</span>
                 <Preloader v-else />
@@ -100,7 +100,7 @@ import paystack from 'vue3-paystack'
 import axios from '../../../../../composables/axios'
 import moment from 'moment'
 
-
+const secret_key = import.meta.env.VITE_PAYSTACK_SECRET_KEY
 
 const store = useStore()
 const router = useRouter()
@@ -167,7 +167,7 @@ const flwRef = ref('')
 function makeFlwPayment() {
     flwRef.value = genFlwRef()
     window.FlutterwaveCheckout({
-        public_key: "FLWPUBK-b70b771118852881f687c804a6ece671-X",
+        public_key: import.meta.env.VITE_FLW_PUBLIC_KEY,
         amount: depositData.amount,//amount
         callback: handleFlwCallback,
         country: "NG",
