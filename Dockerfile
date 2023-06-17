@@ -15,7 +15,4 @@ RUN npm run build
 
 COPY /sitemap.xml /dist/.
 
-RUN cd /dist
-RUN cd ls -la
-
 EXPOSE 8080
