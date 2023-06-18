@@ -14,7 +14,6 @@ COPY . ./
 RUN npm run build
 
 COPY ./sitemap.xml ./dist/
-COPY ./.env.production ./dist/
-COPY ./.env ./dist/
+COPY /.env.production ./dist/
 
 EXPOSE 8080
