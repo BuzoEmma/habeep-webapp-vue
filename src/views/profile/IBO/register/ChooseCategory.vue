@@ -58,7 +58,6 @@ useHead({
         { name: 'og:url', content: 'https://habeep.org/account/IBO/category' },
         { name: 'og:website', content: 'website' },
         { name: 'og:description', content: 'Choose from our catalogue. The plan that fits you' },
-        { name: 'canonical', content: 'https://habeep.org/account/IBO/category' },
 
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }
     ]

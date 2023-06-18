@@ -112,7 +112,7 @@ useHead({
       { name: 'og:url', content: 'https://habeep.org/help' },
       { name: 'og:website', content: 'website' },
       { name: 'og:description', content: 'Have an Issue and want to learn more about Habeep? Visit our help page to learn more' },
-      { name: 'canonical', content: 'https://habeep.org/help' },
+
 
       { name: 'viewport', content: 'width=device-width, initial-scale=1' }
     ]

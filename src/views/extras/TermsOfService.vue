@@ -242,7 +242,6 @@ useHead({
       { name: 'og:url', content: 'https://habeep.org/terms-of-service' },
       { name: 'og:website', content: 'website' },
       { name: 'og:description', content: 'Read our Legal Documents including Privacy Policy' },
-      { name: 'canonical', content: 'https://habeep.org/terms-of-service' },
 
       { name: 'viewport', content: 'width=device-width, initial-scale=1' }
     ]

@@ -311,7 +311,6 @@ useHead({
         { name: 'og:url', content: 'https://habeep.org/user/profile/' + route.params.id },
         { name: 'og:website', content: 'website' },
         { name: 'og:description', content: () => content.value },
-        { name: 'canonical', content: 'https://habeep.org/user/profile/' + route.params.id },
 
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }
     ]

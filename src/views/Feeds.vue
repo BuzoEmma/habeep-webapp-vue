@@ -337,7 +337,6 @@ useHead({
         { name: 'og:url', content: 'https://habeep.org/feeds' },
         { name: 'og:website', content: 'website' },
         { name: 'og:description', content: 'View your Feeds ' },
-        { name: 'canonical', content: 'https://habeep.org/feeds' },
 
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }
     ]

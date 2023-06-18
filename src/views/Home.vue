@@ -102,7 +102,6 @@ useHead({
       { name: 'og:url', content: 'https://habeep.org/home' },
       { name: 'og:website', content: 'website' },
       { name: 'og:description', content: 'Search for Ads in the home page' },
-      { name: 'canonical', content: 'https://habeep.org/home' },
 
       { name: 'viewport', content: 'width=device-width, initial-scale=1' }
     ]
