@@ -14,5 +14,6 @@ COPY . ./
 RUN npm run build
 
 COPY ./sitemap.xml ./dist/
+COPY ./robots.txt ./dist/
 
 EXPOSE 8080
