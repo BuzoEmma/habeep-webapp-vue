@@ -234,7 +234,8 @@ const routes = [
         name: 'Login',
         component: Login,
         meta: {
-            title: "Login"
+            title: "Login",
+            description: "Login with your email address and pin. Note that all your information are enncrypted and safe."
         }
     },
     {
