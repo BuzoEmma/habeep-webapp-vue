@@ -53,7 +53,7 @@
                             <div class="flex flex-row items-center gap-x-4">
                                 <div class="w-4 h-4 rounded-full flex flex-row items-center justify-center"
                                     style="border: 1px solid #0A1045"></div>
-                                <span class="text-lg text-webapp">{{ referral.fname + ' ' + referral.surname }}</span>
+                                <span class="text-lg text-webapp">{{ childReferral.fname + ' ' + childReferral.surname }}</span>
                             </div>
                         </div>
                     </div>
