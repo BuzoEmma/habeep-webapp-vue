@@ -102,6 +102,8 @@ import moment from 'moment'
 
 const secret_key = import.meta.env.VITE_PAYSTACK_SECRET_KEY
 
+console.log('key', secret_key)
+
 const store = useStore()
 const router = useRouter()
 
