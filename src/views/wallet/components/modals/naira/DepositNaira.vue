@@ -71,7 +71,7 @@
                 </div>
             </div>
 
-            <paystack buttonClass="paystack-btn" :publicKey="secret_key"
+            <paystack buttonClass="paystack-btn" publicKey="pk_live_9a894022d4b6e6016264145e3a6e3ce80eeb1288"
                 :email="$store.state.user.email" :amount="depositData.amount * 100" :reference="genRef()"
                 :onSuccess="processSuccessPayment" :onCancel="processCanceledPayment" :channels="channels()">
             </paystack>
