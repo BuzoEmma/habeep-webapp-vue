@@ -79,17 +79,5 @@
       <loc>https://habeep.org/listings/products/</loc>
       <changefreq>always</changefreq>
    </url>
-   <url>
-      <loc>https://habeep.org/listings/feeds/</loc>
-      <changefreq>always</changefreq>
-   </url>
-   <url>
-      <loc>https://habeep.org/listings/account/</loc>
-      <changefreq>always</changefreq>
-   </url>
-   <url>
-      <loc>https://habeep.org/listings/chats/</loc>
-      <changefreq>always</changefreq>
-   </url>
 
 </urlset>
