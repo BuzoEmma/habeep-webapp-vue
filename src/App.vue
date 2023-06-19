@@ -84,14 +84,20 @@ async function getNotifications() {
         Authorization: `bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDI0YjVhYmQ5OTliZTU3ODUwZDc0MmMiLCJyb2xlIjoiQUdFTlQiLCJpYXQiOjE2ODM3NTUxOTJ9.NdYOgcJ7fT8JPkaA8dueK8Wwn1hLTiR7WmRvxKEZ3o8`
       };
     }
-    const allnotifs = await axios.get('/notification/get/all')
-    allNotifications.value = allnotifs.data.data
 
     if (store.state.isAuthenticated === true) {
       const notifs = await axios.get('/notification/get/user')
-      notifs.data.data.forEach(notif => {
-        allNotifications.value.push(notif)
-      })
+      if (notifs.data.data.length > 0) {
+        notifs.data.data.forEach(notif => {
+          allNotifications.value.push(notif)
+        })
+      } else {
+        const allnotifs = await axios.get('/notification/get/all')
+        allNotifications.value = allnotifs.data.data
+      }
+    } else {
+      const allnotifs = await axios.get('/notification/get/all')
+      allNotifications.value = allnotifs.data.data
     }
   } catch (error) {
     console.log(error)
@@ -141,11 +147,11 @@ onMounted(() => {
 
 
     <div
-      class="flex-col absolute bottom-10  h-fit items-center w-full sm:w-fit justify-end gap-y-5 p-2 backdrop-blur-lg right-2 md:right-12"
+      class="flex-col flex absolute bottom-0 md:bottom-10 h-fit  items-center w-full sm:w-fit justify-end p-2  right-2 md:right-12"
       v-if="allNotifications.length > 0 && $store.state.isAuthenticated">
       <div class="flex-row-center w-full p-4 notif justify-between cursor-pointer" @click="takeNotificationAction(notif)"
-        v-motion :initial="{ y: -100, opacity: 0.1 }" :enter="{ y: 0, opacity: 1, transition: { delay: 40 } }"
-        :tapped="{ x: 100, opacity: 0.3, transition: { delay: 20 } }" v-for="notif of allNotifications" :key="notif">
+        v-motion :initial="{ y: -100 }" :enter="{ y: 0 }" :tapped="{ x: 10000, opacity: 0.3, transition: { delay: 20 } }"
+        v-for="notif of allNotifications" :key="notif">
         <!-- transition: { type: 'spring', damping: 10, stiffness: 5, mass: 0.1} -->
         <!-- :tapped="{x: 100, opacity: 0.3, transition: { delay: 10}}" -->
         <div class="flex-row-center h-full w-full gap-x-4">
@@ -164,10 +170,10 @@ onMounted(() => {
           <path
             d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
         </svg>
+
         <svg xmlns="http://www.w3.org/2000/svg" v-else viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
-          <path fill-rule="evenodd"
-            d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-            clip-rule="evenodd" />
+          <path
+            d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
         </svg>
       </div>
     </div>
@@ -178,7 +184,9 @@ onMounted(() => {
 .notif {
   background: #F7F7F7;
   border-radius: 16px;
-  max-width: 400px
+  max-width: 400px;
+  min-width: 200px;
+  max-height: 100px !important;
 }
 
 .notif-video {
@@ -195,7 +203,7 @@ onMounted(() => {
 .scale-slide-enter-active,
 .scale-slide-leave-active {
   position: absolute;
-  transition: all 0.35s ease;
+  transition: all 0.1s ease;
 }
 
 .scale-slide-enter-from {

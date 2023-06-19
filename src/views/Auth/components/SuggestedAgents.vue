@@ -1,5 +1,5 @@
 <template>
-    <div class="main flex flex-col h-screen min-h-full  md:h-64 z-10  pb-10 overflow-hidden bg-white">
+    <div class="main flex flex-col md:h-64 z-10 pb-5 overflow-hidden bg-white">
         <div class="flex flex-row items-center justify-between w-full px-4 py-4 border-b border-b-gray-100">
             <div class="flex flex-row items-center gap-x-2" @click="($emit('enterAgents'))">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0A1045"
@@ -11,7 +11,7 @@
         </div>
 
         <div class="flex flex-col items-center w-full h-full overflow-y-auto px-2 pb-8 relative">
-            <div class="agents-to-follow flex w-full flex-col overflow-y-auto items-center h-5/6 my-1"
+            <div class="agents-to-follow flex w-full flex-col overflow-y-auto no-scroll-btn items-center h-5/6 my-1"
                 :class="{ 'justify-center': discoveredAgents.length === 0 }">
                 <img src="../../../assets/images/rhombus-preloader.gif" class="m-auto" v-if="discoveredAgents.length === 0">
                 <div class="following flex flex-row items-center justify-between w-full py-4 px-4" v-else
@@ -44,7 +44,7 @@
                 </div>
             </div>
 
-            <div class="bottom-0 absolute md:static px-2 w-full">
+            <div class="bottom-0 absolute px-2 w-full" :class="{'md:static': discoveredAgents.length > 10}">
                 <button class="bg-primary rounded-lg w-full grid place-items-center h-14 text-white"
                     @click="$emit('finish')">Continue</button>
             </div>

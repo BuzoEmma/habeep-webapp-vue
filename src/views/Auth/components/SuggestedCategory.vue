@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <div class="bottom-0 absolute px-2 w-full">
+    <div class="bottom-5 absolute px-4 w-full">
       <button class="bg-primary w-full rounded-lg grid place-items-center h-14 text-white"
         @click="save()">Continue</button>
     </div>

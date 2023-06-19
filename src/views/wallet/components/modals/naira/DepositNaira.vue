@@ -71,10 +71,7 @@
                 </div>
             </div>
 
-            <paystack buttonClass="paystack-btn" publicKey="pk_live_9a894022d4b6e6016264145e3a6e3ce80eeb1288"
-                :email="$store.state.user.email" :amount="depositData.amount * 100" :reference="genRef()"
-                :onSuccess="processSuccessPayment" :onCancel="processCanceledPayment" :channels="channels()">
-            </paystack>
+            <Paystack @success="processSuccessPayment" @pendingTxn="processPendingPayment" @cancel="cancelPayment" @errorLoading="$router.go()" v-if="depositData.paymentMethod === 'paystack' && proceededPayment" :payment-info="getPaystackDetails()" />
 
             <button @click="proceedToPayment" :disabled="depositData.amount < 100 || depositData.paymentMethod.length < 1"
                 :class="{ 'bg-blue-600 text-white': depositData.amount > 99 && depositData.paymentMethod.length > 1, 'bg-gray-300': depositData.amount < 100 || depositData.paymentMethod.length < 1, }"
@@ -92,17 +89,13 @@
   
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import copy from 'copy-to-clipboard3';
 import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import uniqid from 'uniqid'
 import paystack from 'vue3-paystack'
 import axios from '../../../../../composables/axios'
 import moment from 'moment'
-
-const secret_key = import.meta.env.VITE_PAYSTACK_SECRET_KEY
-
-console.log('key', secret_key)
+import Paystack from './deposits/Paystack.vue'
 
 const store = useStore()
 const router = useRouter()
@@ -115,12 +108,10 @@ const depositData = reactive({
 
 const emit = defineEmits(['close'])
 
-let paystackReference = ref('')
-
-const paystackBtn = ref(null)
 const processingDeposit = ref(false)
 
 const onSelectMethod = ref(false)
+const proceededPayment = ref(false)
 
 const choosePaymentMethod = (method) => {
     depositData.paymentMethod = method
@@ -130,10 +121,11 @@ const choosePaymentMethod = (method) => {
 function proceedToPayment() {
     try {
         processingDeposit.value = true
-        if (depositData.paymentMethod === 'paystack') {
-            paystackReference.value = genRef()
-            paystackBtn.value.click()
-        }
+        proceededPayment.value = true
+        // if (depositData.paymentMethod === 'paystack') {
+        //     paystackReference.value = genRef()
+        //     paystackBtn.value.click()
+        // }
 
         if (depositData.paymentMethod === 'flutterwave') {
             const findScript = document.getElementById('flw')
@@ -157,14 +149,37 @@ function proceedToPayment() {
 
 }
 
+function cancelPayment(response) {
+    proceededPayment.value = false
+    const mainMethod = response.method || depositData.paymentMethod
+
+    processCanceledPayment(mainMethod, response.reference)
+}
+
+function getPaystackDetails() {
+    return {
+        key: import.meta.env.VITE_PAYSTACK_SECRET_KEY,
+        email: store.state.user.email,
+        amount: depositData.amount * 100,
+        currency: 'NGN',
+        ref: genRef(),
+        channels: channels(),
+        metadata: {
+            "description": store.state.user.fname + " Deposit"
+        },
+        label: store.state.user.fname + ' ' + store.state.user.surname
+    }
+}
+
 
 const onError = ref(false)
 let errorMsg = ref('')
 let newMsg = ref('')
 
-function channels() { return ["card", "bank", "ussd", "qr", "mobile_money", "bank_transfer"]; }
+function channels() { return ["card", "bank_transfer"]; }
 
 const flwRef = ref('')
+
 
 function makeFlwPayment() {
     flwRef.value = genFlwRef()
@@ -236,12 +251,12 @@ const processSuccessPayment = async (response) => {
             emit('close')
             router.go()
             newMsg.value = ''
-        }, 100);
+        }, 1000);
     } catch (error) {
         onError.value = true
         errorMsg.value = error.response.data.message
 
-        processCanceledPayment('paystack', paystackReference.value)
+        emit('close')
 
         processingDeposit.value = false
         setTimeout(() => {
@@ -304,10 +319,6 @@ const processPendingPayment = async (response) => {
 
 const processCanceledPayment = async (method, reference) => {
     try {
-        if (method !== 'flutterwave' && reference === null) {
-            reference = paystackReference.value
-        }
-        paystackReference.value = genRef()
         processingDeposit.value = true
 
         let data = {
@@ -326,7 +337,11 @@ const processCanceledPayment = async (method, reference) => {
 
         await axios.post('/wallet/deposit/naira', data)
 
-        processingDeposit.value = false
+        setTimeout(() => {
+            processingDeposit.value = false
+            emit('close')
+            router.go()
+        }, 100);
     } catch (error) {
         onError.value = true
         errorMsg.value = error.response.data.message
@@ -347,11 +362,6 @@ function genRef() {
 function genFlwRef() {
     return uniqid("dep-flw-");
 }
-
-onMounted(() => {
-    paystackBtn.value = document.querySelector('.paystack-btn')
-})
-
 
 
 </script>

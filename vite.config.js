@@ -2,6 +2,15 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 import viteCompression from 'vite-plugin-compression'
+import { resolve } from 'path'
+
+const pathResolve = (dir) => {
+  return resolve(__dirname, ".", dir)
+}
+
+const alias = {
+  '@': pathResolve("src")
+}
 
 const DEFAULT_OPTIONS_IMAGE_COMPRESSOR = {
   test: /\.(jpe?g|png|gif|tiff|webp|svg|avif)$/i,
@@ -67,6 +76,10 @@ const DEFAULT_OPTIONS_IMAGE_COMPRESSOR = {
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: './',
+  resolve: {
+    alias
+  },
   plugins: [
     vue(),
     viteCompression(),
