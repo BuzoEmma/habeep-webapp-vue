@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
-import viteCompression from 'vite-plugin-compression'
 import { resolve } from 'path'
 
 const pathResolve = (dir) => {
@@ -80,9 +79,17 @@ export default defineConfig({
   resolve: {
     alias
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          
+        }
+      }
+    }
+  },
   plugins: [
     vue(),
-    viteCompression(),
     ViteImageOptimizer(DEFAULT_OPTIONS_IMAGE_COMPRESSOR),
   ]
 })

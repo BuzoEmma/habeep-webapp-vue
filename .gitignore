@@ -3,6 +3,8 @@ node_modules
 dist
 dist-ssr
 *.local
-.env
+yarn.lock
+yarn-error.log
+.vscode
 .env.production
 .env.staging
