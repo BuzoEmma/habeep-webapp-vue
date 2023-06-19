@@ -31,10 +31,7 @@ function createPaystack() {
     })
 }
 
-const secret_key = import.meta.env.VITE_PAYSTACK_SECRET_KEY
-
-console.log('keu', secret_key)
-
+const secret_key = 'pk_live_9a894022d4b6e6016264145e3a6e3ce80eeb1288'
 
 async function confirmPayment(response) {
     try {

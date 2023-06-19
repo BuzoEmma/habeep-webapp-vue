@@ -93,7 +93,7 @@ import axiosDefault from 'axios'
 import moment from 'moment'
 
 axiosDefault.defaults.headers.common = {
-    Authorization: `bearer ${import.meta.env.VITE_PAYSTACK_SECRET_KEY}`,
+    Authorization: `Bearer pk_live_9a894022d4b6e6016264145e3a6e3ce80eeb1288`,
 };
 
 
