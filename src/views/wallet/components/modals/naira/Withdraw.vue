@@ -85,7 +85,6 @@
   
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import copy from 'copy-to-clipboard3';
 import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import uniqid from 'uniqid'
@@ -94,7 +93,7 @@ import axiosDefault from 'axios'
 import moment from 'moment'
 
 axiosDefault.defaults.headers.common = {
-    Authorization: `bearer ${import.meta.env.PAYSTACK_SECRET_KEY}`,
+    Authorization: `bearer ${import.meta.env.VITE_PAYSTACK_SECRET_KEY}`,
 };
 
 
