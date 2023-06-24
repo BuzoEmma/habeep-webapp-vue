@@ -276,9 +276,7 @@ useHead({
     meta: [
         { charset: 'utf-8' },
         { name: 'description', content: () => content.value },
-
         { name: 'og:title', content: () => title.value },
-        { name: 'og:image', content: () => img.value },
         { name: 'og:url', content: 'https://habeep.org/' + route.params.username },
         { name: 'og:website', content: 'website' },
         { name: 'og:description', content: () => content.value },
@@ -304,6 +302,16 @@ async function getAgent() {
         agentDetails.value = getAgent.data.agent
         title.value = 'Habeep | ' + agentDetails.value.name.username + ' Profile'
         img.value = agentDetails.value.profileImg
+
+        useHead({
+            link: [
+                { rel: 'icon', href: () => img.value },
+                { rel: 'shortcut icon', href: () => img.value },
+            ],
+            meta: [
+                { name: 'og:image', content: () => img.value },
+            ]
+        })
 
         // set google seo
         const structuredData = {
