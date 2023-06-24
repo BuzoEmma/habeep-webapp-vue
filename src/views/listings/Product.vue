@@ -21,7 +21,7 @@
                         <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
                         <div class="flex flex-row gap-x-3 items-center">
                             <ShareNetwork network="whatsapp" popup.width="500px" popup.height="500px"
-                                :url="'https://habeep.org/' + $route.fullPath"
+                                :url="'https://habeep.org' + $route.fullPath"
                                 :title="'Purchase this awesome house at ₦' + formatNumber(product.price)"
                                 :description="product.description" :media="product.images[0].link">
                                 <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
@@ -543,32 +543,40 @@ async function createChatRoom() {
 
 function changeCarouselImg(value) {
     // changingCarousel.value = true
-    let image = images.value[value - 1]
-    activeCarouselImg.value = value
-    carouselImg.value = image
+    if (images.value) {
+        let image = images.value[value - 1]
+        activeCarouselImg.value = value
+
+        carouselImg.value = image
+    }
 }
 
 // manage images viewer
 function exitImageViewer() {
     onImageViewer.value = false
 
-    setInterval(() => {
+    carouselInt = setInterval(() => {
         let value = activeCarouselImg.value + 1
-        if (activeCarouselImg.value == images.value.length) {
-            value = 1
+        if (images.value) {
+            if (activeCarouselImg.value == images.value.length) {
+                value = 1
+            }
         }
         changeCarouselImg(value)
     }, 5000);
 }
+
 function enterImageViewer() {
-    onImageViewer.value = true
     clearInterval(carouselInt)
+    onImageViewer.value = true
 }
 
-const carouselInt = setInterval(() => {
+let carouselInt = setInterval(() => {
     let value = activeCarouselImg.value + 1
-    if (activeCarouselImg.value == images.value.length) {
-        value = 1
+    if (images.value) {
+        if (activeCarouselImg.value == images.value.length) {
+            value = 1
+        }
     }
     changeCarouselImg(value)
 }, 5000);
