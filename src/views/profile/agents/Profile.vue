@@ -68,7 +68,7 @@
                     <h3 class="text-lg xl:text-xl font-medium  text-webapp mt-3">Bio</h3>
 
                     <p class="text-sub-webapp text-sm text-left w-full sm:w-5/6 lg:w-full mt-1 xl:mt-2"
-                        v-if="agentDetails.bio">{{
+                        v-if="agentDetails.bio && agentDetails.bio.length > 0">{{
                             agentDetails.bio
                         }}
                     </p>
@@ -303,6 +303,9 @@ async function getAgent() {
         agentDetails.value = getAgent.data.agent
         title.value = 'Habeep | ' + agentDetails.value.name.username + ' Profile'
         img.value = agentDetails.value.profileImg
+        if(agentDetails.value.bio && agentDetails.value.bio.length > 0) {
+            content.value = agentDetails.value.bio
+        }
 
         useHead({
             link: [
