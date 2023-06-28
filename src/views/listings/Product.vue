@@ -406,8 +406,10 @@ const store = useStore()
 
 
 const title = ref('Habeep | ' + route.params.id + ' Product')
-const content = ref('This is ' + route.params.id + ' Product')
+const content = ref('Property ID is' + route.params.id + ' Product')
+
 const img = ref('https://i.ibb.co/BnG8VLy/logo-white.png')
+
 import { useHead } from '@vueuse/head'
 
 useHead({
@@ -449,6 +451,7 @@ const getProduct = async () => {
         processingProduct.value = true
         const getProduct = await axios.get(url + route.params.id)
         title.value = `Habeep | ${getProduct.data.product.title}`
+        content.value = getProduct.data.product.description
 
         processingProduct.value = true
 
@@ -457,14 +460,7 @@ const getProduct = async () => {
             router.replace({ name: 'not-found' })
         }
         images.value = getProduct.data.product.images
-        if (getProduct.data.product.images.length > 0) {
-            getProduct.data.product.images.forEach(image => {
-                if (image.toString().includes('mp4') === false) {
-                    img.value = image
-                    return;
-                }
-            })
-        }
+        img.value = getProduct.data.product.images[0]
 
         useHead({
             link: [
@@ -475,6 +471,15 @@ const getProduct = async () => {
                 { name: 'og:image', content: () => img.value },
             ]
         })
+
+        if (getProduct.data.product.images.length > 0) {
+            getProduct.data.product.images.forEach(image => {
+                if (image.toString().includes('mp4') === false) {
+                    img.value = image
+                    return;
+                }
+            })
+        }
         carouselImg.value = getProduct.data.product.images[0]
 
         getAgent(product.value.agentId)

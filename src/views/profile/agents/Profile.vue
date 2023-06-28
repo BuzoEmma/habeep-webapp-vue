@@ -268,6 +268,7 @@ const store = useStore()
 
 const title = ref('Habeep | ' + route.params.username + ' Profile')
 const content = ref('View more information about @' + route.params.username)
+
 const img = ref('https://i.ibb.co/DtbR0BW/user.png')
 import { useHead } from '@vueuse/head'
 
