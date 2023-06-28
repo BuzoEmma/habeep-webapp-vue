@@ -92,7 +92,6 @@ import { ref, reactive, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import uniqid from 'uniqid'
-import paystack from 'vue3-paystack'
 import axios from '../../../../../composables/axios'
 import moment from 'moment'
 import Paystack from './deposits/Paystack.vue'
@@ -126,7 +125,6 @@ function proceedToPayment() {
         //     paystackReference.value = genRef()
         //     paystackBtn.value.click()
         // }
-
         if (depositData.paymentMethod === 'flutterwave') {
             const findScript = document.getElementById('flw')
             if (!findScript) {
