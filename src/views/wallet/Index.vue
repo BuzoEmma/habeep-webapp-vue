@@ -57,6 +57,17 @@
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import MainNavbar from '../../components/MainNavbar.vue';
+import { useHead } from '@vueuse/head'
+
+useHead({
+  meta: [
+    { charset: 'utf-8' },
+    { name: 'og:image', content: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
+  ],
+  link: [
+    { rel: 'icon', href: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
+  ]
+})
 
 // naira components
 import Naira from './components/Naira.vue';

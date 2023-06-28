@@ -5,16 +5,6 @@ import axios from "./composables/axios";
 import { ref, reactive, onMounted, computed, watch } from "vue";
 import { updateToken } from "./composables/axios";
 
-import { useHead } from '@vueuse/head'
-useHead({
-  meta: [
-    { charset: 'utf-8' },
-    { name: 'og:image', content: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
-  ],
-  link: [
-    { rel: 'icon', href: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
-  ]
-})
 
 const store = useStore();
 const router = useRouter();

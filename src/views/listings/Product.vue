@@ -412,10 +412,6 @@ import { useHead } from '@vueuse/head'
 
 useHead({
     title: () => title.value,
-    link: [
-        { rel: 'icon', href: () => img.value },
-        { rel: 'shortcut icon', href: () => img.value },
-    ],
     meta: [
         { charset: 'utf-8' },
         { name: 'description', content: () => content.value },
@@ -462,14 +458,24 @@ const getProduct = async () => {
             router.replace({ name: 'not-found' })
         }
         images.value = getProduct.data.product.images
-        if(getProduct.data.product.images.length > 0) {
-            getProduct.data.product.images.forEach((image) => {
-                if(image.toString().includes('mp4') === false) {
+        if (getProduct.data.product.images.length > 0) {
+            getProduct.data.product.images.forEach(image => {
+                if (image.toString().includes('mp4') === false) {
                     img.value = image
                     return;
                 }
             })
         }
+
+        useHead({
+            link: [
+                { rel: 'icon', href: () => img.value },
+                { rel: 'shortcut icon', href: () => img.value },
+            ],
+            meta: [
+                { name: 'og:image', content: () => img.value },
+            ]
+        })
         carouselImg.value = getProduct.data.product.images[0]
 
         getAgent(product.value.agentId)

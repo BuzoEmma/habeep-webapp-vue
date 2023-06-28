@@ -41,8 +41,7 @@
 
 
         <!-- search results -->
-        <div
-          class="flex flex-col gap-y-4 search-results sm:absolute bg-white z-10 w-full py-5 px-3 top-12 md:top-20"
+        <div class="flex flex-col gap-y-4 search-results sm:absolute bg-white z-10 w-full py-5 px-3 top-12 md:top-20"
           v-if="(data.input.length > 0)">
           <div class="flex flex-row items-center result justify-between w-full cursor-pointer"
             @click="$router.push('/listings/search?name=' + data.input)">
@@ -80,7 +79,8 @@
       <img src="../assets/illustrations/home-right.svg" v-lazy class="xl:flex hidden" alt="">
     </div>
 
-    <MobileSearch v-if="onSearch" @leaveSearch="onSearch = false" :delay="100" v-motion :initial="{ opacity: 0.5, y: 100 }" :enter="{ opacity: 1, y: 0 }" />
+    <MobileSearch v-if="onSearch" @leaveSearch="onSearch = false" :delay="100" v-motion
+      :initial="{ opacity: 0.5, y: 100 }" :enter="{ opacity: 1, y: 0 }" />
   </div>
 </template>
 
@@ -94,19 +94,21 @@ useHead({
   title: 'Habeep',
   titleTemplate: '%s | Search Ads',
   meta: [
-      { charset: 'utf-8' },
-      { name: 'description', content: 'Search for new listings' },
+    { charset: 'utf-8' },
+    { name: 'description', content: 'Search for new listings' },
 
-      { name: 'og:title', content: 'Search Ads' },
-      { name: 'og:image', content: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
-      { name: 'og:url', content: 'https://habeep.org/home' },
-      { name: 'og:website', content: 'website' },
-      { name: 'og:description', content: 'Search for Ads in the home page' },
+    { name: 'og:title', content: 'Search Ads' },
+    { name: 'og:image', content: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
+    { name: 'og:url', content: 'https://habeep.org/home' },
+    { name: 'og:website', content: 'website' },
+    { name: 'og:description', content: 'Search for Ads in the home page' },
 
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' }
-    ]
+    { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+  ],
+  link: [
+    { rel: 'icon', href: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
+  ]
 })
-
 
 import HomeNavbar from '../components/HomeNavbar.vue'
 import MobileSearch from "./components/MobileSearch.vue";

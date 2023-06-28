@@ -313,8 +313,12 @@ useHead({
         { name: 'og:description', content: () => content.value },
 
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+    ],
+    link: [
+      { rel: 'icon', href: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
     ]
 })
+
 
 if (route.query.reloadApp) {
     router.replace({ query: null });

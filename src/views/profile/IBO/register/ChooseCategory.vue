@@ -60,10 +60,11 @@ useHead({
         { name: 'og:description', content: 'Choose from our catalogue. The plan that fits you' },
 
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+    ],
+    link: [
+      { rel: 'icon', href: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
     ]
 })
-
-
 </script>
 
 <style scoped>
