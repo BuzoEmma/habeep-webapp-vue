@@ -13,7 +13,8 @@
             <div class="product-img-grid desktop-view xl:flex flex-row items-center w-full mt-10 hidden">
                 <div class="relative h-full display-img w-1/2">
                     <img :src="carouselImg.link" class=" h-full rounded-lg feed-image w-full"
-                        v-if="carouselImg.link.toString().includes('mp4') == false" @click="enterImageViewer()" :alt="product.title">
+                        v-if="carouselImg.link.toString().includes('mp4') == false" @click="enterImageViewer()"
+                        :alt="product.title">
                     <video :src="carouselImg.link" @click="enterImageViewer()" loop
                         class="w-full h-full rounded-lg feed-image" :alt="product.title" v-else autoplay muted></video>
 
@@ -47,7 +48,7 @@
                             v-for="image in images.slice(1, 3)" :key="image">
                             <img :alt="product.title" :src="image.link" class=" h-full w-full rounded-lg feed-image-short"
                                 v-if="image.link && image.link.toString().includes('mp4') === false"
-                                @click="enterImageViewer()" :key="image" >
+                                @click="enterImageViewer()" :key="image">
                             <video :alt="product.title" :src="image.link" @click="enterImageViewer()" loop
                                 class="w-full rounded-lg feed-image-short" v-else autoplay muted preload="metadata"></video>
                         </div>
@@ -96,8 +97,8 @@
                 <img :alt="product.title" :src="carouselImg.link" class=" h-full w-full feed-image"
                     v-if="carouselImg.link && carouselImg.link.toString().includes('mp4') == false"
                     @click="enterImageViewer()">
-                <video :alt="product.title" :src="carouselImg.link" loop class="w-full feed-image" @click="enterImageViewer()" v-else autoplay
-                    muted preload="metadata"></video>
+                <video :alt="product.title" :src="carouselImg.link" loop class="w-full feed-image"
+                    @click="enterImageViewer()" v-else autoplay muted preload="metadata"></video>
                 <!-- <img :src="images[activeCarouselImg - 1].link" class="h-full w-full new-img" :class="{'hidden': changeCarouselImg}"> -->
 
                 <div class="flex flex-row items-center w-full absolute bottom-5 justify-between md:px-8 px-2">
@@ -411,6 +412,10 @@ import { useHead } from '@vueuse/head'
 
 useHead({
     title: () => title.value,
+    link: [
+        { rel: 'icon', href: () => img.value },
+        { rel: 'shortcut icon', href: () => img.value },
+    ],
     meta: [
         { charset: 'utf-8' },
         { name: 'description', content: () => content.value },
