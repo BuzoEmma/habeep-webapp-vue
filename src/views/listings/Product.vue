@@ -417,7 +417,6 @@ useHead({
         { name: 'description', content: () => content.value },
 
         { name: 'og:title', content: () => title.value },
-        { name: 'og:image', content: () => img.value },
         { name: 'og:url', content: 'https://habeep.org/listings/product/' + route.params.id },
         { name: 'og:website', content: 'website' },
         { name: 'og:description', content: () => content.value },
