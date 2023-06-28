@@ -462,7 +462,14 @@ const getProduct = async () => {
             router.replace({ name: 'not-found' })
         }
         images.value = getProduct.data.product.images
-        img.value = getProduct.data.product.images[0]
+        if(getProduct.data.product.images.length > 0) {
+            getProduct.data.product.images.forEach((image) => {
+                if(image.toString().includes('mp4') === false) {
+                    img.value = image
+                    return;
+                }
+            })
+        }
         carouselImg.value = getProduct.data.product.images[0]
 
         getAgent(product.value.agentId)
