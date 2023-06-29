@@ -71,7 +71,8 @@
 
                     <div class="flex flex-col items-center  drop-shadow-sm bg-white rounded-b-xl rounded-t-md gap-y-2 p-1 absolute h-48 overflow-auto py-2 top-24 left-1 z-10 w-32"
                         v-if="onContainer">
-                        <p class="w-full flex flex-row justify-center gap-x-4 border-b items-center border-gray-100"
+                        <Preloader v-if="countriesInfo.length === 0"/>
+                        <p class="w-full flex flex-row justify-center gap-x-4 border-b items-center border-gray-100" v-else
                             @click="pickCountryCode(index)" v-for="(country, index) in countriesInfo"
                             :key="(country, index)">
                             <img :src="country.flag" class="w-9 h-8" alt="">
@@ -198,7 +199,7 @@ function pickCountryCode(index) {
 
 async function getCountries() {
     try {
-        const countries = await axiosDefault.get('https://restcountries.com/v3.1/subregion/western africa')
+        const countries = await axiosDefault.get('https://restcountries.com/v3.1/subregion/africa')
         // console.log(countries)
         let unformattedData = []
 
