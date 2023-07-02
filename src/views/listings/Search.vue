@@ -43,11 +43,13 @@
                         'Nigeria' }}</span></p>
 
                 <!-- filters -->
-                <div class="flex flex-row items-center h-fit gap-x-4 w-full md:w-min  transition-all" :class="{'relative': onDropdown}">
+                <div class="flex flex-row items-center h-fit gap-x-4 w-full md:w-min  transition-all"
+                    :class="{ 'relative': onDropdown }">
                     <div @click="toggleDropdown('sort')"
                         class="border border-gray-300 md:w-56 w-1/2 py-2 justify-center flex flex-row items-center gap-x-2 rounded-full cursor-pointer ">
                         <span class="md:text-lg text-webapp text-sm flex flex-row gap-x-1"> Sort:
-                            <span class="hidden md:flex flex-row items-center w-full flex-nowrap">{{ sortValue }}</span>
+                            <span class="hidden md:flex flex-row items-center w-full flex-nowrap">{{ filterData.sortValue
+                            }}</span>
                         </span>
                         <svg xmlns="http://www.w3.org/2000/svg" :class="{ 'rotate-180': onSortDropdown }" fill="none"
                             viewBox="0 0 24 24" stroke-width="1.5" stroke="#9A9A9D" class="w-6 h-6">
@@ -77,17 +79,20 @@
                         </div>
 
                         <p class="text-sm text-webapp mt-2 cursor-pointer"
-                            :class="{ 'text-blue-600': sortValue === 'Recommended' }" @click="changeSortValue(1)">
+                            :class="{ 'text-blue-600': filterData.sortValue === 'Recommended' }"
+                            @click="changeSortValue(1)">
                             Recommended
                         </p>
                         <hr>
                         <p class="text-sm text-webapp mt-2 cursor-pointer"
-                            :class="{ 'text-blue': sortValue === 'Newest_first' }" @click="changeSortValue(2)">Newest
+                            :class="{ 'text-blue': filterData.sortValue === 'Newest_first' }" @click="changeSortValue(2)">
+                            Newest
                             first
                         </p>
                         <hr>
                         <p class="text-sm text-webapp mt-2 cursor-pointer"
-                            :class="{ 'text-blue-600': sortValue === 'Oldest first' }" @click="changeSortValue(3)">Oldest
+                            :class="{ 'text-blue-600': filterData.sortValue === 'Oldest first' }"
+                            @click="changeSortValue(3)">Oldest
                             first
                         </p>
                     </div>
@@ -153,26 +158,28 @@
 
             <!-- listing -->
             <div class="flex flex-row flex-auto h-full md:mt-10 w-full flex-wrap"
-                :class="{ 'justify-center items-center': products.length < 1 }">
+                :class="{ 'justify-center items-center': filteredProducts.length < 1 }">
 
                 <div class="flex flex-col items-center gap-y-3 justify-center"
-                    v-if="products.length === 0 && !searchingData">
+                    v-if="filteredProducts.length === 0 && !searchingData">
                     <img src="../../assets/icons/no-ad.svg" alt="">
                     <span class="text-gray-300 text-lg">No match for search yet</span>
                 </div>
-
                 <div class="flex flex-col items-center gap-y-3 justify-center" v-if="searchingData === true">
                     <img src="../../assets/images/rhombus-preloader.gif" alt="">
                 </div>
                 <!-- listing template -->
                 <div class="basis-full md:basis-1/2 xl:basis-1/4 md:px-3 md:py-3 py-5 gap-y-4 px-0" v-else
-                    v-for="product in products" :key="product">
+                    v-for="product in filteredProducts" :key="product">
                     <div
                         class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 h-fit feed">
-                        <img @click="$router.push('/listings/products/' + product._id)" :src="product.images[0].link"
+                        <Skeleton v-if="!product.imageLoaded" class=" w-full h-36 rounded-t-md" style="width: 100%" />
+                        <img @click="$router.push('/listings/products/' + product._id)" @load="product.imageLoaded = true"
+                            :class="{ 'hidden': !product.imageLoaded }" :src="product.images[0].link"
                             class="w-full h-full feed-image rounded-t-md"
                             v-if="product.images[0].link.includes('mp4') == false" alt="">
-                        <video @click="$router.push('/listings/products/' + product._id)" :src="product.images[0].link"
+                        <video @click="$router.push('/listings/products/' + product._id)" @load="product.imageLoaded = true"
+                            :class="{ 'hidden': !product.imageLoaded }" :src="product.images[0].link"
                             class="w-full rounded-t-md feed-image" v-else autoplay muted></video>
                         <p class="text-webapp text-lg font-medium w-full mx-2 cursor-pointer feed-image"
                             @click="$router.push('/listings/products/' + product._id)">
@@ -245,9 +252,9 @@ const products = ref([])
 
 const title = ref('Habeep | All listings results')
 
-if(route.query.name) {
+if (route.query.name) {
     title.value = 'Habeep | ' + route.query.name + ' results'
-} else if(route.query.location) {
+} else if (route.query.location) {
     title.value = 'Habeep | ' + route.query.location + ' results'
 }
 
@@ -271,6 +278,14 @@ useHead({
     ]
 })
 
+let filterData = reactive({
+    location: {
+        city: '',
+        state: ''
+    },
+    propertyType: 'all',
+    sortValue: 'Recommended'
+})
 
 
 const states = ref([])
@@ -280,6 +295,7 @@ const currentState = ref(route.query.location || 'Nigeria')
 const currentCity = ref('All')
 
 const searchingData = ref(false)
+const filteredProducts = ref([])
 
 const searchDB = (e) => {
     if (e.length > 0) {
@@ -297,7 +313,6 @@ const checkForEnter = (e) => {
 }
 
 const onSearchBar = ref(false)
-
 const searchData = ref('')
 
 function toggleSearch() {
@@ -316,15 +331,19 @@ function changeStateModal(state, type) {
         onState.value = false
         currentState.value = state.state.name
         cities.value = state.cities
+        filterData.location.state = currentState.value
     }
     if (type === 'city') {
         onDropdown.value = false
         onLocationDropdown.value = false
         onState.value = true
         currentCity.value = state
+        filterData.location.city = currentCity.value
 
         saveFeedLocation()
     }
+
+    useFilters(filterData)
 }
 
 async function getSearch(location, query) {
@@ -357,17 +376,15 @@ async function getSearch(location, query) {
             return false;
         });
         products.value = uniqueFeeds
+        filteredProducts.value = uniqueFeeds
 
         searchingData.value = false
+        useFilters(filterData)
     } catch (error) {
         console.log('error getting location')
     }
 
 }
-
-// filters
-const sortValue = ref('Recommended')
-
 
 function toggleDropdown(type) {
     if (type == 'location') {
@@ -395,11 +412,11 @@ function toggleDropdown(type) {
 
 function changeSortValue(index) {
     if (index == 1) {
-        sortValue.value = 'Recommended'
+        filterData.sortValue = 'Recommended'
     } else if (index == 2) {
-        sortValue.value = 'Newest_first'
+        filterData.sortValue = 'Newest first'
     } else {
-        sortValue.value = 'Oldest first'
+        filterData.sortValue = 'Oldest first'
     }
 
     toggleDropdown('sort')
@@ -424,15 +441,16 @@ async function getStates() {
         const nameA = a.state.name.toUpperCase(); // ignore upper and lowercase
         const nameB = b.state.name.toUpperCase(); // ignore upper and lowercase
         if (nameA > nameB) {
-            return -1;
+            return 1;
         }
         if (nameA < nameB) {
-            return 1;
+            return -1;
         }
 
         // names must be equal
         return 0;
     });
+
     store.dispatch('saveStates', states.value)
 }
 
@@ -444,12 +462,11 @@ onMounted(() => {
             const nameA = a.state.name.toUpperCase(); // ignore upper and lowercase
             const nameB = b.state.name.toUpperCase(); // ignore upper and lowercase
             if (nameA > nameB) {
-                return -1;
-            }
-            if (nameA < nameB) {
                 return 1;
             }
-
+            if (nameA < nameB) {
+                return -1;
+            }
             // names must be equal
             return 0;
         });
@@ -458,13 +475,52 @@ onMounted(() => {
     }
 
 })
+
+
+function useFilters(filters) {
+    if (products.value.length > 0) {
+        filteredProducts.value = products.value
+        // location filter
+        if (filters.location.state.length > 0 && filters.location.city.length > 0) {
+            let locationFilter = filteredProducts.value.filter(product => {
+                return product.location.city.toLowerCase().includes(filters.location.city.toLowerCase()) || product.location.city.toLowerCase().includes(filters.location.city.split(' ')[0].toString().toLowerCase()) || product.location.city.toLowerCase().includes(filters.location.state.split(' ')[0].toString().toLowerCase())
+            })
+            filteredProducts.value = locationFilter
+        }
+
+        // propertyType filter
+        if (filters.propertyType.length > 0) {
+            if (filters.propertyType !== 'all') {
+                let propertyTypeFilter = filteredProducts.value.filter(product => {
+                    if (filters.propertyType === 'room and parlor') {
+                        return product.type === 'room_parlor'
+                    } else {
+                        return product.type === filters.propertyType
+                    }
+                })
+                filteredProducts.value = propertyTypeFilter
+            }
+        }
+
+        const uniqueIds = [];
+        const uniqueFeeds = filteredProducts.value.filter(element => {
+            const isDuplicate = uniqueIds.includes(element._id);
+            if (!isDuplicate) {
+                uniqueIds.push(element._id);
+                return true;
+            }
+            return false;
+        });
+
+        filteredProducts.value = uniqueFeeds
+        title.value = `Habeep | Results(${filteredProducts.value.length})`
+    }
+}
 </script>
 
-<style scoped>
-.feed-image {
+<style scoped>.feed-image {
     height: 100%;
     width: 100% !important;
     object-fit: cover;
     max-height: 185px !important;
-}
-</style>
+}</style>

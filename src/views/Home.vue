@@ -98,16 +98,16 @@ useHead({
     { name: 'description', content: 'Search for new listings' },
 
     { name: 'og:title', content: 'Search Ads' },
-    { name: 'og:image', content: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
+    // { name: 'og:image', content: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
     { name: 'og:url', content: 'https://habeep.org/home' },
     { name: 'og:website', content: 'website' },
     { name: 'og:description', content: 'Search for Ads in the home page' },
 
     { name: 'viewport', content: 'width=device-width, initial-scale=1' }
   ],
-  link: [
-    { rel: 'icon', href: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
-  ]
+  // link: [
+  //   { rel: 'icon', href: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
+  // ]
 })
 
 import HomeNavbar from '../components/HomeNavbar.vue'

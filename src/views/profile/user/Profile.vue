@@ -52,31 +52,58 @@
                             <span class="text-xl w-full whitespace-nowrap text-left agent-name text-webapp font-medium">{{
                                 $store.state.user.surname + ' ' + $store.state.user.fname
                             }}</span>
-                            
+
                             <p class="text-lg agent-ads-count text-sub-webapp flex flex-row gap-x-2 items-center"><img
                                     src="../../../assets/images/map-pin.png" alt="">{{ $store.state.user.nationality }}</p>
 
-                            <div
+                            <!-- <div
                                 class="flex flex-row items-center w-full gap-x-2 mt-3 justify-between overflow-x-auto no-scroller no-scroll-btn">
-                                <p class="text-lg font-webapp flex flex-col items-center static" v-motion-slide-left :delay="250"
+                                <p class="text-lg font-webapp flex flex-col items-center"
+                                    :delay="250" v-if="$store.state.user.role === 'AGENT' && agentDetails.ads">
+                                    {{ agentDetails.ads.length }}
+                                    <span class="text-sub-webapp text-sm">Ads
+                                    </span>
+                                </p>
+                                <p class="text-lg font-webapp flex flex-col items-center"
+                                    >
+                                    {{ $store.state.user.savedAds.length }}
+                                    <span class="text-sub-webapp text-sm">Saved
+                                    </span>
+                                </p>
+                                <p class="text-lg font-webapp flex flex-col items-center cursor-pointer"
+                                    v-motion-slide-left :delay="350" @click="openModal('FollowingModal')">
+                                    {{
+                                        $store.state.user.following.length
+                                    }}<span class="text-sub-webapp text-sm">Following </span>
+                                </p>
+                                <p class="text-lg font-webapp flex flex-col items-center cursor-pointer"
+                                    v-motion-slide-left :delay="400" @click="openModal('FollowersModal')">
+                                    {{
+                                        $store.state.user.followers.length
+                                    }}<span class="text-sub-webapp text-sm">Followers </span>
+                                </p>
+                            </div> -->
+
+                            <div
+                                class="flex flex-row items-center w-full gap-x-2 mt-3 justify-between overflow-x-auto no-scroll-btn">
+                                <p class="text-lg font-webapp flex flex-col items-center"
                                     v-if="$store.state.user.role === 'AGENT' && agentDetails.ads">
                                     {{ agentDetails.ads.length }}
                                     <span class="text-sub-webapp text-sm">Ads
                                     </span>
                                 </p>
-                                <p class="text-lg font-webapp flex flex-col items-center static" v-motion-slide-left :delay="300">
+                                <p class="text-lg font-webapp flex flex-col items-center">
                                     {{ $store.state.user.savedAds.length }}
                                     <span class="text-sub-webapp text-sm">Saved
                                     </span>
                                 </p>
-                                <p class="text-lg font-webapp flex flex-col items-center static cursor-pointer" v-motion-slide-left
-                                    :delay="350" @click="openModal('FollowingModal')">
+                                <p class="text-lg font-webapp flex flex-col items-center cursor-pointer" @click="openModal('FollowingModal')">
                                     {{
                                         $store.state.user.following.length
                                     }}<span class="text-sub-webapp text-sm">Following </span>
                                 </p>
-                                <p class="text-lg font-webapp flex flex-col items-center static cursor-pointer" v-motion-slide-left
-                                    :delay="400" @click="openModal('FollowersModal')">
+                                <p class="text-lg font-webapp flex flex-col items-center cursor-pointer"
+                                    @click="openModal('FollowersModal')">
                                     {{
                                         $store.state.user.followers.length
                                     }}<span class="text-sub-webapp text-sm">Followers </span>
@@ -164,8 +191,7 @@
                         <!-- listing template -->
                         <div class="basis-full md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0"
                             v-for="ad in agentDetails.ads" :key="ad">
-                            <div
-                                class="flex flex-col items-start gap-y-2  border rounded-md border-gray-200 pb-2 ad feed">
+                            <div class="flex flex-col items-start gap-y-2  border rounded-md border-gray-200 pb-2 ad feed">
                                 <img @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
                                     class="w-full rounded-t-md feed-image" v-if="ad.images[0].link.includes('mp4') == false"
                                     alt="">
@@ -296,7 +322,6 @@ const router = useRouter()
 
 const title = ref('Habeep | ' + store.state.user.fname + ' Profile')
 const content = ref('This is ' + store.state.user.fname + ' Profile')
-const img = ref(store.state.user.userProfileImage)
 
 import { useHead } from '@vueuse/head'
 
@@ -307,7 +332,7 @@ useHead({
         { name: 'description', content: () => content.value },
 
         { name: 'og:title', content: () => title.value },
-        { name: 'og:image', content: () => img.value },
+        { name: 'og:image', content: store.state.user.userProfileImage },
         { name: 'og:url', content: 'https://habeep.org/user/profile/' + route.params.id },
         { name: 'og:website', content: 'website' },
         { name: 'og:description', content: () => content.value },
@@ -315,7 +340,9 @@ useHead({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }
     ],
     link: [
-      { rel: 'icon', href: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
+        { rel: 'icon', href: store.state.user.userProfileImage },
+        { rel: 'shortcut icon', href: store.state.user.userProfileImage },
+        { rel: 'apple-touch-icon', href: store.state.user.userProfileImage }
     ]
 })
 

@@ -13,11 +13,11 @@
                 </svg>
             </div>
 
-            <p class="text-sm text-webapp mt-2 cursor-pointer" :class="{ 'text-blue-600': sortValue === 'Recommended' }"
+            <p class="text-sm text-webapp mt-2 cursor-pointer" :class="{ 'text-blue-600': filterData.sortValue === 'Recommended' }"
                 @click="changeSortValue(1)">Recommended</p>
-            <p class="text-sm text-webapp mt-2 cursor-pointer" :class="{ 'text-blue-600': sortValue === 'Newest first' }"
+            <p class="text-sm text-webapp mt-2 cursor-pointer" :class="{ 'text-blue-600': filterData.sortValue === 'Newest first' }"
                 @click="changeSortValue(2)">Newest first</p>
-            <p class="text-sm text-webapp mt-2 cursor-pointer" :class="{ 'text-blue-600': sortValue === 'Oldest first' }"
+            <p class="text-sm text-webapp mt-2 cursor-pointer" :class="{ 'text-blue-600': filterData.sortValue === 'Oldest first' }"
                 @click="changeSortValue(3)">Oldest first</p>
 
             <hr class="my-4">
@@ -116,26 +116,26 @@
                     <img src="../assets/icons/Filter.svg" alt="" class="cursor-pointer lg:hidden"
                         @click="toggleDropdown('sort')">
                     <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg" @click="changeHouseType('all')"
-                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': activeType === 'all' }">All</span>
+                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': filterData.propertyType === 'all' }">All</span>
                     <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg"
                         @click="changeHouseType('apartment')"
-                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': activeType === 'apartment' }">Apartment</span>
+                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': filterData.propertyType === 'apartment' }">Apartment</span>
                     <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg"
                         @click="changeHouseType('bungalow')"
-                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': activeType === 'bungalow' }">Bungalow</span>
+                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': filterData.propertyType === 'bungalow' }">Bungalow</span>
                     <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg" @click="changeHouseType('duplex')"
-                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': activeType === 'duplex' }">Duplex</span>
+                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': filterData.propertyType === 'duplex' }">Duplex</span>
                     <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg" @click="changeHouseType('flat')"
-                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': activeType === 'flat' }">Flat</span>
+                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': filterData.propertyType === 'flat' }">Flat</span>
                     <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg" @click="changeHouseType('office')"
-                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': activeType === 'office' }">Office</span>
+                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': filterData.propertyType === 'office' }">Office</span>
                     <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg whitespace-nowrap w-full"
                         @click="changeHouseType('room_parlor')"
-                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': activeType === 'room_parlor' }">Room
+                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': filterData.propertyType === 'room_parlor' }">Room
                         & Parlour</span>
                     <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg whitespace-nowrap w-full"
                         @click="changeHouseType('land')"
-                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': activeType === 'land' }">Land</span>
+                        :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': filterData.propertyType === 'land' }">Land</span>
                 </div>
 
                 <!-- filters -->
@@ -143,7 +143,7 @@
                     <div @click="toggleDropdown('sort')"
                         class="border border-gray-300 w-56 py-1 justify-center hidden lg:flex flex-row items-center gap-x-2 rounded-full cursor-pointer ">
                         <span class="md:text-lg text-webapp text-sm flex flex-row gap-x-1"> Sort:
-                            <span class="hidden md:flex flex-row items-center w-full flex-nowrap">{{ sortValue }}</span>
+                            <span class="hidden md:flex flex-row items-center w-full flex-nowrap">{{ filterData.sortValue }}</span>
                         </span>
                         <svg xmlns="http://www.w3.org/2000/svg" :class="{ 'rotate-180': onSortDropdown }" fill="none"
                             viewBox="0 0 24 24" stroke-width="1.5" stroke="#9A9A9D" class="w-6 h-6">
@@ -173,17 +173,17 @@
                         </div>
 
                         <p class="text-sm text-webapp mt-2 cursor-pointer"
-                            :class="{ 'text-blue-600': sortValue === 'Recommended' }" @click="changeSortValue(1)">
+                            :class="{ 'text-blue-600': filterData.sortValue === 'Recommended' }" @click="changeSortValue(1)">
                             Recommended
                         </p>
                         <hr>
                         <p class="text-sm text-webapp mt-2 cursor-pointer"
-                            :class="{ 'text-blue': sortValue === 'Newest first' }" @click="changeSortValue(2)">Newest
+                            :class="{ 'text-blue': filterData.sortValue === 'Newest first' }" @click="changeSortValue(2)">Newest
                             first
                         </p>
                         <hr>
                         <p class="text-sm text-webapp mt-2 cursor-pointer"
-                            :class="{ 'text-blue-600': sortValue === 'Oldest first' }" @click="changeSortValue(3)">Oldest
+                            :class="{ 'text-blue-600': filterData.sortValue === 'Oldest first' }" @click="changeSortValue(3)">Oldest
                             first
                         </p>
 
@@ -259,19 +259,20 @@
                 <div class="flex flex-col items-center gap-y-3 md:justify-center"
                     v-if="filteredFeeds.length < 1 && !started && !fetchingFeeds">
                     <img src="../assets/icons/no-ad.svg" alt="">
-                    <span class="text-gray-300 text-lg">No feeds for {{ activeType }} yet</span>
+                    <span class="text-gray-300 text-lg">No feeds for {{ filterData.propertyType }} yet</span>
                 </div>
                 <!-- listing template -->
                 <div class="basis-full md:basis-1/2 xl:basis-1/4 md:px-3 md:py-3 py-5 gap-y-4 px-0" v-else
                     v-for="feed in filteredFeeds" :key="feed">
                     <div class="flex flex-col items-start gap-y-2 border rounded-md border-gray-200 pb-2 feed">
-                        <img fetchpriority="high" :src="feed.images[0].link"
+                        <Skeleton v-if="!feed.imageLoaded" class=" w-full h-36 rounded-t-md" style="width: 100%" />
+                        <img fetchpriority="high" :src="feed.images[0].link" @load="feed.imageLoaded = true"
                             @click="$router.push('/listings/products/' + feed._id)" alt=""
-                            class="w-full feed-image rounded-t-md"
+                            :class="{ 'hidden': !feed.imageLoaded }" class="w-full feed-image rounded-t-md"
                             v-if="feed.images[0].link && feed.images[0].link.includes('mp4') == false">
-                        <video fetchpriority="high" :src="feed.images[0].link"
-                            @click="$router.push('/listings/products/' + feed._id)" class="w-full rounded-t-md feed-image"
-                            v-else autoplay muted loop preload="metadata"></video>
+                        <video fetchpriority="high" :src="feed.images[0].link" @load="feed.imageLoaded = true"
+                            :class="{ 'hidden': !feed.imageLoaded }" @click="$router.push('/listings/products/' + feed._id)"
+                            class="w-full rounded-t-md feed-image" v-else autoplay muted loop preload="metadata"></video>
                         <p class="text-webapp text-lg font-medium w-full px-2 cursor-pointer"
                             @click="$router.push('/listings/products/' + feed._id)">{{ feed.title }}</p>
 
@@ -289,7 +290,7 @@
                                 <span v-if="feed.for === 'sale'">Sale</span>
                             </p>
                             <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }" :delay="200"
-                                v-if="$store.state.isAuthenticated" :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2}"
+                                v-if="$store.state.isAuthenticated" :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }"
                                 fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                 class="w-6 h-6 cursor-pointer" @click="saveAd(feed._id)"
                                 :class="{ 'text-orange-400': $store.state.user.savedAds.includes(feed._id) }">
@@ -313,7 +314,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, reactive } from 'vue'
 import formatNumber from "number_formatter"
 import axiosDefault from 'axios'
 import { useStore } from 'vuex'
@@ -339,6 +340,9 @@ useHead({
         { name: 'og:description', content: 'View your Feeds ' },
 
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+    ],
+    link: [
+        { rel: 'icon', href: 'https://i.ibb.co/BnG8VLy/logo-white.png' }
     ]
 })
 
@@ -362,58 +366,41 @@ const onLocationDropdown = ref(false)
 const onDropdown = ref(false)
 
 
-const activeType = ref('all')
+let filterData = reactive({
+    location: {
+        city: '',
+        state: ''
+    },
+    propertyType: 'all',
+    sortValue: 'Recommended'
+})
+
 const states = ref([])
 const cities = ref([])
 let onState = ref(true)
 const currentState = ref('Abuja')
 const currentCity = ref('Gwagwalada')
-
-currentState.value = store.state.feedLocation.state
-
-if (store.state.feedLocation.state) {
-    currentState.value = store.state.feedLocation.state
-}
-if (store.state.feedLocation.city) {
-    currentCity.value = store.state.feedLocation.city
-}
-
-
-// fetch feeds
-
 const fetchingFeeds = ref(false)
 const feeds = ref([])
 const started = ref(false)
 const filteredFeeds = ref([])
 const errorMsg = ref('')
 
-const url = '/listings/feeds';
-
-function filterType() {
-    let newFeeds = feeds.value
-    if (activeType.value === 'all') {
-        filteredFeeds.value = newFeeds
-    } else {
-        let filtered = newFeeds.filter(feed => {
-            return feed.type.toLowerCase() === activeType.value.toLowerCase()
-        })
-
-        filteredFeeds.value = filtered
-    }
-
-    const uniqueIds = [];
-    const uniqueFeeds = filteredFeeds.value.filter(element => {
-        const isDuplicate = uniqueIds.includes(element._id);
-        if (!isDuplicate) {
-            uniqueIds.push(element._id);
-            return true;
-        }
-        return false;
-    });
-
-    filteredFeeds.value = uniqueFeeds
+if (store.state.feedLocation.state) {
+    currentState.value = store.state.feedLocation.state
+    filterData.location.state = currentState.value
+    // useFilters(filterData)
+}
+if (store.state.feedLocation.city) {
+    currentCity.value = store.state.feedLocation.city
+    filterData.location.city = currentCity.value
+    // useFilters(filterData)
 }
 
+
+// fetch feeds
+
+const url = '/listings/feeds';
 async function getFeeds() {
     try {
         fetchingFeeds.value = true
@@ -423,32 +410,29 @@ async function getFeeds() {
 
         if (getFeeds.data) {
             feeds.value = getFeeds.data.feed
-            title.value = `Habeep | Feeds(${feeds.value.length })`
+            title.value = `Habeep | Feeds(${feeds.value.length})`
         }
 
-        // feeds.value.forEach(async feed => {
-        //     const distance = await calculateDistance(feed.location.address + ', ' + feed.location.city || 'Calabar')
-        //     feed.distance = distance
-        // })
+        feeds.value.forEach(async feed => {
+            const distance = await calculateDistance(feed.location.address + ', ' + feed.location.city || 'Calabar')
+            if (distance) {
+                feed.distance = distance
+            }
+        })
 
         started.value = false
-
-        filterType()
+        useFilters(filterData)
 
     } catch (error) {
         errorMsg.value = 'Error getting feeds'
     }
 }
 
-
-
-// filters
-const sortValue = ref('Recommended')
-
 function changeStateModal(state, type) {
     if (type === 'state') {
         onState.value = false
         currentState.value = state.state.name
+        filterData.location.state = currentState.value
         cities.value = state.cities
     }
     if (type === 'city') {
@@ -456,9 +440,11 @@ function changeStateModal(state, type) {
         onLocationDropdown.value = false
         onState.value = true
         currentCity.value = state
+        filterData.location.city = currentCity.value
 
         saveFeedLocation()
     }
+    useFilters(filterData)
 }
 
 const onSearchBar = ref(false)
@@ -470,9 +456,8 @@ function toggleSearch() {
 }
 
 function changeHouseType(type) {
-    activeType.value = type
-
-    filterType()
+    filterData.propertyType = type
+    useFilters(filterData)
 }
 
 function toggleDropdown(type) {
@@ -501,12 +486,13 @@ function toggleDropdown(type) {
 
 function changeSortValue(index) {
     if (index == 1) {
-        sortValue.value = 'Recommended'
+        filterData.sortValue = 'Recommended'
     } else if (index == 2) {
-        sortValue.value = 'Newest first'
+        filterData.sortValue = 'Newest first'
     } else {
-        sortValue.value = 'Oldest first'
+        filterData.sortValue = 'Oldest first'
     }
+    useFilters(filterData)
     toggleDropdown('sort')
 }
 
@@ -536,10 +522,10 @@ async function getStates() {
         const nameA = a.state.name.toUpperCase(); // ignore upper and lowercase
         const nameB = b.state.name.toUpperCase(); // ignore upper and lowercase
         if (nameA > nameB) {
-            return -1;
+            return 1;
         }
         if (nameA < nameB) {
-            return 1;
+            return -1;
         }
 
         // names must be equal
@@ -556,10 +542,10 @@ onMounted(async () => {
             const nameA = a.state.name.toUpperCase(); // ignore upper and lowercase
             const nameB = b.state.name.toUpperCase(); // ignore upper and lowercase
             if (nameA > nameB) {
-                return -1;
+                return 1;
             }
             if (nameA < nameB) {
-                return 1;
+                return -1;
             }
 
             // names must be equal
@@ -568,9 +554,48 @@ onMounted(async () => {
     } else {
         getStates()
     }
-
-
 })
+
+
+function useFilters(filters) {
+    if (feeds.value.length > 0) {
+        filteredFeeds.value = feeds.value
+        // location filter
+        if (filters.location.state.length > 0 && filters.location.city.length > 0) {
+            let locationFilter = filteredFeeds.value.filter(product => {
+                return product.location.city.toLowerCase().includes(filters.location.city.toLowerCase()) || product.location.city.toLowerCase().includes(filters.location.city.split(' ')[0].toString().toLowerCase()) ||  product.location.city.toLowerCase().includes(filters.location.state.split(' ')[0].toString().toLowerCase())
+            })
+            filteredFeeds.value = locationFilter
+        }
+
+        // propertyType filter
+        if (filters.propertyType.length > 0) {
+            if (filters.propertyType !== 'all') {
+                let propertyTypeFilter = filteredFeeds.value.filter(product => {
+                    if (filters.propertyType === 'room and parlor') {
+                        return product.type === 'room_parlor'
+                    } else {
+                        return product.type === filters.propertyType
+                    }
+                })
+                filteredFeeds.value = propertyTypeFilter
+            }
+        }
+
+        const uniqueIds = [];
+        const uniqueFeeds = filteredFeeds.value.filter(element => {
+            const isDuplicate = uniqueIds.includes(element._id);
+            if (!isDuplicate) {
+                uniqueIds.push(element._id);
+                return true;
+            }
+            return false;
+        });
+
+        filteredFeeds.value = uniqueFeeds
+        title.value = `Habeep | Feeds(${filteredFeeds.value.length})`
+    }
+}
 
 </script>
 

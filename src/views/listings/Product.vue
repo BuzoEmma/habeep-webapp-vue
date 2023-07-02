@@ -12,11 +12,14 @@
             <!-- product display images for desktop view -->
             <div class="product-img-grid desktop-view xl:flex flex-row items-center w-full mt-10 hidden">
                 <div class="relative h-full display-img w-1/2">
+                    <Skeleton v-if="!carouselImg.imageLoaded" class=" w-full h-full rounded-lg" style="width: 100%" />
                     <img :src="carouselImg.link" class=" h-full rounded-lg feed-image w-full"
+                        @load="carouselImg.imageLoaded = true" :class="{ 'hidden': !carouselImg.imageLoaded }"
                         v-if="carouselImg.link.toString().includes('mp4') == false" @click="enterImageViewer()"
                         :alt="product.title">
-                    <video :src="carouselImg.link" @click="enterImageViewer()" loop
-                        class="w-full h-full rounded-lg feed-image" :alt="product.title" v-else autoplay muted></video>
+                    <video :src="carouselImg.link" @click="enterImageViewer()" loop @load="carouselImg.imageLoaded = true"
+                        :class="{ 'hidden': !carouselImg.imageLoaded }" class="w-full h-full rounded-lg feed-image"
+                        :alt="product.title" v-else autoplay muted></video>
 
                     <div class="w-full absolute flex flex-row top-5 items-center justify-between px-2">
                         <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
@@ -46,20 +49,27 @@
                     <div class="flex flex-row h-1/2 w-full items-center gap-2">
                         <div class="h-full w-1/2  cursor-pointer gap-2 overflow-hidden rounded-lg"
                             v-for="image in images.slice(1, 3)" :key="image">
-                            <img :alt="product.title" :src="image.link" class=" h-full w-full rounded-lg feed-image-short"
+                            <Skeleton v-if="!image.imageLoaded" class=" w-full h-full rounded-md" style="width: 100%" />
+                            <img :alt="product.title" @load="image.imageLoaded = true"
+                                :class="{ 'hidden': !image.imageLoaded }" :src="image.link"
+                                class=" h-full w-full rounded-lg feed-image-short"
                                 v-if="image.link && image.link.toString().includes('mp4') === false"
                                 @click="enterImageViewer()" :key="image">
-                            <video :alt="product.title" :src="image.link" @click="enterImageViewer()" loop
+                            <video :alt="product.title" @load="image.imageLoaded = true"
+                                :class="{ 'hidden': !image.imageLoaded }" :src="image.link" @click="enterImageViewer()" loop
                                 class="w-full rounded-lg feed-image-short" v-else autoplay muted preload="metadata"></video>
                         </div>
                     </div>
                     <div class=" flex flex-row h-1/2 w-full items-center gap-2">
                         <div class="w-1/2 cursor-pointer h-full overflow-hidden rounded-lg"
                             v-for="image in images.slice(3, 5)" :key="image">
-                            <img :src="image.link" class=" h-full w-full rounded-md feed-image-short"
+                            <Skeleton v-if="!image.imageLoaded" class=" w-full h-full rounded-md" style="width: 100%" />
+                            <img :src="image.link" @load="image.imageLoaded = true"
+                                :class="{ 'hidden': !image.imageLoaded }" class=" h-full w-full rounded-md feed-image-short"
                                 v-if="image.link && image.link.toString().includes('mp4') == false"
                                 @click="enterImageViewer()" :alt="product.title">
-                            <video :alt="product.title" :src="image.link" @click="enterImageViewer()" loop
+                            <video :alt="product.title" @load="image.imageLoaded = true"
+                                :class="{ 'hidden': !image.imageLoaded }" :src="image.link" @click="enterImageViewer()" loop
                                 class="w-full rounded-md feed-image-short" v-else autoplay muted preload="metadata"></video>
                         </div>
                     </div>
@@ -94,10 +104,13 @@
                     </div>
                 </div>
 
+                <Skeleton v-if="!carouselImg.imageLoaded" class=" w-full h-full" style="width: 100%" />
                 <img :alt="product.title" :src="carouselImg.link" class=" h-full w-full feed-image"
+                    @load="carouselImg.imageLoaded = true" :class="{ 'hidden': !carouselImg.imageLoaded }"
                     v-if="carouselImg.link && carouselImg.link.toString().includes('mp4') == false"
                     @click="enterImageViewer()">
                 <video :alt="product.title" :src="carouselImg.link" loop class="w-full feed-image"
+                    @load="carouselImg.imageLoaded = true" :class="{ 'hidden': !carousel.imageLoaded }"
                     @click="enterImageViewer()" v-else autoplay muted preload="metadata"></video>
                 <!-- <img :src="images[activeCarouselImg - 1].link" class="h-full w-full new-img" :class="{'hidden': changeCarouselImg}"> -->
 
@@ -406,9 +419,9 @@ const store = useStore()
 
 
 const title = ref('Habeep | ' + route.params.id + ' Product')
-const content = ref('Property ID is' + route.params.id + ' Product')
+const content = ref('Property ID is' + route.params.id)
 
-const img = ref('https://i.ibb.co/BnG8VLy/logo-white.png')
+const img = ref('https://logos.flamingtext.com/Word-Logos/property-design-sketch-name.png')
 
 import { useHead } from '@vueuse/head'
 
@@ -417,14 +430,16 @@ useHead({
     meta: [
         { charset: 'utf-8' },
         { name: 'description', content: () => content.value },
-
         { name: 'og:title', content: () => title.value },
+        { name: 'og:image', content: () => img.value },
         { name: 'og:url', content: 'https://habeep.org/listings/product/' + route.params.id },
         { name: 'og:website', content: 'website' },
-        { name: 'og:description', content: () => content.value },
-
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }
-    ]
+    ],
+    link: [
+        { rel: 'icon', href: () => img.value },
+        { rel: 'shortcut icon', href: () => img.value },
+    ],
 })
 
 
@@ -460,8 +475,15 @@ const getProduct = async () => {
             router.replace({ name: 'not-found' })
         }
         images.value = getProduct.data.product.images
-        img.value = getProduct.data.product.images[0]
 
+        if (getProduct.data.product.images.length > 0) {
+            getProduct.data.product.images.forEach(image => {
+                if (image.link && image.link.length > 0 && image.link.toString().includes('mp4') === false) {
+                    img.value = image.link
+                    return;
+                }
+            })
+        }
         useHead({
             link: [
                 { rel: 'icon', href: () => img.value },
@@ -469,17 +491,10 @@ const getProduct = async () => {
             ],
             meta: [
                 { name: 'og:image', content: () => img.value },
+                { name: 'og:description', content: () => content.value },
+
             ]
         })
-
-        if (getProduct.data.product.images.length > 0) {
-            getProduct.data.product.images.forEach(image => {
-                if (image.toString().includes('mp4') === false) {
-                    img.value = image
-                    return;
-                }
-            })
-        }
         carouselImg.value = getProduct.data.product.images[0]
 
         getAgent(product.value.agentId)
