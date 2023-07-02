@@ -60,7 +60,7 @@ function changeHomeRoute() {
 }
 
 // extras
-import Blog from '../views/extras/BlogRoom.vue'
+import Blogs from '../views/extras/BlogRoom.vue'
 import TOS from '../views/extras/TermsOfService.vue'
 
 // auth
@@ -96,27 +96,32 @@ const routes = [
     // extras
     {
         path: '/blog',
-        name: 'Blog',
-        component: Blog,
-        // meta: {
-        //     title: "Blog"
-        // }
+        name: 'Blogs',
+        component: Blogs,
+        meta: {
+            title: "Blogs"
+        }
+    },
+    {
+        path: '/blog/:id',
+        name: 'BlogPage',
+        component: () => import('../views/extras/BlogPage.vue'),
     },
     {
         path: '/help',
         name: 'FAQ',
         component: () => import('../views/extras/FAQ.vue'),
-        // meta: {
-        //     title: "Help"
-        // }
+        meta: {
+            title: "Help"
+        }
     },
     {
         path: '/terms-of-service',
         name: 'Terms-Of-Service',
         component: TOS,
-        // meta: {
-        //     title: "Terms of Service"
-        // }
+        meta: {
+            title: "Terms of Service"
+        }
     },
     // listings
     {

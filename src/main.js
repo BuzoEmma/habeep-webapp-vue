@@ -14,13 +14,22 @@ import SkeletonLoader from './components/reusables/SkeletonLoader.vue'
 
 import { createHead } from "@vueuse/head"
 
+// markdown editor
+import VMdPreview from '@kangc/v-md-editor/lib/preview';
+import '@kangc/v-md-editor/lib/style/preview.css';
+import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
+import '@kangc/v-md-editor/lib/theme/style/github.css';
+// highlightjs
+import hljs from 'highlight.js';
 
+VMdPreview.use(githubTheme, {
+  Hljs: hljs,
+});
 
 
 const myApp = createApp(App);
 
 const head = createHead()
-
 
 myApp.component('Toast', Toast)
 myApp.component('Preloader', Preloader)
@@ -28,6 +37,7 @@ myApp.component('Skeleton', SkeletonLoader)
 myApp.component('Avatar', AvatarInitials)
 
 myApp.use(MotionPlugin)
+myApp.use(VMdPreview);
 myApp.use(head)
 myApp.use(VueSocialSharing)
 myApp.use(store)

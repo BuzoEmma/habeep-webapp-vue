@@ -9,19 +9,35 @@
                     and features</p>
             </div>
 
-
+            <div class="w-full h-full grid place-items-center mt-10" v-if="blogs.length === 0 && !fetchingBlogs">
+                <p class="bacasime text-5xl font-semibold">No blogs posted yet</p>
+            </div>
             <!-- blogs -->
-            <div class="flex flex-row flex-auto mt-6  md:mt-10 w-full h-fit  flex-wrap">
-
+            <div class="flex flex-row mt-6 md:mt-10 w-full h-fit flex-wrap" v-if="blogs.length > 0 && !fetchingBlogs">
                 <!-- blog article template -->
-                <div class="flex flex-col items-start gap-y-3 md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0"
-                    v-for="item in 6" :key="item">
-                    <div class="w-full rounded-lg border border-gray-400">
-                        <img src="../../assets/images/hbp-img.svg" alt="" class="w-full h-full">
+                <div class="flex flex-col items-start md:basis-1/2 xl:basis-1/3 cursor-pointer md:px-3 md:py-3 py-5 px-0 shadow-sm"
+                    @click="$router.push('/blog/' + blog._id)"
+                    v-for="blog in blogs" :key="blog">
+                    <div class="w-full rounded-lg border border-gray-100">
+                        <Skeleton class="w-full blog-image" v-if="!blog.imageLoaded" />
+                        <img :src="blog.imageCover" alt="" @load="blog.imageLoaded = true" :class="{'hidden': !blog.imageLoaded}" class="w-full rounded-lg blog-image">
                     </div>
-                    <p class="text-webapp text-xl font-bold w-full">How to covert Naira to HBP: Swap in simple steps
-                    </p>
-                    <p class="text-sub-webapp text-sm w-full">March 23, 2022 . John Doe</p>
+                    <p class="text-webapp text-lg font-medium ubuntu mt-2 w-full">{{ blog.title }}</p>
+                    <p class="text-sub-webapp text-sm w-full mt-1">{{ blog.subtitle }}</p>
+                    <p class="text-sub-webapp text-sm w-full mt-1">{{ moment(blog.createdAt).format('MMM DD, YYYY') }} . <span class="text-webapp font-bold">{{ blog.username }}</span></p>
+                </div>
+            </div>
+
+            <div class="flex flex-row mt-6  md:mt-10 w-full h-fit flex-wrap" v-if="blogs.length === 0 && fetchingBlogs">
+                <!-- blog article skeleton -->
+                <div class="flex flex-col w-full items-start gap-y-3 md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0"
+                    v-for="item in 4" :key="item">
+                    <div class="w-full rounded-lg">
+                        <Skeleton class="w-full blog-image" />
+                    </div>
+                    <Skeleton class="w-full h-5 rounded-2xl" />
+                    <Skeleton class="w-4/5 h-3 rounded-2xl" />
+                    <Skeleton class="w-2/5 h-2 rounded-2xl" />
                 </div>
             </div>
 
@@ -39,14 +55,16 @@
                     <!-- download stores -->
                     <div class="flex flex-row gap-x-2 items-center w-fit mt-4">
                         <img src="../../assets/images/apple-download.svg" alt="">
-                        <img src="../../assets/images/android-download.svg" alt="">
+                        <a href="https://play.google.com/store/apps/details?id=org.habeep"
+                            class="no-underline cursor-pointer"><img src="../../assets/images/android-download.svg"
+                                class="cursor-pointer" alt="android app download button"></a>
                     </div>
                 </div>
 
                 <!-- phone anime -->
                 <img src="../../assets/images/phone-blog-anime.svg"
                     class="hidden xl:block w-full  2xl:w-4/5 absolute -top-3/4 2xl:-bottom-full xl:-right-36 2xl:-right-24"
-                    alt="">
+                    alt="screenshot of habeep app">
 
             </div>
         </div>
@@ -60,10 +78,41 @@
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue'
 import HomeNavbar from '../../components/HomeNavbar.vue'
+import axios from '../../composables/axios.js'
+import moment from 'moment'
+import { useHead } from '@vueuse/head'
+
+useHead({
+    title: 'Habeep | Blog Page'
+})
+
+const fetchingBlogs = ref(false)
+const blogs = ref([])
+async function fetchBlogs() {
+    try {
+        fetchingBlogs.value = true
+        const fetchBlogs = await axios.get('/articles/blog/fetch')
+        blogs.value = fetchBlogs.data.data
+
+        setTimeout(() => {
+            fetchingBlogs.value = false
+        }, 1000);
+    } catch (error) {
+        fetchingBlogs.value = false
+    }
+}
+
+onMounted(() => {
+    fetchBlogs()
+})
+
 
 </script>
 
-<style>
-
+<style scoped>
+.blog-image {
+    height: 271px !important;
+}
 </style>

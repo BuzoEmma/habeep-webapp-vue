@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bacasime+Antique&family=Montserrat:wght@100&family=Ubuntu&display=swap');
+
 @font-face {
   font-family: Aeonik;
   font-style: normal;
@@ -9,6 +11,7 @@
 :root {
   font-family: 'Aeonik', sans-serif;
 }
+
 
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -60,6 +63,12 @@ input[type=number] {
 
 .ubuntu {
   font-family: 'Ubuntu', sans-serif;
+}
+.bacasime {
+  font-family: 'Bacasime Antique', serif;
+}
+.montserrat {
+  font-family: 'Montserrat', sans-serif;
 }
 
 .no-scroll-btn::-webkit-scrollbar {
