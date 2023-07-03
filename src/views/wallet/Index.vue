@@ -136,7 +136,6 @@ function getData(e) {
 }
 
 function getTokenWallet(e) {
-    console.log('hello')
     tokenWallet.value = e
 }
 

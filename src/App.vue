@@ -150,7 +150,7 @@ onMounted(() => {
 
 
     <div
-      class="flex-col flex absolute bottom-0 md:bottom-10 h-fit  items-center w-full sm:w-fit justify-end p-2  right-2 md:right-12"
+      class="flex-col flex absolute bottom-0 md:bottom-10 h-fit z-50 items-center w-full sm:w-fit justify-end p-2 right-2 md:right-12"
       v-if="allNotifications.length > 0 && $store.state.isAuthenticated">
       <div class="flex-row-center w-full p-4 notif justify-between cursor-pointer" @click="takeNotificationAction(notif)"
         v-motion :initial="{ y: -100 }" :enter="{ y: 0 }" :tapped="{ x: 10000, opacity: 0.3, transition: { delay: 20 } }"

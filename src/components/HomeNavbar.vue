@@ -3,8 +3,8 @@
     <div class="absolute w-screen h-screen top-0 opacity-50" @click="toggleMobileNav" v-if="onMobileNav"
         style="background: #161622"></div>
 
-    <div
-        class="flex flex-row items-center relative py-4 justify-between w-full px-6 2xl:px-44 md:px-20 border-b border-b-textfieldbg" v-motion-slide-top :delay="200">
+    <div class="flex flex-row items-center relative py-4 justify-between w-full px-6 2xl:px-44 md:px-20 border-b border-b-textfieldbg"
+        v-motion-slide-top :delay="200">
         <div class="logo flex flex-row items-center gap-x-2 cursor-pointer" @click="$router.push('/feeds')">
             <img src="../assets/icons/logo.svg" alt="Logo">
             <span class="text-primary text-2xl">Habeep</span>
@@ -18,20 +18,18 @@
                 <a href="https://play.google.com/store/apps/details?id=org.habeep" class="no-underline cursor-pointer"><img
                         src="../assets/icons/playstore.svg" alt=""></a>
             </div>
-
             <div class="flex flex-row gap-x-10 items-start md:items-center pl-6">
-                <span class="uppercase text-lg text-webapp cursor-pointer" @click="$router.push('/blog')">BLOG</span>
+                <span class="uppercase text-lg text-webapp cursor-pointer" :class="{ 'text-blue-700': $route.fullPath.includes('blog') === true }" @click="$router.push('/blog')">BLOG</span>
                 <div class="flex flex-row items-center cursor-pointer gap-x-2" @click="toggleNav">
-                    
+
                     <img src="../assets/icons/user.svg" alt="" v-if="!$store.state.isAuthenticated">
 
-                    <img :src="$store.state.user.userProfileImage"
-                        class="w-10 h-10 rounded-full cursor-pointer"
+                    <img :src="$store.state.user.userProfileImage" class="w-10 h-10 rounded-full cursor-pointer"
                         v-else-if="$store.state.user.userProfileImage !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
                     <Avatar size="100%" class="w-10 h-10"
                         v-if="$store.state.user.userProfileImage === 'https://i.ibb.co/gtpxMJz/21.png' && $store.state.isAuthenticated"
                         :fname="$store.state.user.fname" :lname="$store.state.user.surname" />
-                        
+
                     <svg xmlns="http://www.w3.org/2000/svg" :class="{ 'rotate-180': onNavDropdown }" fill="none"
                         viewBox="0 0 24 24" stroke-width="2" stroke="#0A1045" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -48,8 +46,9 @@
 
         <!-- Navigation Menu -->
 
-        <div v-if="(onNavDropdown || onMobileNav)" :class="{ 'right-2 top-20': onMobileNav }" v-motion-slide-top :delay="200"
-            class="flex flex-col drop-shadow-lg shadow-xl bg-white rounded-xl gap-y-3 border p-6 border-gray-300 absolute top-16 right-20 z-30"
+        <div v-if="(onNavDropdown || onMobileNav)" :class="{ 'right-2 top-20': onMobileNav }" v-motion-slide-top
+            :delay="200"
+            class="flex flex-col drop-shadow-lg shadow-xl bg-white rounded-xl gap-y-3 border p-6 border-gray-300 absolute top-16 right-20 z-50"
             style="width: 250px">
 
             <p @click="$router.push('/home')" class="text-sm text-webapp mt-1 cursor-pointer"
@@ -80,6 +79,10 @@
             <p @click="$router.push('/account/IBO/category/agent')" class="text-sm text-webapp mt-1 cursor-pointer"
                 :class="{ 'text-blue-700': $route.name.includes('IBO') === true }"
                 v-if="$store.state.isAuthenticated && $store.state.user.role === 'TENANT'">Become an Agent</p>
+
+            <span class="text-sm text-webapp mt-1 md:hidden mobile-nav-item"
+                :class="{ 'text-blue-700': $route.fullPath.includes('blog') === true }"
+                @click="$router.push('/blog')">BLOG</span>
 
             <p @click="$router.push('/wallet')" class="text-sm text-webapp mt-1 cursor-pointer"
                 :class="{ 'text-blue-700': $route.name === 'Wallet' }" v-if="$store.state.isAuthenticated">Wallet</p>

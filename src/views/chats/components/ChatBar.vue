@@ -9,10 +9,11 @@
             @click="selectChat(index, chat)" v-for="(chat, index) in props.rooms" :key="(chat, index)"
             :class="{ 'active-bg': activeChat === chat }">
             <div class="flex flex-row items-start gap-x-3 w-fit h-full">
-                <div class="rounded-full w-12 h-12 grid place-items-center"  v-motion-slide-left :delay="Number((index + 2) + '30')">
-                    <img :src="chat.user.profilePicture" v-if="chat.user.profilePicture !== 'https://i.ibb.co/gtpxMJz/21.png'" class="w-12 h-12 rounded-full" alt="">
-                    <Avatar size="100%" v-else :fname="chat.user.fname"
-                        :lname="chat.user.surname" />
+                <div class="rounded-full w-12 h-12 grid place-items-center">
+                    <img :src="chat.user.profilePicture"
+                        v-if="chat.user.profilePicture !== 'https://i.ibb.co/gtpxMJz/21.png'" class="w-12 h-12 rounded-full"
+                        alt="">
+                    <Avatar size="100%" v-else :fname="chat.user.fname" :lname="chat.user.surname" />
                 </div>
                 <div class="flex flex-col items-start h-full">
                     <span class="md:text-lg text-sm text-left text-webapp font-medium">{{ chat.user.fname + ' ' +
@@ -21,7 +22,7 @@
 
                     <div v-if="chat.room.chats.length > 0">
                         <p class="text-xs md:text-sm text-sub-webapp flex-row-center gap-x-2 mt-1.5"
-                            v-if="chat.room.chats[chat.room.chats.length - 1].media && (chat.room.chats[chat.room.chats.length - 1].media.includes('.jpg') || chat.room.chats[chat.room.chats.length - 1].media.includes('.png') || chat.room.chats[chat.room.chats.length - 1].media.includes('photo/'))">
+                            v-if="chat.room.chats[chat.room.chats.length - 1].media && (chat.room.chats[chat.room.chats.length - 1].media.includes('.jpg') || chat.room.chats[chat.room.chats.length - 1].media.includes('.png') || chat.room.chats[chat.room.chats.length - 1].media.includes('photo/')) && !chat.room.chats[chat.room.chats.length - 1].deleted">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
                                 <path fill-rule="evenodd"
                                     d="M1 5.25A2.25 2.25 0 013.25 3h13.5A2.25 2.25 0 0119 5.25v9.5A2.25 2.25 0 0116.75 17H3.25A2.25 2.25 0 011 14.75v-9.5zm1.5 5.81v3.69c0 .414.336.75.75.75h13.5a.75.75 0 00.75-.75v-2.69l-2.22-2.219a.75.75 0 00-1.06 0l-1.91 1.909.47.47a.75.75 0 11-1.06 1.06L6.53 8.091a.75.75 0 00-1.06 0l-2.97 2.97zM12 7a1 1 0 11-2 0 1 1 0 012 0z"
@@ -31,7 +32,7 @@
                         </p>
 
                         <p class="text-xs md:text-sm text-sub-webapp flex-row-center gap-x-2 mt-1.5"
-                            v-if="chat.room.chats[chat.room.chats.length - 1].media && (chat.room.chats[chat.room.chats.length - 1].media.includes('.mp4') || chat.room.chats[chat.room.chats.length - 1].media.includes('video/') && chat.room.chats[chat.room.chats.length - 1].msg !== 'VN')">
+                            v-if="chat.room.chats[chat.room.chats.length - 1].media && (chat.room.chats[chat.room.chats.length - 1].media.includes('.mp4') || chat.room.chats[chat.room.chats.length - 1].media.includes('video/') && chat.room.chats[chat.room.chats.length - 1].msg !== 'VN') && !chat.room.chats[chat.room.chats.length - 1].deleted">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
                                 <path
                                     d="M3.25 4A2.25 2.25 0 001 6.25v7.5A2.25 2.25 0 003.25 16h7.5A2.25 2.25 0 0013 13.75v-7.5A2.25 2.25 0 0010.75 4h-7.5zM19 4.75a.75.75 0 00-1.28-.53l-3 3a.75.75 0 00-.22.53v4.5c0 .199.079.39.22.53l3 3a.75.75 0 001.28-.53V4.75z" />
@@ -40,7 +41,7 @@
                         </p>
 
                         <p class="text-xs md:text-sm text-sub-webapp flex-row-center gap-x-2 mt-1.5"
-                            v-if="chat.room.chats[chat.room.chats.length - 1].media && (chat.room.chats[chat.room.chats.length - 1].media.includes('audioMessages') || chat.room.chats[chat.room.chats.length - 1].media.includes('audio/'))">
+                            v-if="chat.room.chats[chat.room.chats.length - 1].media && (chat.room.chats[chat.room.chats.length - 1].media.includes('audioMessages') || chat.room.chats[chat.room.chats.length - 1].media.includes('audio/')) && !chat.room.chats[chat.room.chats.length - 1].deleted">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
                                 <path d="M8.25 4.5a3.75 3.75 0 117.5 0v8.25a3.75 3.75 0 11-7.5 0V4.5z" />
                                 <path
@@ -51,11 +52,25 @@
                         </p>
 
                         <span class="text-xs md:text-sm text-sub-webapp"
-                            v-if="!chat.room.chats[chat.room.chats.length - 1].media && chat.room.chats[chat.room.chats.length - 1].msg && chat.room.chats[chat.room.chats.length - 1].msg.length < 20">{{
+                            v-if="!chat.room.chats[chat.room.chats.length - 1].media && chat.room.chats[chat.room.chats.length - 1].msg && chat.room.chats[chat.room.chats.length - 1].msg.length < 20 && !chat.room.chats[chat.room.chats.length - 1].deleted">{{
                                 chat.room.chats[chat.room.chats.length - 1].msg }}</span>
                         <span class="text-xs md:text-sm text-sub-webapp"
-                            v-if="!chat.room.chats[chat.room.chats.length - 1].media && chat.room.chats[chat.room.chats.length - 1].msg && chat.room.chats[chat.room.chats.length - 1].msg.length > 19">{{
+                            v-if="!chat.room.chats[chat.room.chats.length - 1].media && chat.room.chats[chat.room.chats.length - 1].msg && chat.room.chats[chat.room.chats.length - 1].msg.length > 19 && !chat.room.chats[chat.room.chats.length - 1].deleted">{{
                                 chat.room.chats[chat.room.chats.length - 1].msg.slice(0, 20) + '....' }}</span>
+
+
+                        <p class="text-xs md:text-sm text-sub-webapp opacity-60 flex-row-center gap-x-1 pt-2"
+                            v-if="chat.room.chats[chat.room.chats.length - 1].deleted">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-4 h-4">
+                                <path fill-rule="evenodd"
+                                    d="M5.965 4.904l9.131 9.131a6.5 6.5 0 00-9.131-9.131zm8.07 10.192L4.904 5.965a6.5 6.5 0 009.131 9.131zM4.343 4.343a8 8 0 1111.314 11.314A8 8 0 014.343 4.343z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <span v-if="chat.room.chats[chat.room.chats.length - 1].userId === $store.state.user._id">You
+                                deleted this message</span>
+                            <span v-else> This message was deleted </span>
+                        </p>
+
                     </div>
 
                     <span class="text-xs md:text-sm text-sub-webapp" v-else>No message yet</span>

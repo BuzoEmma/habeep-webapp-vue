@@ -13,12 +13,15 @@
                 </svg>
             </div>
 
-            <p class="text-sm text-webapp mt-2 cursor-pointer" :class="{ 'text-blue-600': filterData.sortValue === 'Recommended' }"
-                @click="changeSortValue(1)">Recommended</p>
-            <p class="text-sm text-webapp mt-2 cursor-pointer" :class="{ 'text-blue-600': filterData.sortValue === 'Newest first' }"
-                @click="changeSortValue(2)">Newest first</p>
-            <p class="text-sm text-webapp mt-2 cursor-pointer" :class="{ 'text-blue-600': filterData.sortValue === 'Oldest first' }"
-                @click="changeSortValue(3)">Oldest first</p>
+            <p class="text-sm text-webapp mt-2 cursor-pointer"
+                :class="{ 'text-blue-600': filterData.sortValue === 'Recommended' }" @click="changeSortValue(1)">Recommended
+            </p>
+            <p class="text-sm text-webapp mt-2 cursor-pointer"
+                :class="{ 'text-blue-600': filterData.sortValue === 'Newest first' }" @click="changeSortValue(2)">Newest
+                first</p>
+            <p class="text-sm text-webapp mt-2 cursor-pointer"
+                :class="{ 'text-blue-600': filterData.sortValue === 'Oldest first' }" @click="changeSortValue(3)">Oldest
+                first</p>
 
             <hr class="my-4">
 
@@ -143,7 +146,8 @@
                     <div @click="toggleDropdown('sort')"
                         class="border border-gray-300 w-56 py-1 justify-center hidden lg:flex flex-row items-center gap-x-2 rounded-full cursor-pointer ">
                         <span class="md:text-lg text-webapp text-sm flex flex-row gap-x-1"> Sort:
-                            <span class="hidden md:flex flex-row items-center w-full flex-nowrap">{{ filterData.sortValue }}</span>
+                            <span class="hidden md:flex flex-row items-center w-full flex-nowrap">{{ filterData.sortValue
+                            }}</span>
                         </span>
                         <svg xmlns="http://www.w3.org/2000/svg" :class="{ 'rotate-180': onSortDropdown }" fill="none"
                             viewBox="0 0 24 24" stroke-width="1.5" stroke="#9A9A9D" class="w-6 h-6">
@@ -173,17 +177,20 @@
                         </div>
 
                         <p class="text-sm text-webapp mt-2 cursor-pointer"
-                            :class="{ 'text-blue-600': filterData.sortValue === 'Recommended' }" @click="changeSortValue(1)">
+                            :class="{ 'text-blue-600': filterData.sortValue === 'Recommended' }"
+                            @click="changeSortValue(1)">
                             Recommended
                         </p>
                         <hr>
                         <p class="text-sm text-webapp mt-2 cursor-pointer"
-                            :class="{ 'text-blue': filterData.sortValue === 'Newest first' }" @click="changeSortValue(2)">Newest
+                            :class="{ 'text-blue-600': filterData.sortValue === 'Newest first' }" @click="changeSortValue(2)">
+                            Newest
                             first
                         </p>
                         <hr>
                         <p class="text-sm text-webapp mt-2 cursor-pointer"
-                            :class="{ 'text-blue-600': filterData.sortValue === 'Oldest first' }" @click="changeSortValue(3)">Oldest
+                            :class="{ 'text-blue-600': filterData.sortValue === 'Oldest first' }"
+                            @click="changeSortValue(3)">Oldest
                             first
                         </p>
 
@@ -226,6 +233,10 @@
                         </div>
 
                         <div v-if="onState" class="gap-y-2">
+                            <div class="py-2" @click="changeStateModal('All', 'state')">
+                                <p class="text-sm mb-1 text-webapp cursor-pointer">All</p>
+                                <hr>
+                            </div>
                             <div class="py-2" v-for="(state, index) in states" :key="(state, index)"
                                 @click="changeStateModal(state, 'state')">
                                 <p class="text-sm mb-1 text-webapp cursor-pointer" v-if="state.state.name !== 'Cross'">{{
@@ -429,21 +440,32 @@ async function getFeeds() {
 }
 
 function changeStateModal(state, type) {
-    if (type === 'state') {
-        onState.value = false
-        currentState.value = state.state.name
-        filterData.location.state = currentState.value
-        cities.value = state.cities
-    }
-    if (type === 'city') {
+    if (state !== 'All') {
+        if (type === 'state') {
+            onState.value = false
+            currentState.value = state.state.name
+            filterData.location.state = currentState.value
+            cities.value = state.cities
+        }
+        if (type === 'city') {
+            onDropdown.value = false
+            onLocationDropdown.value = false
+            onState.value = true
+            currentCity.value = state
+            filterData.location.city = currentCity.value
+
+            saveFeedLocation()
+        }
+    } else {
         onDropdown.value = false
         onLocationDropdown.value = false
-        onState.value = true
+        currentState.value = state
         currentCity.value = state
-        filterData.location.city = currentCity.value
-
-        saveFeedLocation()
+        onState.value = true
+        filterData.location.state = ''
+        filterData.location.city = ''
     }
+
     useFilters(filterData)
 }
 
@@ -492,8 +514,8 @@ function changeSortValue(index) {
     } else {
         filterData.sortValue = 'Oldest first'
     }
-    useFilters(filterData)
     toggleDropdown('sort')
+    useFilters(filterData)
 }
 
 function saveFeedLocation() {
@@ -563,7 +585,7 @@ function useFilters(filters) {
         // location filter
         if (filters.location.state.length > 0 && filters.location.city.length > 0) {
             let locationFilter = filteredFeeds.value.filter(product => {
-                return product.location.city.toLowerCase().includes(filters.location.city.toLowerCase()) || product.location.city.toLowerCase().includes(filters.location.city.split(' ')[0].toString().toLowerCase()) ||  product.location.city.toLowerCase().includes(filters.location.state.split(' ')[0].toString().toLowerCase())
+                return product.location.city.toLowerCase().includes(filters.location.city.toLowerCase()) || product.location.city.toLowerCase().includes(filters.location.city.split(' ')[0].toString().toLowerCase()) || product.location.city.toLowerCase().includes(filters.location.state.split(' ')[0].toString().toLowerCase())
             })
             filteredFeeds.value = locationFilter
         }
@@ -579,6 +601,22 @@ function useFilters(filters) {
                     }
                 })
                 filteredFeeds.value = propertyTypeFilter
+            }
+        }
+
+        // sort by time
+        if (filters.sortValue.length > 0) {
+            if (filters.sortValue === 'Newest first') {
+                let sortedArray = filteredFeeds.value.sort((a, c) => {
+                    return new Date(c.dateUpdated) - new Date(a.dateUpdated)
+                })
+                filteredFeeds.value = sortedArray
+            }
+            if (filters.sortValue === 'Oldest first') {
+                let sortedArray = filteredFeeds.value.sort((c, a) => {
+                    return new Date(c.dateUpdated) - new Date(a.dateUpdated)
+                })
+                filteredFeeds.value = sortedArray
             }
         }
 

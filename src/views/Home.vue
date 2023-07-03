@@ -69,7 +69,7 @@
     </div>
 
     <!-- iLLUSTRATIONS ?  Footer-->
-    <div class="flex flex-row items-end xl:justify-between justify-center  w-full z-0">
+    <div class="flex flex-row items-end xl:justify-between justify-center w-full z-10">
       <img v-lazy src="../assets/illustrations/home-left.svg" class="xl:flex hidden" alt="">
       <div class="flex flex-row md:mb-10 mb-4 items-center gap-x-4">
         <router-link to="/terms-of-service" class="underline text-webapp">Terms of service</router-link>
@@ -98,16 +98,16 @@ useHead({
     { name: 'description', content: 'Search for new listings' },
 
     { name: 'og:title', content: 'Search Ads' },
-    // { name: 'og:image', content: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
+    { name: 'og:image', content: 'https://logos.flamingtext.com/Word-Logos/property-design-sketch-name.png' },
     { name: 'og:url', content: 'https://habeep.org/home' },
     { name: 'og:website', content: 'website' },
     { name: 'og:description', content: 'Search for Ads in the home page' },
 
     { name: 'viewport', content: 'width=device-width, initial-scale=1' }
   ],
-  // link: [
-  //   { rel: 'icon', href: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
-  // ]
+  link: [
+    { rel: 'icon', href: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
+  ]
 })
 
 import HomeNavbar from '../components/HomeNavbar.vue'

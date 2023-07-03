@@ -1,5 +1,5 @@
 <template>
-  <div class="rounded-full grid place-items-center static z-0 text-white text-lg font-medium" v-motion-fade :delay="200"
+  <div class="rounded-full grid place-items-center text-white text-lg font-medium"
     :style="`background-color: ${colorGenerator({ max: 100})}; width: ${props.size}; height: ${props.size};`">
     {{ extraxtInitial(props.fname, props.lname) }}
   </div>

@@ -9,7 +9,7 @@
         <div class="flex flex-col w-full h-full justify-between items-center overflow-hidden no-scroll-btn"
             v-else-if="onMainPage && viewFullImage.length === 0">
             <div
-                class="flex flex-row items-center justify-between w-full sticky border-b h-fit border-b-gray-200 px-2 lg:px-5 py-1">
+                class="flex flex-row items-center justify-between w-full border-b h-fit border-b-gray-200 px-2 lg:px-5 py-1">
                 <div class="rounded-full w-13 h-13 grid place-items-center">
                     <img :src="props.chat.user.profilePicture" style="width: 40px; height: 40px;"
                         class="w-13 h-13 rounded-full" alt=""
@@ -464,6 +464,30 @@ socket.on("message", (msg) => {
     }
     chatsArray.value.push(msg)
     scrollToView()
+})
+
+socket.on('deleteMsg', (id) => {
+    try {
+        const filterChat = chatsArray.value.filter(chat => {
+            return chat._id === id
+        })
+        if (filterChat.length > 0) {
+            if (props.chat.room.chats[props.chat.room.chats.indexOf(filterChat[0])] > -1) {
+                props.chat.room.chats[props.chat.room.chats.indexOf(filterChat[0])]['deleted'] = true
+            }
+            if (chatsArray.value[chatsArray.value.indexOf(filterChat[0])] > -1) {
+                chatsArray.value[chatsArray.value.indexOf(filterChat[0])]['deleted'] = true
+            }
+
+            if (filterChat[0].dateCreated) {
+                if (datedChats.value[0].hasOwnProperty(filterChat[0].dateCreated)) {
+                    datedChats.value[0][filterChat[0].dateCreated][datedChats.value[0][filterChat[0].dateCreated].indexOf(filterChat[0])]['deleted'] = true
+                }
+            }
+        }
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 

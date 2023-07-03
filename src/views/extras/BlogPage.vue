@@ -3,15 +3,15 @@
         <HomeNavbar />
 
         <div class="flex-col flex w-full items-center h-fit  gap-y-5 pt-16">
-            <Skeleton class="lg:w-3/5 md:w-4/5 w-full h-24" v-if="fetchingBlog || blog.title.length === 0" />
-            <p v-else class="md:text-6xl text-4xl lg:w-3/5 md:w-4/5 w-full px-4 text-center text-black bacasime font-bold">
+            <Skeleton class="lg:w-3/5 md:w-4/5 w-11/12 md:h-24 h-20" v-if="fetchingBlog || blog.title.length === 0" />
+            <h1 v-else class="md:text-6xl text-4xl lg:w-3/5 md:w-4/5 w-full px-4 text-center text-black bacasime font-bold">
                 {{
-                    blog.title }}</p>
+                    blog.title }}</h1>
 
-            <Skeleton class="lg:w-3/6 md:w-3/5 w-full h-24" v-if="fetchingBlog || blog.subtitle.length === 0" />
-            <p v-else class="md:text-xl monserrat text-black font-thin lg:w-3/5 md:w-4/5 w-full px-4 text-center">{{
+            <Skeleton class="lg:w-3/6 md:w-3/5 w-11/12 md:h-24 h-12 " v-if="fetchingBlog || blog.subtitle.length === 0" />
+            <h3 v-else class="md:text-xl monserrat text-black font-thin lg:w-3/5 md:w-4/5 w-full px-4 text-center">{{
                 blog.subtitle
-            }}</p>
+            }}</h3>
 
             <Skeleton class="w-full blog-image" v-if="fetchingBlog || !blog.imageLoaded" />
             <img :src="blog.imageCover" @load="blog.imageLoaded = true"
@@ -91,7 +91,7 @@
 
 <script setup>
 import HomeNavbar from '../../components/HomeNavbar.vue'
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import axios from '../../composables/axios.js'
 import moment from 'moment'
 import { useRoute } from 'vue-router'
@@ -168,10 +168,7 @@ async function fetchBlog() {
         fetchingBlog.value = false
     }
 }
-
-onMounted(() => {
-    fetchBlog()
-})
+fetchBlog()
 
 </script>
 
