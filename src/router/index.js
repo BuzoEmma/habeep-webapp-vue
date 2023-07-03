@@ -7,7 +7,7 @@ function guardMyroute(to, from, next) {
     if (createStore.state.isAuthenticated) { isAuthenticated = true } else { isAuthenticated = false }
     if (isAuthenticated) {
         if (!createStore.state.user.verified) {
-            next({ name: 'OTP', query: { reason: 'user_verification', email: createStore.state.user.email}}) // go to '/verify';
+            next({ name: 'OTP', query: { reason: 'user_verification', email: createStore.state.user.email } }) // go to '/verify';
         } else next() // allow to enter route
     } else {
         // console.log(to)
@@ -22,7 +22,7 @@ function guardMyrouteForAgent(to, from, next) {
     if (createStore.state.isAuthenticated) { isAuthenticated = true } else { isAuthenticated = false }
     if (isAuthenticated) {
         if (!createStore.state.user.verified) {
-            next({ name: 'OTP', query: { reason: 'user_verification', email: createStore.state.user.email}}) // go to '/verify'; // go to '/verify';
+            next({ name: 'OTP', query: { reason: 'user_verification', email: createStore.state.user.email } }) // go to '/verify'; // go to '/verify';
         } else {
             if (createStore.state.user.role === 'AGENT') {
                 next()
@@ -38,7 +38,7 @@ function guardMyrouteForUSERIBO(to, from, next) {
     if (createStore.state.isAuthenticated) { isAuthenticated = true } else { isAuthenticated = false }
     if (isAuthenticated) {
         if (!createStore.state.user.verified) {
-            next({ name: 'OTP', query: { reason: 'user_verification', email: createStore.state.user.email}}) // go to '/verify'; // go to '/verify';
+            next({ name: 'OTP', query: { reason: 'user_verification', email: createStore.state.user.email } }) // go to '/verify'; // go to '/verify';
         } else {
             if (createStore.state.user.role !== "TENANT") {
                 next()
@@ -74,7 +74,7 @@ const routes = [
     {
         path: '/',
         redirect: changeHomeRoute()
-        
+
     },
     {
         path: '/home',
@@ -220,7 +220,7 @@ const routes = [
         path: '/chats',
         name: 'Chat',
         beforeEnter: guardMyroute,
-        component: () =>  import('../views/chats/Index.vue'),
+        component: () => import('../views/chats/Index.vue'),
         // meta: {
         //     title: "Messages"
         // }
@@ -287,7 +287,7 @@ const routes = [
         path: '/not-found',
         name: 'not-found-route',
         component: () => import('../views/fallbacks/404.vue')
-      },
+    },
 
     { path: '/:pathMatch(.*)*', name: 'not-found', component: () => import('../views/fallbacks/404.vue'), meta: { title: 'Page not Found' } },
 ]
@@ -300,8 +300,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    if(to.meta && to.meta.title) {
-        document.title = `Habeep | ${to.meta.title }`;
+    if (to.meta && to.meta.title) {
+        document.title = `Habeep | ${to.meta.title}`;
     }
     if (to.query.reload) {
         next({
@@ -316,5 +316,10 @@ router.resolve({
     name: 'not-found',
     params: { pathMatch: ['not', 'found'] },
 }).href
+
+export {
+    router,
+    routes
+}
 
 export default router
