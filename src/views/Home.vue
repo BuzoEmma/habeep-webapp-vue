@@ -12,7 +12,7 @@
         Quick way to Find your dream Property</p>
 
       <!-- Quick search -->
-      <div class="flex flex-col quick-search no-wrap">
+      <div class="flex flex-col quick-search no-wrap relative">
         <!-- Search bar -->
         <!-- desktop -->
         <div class="search-bar w-full hidden md:flex flex-row items-center bg-white pl-3 pr-1 h-12 py-1 gap-x-4">
