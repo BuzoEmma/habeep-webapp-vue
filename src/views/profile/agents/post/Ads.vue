@@ -1,10 +1,19 @@
 <template>
     <MainNavbarVue />
     <div
-        class="w-screen min-w-full flex flex-col lg:flex-row items-center bg-white h-screen min-h-full overflow-y-auto overflow-x-hidden">
+        class="w-screen flex flex-col lg:flex-row items-center bg-white h-screen min-h-full overflow-y-auto lg:overflow-y-hidden no-scroll-btn overflow-x-hidden">
         <div
-            class="flex flex-col items-start gap-y-3 h-2/5 lg:h-full bg-webapp justify-center w-full lg:w-2/5 px-4 md:px-10">
-            <h3 class="text-white font-medium text-4xl w-full text-left">Welcome {{
+            class="flex flex-col items-start gap-y-3 h-2/5 lg:h-full bg-webapp justify-center w-full lg:w-2/5 px-4 md:px-10 relative">
+
+            <div class="flex-row-center border border-gray-400 py-1.5 gap-x-5 px-2 rounded-full absolute top-3 right-5">
+                <div class="flex-row-center gap-x-1">
+                    <img src="../../../../assets/icons/coin.png" class="w-8 h-6" alt="">
+                    <p class="text-gray-200 text-sm font-medium">Rewards</p>
+                </div>
+                <span class="font-black text-sm text-white">{{ agentDetails.rewards.toFixed(2) }}</span>
+            </div>
+
+            <h3 class="text-white font-medium md:text-4xl text-2xl w-full text-left mt-8 md:mt-0">Welcome {{
                 $store.state.user.fname + ' ' +
                 $store.state.user.surname
             }} </h3>
@@ -15,7 +24,7 @@
         </div>
 
         <div
-            class="form-container flex flex-col items-center bg-white gap-y-3 py-3 px-4 w-full lg:w-3/5 min-h-fit h-3/5 lg:h-full md:py-10">
+            class="form-container flex flex-col items-center bg-white gap-y-3 py-3 px-4 w-full lg:w-3/5 min-h-fit h-3/5 lg:h-full md:py-10 lg:overflow-y-auto">
 
             <h3 class="text-webapp font-medium text-2xl w-full text-left">Your uploads</h3>
 
@@ -106,11 +115,12 @@
                     <div class="basis-full md:basis-1/2 2xl:basis-1/3 p-3 border h-fit border-gray-200 rounded-lg"
                         v-for="item in activeProducts" :key="item">
                         <div class="flex flex-col items-start gap-y-2 ad relative rounded-t-md">
+                            <Skeleton v-if="!item.imageLoaded || !item.images[0]" class="w-full h-full rounded-md feed-image" style="width: 100%" />
                             <img @click="$router.push('/listings/products/' + item._id)" :src="item.images[0].link"
-                                class="w-full h-full rounded-md feed-image"
-                                v-if="item.images[0].link.includes('mp4') == false" alt="">
-                            <video @click="$router.push('/listings/products/' + item._id)" :src="item.images[0].link"
-                                class="w-full rounded-md feed-image" v-else autoplay muted></video>
+                                class="w-full h-full rounded-md feed-image" @load="item.imageLoaded = true"
+                                v-if="item.images[0] && item.images[0].link && item.images[0].link.includes('.mp4') == false" alt="">
+                            <video @click="$router.push('/listings/products/' + item._id)" @loadedmetadata="item.imageLoaded = true" :src="item.images[0].link"
+                                class="w-full rounded-md feed-image" v-if="item.images[0] && item.images[0].link && item.images[0].link.includes('.mp4') == true" autoplay muted preload="auto"></video>
                             <p class="text-webapp text-lg font-medium w-full  cursor-pointer"
                                 @click="$router.push('/listings/products/' + item._id)">
                                 {{ item.title }}
@@ -209,7 +219,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, reactive } from 'vue'
 import MainNavbarVue from "../../../../components/MainNavbar.vue";
 import axios from "../../../../composables/axios";
 import { useStore } from 'vuex'
@@ -241,6 +251,10 @@ const activeProducts = ref([])
 const mainActiveProducts = ref([])
 const closedProducts = ref([])
 const mainClosedProducts = ref([])
+
+const agentDetails = reactive({
+    rewards: 0
+})
 
 const onDropdown = ref(false)
 const onSortDropdown = ref(false)
@@ -312,19 +326,24 @@ function changeSort(value) {
 }
 
 async function getAllAds() {
-    const products = await axios.post(url, data)
-    allProducts.value = products.data.products
+    try {
+        const products = await axios.post(url, data)
+        allProducts.value = products.data.products
+        agentDetails.rewards = products.data.agentDetails.rewards
 
-    let active = allProducts.value.filter(product => {
-        return product.status === 'AVAILABLE'
-    })
-    activeProducts.value = active
-    mainActiveProducts.value = active
-    let closed = allProducts.value.filter(product => {
-        return product.status === 'CLOSED'
-    })
-    closedProducts.value = closed
-    mainClosedProducts.value = closed
+        let active = allProducts.value.filter(product => {
+            return product.status === 'AVAILABLE'
+        })
+        activeProducts.value = active
+        mainActiveProducts.value = active
+        let closed = allProducts.value.filter(product => {
+            return product.status === 'CLOSED'
+        })
+        closedProducts.value = closed
+        mainClosedProducts.value = closed
+    } catch (error) {
+        alert('Error fetching agent details')
+    }
 }
 
 // setup status changers
@@ -422,4 +441,5 @@ input:focus {
     width: 100% !important;
     object-fit: fill;
     max-height: 164px !important;
-}</style>
+}
+</style>

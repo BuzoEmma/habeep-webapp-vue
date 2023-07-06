@@ -276,12 +276,12 @@
                 <div class="basis-full md:basis-1/2 xl:basis-1/4 md:px-3 md:py-3 py-5 gap-y-4 px-0" v-else
                     v-for="feed in filteredFeeds" :key="feed">
                     <div class="flex flex-col items-start gap-y-2 border rounded-md border-gray-200 pb-2 feed">
-                        <Skeleton v-if="!feed.imageLoaded" class=" w-full h-36 rounded-t-md" style="width: 100%" />
+                        <Skeleton v-if="!feed.imageLoaded" class=" w-full h-44 rounded-t-md" style="width: 100%" />
                         <img fetchpriority="high" :src="feed.images[0].link" @load="feed.imageLoaded = true"
                             @click="$router.push('/listings/products/' + feed._id)" alt=""
                             :class="{ 'hidden': !feed.imageLoaded }" class="w-full feed-image rounded-t-md"
                             v-if="feed.images[0].link && feed.images[0].link.includes('mp4') == false">
-                        <video fetchpriority="high" :src="feed.images[0].link" @load="feed.imageLoaded = true"
+                        <video fetchpriority="high" :src="feed.images[0].link" @loadedmetadata="feed.imageLoaded = true"
                             :class="{ 'hidden': !feed.imageLoaded }" @click="$router.push('/listings/products/' + feed._id)"
                             class="w-full rounded-t-md feed-image" v-else autoplay muted loop preload="metadata"></video>
                         <p class="text-webapp text-lg font-medium w-full px-2 cursor-pointer"
@@ -680,6 +680,7 @@ function useFilters(filters) {
 }
 
 .feed-image {
+    min-height: 177px;
     height: 100%;
     width: 100% !important;
     object-fit: cover;

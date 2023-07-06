@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
+// import Sitemap from 'vite-plugin-sitemap'
+// import { routes } from './src/router';
 
 const DEFAULT_OPTIONS_IMAGE_COMPRESSOR = {
   test: /\.(jpe?g|png|gif|tiff|webp|svg|avif)$/i,
@@ -68,6 +70,12 @@ const DEFAULT_OPTIONS_IMAGE_COMPRESSOR = {
 export default defineConfig({
   plugins: [
     vue(),
+    // Sitemap({
+    //   changefreq: 'always',
+    //   hostname: 'https://habeep.org/',
+    //   dynamicRoutes: routes,
+    //   readable: true
+    // }),
     ViteImageOptimizer(DEFAULT_OPTIONS_IMAGE_COMPRESSOR),
   ]
 })

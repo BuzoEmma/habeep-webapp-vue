@@ -82,7 +82,7 @@
                                 <img src="../../../../../assets/icons/listings/city-icon.svg" alt="">
                                 <div class="flex flex-col  items-start">
                                     <span class="text-lg text-webapp">{{ match.city }}</span>
-                                    <span class="text-sm text-gray-400">{{ match.state }} State</span>
+                                    <span class="text-sm text-gray-400">{{ match.state }}</span>
                                 </div>
                             </div>
                         </div>
@@ -112,7 +112,6 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import MainNavbarVue from "../../../../../components/MainNavbar.vue";
 import axiosDefault from 'axios'
 
 const store = useStore()
@@ -154,7 +153,7 @@ function toggleCityModal(state) {
 // select city
 function selectCity(match) {
     toggleCityModal('close')
-    data.data.city = match.city + ', ' + match.state + ' State'
+    data.data.city = match.city + ', ' + match.state
     changeMapAddress('city')
 }
 
@@ -173,7 +172,7 @@ function checkForCity() {
 
     for (const state of states.value) {
         for (const city of state.cities) {
-            if (city.name.toLowerCase().includes(addrData.city) === true) {
+            if (city.name.toLowerCase().includes(addrData.city.toLowerCase()) === true) {
                 let formatted = {
                     city: city.name,
                     state: state.state.name
@@ -183,6 +182,8 @@ function checkForCity() {
         }
     }
 }
+
+
 
 async function getStates() {
     const getState = await axiosDefault.get('https://locus.fkkas.com/api/states');
@@ -199,6 +200,7 @@ async function getStates() {
 
     })
     store.dispatch('saveStates', states.value)
+    checkForCity()
 }
 
 if (store.state.listingProcess.location.address) {
@@ -208,8 +210,10 @@ if (store.state.listingProcess.location.address) {
 onMounted(() => {
     if (store.state.allStates.length !== 0) {
         states.value = store.state.allStates
+        checkForCity()
     } else {
         getStates()
+        checkForCity()
     }
 })
 

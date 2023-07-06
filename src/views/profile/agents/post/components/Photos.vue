@@ -22,7 +22,7 @@
             <div class="flex flex-col gap-y-5 h-full w-full items-center px-5 lg:px-20 pt-5 overflow-y-auto">
                 <div class="flex flex-row items-center justify-between w-full">
                     <span class="text-webapp text-lg md:text-xl font-medium">Add at most 5 photos or videos(Max size is
-                        50mb)</span>
+                        30mb)</span>
 
                     <!-- upload images -->
                     <form enctype="multipart/form-data" class="upload flex flex-row items-center w-fit no-wrap gap-x-3"
@@ -36,7 +36,7 @@
                             </svg>
                             <span>Upload</span>
                             <input type="file" ref="inputRef" :multiple="allCompleted === false" accept="video/mp4,image/*"
-                                v-if="!allCompleted" @change="previewImg($event.target, currentBlock)">
+                                :class="{'hidden': allCompleted}" v-if="!processing" @change="previewImg($event.target, currentBlock)">
                         </button>
                     </form>
 
@@ -45,9 +45,10 @@
 
                 <div class="flex flex-col items-center photos-preview w-full h-full overflow-y-auto mb-2">
                     <div class="flex flex-row items-center w-full flex-wrap h-fit pb-2">
-                        <div class="basis-full md:basis-2/3 photo-cover p-2 h-full" v-if="imageData1">
+                        <div class="basis-full md:basis-2/3 photo-cover p-2 h-full" @click="callImgProcessor(1)" v-if="imageData1">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
-                                <img :src="imageData1" class="h-full w-full" v-if="pic1.type !== 'video/mp4'" alt="">
+                                <img :src="imageData1" class="h-full w-full rounded-lg feed-image"
+                                    v-if="pic1.type !== 'video/mp4'" alt="">
                                 <video :src="imageData1" class="h-full w-full rounded-lg feed-image" v-else height="100%"
                                     width="100%" autoplay muted></video>
                             </div>
@@ -62,9 +63,10 @@
                             </div>
                         </div>
 
-                        <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" v-if="imageData2">
+                        <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(2)" v-if="imageData2">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
-                                <img :src="imageData2" class="h-full w-full" v-if="pic2.type !== 'video/mp4'" alt="">
+                                <img :src="imageData2" class="h-full w-full rounded-lg feed-image"
+                                    v-if="pic2.type !== 'video/mp4'" alt="">
                                 <video :src="imageData2" class="h-full w-full rounded-lg feed-image" v-else height="100%"
                                     width="100%" autoplay muted></video>
                             </div>
@@ -75,9 +77,10 @@
                             </div>
                         </div>
 
-                        <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" v-if="imageData3">
+                        <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(3)" v-if="imageData3">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
-                                <img :src="imageData3" class="h-full w-full" v-if="pic3.type !== 'video/mp4'" alt="">
+                                <img :src="imageData3" class="h-full w-full rounded-lg feed-image"
+                                    v-if="pic3.type !== 'video/mp4'" alt="">
                                 <video :src="imageData3" class="h-full w-full rounded-lg feed-image" v-else height="100%"
                                     width="100%" autoplay muted></video>
                             </div>
@@ -88,9 +91,10 @@
                             </div>
                         </div>
 
-                        <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" v-if="imageData4">
+                        <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(4)" v-if="imageData4">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
-                                <img :src="imageData4" class="h-full w-full" v-if="pic4.type !== 'video/mp4'" alt="">
+                                <img :src="imageData4" class="h-full w-full rounded-lg feed-image"
+                                    v-if="pic4.type !== 'video/mp4'" alt="">
                                 <video :src="imageData4" class="h-full w-full rounded-lg feed-image" v-else height="100%"
                                     width="100%" autoplay muted></video>
                             </div>
@@ -101,9 +105,10 @@
                             </div>
                         </div>
 
-                        <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" v-if="imageData5">
+                        <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(5)" v-if="imageData5">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
-                                <img :src="imageData5" class="h-full w-full" v-if="pic5.type !== 'video/mp4'" alt="">
+                                <img :src="imageData5" class="h-full w-full rounded-lg feed-image"
+                                    v-if="pic5.type !== 'video/mp4'" alt="">
                                 <video :src="imageData5" class="h-full w-full rounded-lg feed-image" v-else height="100%"
                                     width="100%" autoplay muted></video>
                             </div>
@@ -123,11 +128,11 @@
                     <div class="bg-webapp h-full w-12/12"></div>
                 </div>
                 <div class="flex flex-row p-6 w-full items-center justify-between">
-                    <span class="text-xl font-medium text-webapp underline cursor-pointer"
+                    <span :class="{'collapse': processing}" class="text-xl font-medium text-webapp underline cursor-pointer"
                         @click="$emit('goBack', { to: 'Desc', from: 'Photos' })">Back</span>
-                    <button @click="sendData()" :class="{ 'bg-slate-400 text-white': allCompleted === false }"
+                    <button @click="sendData()" :class="{ 'bg-slate-400 text-white': allCompleted === false || totalFilesSize > 30 }"
                         class="h-10 rounded-lg w-fit px-2 bg-primary text-white text-sm flex flex-row justify-center items-center font-extralight gap-x-2"
-                        style="min-width: 96px" :disabled="allCompleted === false">
+                        style="min-width: 96px" :disabled="allCompleted === false || totalFilesSize > 30">
                         <span v-if="!processing">Post AD</span>
                         <span v-if="processing && uploadingWord" v-motion :initial="{ opacity: 0.2, scale: 0.5 }"
                             :enter="{ opacity: 1, scale: 1 }" class="text-white">{{ uploadingWord }}</span>
@@ -142,8 +147,7 @@
 </template>
 
 <script setup>
-import { isArray } from '@vue/shared';
-import { computed, inject, reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useStore } from 'vuex';
 import axios from '../../../../../composables/axios'
 
@@ -192,6 +196,28 @@ function callImgProcessor(value) {
     inputRef.value.click()
 }
 
+const totalFilesSize = ref(0)
+
+function calculateFiles() {
+    totalFilesSize.value = 0
+    if (pic1.value) {
+        totalFilesSize.value += pic1.value.size / (1024 ** 2)
+    }
+    if (pic2.value) {
+        totalFilesSize.value += pic2.value.size / (1024 ** 2)
+    }
+    if (pic3.value) {
+        totalFilesSize.value += pic3.value.size / (1024 ** 2)
+    }
+    if (pic4.value) {
+        totalFilesSize.value += pic4.value.size / (1024 ** 2)
+    }
+    if (pic5.value) {
+        totalFilesSize.value += pic5.value.size / (1024 ** 2)
+    }
+    console.log(totalFilesSize.value)
+}
+
 const previewImg = async (event, value) => {
     currentBlock.value += 1
     // Reference to the DOM input element
@@ -200,6 +226,14 @@ const previewImg = async (event, value) => {
     // Ensure that you have a file before attempting to read it
     if (input.files && input.files.length === 1) {
         currentImage.value = value
+        if (input.files[0].size / (1024 ** 2) > 30) {
+            onError.value = true;
+            errorMsg.value = 'File size is more than 30MB';
+            setTimeout(() => {
+                onError.value = false;
+            }, 2000);
+            return false;
+        }
         switch (currentImage.value) {
             case 1:
                 pic1.value = input.files[0]
@@ -222,28 +256,52 @@ const previewImg = async (event, value) => {
         }
         // create a new FileReader to read this image and convert to base64 format
         var reader = new FileReader();
-        // Define a callback function to run, when FileReader finishes its job
-        // reader.readAsDataURL(eval(`pic${value}`).value)
         reader.onload = (e) => {
-            // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
-            // Read image as base64 and set to imageData
             eval(`imageData${currentImage.value}`).value = e.target.result;
         }
 
         // Start the reader job - read file as a data url (base64 format)
         reader.readAsDataURL(input.files[0]);
+
+        calculateFiles()
+        if (totalFilesSize.value > 30) {
+            onError.value = true;
+            errorMsg.value = 'Files size is more than 30MB';
+            setTimeout(() => {
+                onError.value = false;
+            }, 5000);
+            return false;
+        }
     } else if (input.files && input.files.length > 1) {
         // read multiple files
         for (let i = currentImage.value; i < input.files.length && i < 5; i++) {
+            if (input.files[i].size / (1024 ** 2) > 30) {
+                onError.value = true;
+                errorMsg.value = 'File size is more than 30MB';
+                setTimeout(() => {
+                    onError.value = false;
+                }, 2000);
+                return false;
+            }
+
             eval(`pic${i + 1}`).value = input.files[i]
+
             var reader = new FileReader();
-            // Define a callback function to run, when FileReader finishes its job
             reader.readAsDataURL(input.files[i])
             reader.onload = (e) => {
-                // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
-                // Read image as base64 and set to imageData
                 eval(`imageData${i + 1}`).value = e.target.result;
             }
+
+            calculateFiles()
+            if (totalFilesSize.value > 30) {
+                onError.value = true;
+                errorMsg.value = 'Files size is more than 30MB';
+                setTimeout(() => {
+                    onError.value = false;
+                }, 5000);
+                return false;
+            }
+
             if (currentImage.value !== 5) {
                 currentImage.value += 1
             }
@@ -307,7 +365,7 @@ async function saveData() {
         if (interval !== null) {
             clearInterval(interval)
         }
-        
+
         uploadingWord.value = 'Failed'
         setTimeout(() => {
             uploadingWord.value = ''
@@ -323,7 +381,7 @@ async function saveData() {
 
         if (onError.value === true) {
             setTimeout(() => {
-                onError.value = true;
+                onError.value = false;
             }, 4000);
         }
     }
@@ -418,7 +476,8 @@ let allCompleted = computed(() => {
 
 .feed-image {
     width: 100% !important;
-    object-fit: fill;
+    object-fit: cover !important;
+    object-position: center;
 }
 
 @media screen and (max-width : 425px) {

@@ -77,7 +77,7 @@ function updateSwapValue(token) {
             onError.value = true
             errorMsg.value = 'Swap amount is lower than wallet balance. Deposit ' + (Number(data.naira) - Number(walletData.value.accountValue)) + ' to swap'
         } else {
-            data.hbp = data.naira / 80
+            data.hbp = data.naira / 87
             setTimeout(() => {
                 onError.value = false
             }, 3000);
@@ -87,7 +87,7 @@ function updateSwapValue(token) {
             onError.value = true
             errorMsg.value = 'Swap amount is lower than wallet balance. Deposit ' + (data.naira - walletData.value.accountValue) + ' to swap'
         } else {
-            data.naira = data.hbp * 80
+            data.naira = data.hbp * 87
             setTimeout(() => {
                 onError.value = false
             }, 3000);

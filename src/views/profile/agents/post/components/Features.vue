@@ -9,7 +9,7 @@
             </div>
             <img src="../../../../../assets/icons/chevron-left.svg" @click="$emit('goBack')" class="md:hidden block pt-10"
                 alt="">
-            <h1 class="text-white font-medium text-2xl md:text-4xl xl:text-5xl  w-full text-left">Whats are the available
+            <h1 class="text-white font-medium text-2xl md:text-4xl xl:text-5xl  w-full text-left">What are the available
                 features?
             </h1>
             <p></p>
@@ -18,27 +18,27 @@
         <div
             class="form-container flex flex-col items-center justify-between bg-white w-full lg:w-3/5 min-h-fit h-4/6 lg:h-full">
 
-            <div class="form-fields w-full flex flex-row md:basic-full basic-2/4 flex-wrap self-center h-fit items-center px-5 gap-3 justify-center"
+            <div class="form-fields w-full flex flex-row md:basic-full basic-2/4 flex-wrap self-center h-full items-center px-5 gap-3 justify-center"
                 v-if="$store.state.listingProcess.type !== 'land'">
 
                 <div class="flex cursor-pointer flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
-                    :class="{ 'border-blue-500 border-2': data.data.includes('electricity') }"
+                    :class="{ 'border-blue-600 border-2': data.data.includes('electricity') }"
                     @click="manage('electricity')">
                     <img src="../../../../../assets/icons/light.svg" alt="">
                     <span class="text-sm text-sub-webapp">Electricity</span>
                 </div>
                 <div class="flex cursor-pointer flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
-                    :class="{ 'border-blue-500 border-2': data.data.includes('water') }" @click="manage('water')">
+                    :class="{ 'border-blue-600 border-2': data.data.includes('water') }" @click="manage('water')">
                     <img src="../../../../../assets/icons/water.svg" alt="">
                     <span class="text-sm text-sub-webapp">Water</span>
                 </div>
                 <div class="flex cursor-pointer flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
-                    :class="{ 'border-blue-500 border-2': data.data.includes('parking') }" @click="manage('parking')">
+                    :class="{ 'border-blue-600 border-2': data.data.includes('parking') }" @click="manage('parking')">
                     <img src="../../../../../assets/icons/parking.svg" alt="">
                     <span class="text-sm text-sub-webapp">Parking</span>
                 </div>
                 <div class="flex cursor-pointer flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
-                    :class="{ 'border-blue-500 border-2': data.data.includes('pool') }" @click="manage('pool')">
+                    :class="{ 'border-blue-600 border-2': data.data.includes('pool') }" @click="manage('pool')">
                     <img src="../../../../../assets/icons/pool.svg" alt="">
                     <span class="text-sm text-sub-webapp">Pool</span>
                 </div>
@@ -46,16 +46,16 @@
             </div>
 
             <!-- land features -->
-            <div class="form-fields w-full flex flex-row md:basic-full basic-2/4 flex-wrap self-center h-fit items-center px-5 gap-3 justify-center" v-else>
+            <div class="form-fields w-full flex flex-row md:basic-full basic-2/4 flex-wrap self-center h-full items-center px-5 gap-3 justify-center" v-else>
 
                 <div class="flex cursor-pointer flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
-                    :class="{ 'border-blue-500 border-2': data.data.includes('access_road') }"
+                    :class="{ 'border-blue-600 border-2': data.data.includes('access_road') }"
                     @click="manage('access_road')">
                     <img src="../../../../../assets/icons/listings/road.svg" class="w-5 h-5" alt="">
                     <span class="text-sm text-sub-webapp text-center">Access road</span>
                 </div>
                 <div class="flex cursor-pointer flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
-                    :class="{ 'border-blue-500 border-2': data.data.includes('security') }" @click="manage('security')">
+                    :class="{ 'border-blue-600 border-2': data.data.includes('security') }" @click="manage('security')">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="w-6 h-6 text-webapp">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -65,12 +65,12 @@
                     <span class="text-sm text-sub-webapp">Security</span>
                 </div>
                 <div class="flex cursor-pointer flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
-                    :class="{ 'border-blue-500 border-2': data.data.includes('surveyed') }" @click="manage('surveyed')">
+                    :class="{ 'border-blue-600 border-2': data.data.includes('surveyed') }" @click="manage('surveyed')">
                     <img src="../../../../../assets/icons/listings/surveyed.svg" class="w-6 h-6" alt="">
                     <span class="text-sm text-sub-webapp">Surveyed</span>
                 </div>
                 <div class="flex cursor-pointer flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
-                    :class="{ 'border-blue-500 border-2': data.data.includes('c-of-o') }" @click="manage('c-of-o')">
+                    :class="{ 'border-blue-600 border-2': data.data.includes('c-of-o') }" @click="manage('c-of-o')">
                     <img src="../../../../../assets/icons/listings/certificate.svg" class="w-6 h-6" alt="">
                     <span class="text-sm text-sub-webapp">C of O</span>
                 </div>

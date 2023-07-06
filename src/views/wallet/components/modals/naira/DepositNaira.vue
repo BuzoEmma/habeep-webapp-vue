@@ -60,9 +60,9 @@
                         class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer">
                         <span>Pay with Paystack</span>
                     </p>
-                    <p class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer">
+                    <p @click="choosePaymentMethod('flutterwave')" class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer">
                         <span>Pay with Flutterwave</span>
-                        <span class="text-xs font-extralight text-webapp">#comingsoon</span>
+                        <!-- <span class="text-xs font-extralight text-webapp">#comingsoon</span> -->
                     </p>
                     <p class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer">
                         <span>Pay with E-naira</span>
@@ -121,10 +121,6 @@ function proceedToPayment() {
     try {
         processingDeposit.value = true
         proceededPayment.value = true
-        // if (depositData.paymentMethod === 'paystack') {
-        //     paystackReference.value = genRef()
-        //     paystackBtn.value.click()
-        // }
         if (depositData.paymentMethod === 'flutterwave') {
             const findScript = document.getElementById('flw')
             if (!findScript) {
@@ -178,17 +174,22 @@ function channels() { return ["card", "bank_transfer"]; }
 
 const flwRef = ref('')
 
+function getLogo() {
+    if(store.state.user.userProfileImage !== 'https://i.ibb.co/gtpxMJz/21.png') {
+        return store.state.user.userProfileImage
+    } else return 'https://i.ibb.co/BnG8VLy/logo-white.png'
+}
 
 function makeFlwPayment() {
     flwRef.value = genFlwRef()
     window.FlutterwaveCheckout({
-        public_key: import.meta.env.VITE_FLW_PUBLIC_KEY,
+        public_key: 'FLWPUBK-b70b771118852881f687c804a6ece671-X',
         amount: depositData.amount,//amount
         callback: handleFlwCallback,
         country: "NG",
         currency: "NGN",
         customer: { email: store.state.user.email, name: store.state.user.username, phone_number: '+' + store.state.user.countryCode + store.state.user.phoneNumber.toString() },
-        customizations: { description: "Deposit money into your naira wallet", logo: "https://i.ibb.co/BnG8VLy/logo-white.png", title: "Habeep Naira deposit" },
+        customizations: { description: "Deposit money into your naira wallet", logo: getLogo(), title: store.state.user.fname + ' ' + store.state.user.surname },
         meta: {
             consumer_id: store.state.user._id
         },
@@ -210,6 +211,8 @@ function handleFlwCallback(data) {
 function handleFlwClose(data) {
     if (data === true) {
         processCanceledPayment('flutterwave', flwRef.value)
+    } else {
+        processSuccessPayment({ tx_ref: flwRef.value})
     }
 }
 

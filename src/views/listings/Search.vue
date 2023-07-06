@@ -178,9 +178,9 @@
                             :class="{ 'hidden': !product.imageLoaded }" :src="product.images[0].link"
                             class="w-full h-full feed-image rounded-t-md"
                             v-if="product.images[0].link.includes('mp4') == false" alt="">
-                        <video @click="$router.push('/listings/products/' + product._id)" @load="product.imageLoaded = true"
+                        <video @click="$router.push('/listings/products/' + product._id)" @loadedmetadata="product.imageLoaded = true"
                             :class="{ 'hidden': !product.imageLoaded }" :src="product.images[0].link"
-                            class="w-full rounded-t-md feed-image" v-else autoplay muted></video>
+                            class="w-full rounded-t-md feed-image" v-else autoplay muted preload="auto"></video>
                         <p class="text-webapp text-lg font-medium w-full mx-2 cursor-pointer feed-image"
                             @click="$router.push('/listings/products/' + product._id)">
                             {{ product.title }}

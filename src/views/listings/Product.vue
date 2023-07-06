@@ -11,20 +11,21 @@
 
             <!-- product display images for desktop view -->
             <div class="product-img-grid desktop-view xl:flex flex-row items-center w-full mt-10 hidden">
-                <div class="relative h-full display-img w-1/2">
-                    <Skeleton v-if="!carouselImg.imageLoaded" class=" w-full h-full rounded-lg" style="width: 100%" />
+                <div class="relative h-full display-img w-1/2" v-if="carouselImg.link">
+                    <Skeleton v-if="!carouselImg.imageLoaded" class=" w-full h-full rounded-lg"
+                        style="width: 100%" />
                     <img :src="carouselImg.link" class=" h-full rounded-lg feed-image w-full"
                         @load="carouselImg.imageLoaded = true" :class="{ 'hidden': !carouselImg.imageLoaded }"
-                        v-if="carouselImg.link.toString().includes('mp4') == false" @click="enterImageViewer()"
+                        v-if="carouselImg.link.toString().includes('.mp4') == false" @click="enterImageViewer()"
                         :alt="product.title">
-                    <video :src="carouselImg.link" @click="enterImageViewer()" loop @load="carouselImg.imageLoaded = true"
-                        :class="{ 'hidden': !carouselImg.imageLoaded }" class="w-full h-full rounded-lg feed-image"
-                        :alt="product.title" v-else autoplay muted></video>
+                    <video :src="carouselImg.link" @click="enterImageViewer()" loop
+                        @loadedmetadata="carouselImg.imageLoaded = true" :class="{ 'hidden': !carouselImg.imageLoaded }"
+                        class="w-full h-full rounded-lg feed-image" :alt="product.title" v-else autoplay muted></video>
 
                     <div class="w-full absolute flex flex-row top-5 items-center justify-between px-2">
                         <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
                         <div class="flex flex-row gap-x-3 items-center">
-                            <ShareNetwork network="whatsapp" popup.width="500px" popup.height="500px"
+                            <ShareNetwork network="twitter" popup.width="500px" popup.height="500px"
                                 :url="'https://habeep.org' + $route.fullPath"
                                 :title="'Purchase this awesome house at ₦' + formatNumber(product.price)"
                                 :description="product.description" :media="product.images[0].link">
@@ -53,9 +54,9 @@
                             <img :alt="product.title" @load="image.imageLoaded = true"
                                 :class="{ 'hidden': !image.imageLoaded }" :src="image.link"
                                 class=" h-full w-full rounded-lg feed-image-short"
-                                v-if="image.link && image.link.toString().includes('mp4') === false"
+                                v-if="image.link && image.link.toString().includes('.mp4') === false"
                                 @click="enterImageViewer()" :key="image">
-                            <video :alt="product.title" @load="image.imageLoaded = true"
+                            <video :alt="product.title" @loadedmetadata="image.imageLoaded = true"
                                 :class="{ 'hidden': !image.imageLoaded }" :src="image.link" @click="enterImageViewer()" loop
                                 class="w-full rounded-lg feed-image-short" v-else autoplay muted preload="metadata"></video>
                         </div>
@@ -66,9 +67,9 @@
                             <Skeleton v-if="!image.imageLoaded" class=" w-full h-full rounded-md" style="width: 100%" />
                             <img :src="image.link" @load="image.imageLoaded = true"
                                 :class="{ 'hidden': !image.imageLoaded }" class=" h-full w-full rounded-md feed-image-short"
-                                v-if="image.link && image.link.toString().includes('mp4') == false"
+                                v-if="image.link && image.link.toString().includes('.mp4') == false"
                                 @click="enterImageViewer()" :alt="product.title">
-                            <video :alt="product.title" @load="image.imageLoaded = true"
+                            <video :alt="product.title" @loadedmetadata="image.imageLoaded = true"
                                 :class="{ 'hidden': !image.imageLoaded }" :src="image.link" @click="enterImageViewer()" loop
                                 class="w-full rounded-md feed-image-short" v-else autoplay muted preload="metadata"></video>
                         </div>
@@ -107,7 +108,7 @@
                 <Skeleton v-if="!carouselImg.imageLoaded" class=" w-full h-full" style="width: 100%" />
                 <img :alt="product.title" :src="carouselImg.link" class=" h-full w-full feed-image"
                     @load="carouselImg.imageLoaded = true" :class="{ 'hidden': !carouselImg.imageLoaded }"
-                    v-if="carouselImg.link && carouselImg.link.toString().includes('mp4') == false"
+                    v-if="carouselImg.link && carouselImg.link.toString().includes('.mp4') == false"
                     @click="enterImageViewer()">
                 <video :alt="product.title" :src="carouselImg.link" loop class="w-full feed-image"
                     @load="carouselImg.imageLoaded = true" :class="{ 'hidden': !carousel.imageLoaded }"
@@ -446,7 +447,7 @@ useHead({
 const url = '/listings/ads/get/';
 const url2 = '/profile/get-agent/';
 
-const carouselImg = ref(null)
+const carouselImg = ref({ imageLoaded: false })
 
 
 const processingProduct = ref(false)
