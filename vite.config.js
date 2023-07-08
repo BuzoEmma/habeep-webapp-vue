@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
 import axios from 'axios'
@@ -152,6 +152,7 @@ export default defineConfig({
         return updatedRoutes;
       }
     }),
+    loadEnv('production', './', ),
     ViteImageOptimizer(DEFAULT_OPTIONS_IMAGE_COMPRESSOR),
   ]
 })
