@@ -106,15 +106,14 @@ async function getNotifications() {
 }
 
 async function takeNotificationAction(notif) {
+  await deleteNotification(notif, null)
+  
   if (notif.additionalInfo) {
     if (notif.additionalInfo.type === 'newProduct') {
-      await deleteNotification(notif, null)
       router.push('/listings/products/' + notif.additionalInfo.id)
     }
   } else if (notif.msg === 'Verify your account to access all habeep features') {
     router.push('/verify-otp?reason=user_verification&email=' + store.state.user.email)
-  } else {
-    deleteNotification(notif, null)
   }
 }
 
@@ -148,7 +147,7 @@ onMounted(() => {
 
 
     <div
-      class="flex-col flex absolute bottom-4 md:bottom-10 h-fit z-50 items-center w-full sm:w-fit justify-end p-2 right-2 md:right-12"
+      class="flex-col flex absolute bottom-4 md:bottom-10 h-fit z-50 items-center w-full sm:w-fit justify-end p-2 gap-y-1 right-2 md:right-12"
       v-if="allNotifications.length > 0 && $store.state.isAuthenticated">
       <div class="flex-row-center w-full p-4 notif justify-between cursor-pointer" @click="takeNotificationAction(notif)"
         v-motion :initial="{ y: -100 }" :enter="{ y: 0 }" :tapped="{ x: 10000, opacity: 0.3, transition: { delay: 20 } }"

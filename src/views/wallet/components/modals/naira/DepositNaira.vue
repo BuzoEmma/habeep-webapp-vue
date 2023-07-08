@@ -152,7 +152,7 @@ function cancelPayment(response) {
 
 function getPaystackDetails() {
     return {
-        key: 'pk_live_9a894022d4b6e6016264145e3a6e3ce80eeb1288',
+        key: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY,
         email: store.state.user.email,
         amount: depositData.amount * 100,
         currency: 'NGN',
@@ -183,7 +183,7 @@ function getLogo() {
 function makeFlwPayment() {
     flwRef.value = genFlwRef()
     window.FlutterwaveCheckout({
-        public_key: 'FLWPUBK-b70b771118852881f687c804a6ece671-X',
+        public_key: import.meta.env.VITE_FLW_PUBLIC_KEY,
         amount: depositData.amount,//amount
         callback: handleFlwCallback,
         country: "NG",
@@ -336,13 +336,14 @@ const processCanceledPayment = async (method, reference) => {
             }
         }
 
-        await axios.post('/wallet/deposit/naira', data)
+        const saveDeposit = await axios.post('/wallet/deposit/naira', data)
+        newMsg.value = saveDeposit.data.message
 
         setTimeout(() => {
             processingDeposit.value = false
             emit('close')
             router.go()
-        }, 100);
+        }, 2000);
     } catch (error) {
         onError.value = true
         errorMsg.value = error.response.data.message

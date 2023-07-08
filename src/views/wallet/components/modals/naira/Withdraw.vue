@@ -1,5 +1,5 @@
 <template>
-    <div class="main flex flex-col items-center z-20 gap-y-2 overflow-hidden my-auto mx-auto bg-white">
+    <div class="main flex flex-col items-center z-20 gap-y-2 overflow-hidden my-auto mx-auto bg-white relative">
         <div class="flex flex-row items-center justify-between w-full px-4 py-4 border-b border-b-gray-100">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" @click="$emit('close')" viewBox="0 0 24 24"
                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6 block md:hidden font-bold">
@@ -15,7 +15,7 @@
 
             <div class="flex flex-col items-start gap-y-1 w-full mt-5 relative">
                 <span class="text-webapp text-sm">Account number</span>
-                <input type="text" v-model="withdrawalDetails.accountNumber" @input="verifyAccountDetails" maxlength="10"
+                <input type="text" v-model="withdrawalDetails.accountNumber" @keyup="verifyAccountDetails" maxlength="10"
                     placeholder="Enter account number" class="w-full outline-none h-12 rounded-lg border border-gray p-2">
 
             </div>
@@ -42,7 +42,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>
-                        <input type="text" placeholder="Search" @input="queryBank" v-model="bankQuery"
+                        <input type="text" placeholder="Search" @keyup="queryBank" v-model="bankQuery"
                             class="text-sm outline-none border-none w-full h-full text-sub-webapp bg-transparent">
                     </div>
 
@@ -61,20 +61,23 @@
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
                     </svg>
-                    <span v-if="verifiedAccount === false">No account detected</span>
+                    <span v-if="accountError" class="text-red-600">{{ accountError }}</span>
+                    <span v-else-if="verifiedAccount === false">No account detected</span>
                     <span v-else>{{ verifiedAccount.account_name }}</span>
                 </div>
                 <Preloader v-if="checkingForAccount" class="p-2" />
             </div>
 
 
-            <button @click="withdrawMoney"
-                :disabled="withdrawalDetails.bank.length < 1 || withdrawalDetails.accountNumber.length < 10"
-                :class="{ 'bg-blue-600 text-white': withdrawalDetails.bank.name && withdrawalDetails.accountNumber.length === 10, 'bg-gray-300 text-white': withdrawalDetails.bank.length < 1 || withdrawalDetails.accountNumber.length < 10 }"
-                class="grid rounded-lg place-items-center h-14 my-6 w-full">
-                <span v-if="!processingWithdrawal">Withdraw</span>
-                <Preloader v-else />
-            </button>
+            <div class="absolute md:static px-4 md:px-0 md:my-6 w-full h-14 bottom-10 left-0">
+                <button @click="withdrawMoney"
+                    :disabled="withdrawalDetails.bank.length < 1 || withdrawalDetails.accountNumber.length < 10"
+                    :class="{ 'bg-blue-600 text-white': verifiedAccount && verifiedAccount.account_name.length > 0 && withdrawalDetails.accountNumber.toString().length >= 10, 'bg-gray-300 text-white': !verifiedAccount || withdrawalDetails.accountNumber.toString().length < 10 }"
+                    class="grid rounded-lg place-items-center h-14 w-full">
+                    <span v-if="!processingWithdrawal">Withdraw</span>
+                    <Preloader v-else />
+                </button>
+            </div>
 
 
         </div>
@@ -93,9 +96,10 @@ import axiosDefault from 'axios'
 import moment from 'moment'
 
 axiosDefault.defaults.headers.common = {
-    Authorization: `bearer pk_live_9a894022d4b6e6016264145e3a6e3ce80eeb1288`,
+    Authorization: `bearer ${import.meta.env.VITE_PAYSTACK_SECRET_KEY}`,
 };
 
+// console.log(import.meta.env.VITE_PAYSTACK_SECRET_KEY)
 
 const props = defineProps(['amount'])
 
@@ -106,7 +110,7 @@ const router = useRouter()
 const withdrawalDetails = reactive({
     amount: props.amount,
     fee: 0,
-    paymentMethod: 'bank_transfer',
+    paymentMethod: 'Habeep LLC to User',
     bank: '',
     accountNumber: ''
 })
@@ -115,11 +119,18 @@ const allBanks = ref([])
 const filteredBanks = ref([])
 const bankQuery = ref('')
 
-function queryBank() {
+function queryBank(e) {
     let filtered = allBanks.value.filter((bank) => {
         return bank.name.toLowerCase().includes(bankQuery.value.toLowerCase())
     })
     filteredBanks.value = filtered
+    checkForInput(e)
+}
+
+const checkForInput = (e) => {
+    if (bankQuery.value.length === 0) {
+        onSelectMethod.value = false
+    }
 }
 
 function chooseBank(bank) {
@@ -142,6 +153,7 @@ getBanks()
 
 const checkingForAccount = ref(false)
 const verifiedAccount = ref(false)
+const accountError = ref(null)
 
 const onError = ref(false)
 const errorMsg = ref(false)
@@ -150,6 +162,7 @@ const newMsg = ref('')
 async function verifyAccountDetails() {
     try {
         verifiedAccount.value = false
+        accountError.value = null
         if (withdrawalDetails.accountNumber.length === 10 && withdrawalDetails.bank.code) {
             checkingForAccount.value = true
 
@@ -157,11 +170,14 @@ async function verifyAccountDetails() {
 
             checkingForAccount.value = false
             if (verify.data.status === true) {
-                verifiedAccount.value = verify.data.data
+                if(verify.data.data.account_name.toLowerCase().includes(store.state.user.fname.toLowerCase()) && verify.data.data.account_name.toLowerCase().includes(store.state.user.surname.toLowerCase())) {
+                    verifiedAccount.value = verify.data.data
+                } else {
+                    accountError.value = "Bank name doesn't match your name!"
+                }
             }
         }
     } catch (error) {
-        console.log(error)
         checkingForAccount.value = false
     }
 }
@@ -177,7 +193,8 @@ async function withdrawMoney() {
             name: verifiedAccount.value.account_name,
             account_number: verifiedAccount.value.account_number,
             bank_code: withdrawalDetails.bank.code,
-            currency: 'NGN'
+            currency: 'NGN',
+            email: store.state.user.email
         })
 
         const createRecipient = await axiosDefault.post('https://api.paystack.co/transferrecipient', recipientParams)

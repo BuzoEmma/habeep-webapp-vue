@@ -149,10 +149,9 @@ async function fetchBlog() {
             "datePublished": blog.value.createdAt,
             "dateModified": blog.value.createdAt,
             "author": [{
-                "@type": "Person",
+                "@type": "Organization",
                 "name": "Habeep",
-                "url": "https://habeep.org/Habeep",
-                "jobTitle": "Company"
+                "url": "https://habeep.org/"
             }]
         }
 

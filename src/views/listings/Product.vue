@@ -511,7 +511,7 @@ async function getAgent(agentId) {
             "@context": "https://schema.org/",
             "@type": "Product",
             name: product.value.title,
-            image: product.value.images,
+            image: product.value.images.map(img => img.link),
             description: product.value.description,
             sku: product.value._id,
             mpn: product.value._id,
@@ -542,7 +542,9 @@ async function getAgent(agentId) {
                 "priceCurrency": "NGN",
                 price: product.value.price,
                 "itemCondition": "https://schema.org/NewCondition",
-                "availability": "https://schema.org/InStock"
+                "availability": "https://schema.org/InStock",
+                "hasMerchantReturnPolicy": false,
+                "shippingDetails": "Pay on Delivery"
             }
         }
 

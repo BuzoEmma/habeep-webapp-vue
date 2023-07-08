@@ -321,7 +321,7 @@ const route = useRoute()
 const router = useRouter()
 
 const title = ref('Habeep | ' + store.state.user.fname + ' Profile')
-const content = ref('This is ' + store.state.user.fname + ' Profile')
+const content = ref('Visit ' + store.state.user.fname + ' Profile')
 
 import { useHead } from '@vueuse/head'
 
