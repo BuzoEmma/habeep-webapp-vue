@@ -3,7 +3,8 @@ FROM node:lts-alpine
 WORKDIR /habeep/habeep-webapp
 
 COPY package*.json ./
-COPY ./.env ./
+
+COPY .env ./
 
 RUN npm install
 
