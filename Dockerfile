@@ -3,6 +3,8 @@ FROM node:lts-alpine
 WORKDIR /habeep/habeep-webapp
 
 COPY package*.json ./
+COPY .env ./
+COPY .env.production ./
 
 RUN npm install
 
@@ -14,6 +16,5 @@ RUN npm run build
 
 COPY ./sitemap.xml ./dist/
 COPY ./robots.txt ./dist/
-COPY ./.env ./dist/
 
 EXPOSE 8080
