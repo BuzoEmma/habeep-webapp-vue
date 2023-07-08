@@ -105,7 +105,7 @@ export default defineConfig({
   plugins: [
     vue(),
     VitePluginSitemap({
-      baseUrl: 'https:/habeep.org',
+      baseUrl: 'https://habeep.org',
       contentBase: './',
       routes: routes,
       urlGenHook: async (config) => {
