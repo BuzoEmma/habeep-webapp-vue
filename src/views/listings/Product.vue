@@ -12,8 +12,7 @@
             <!-- product display images for desktop view -->
             <div class="product-img-grid desktop-view xl:flex flex-row items-center w-full mt-10 hidden">
                 <div class="relative h-full display-img w-1/2" v-if="carouselImg.link">
-                    <Skeleton v-if="!carouselImg.imageLoaded" class=" w-full h-full rounded-lg"
-                        style="width: 100%" />
+                    <Skeleton v-if="!carouselImg.imageLoaded" class=" w-full h-full rounded-lg" style="width: 100%" />
                     <img :src="carouselImg.link" class=" h-full rounded-lg feed-image w-full"
                         @load="carouselImg.imageLoaded = true" :class="{ 'hidden': !carouselImg.imageLoaded }"
                         v-if="carouselImg.link.toString().includes('.mp4') == false" @click="enterImageViewer()"
@@ -156,10 +155,10 @@
                             </p>
                         </div>
                         <div class="md:flex hidden flex-col ">
-                            <p class="text-webapp text-2xl md:text-xl xl:text-2xl font-medium product-price">₦{{
+                            <h2 class="text-webapp text-2xl md:text-xl xl:text-2xl font-medium product-price">₦{{
                                 formatNumber(product.price)
                             }}
-                            </p>
+                            </h2>
                             <p v-if="product.for === 'rent'"
                                 class="text-sm  xl:text-lg font-medium product-price text-webapp">Rent
                             </p>
@@ -247,12 +246,12 @@
                     class="agent-info md:flex hidden p-4 bg-white flex-col w-2/3 xl:w-2/6 2xl:w-1/4 items-start ml-3 h-fit">
                     <h3 class="text-lg xl:text-xl font-medium  text-webapp">Description</h3>
 
-                    <div class="text-sub-webapp text-lg text-left mt-1 xl:mt-3">
+                    <article class="text-sub-webapp text-lg text-left mt-1 xl:mt-3">
                         <pre class="w-full whitespace-pre-wrap"
                             v-if="!openFullDesc">{{ product.description.slice(0, 250) }}<span class="text-primary cursor-pointer" v-if="product.description.length > 250" @click="openFullDesc = true">... Read more</span></pre>
                         <pre class="w-full whitespace-pre-wrap"
                             v-else>{{ product.description }} <span class="text-primary cursor-pointer" v-if="product.description.length > 250" @click="openFullDesc = false">..Hide</span></pre>
-                    </div>
+                    </article>
 
                     <hr class="my-3">
 
@@ -337,22 +336,22 @@
 
                     <h3 class="text-lg font-medium text-webapp">Description</h3>
 
-                    <div class="text-sub-webapp text-sm text-left mt-1 xl:mt-3">
+                    <article class="text-sub-webapp text-sm text-left mt-1 xl:mt-3">
                         <pre class="w-full whitespace-pre-wrap"
                             v-if="!openFullDesc">{{ product.description.slice(0, 250) }}<span class="text-primary" v-if="product.description.length > 250" @click="openFullDesc = true">... Read more</span></pre>
                         <pre class="w-full whitespace-pre-wrap"
                             v-else>{{ product.description }} <span class="text-primary" v-if="product.description.length > 250" @click="openFullDesc = false">..Hide</span></pre>
-                    </div>
+                    </article>
 
 
 
                     <div
                         class="flex md:hidden py-5  flex-row items-center fixed bottom-0 px-4 z-10 left-0 bg-white w-screen justify-between mt-4 border-t pt-2 border-t-gray-300">
                         <div class="flex flex-col">
-                            <p class="text-webapp text-xl xl:text-2xl font-medium product-price">₦{{
+                            <h2 class="text-webapp text-xl xl:text-2xl font-medium product-price">₦{{
                                 formatNumber(product.price)
                             }}
-                            </p>
+                            </h2>
                             <p v-if="product.for === 'rent'"
                                 class="text-sm md:text-xl xl:text-2xl font-medium product-price text-webapp">Yearly
                             </p>
@@ -518,7 +517,7 @@ async function getAgent(agentId) {
             mpn: product.value._id,
             brand: {
                 "@type": "Brand",
-                name: agentDetails.value.name.fname + ' ' + agentDetails.value.name.surname
+                name: 'Habeep LLC'
             },
             "review": {
                 "@type": "Review",
@@ -529,7 +528,7 @@ async function getAgent(agentId) {
                 },
                 "author": {
                     "@type": "Person",
-                    "name": "Habeep LLC"
+                    "name": agentDetails.value.name.fname + ' ' + agentDetails.value.name.surname
                 }
             },
             "aggregateRating": {
@@ -547,10 +546,11 @@ async function getAgent(agentId) {
             }
         }
 
-        const script = document.createElement('script');
-        script.setAttribute('type', 'application/ld+json');
-        script.textContent = JSON.stringify(structuredData);
-        document.head.appendChild(script);
+        useHead({
+            script: [
+                { type: 'application/ld+json', textContent: JSON.stringify(structuredData) }
+            ]
+        })
 
 
     } catch (error) {

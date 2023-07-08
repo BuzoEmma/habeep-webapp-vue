@@ -1,8 +1,42 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
-// import Sitemap from 'vite-plugin-sitemap'
-// import { routes } from './src/router';
+import axios from 'axios'
+
+import { VitePluginSitemap } from '@tormak/vite-plugin-sitemap';
+
+const routes = [
+  {
+    path: '/',
+    name: 'App'
+
+  },
+  {
+    path: '/home',
+    name: 'Home',
+  },
+  {
+    path: '/blog',
+    name: 'Blogs',
+  },
+  {
+    path: '/help',
+    name: 'FAQ',
+  },
+  {
+    path: '/terms-of-service',
+    name: 'Terms-Of-Service',
+  },
+  // listings
+  {
+    path: '/listings/search',
+    name: 'Listings-search',
+  },
+  {
+    path: '/account/IBO/category',
+    name: 'IBO_ChooseCategory',
+  },
+];
 
 const DEFAULT_OPTIONS_IMAGE_COMPRESSOR = {
   test: /\.(jpe?g|png|gif|tiff|webp|svg|avif)$/i,
@@ -70,12 +104,54 @@ const DEFAULT_OPTIONS_IMAGE_COMPRESSOR = {
 export default defineConfig({
   plugins: [
     vue(),
-    // Sitemap({
-    //   changefreq: 'always',
-    //   hostname: 'https://habeep.org/',
-    //   dynamicRoutes: routes,
-    //   readable: true
-    // }),
+    VitePluginSitemap({
+      baseUrl: 'https:/habeep.org',
+      contentBase: './',
+      routes: routes,
+      urlGenHook: async (config) => {
+        let updatedRoutes = config.routes;
+
+        try {
+          // get products seo routes
+          let productsLinks = []
+          const fetch = await axios.get('https://habeep.org/backend/api/v1/seo/products')
+          productsLinks = fetch.data.data
+          productsLinks.forEach(product => {
+            updatedRoutes.push({
+              path: '/listings/products/' + product,
+              name: 'product - ' + product
+            })
+          });
+
+          // get users seo routes
+          let usersLinks = []
+          const fetchUsers = await axios.get('https://habeep.org/backend/api/v1/seo/users')
+          usersLinks = fetchUsers.data.data
+          usersLinks.forEach(username => {
+            updatedRoutes.push({
+              path: '/' + username,
+              name: username + ' Profile'
+            })
+          });
+
+          // get blogs seo routes
+          let blogsLinks = []
+          const fetchBlogs = await axios.get('https://habeep.org/backend/api/v1/seo/blogs')
+          blogsLinks = fetchBlogs.data.data
+          blogsLinks.forEach(blog => {
+            updatedRoutes.push({
+              path: '/blog/' + blog,
+              name: blog + ' Page'
+            })
+          });
+        } catch (error) {
+          console.log(error)
+        }
+
+
+        return updatedRoutes;
+      }
+    }),
     ViteImageOptimizer(DEFAULT_OPTIONS_IMAGE_COMPRESSOR),
   ]
 })

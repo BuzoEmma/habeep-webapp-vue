@@ -11,8 +11,6 @@ const router = useRouter();
 const route = useRoute();
 
 
-
-
 const computedAccessToken = computed(() => {
   return store.state.sessionId
 })

@@ -8,8 +8,8 @@
 
     <!-- Hero/Quick search -->
     <div class="flex flex-col items-center gap-y-12 md:pb-0 pb-16">
-      <p class="hero-text md:text-5xl text-4xl xl:text-6xl text-center text-webapp font-medium sm:4/5 w-5/6 md:w-3/5">
-        Quick way to Find your dream Property</p>
+      <h1 class="hero-text md:text-5xl text-4xl xl:text-6xl text-center text-webapp font-medium sm:4/5 w-5/6 md:w-3/5">
+        Quick way to Find your dream Property</h1>
 
       <!-- Quick search -->
       <div class="flex flex-col quick-search no-wrap relative">
@@ -92,7 +92,7 @@ import { useStore } from "vuex";
 import { useHead } from '@vueuse/head'
 useHead({
   title: 'Habeep',
-  titleTemplate: '%s | Search Ads',
+  titleTemplate: '%s | Quick way to Find your dream Property',
   meta: [
     { charset: 'utf-8' },
     { name: 'description', content: 'Search for new listings' },

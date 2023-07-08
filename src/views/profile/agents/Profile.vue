@@ -36,14 +36,15 @@
                         <div class="rounded-full w-24 h-24 grid place-items-center border border-gray-100">
                             <img :src="agentDetails.profileImg"
                                 class="w-24 h-24 min-h-full min-w-full rounded-full cursor-pointer"
-                                v-if="agentDetails.profileImg !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
+                                v-if="agentDetails.profileImg !== 'https://i.ibb.co/gtpxMJz/21.png'"
+                                :alt="agentDetails.name.surname + ' ' + agentDetails.name.fname + ' Profile Picture'">
                             <Avatar size="100%" v-else :fname="agentDetails.name.fname"
                                 :lname="agentDetails.name.surname" />
                         </div>
                         <div class="flex flex-col ">
-                            <span class="text-xl md:text-center text-left agent-name text-webapp font-medium">{{
+                            <h1 class="text-xl md:text-center text-left agent-name text-webapp font-medium">{{
                                 agentDetails.name.fname + ' ' + agentDetails.name.surname
-                            }}</span>
+                            }}</h1>
                             <p class="text-lg agent-ads-count text-sub-webapp flex flex-row gap-x-2 items-center"><img
                                     src="../../../assets/images/map-pin.png" alt="">
                                 <span v-if="agentDetails.city">{{ agentDetails.city }}</span>
@@ -65,17 +66,17 @@
                             {{ agentDetails.following.length }}<span class="text-sub-webapp text-lg">Following </span></p>
                     </div>
 
-                    <h3 class="text-lg xl:text-xl font-medium  text-webapp mt-3">Bio</h3>
+                    <p class="text-lg xl:text-xl font-medium  text-webapp mt-3">Bio</p>
 
-                    <p class="text-sub-webapp text-sm text-left w-full sm:w-5/6 lg:w-full mt-1 xl:mt-2"
+                    <h2 class="text-sub-webapp text-sm text-left w-full sm:w-5/6 lg:w-full mt-1 xl:mt-2"
                         v-if="agentDetails.bio && agentDetails.bio.length > 0">{{
                             agentDetails.bio
                         }}
-                    </p>
-                    <p class="text-sub-webapp text-sm text-left w-full sm:w-5/6 lg:w-full mt-1 xl:mt-2" v-else>
+                    </h2>
+                    <h2 class="text-sub-webapp text-sm text-left w-full sm:w-5/6 lg:w-full mt-1 xl:mt-2" v-else>
                         I'm <span v-if="agentDetails.role === 'AGENT'">an</span><span v-else>a</span> <span
                             class="font-black text-primary uppercase">{{ agentDetails.role }}</span>
-                    </p>
+                    </h2>
 
 
                     <div class="flex flex-row items-center w-full gap-y-1 xl:justify-between mt-4 xl:mt-3"
@@ -303,7 +304,7 @@ async function getAgent() {
         agentDetails.value = getAgent.data.agent
         title.value = 'Habeep | ' + agentDetails.value.name.username + ' Profile'
         img.value = agentDetails.value.profileImg
-        if(agentDetails.value.bio && agentDetails.value.bio.length > 0) {
+        if (agentDetails.value.bio && agentDetails.value.bio.length > 0) {
             content.value = agentDetails.value.bio
         }
 
@@ -328,10 +329,11 @@ async function getAgent() {
             ]
         }
 
-        const script = document.createElement('script');
-        script.setAttribute('type', 'application/ld+json');
-        script.textContent = JSON.stringify(structuredData);
-        document.head.appendChild(script);
+        useHead({
+            script: [
+                { type: 'application/ld+json', textContent: JSON.stringify(structuredData) }
+            ]
+        })
 
         agentDetails.value.ads.forEach(async product => {
             const distance = await calculateDistance(product.location.city || product.location.address + ', Nigeria')

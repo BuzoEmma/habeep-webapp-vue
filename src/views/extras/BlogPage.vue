@@ -9,14 +9,14 @@
                     blog.title }}</h1>
 
             <Skeleton class="lg:w-3/6 md:w-3/5 w-11/12 md:h-24 h-12 " v-if="fetchingBlog || blog.subtitle.length === 0" />
-            <h3 v-else class="md:text-xl monserrat text-black font-thin lg:w-3/5 md:w-4/5 w-full px-4 text-center">{{
+            <h2 v-else class="md:text-xl monserrat text-black font-thin lg:w-3/5 md:w-4/5 w-full px-4 text-center">{{
                 blog.subtitle
-            }}</h3>
+            }}</h2>
 
             <Skeleton class="w-full blog-image" v-if="fetchingBlog || !blog.imageLoaded" />
             <img :src="blog.imageCover" @load="blog.imageLoaded = true"
                 :class="{ 'hidden': !blog.imageLoaded || fetchingBlog }"
-                class="blog-image mt-10 w-full object-cover object-center" alt="">
+                class="blog-image mt-10 w-full object-cover object-center" :alt="blog.title + 'Image cover'">
         </div>
 
         <div class="flex flex-col w-full sm:w-5/6 md:w-3/5 items-center h-fit mt-5 px-4 pb-16"
@@ -156,10 +156,11 @@ async function fetchBlog() {
             }]
         }
 
-        const script = document.createElement('script');
-        script.setAttribute('type', 'application/ld+json');
-        script.textContent = JSON.stringify(structuredData);
-        document.head.appendChild(script);
+        useHead({
+            script: [
+                { type: 'application/ld+json', textContent: JSON.stringify(structuredData) }
+            ]
+        })
 
         setTimeout(() => {
             fetchingBlog.value = false
