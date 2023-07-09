@@ -2,18 +2,20 @@ FROM node:lts-alpine
 
 WORKDIR /habeep/habeep-webapp
 
-COPY package*.json ./
+COPY dist ./
 
-RUN npm install
+# COPY package*.json ./
 
-RUN ls -la
+# RUN npm install
 
-COPY . ./
+# RUN ls -la
+
+# COPY . ./
 
 
-RUN npm run build
+# RUN npm run build
 
-COPY ./sitemap.xml ./dist/
-COPY ./robots.txt ./dist/
+# COPY ./sitemap.xml ./dist/
+# COPY ./robots.txt ./dist/
 
 EXPOSE 8080
