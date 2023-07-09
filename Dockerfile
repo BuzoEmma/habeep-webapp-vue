@@ -4,15 +4,15 @@ WORKDIR /habeep/habeep-webapp
 
 COPY package*.json ./
 
-COPY .env ./
+# RUN npm install
 
-RUN npm install
-
-RUN ls -la
+RUN ls -rf
 
 COPY . ./
 
-RUN npm run build
+# RUN npm run build
+
+COPY ./dist ./dist/
 
 COPY ./sitemap.xml ./dist/
 COPY ./robots.txt ./dist/
