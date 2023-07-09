@@ -99,8 +99,6 @@ axiosDefault.defaults.headers.common = {
     Authorization: `bearer ${import.meta.env.VITE_PAYSTACK_SECRET_KEY}`,
 };
 
-console.log(import.meta.env)
-
 const props = defineProps(['amount'])
 
 const store = useStore()
