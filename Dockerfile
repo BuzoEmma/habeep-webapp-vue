@@ -14,7 +14,7 @@ COPY . ./
 RUN mkdir dist
 
 # COPY dist ./dist/
-RUN ls -rf
+RUN ls
 
 COPY ./sitemap.xml ./dist/
 COPY ./robots.txt ./dist/
