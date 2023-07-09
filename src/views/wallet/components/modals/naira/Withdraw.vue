@@ -199,7 +199,7 @@ async function withdrawMoney() {
 
         const transferParams = reactive({
             source: 'balance',
-            amount: withdrawalDetails.amount,
+            amount: withdrawalDetails.amount * 100,
             reference: paystackReference,
             reason: "Habeep withdrawal",
             recipient: createRecipient.data.data.recipient_code
