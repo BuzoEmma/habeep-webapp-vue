@@ -506,12 +506,17 @@ async function getAgent(agentId) {
     try {
         const getAgent = await axios.get(url2 + agentId)
         agentDetails.value = getAgent.data.agent
+
+        const images = []
+        product.value.images.forEach(img => {
+            images.push(img.link)
+        })
         // set google seo
         const structuredData = {
             "@context": "https://schema.org/",
             "@type": "Product",
             name: product.value.title,
-            image: product.value.images.map(img => img.link),
+            image: images,
             description: product.value.description,
             sku: product.value._id,
             mpn: product.value._id,
