@@ -5,7 +5,7 @@ import { onMounted } from 'vue'
 import axios from 'axios'
 
 const props = defineProps(['paymentInfo'])
-const emit = defineEmits(['cancel', 'errorLoading', 'success', 'pendingTxn'])
+const emit = defineEmits(['cancel', 'errorLoading', 'success'])
 
 function createPaystack() {
     return new Promise((res, rej) => {
@@ -19,8 +19,7 @@ function createPaystack() {
             paystack.newTransaction({
                 ...props.paymentInfo,
                 callback: confirmPayment,
-                onClose: closePayment,
-                onBankTransferConfirmationPending: registerPending,
+                onClose: closePayment
             });
         }
 
@@ -31,7 +30,7 @@ function createPaystack() {
     })
 }
 
-const secret_key = import.meta.env.VITE_PAYSTACK_PUBLIC_KEY
+const secret_key = import.meta.env.VITE_PAYSTACK_SECRET_KEY
 
 async function confirmPayment(response) {
     try {
@@ -53,10 +52,6 @@ async function confirmPayment(response) {
     } catch (error) {
         emit('cancel', { method: 'paystack', reference: props.paymentInfo.ref })
     }
-}
-
-function registerPending(response) {
-    emit('pendingTxn', response)
 }
 
 function closePayment() {

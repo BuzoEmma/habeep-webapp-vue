@@ -60,7 +60,8 @@
                         class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer">
                         <span>Pay with Paystack</span>
                     </p>
-                    <p @click="choosePaymentMethod('flutterwave')" class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer">
+                    <p @click="choosePaymentMethod('flutterwave')"
+                        class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer">
                         <span>Pay with Flutterwave</span>
                         <!-- <span class="text-xs font-extralight text-webapp">#comingsoon</span> -->
                     </p>
@@ -71,7 +72,11 @@
                 </div>
             </div>
 
-            <Paystack @success="processSuccessPayment" @pendingTxn="processPendingPayment" @cancel="cancelPayment" @errorLoading="$router.go()" v-if="depositData.paymentMethod === 'paystack' && proceededPayment" :payment-info="getPaystackDetails()" />
+            <Paystack @success="processPayment" @cancel="cancelPayment" @errorLoading="$router.go()"
+                v-if="depositData.paymentMethod === 'paystack' && proceededPayment" :payment-info="getPaystackDetails()" />
+
+            <Flutterwave @success="processPayment" @cancel="handleFlwClose" @errorLoading="$router.go()"
+                v-if="depositData.paymentMethod === 'flutterwave' && proceededPayment" :payment-info="getFlwDetails()" />
 
             <button @click="proceedToPayment" :disabled="depositData.amount < 100 || depositData.paymentMethod.length < 1"
                 :class="{ 'bg-blue-600 text-white': depositData.amount > 99 && depositData.paymentMethod.length > 1, 'bg-gray-300': depositData.amount < 100 || depositData.paymentMethod.length < 1, }"
@@ -95,6 +100,7 @@ import uniqid from 'uniqid'
 import axios from '../../../../../composables/axios'
 import moment from 'moment'
 import Paystack from './deposits/Paystack.vue'
+import Flutterwave from './deposits/Flutterwave.vue'
 
 const store = useStore()
 const router = useRouter()
@@ -112,6 +118,23 @@ const processingDeposit = ref(false)
 const onSelectMethod = ref(false)
 const proceededPayment = ref(false)
 
+const onError = ref(false)
+let errorMsg = ref('')
+let newMsg = ref('')
+
+const flwRef = ref('')
+
+function getLogo() {
+    if (store.state.user.userProfileImage !== 'https://i.ibb.co/gtpxMJz/21.png') {
+        return store.state.user.userProfileImage
+    } else return 'https://i.ibb.co/BnG8VLy/logo-white.png'
+}
+
+function channels() {
+    return ["card", "bank_transfer"];
+}
+
+
 const choosePaymentMethod = (method) => {
     depositData.paymentMethod = method
     onSelectMethod.value = false
@@ -121,33 +144,15 @@ function proceedToPayment() {
     try {
         processingDeposit.value = true
         proceededPayment.value = true
-        if (depositData.paymentMethod === 'flutterwave') {
-            const findScript = document.getElementById('flw')
-            if (!findScript) {
-                const script = document.createElement('script')
-                script.id = 'flw'
-                script.src = 'https://checkout.flutterwave.com/v3.js'
-                document.getElementsByTagName('head')[0].appendChild(script)
-
-                setTimeout(() => {
-                    makeFlwPayment()
-                }, 2000);
-
-            } else {
-                makeFlwPayment()
-            }
-        }
     } catch (error) {
         processingDeposit.value = false
     }
 
 }
 
-function cancelPayment(response) {
+function cancelPayment() {
     proceededPayment.value = false
-    const mainMethod = response.method || depositData.paymentMethod
-
-    processCanceledPayment(mainMethod, response.reference)
+    processingDeposit.value = false
 }
 
 function getPaystackDetails() {
@@ -165,61 +170,31 @@ function getPaystackDetails() {
     }
 }
 
-
-const onError = ref(false)
-let errorMsg = ref('')
-let newMsg = ref('')
-
-function channels() { return ["card", "bank_transfer"]; }
-
-const flwRef = ref('')
-
-function getLogo() {
-    if(store.state.user.userProfileImage !== 'https://i.ibb.co/gtpxMJz/21.png') {
-        return store.state.user.userProfileImage
-    } else return 'https://i.ibb.co/BnG8VLy/logo-white.png'
-}
-
-function makeFlwPayment() {
+function getFlwDetails() {
     flwRef.value = genFlwRef()
-    window.FlutterwaveCheckout({
+    return {
         public_key: import.meta.env.VITE_FLW_PUBLIC_KEY,
-        amount: depositData.amount,//amount
-        callback: handleFlwCallback,
+        amount: depositData.amount,
         country: "NG",
         currency: "NGN",
-        customer: { email: store.state.user.email, name: store.state.user.username, phone_number: '+' + store.state.user.countryCode + store.state.user.phoneNumber.toString() },
+        customer: { email: store.state.user.email, name: store.state.user.fname + ' ' + store.state.user.surname, phone_number: '+' + store.state.user.countryCode + store.state.user.phoneNumber.toString() },
         customizations: { description: "Deposit money into your naira wallet", logo: getLogo(), title: store.state.user.fname + ' ' + store.state.user.surname },
-        meta: {
-            consumer_id: store.state.user._id
-        },
-        onclose: handleFlwClose,
         payment_options: "card,ussd,banktransfer,account,nqr",
         redirect_url: null,
         tx_ref: flwRef.value
-    });
-}
-
-function handleFlwCallback(data) {
-    if (data.status === 'successful') {
-        processSuccessPayment(data)
-    } else if (data.status === 'pending') {
-        processPendingPayment(data)
     }
 }
 
 function handleFlwClose(data) {
-    if (data === true) {
-        processCanceledPayment('flutterwave', flwRef.value)
-    } else {
-        processSuccessPayment({ tx_ref: flwRef.value})
-    }
+    if (data !== true) {
+        processPayment({ tx_ref: flwRef.value })
+    } else cancelPayment()
 }
 
 
 
 // handle payments
-const processSuccessPayment = async (response) => {
+const processPayment = async (response) => {
     try {
         processingDeposit.value = true
         let reference;
@@ -227,13 +202,13 @@ const processSuccessPayment = async (response) => {
             reference = response.reference
         } else if (depositData.paymentMethod === 'flutterwave') {
             reference = response.tx_ref
-        } else reference = 'deposit payment'
+        } else reference = 'wallet deposit'
 
         let data = {
             accountId: store.state.user.wallet.naira,
             amount: depositData.amount,
             referenceId: reference,
-            status: true,
+            status: 'COMPLETED',
             fee: 0,
             userId: store.state.user._id,
             paymentMethod: depositData.paymentMethod,
@@ -245,6 +220,7 @@ const processSuccessPayment = async (response) => {
         }
 
         const saveDeposit = await axios.post('/wallet/deposit/naira', data)
+        
         newMsg.value = saveDeposit.data.message
 
         setTimeout(() => {
@@ -252,7 +228,7 @@ const processSuccessPayment = async (response) => {
             emit('close')
             router.go()
             newMsg.value = ''
-        }, 1000);
+        }, 2000);
     } catch (error) {
         onError.value = true
         errorMsg.value = error.response.data.message
@@ -268,95 +244,6 @@ const processSuccessPayment = async (response) => {
 
 }
 
-const processPendingPayment = async (response) => {
-    try {
-        processingDeposit.value = true
-
-        let reference;
-        if (depositData.paymentMethod === 'paystack') {
-            reference = response.reference
-        } else if (depositData.paymentMethod === 'flutterwave') {
-            reference = response.tx_ref
-        } else reference = 'deposit payment'
-
-        let data = {
-            accountId: store.state.user.wallet.naira,
-            amount: depositData.amount,
-            referenceId: reference,
-            status: 'PENDING',
-            fee: 0,
-            userId: store.state.user._id,
-            paymentMethod: depositData.paymentMethod,
-            dates: {
-                createdAt: moment().format('LLL'),
-                time: moment().format('LTS'),
-                date: moment().format('LL')
-            }
-        }
-
-        const saveDeposit = await axios.post('/wallet/deposit/naira', data)
-        newMsg.value = saveDeposit.data.message
-
-        setTimeout(() => {
-            processingDeposit.value = false
-            emit('close')
-            router.go()
-            newMsg.value = ''
-        }, 2000);
-    } catch (error) {
-        onError.value = true
-        errorMsg.value = error.response.data.message
-
-        processCanceledPayment('paystack', paystackReference.value)
-
-        processingDeposit.value = false
-        setTimeout(() => {
-            onError.value = false
-            errorMsg.value = ''
-        }, 2000);
-    }
-
-}
-
-const processCanceledPayment = async (method, reference) => {
-    try {
-        processingDeposit.value = true
-
-        let data = {
-            accountId: store.state.user.wallet.naira,
-            amount: depositData.amount,
-            referenceId: reference,
-            status: false,
-            userId: store.state.user._id,
-            paymentMethod: depositData.paymentMethod,
-            dates: {
-                createdAt: moment().format('LLL'),
-                time: moment().format('LTS'),
-                date: moment().format('LL')
-            }
-        }
-
-        const saveDeposit = await axios.post('/wallet/deposit/naira', data)
-        newMsg.value = saveDeposit.data.message
-
-        setTimeout(() => {
-            processingDeposit.value = false
-            emit('close')
-            router.go()
-        }, 2000);
-    } catch (error) {
-        onError.value = true
-        errorMsg.value = error.response.data.message
-
-        setTimeout(() => {
-            processingDeposit.value = false
-            onError.value = false
-            emit('close')
-            router.go()
-        }, 2000);
-    }
-
-}
 
 function genRef() {
     return uniqid("dep-pstk-");
