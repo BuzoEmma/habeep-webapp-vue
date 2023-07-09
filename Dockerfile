@@ -2,15 +2,17 @@ FROM node:lts-alpine
 
 WORKDIR /habeep/habeep-webapp
 
-COPY package*.json ./
+# COPY package*.json ./
 
-# RUN npm install
+# # RUN npm install
 
-RUN ls -rf
+# RUN ls -rf
 
-COPY . ./
+# COPY . ./
 
 # RUN npm run build
+
+RUN mkdir dist
 
 COPY ./dist ./dist/
 
