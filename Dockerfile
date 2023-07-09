@@ -6,15 +6,15 @@ WORKDIR /habeep/habeep-webapp
 
 # # RUN npm install
 
-# RUN ls -rf
 
-# COPY . ./
+COPY . ./
 
 # RUN npm run build
 
 RUN mkdir dist
 
-COPY ./dist ./dist/
+# COPY dist ./dist/
+RUN ls -rf
 
 COPY ./sitemap.xml ./dist/
 COPY ./robots.txt ./dist/
