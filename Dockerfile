@@ -13,7 +13,8 @@ COPY . ./
 
 RUN mkdir dist
 
-# COPY dist ./dist/
+COPY ./dist/ ./dist/
+
 RUN ls
 
 COPY ./sitemap.xml ./dist/
