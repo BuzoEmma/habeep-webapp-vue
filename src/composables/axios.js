@@ -1,8 +1,7 @@
 import axios from 'axios'
 import createStore from '../store/index'
 
-// let URI = 'http://localhost:2023/backend/api/v1'
-let URI = 'https://habeep.org/backend/api/v1'
+let URI = import.meta.env.VITE_BASE_URL
 
 function getToken() {
   return createStore.getters.sessionId

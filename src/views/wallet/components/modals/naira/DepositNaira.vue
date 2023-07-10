@@ -150,9 +150,13 @@ function proceedToPayment() {
 
 }
 
-function cancelPayment() {
-    proceededPayment.value = false
-    processingDeposit.value = false
+function cancelPayment(e) {
+    if(e && e.method === 'paystack' && e.reference) {
+        processPayment({ reference: e.reference})
+    } else {
+        proceededPayment.value = false
+        processingDeposit.value = false
+    }
 }
 
 function getPaystackDetails() {
@@ -186,6 +190,7 @@ function getFlwDetails() {
 }
 
 function handleFlwClose(data) {
+    console.log(data)
     if (data !== true) {
         processPayment({ tx_ref: flwRef.value })
     } else cancelPayment()
@@ -220,12 +225,11 @@ const processPayment = async (response) => {
         }
 
         const saveDeposit = await axios.post('/wallet/deposit/naira', data)
-        
         newMsg.value = saveDeposit.data.message
-
+        
         setTimeout(() => {
-            processingDeposit.value = false
             emit('close')
+            processingDeposit.value = false
             router.go()
             newMsg.value = ''
         }, 2000);
@@ -233,10 +237,10 @@ const processPayment = async (response) => {
         onError.value = true
         errorMsg.value = error.response.data.message
 
-        emit('close')
-
-        processingDeposit.value = false
         setTimeout(() => {
+            processingDeposit.value = false
+            emit('close')
+            router.go()
             onError.value = false
             errorMsg.value = ''
         }, 2000);
