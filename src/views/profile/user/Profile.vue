@@ -56,34 +56,6 @@
                             <p class="text-lg agent-ads-count text-sub-webapp flex flex-row gap-x-2 items-center"><img
                                     src="../../../assets/images/map-pin.png" alt="">{{ $store.state.user.nationality }}</p>
 
-                            <!-- <div
-                                class="flex flex-row items-center w-full gap-x-2 mt-3 justify-between overflow-x-auto no-scroller no-scroll-btn">
-                                <p class="text-lg font-webapp flex flex-col items-center"
-                                    :delay="250" v-if="$store.state.user.role === 'AGENT' && agentDetails.ads">
-                                    {{ agentDetails.ads.length }}
-                                    <span class="text-sub-webapp text-sm">Ads
-                                    </span>
-                                </p>
-                                <p class="text-lg font-webapp flex flex-col items-center"
-                                    >
-                                    {{ $store.state.user.savedAds.length }}
-                                    <span class="text-sub-webapp text-sm">Saved
-                                    </span>
-                                </p>
-                                <p class="text-lg font-webapp flex flex-col items-center cursor-pointer"
-                                    v-motion-slide-left :delay="350" @click="openModal('FollowingModal')">
-                                    {{
-                                        $store.state.user.following.length
-                                    }}<span class="text-sub-webapp text-sm">Following </span>
-                                </p>
-                                <p class="text-lg font-webapp flex flex-col items-center cursor-pointer"
-                                    v-motion-slide-left :delay="400" @click="openModal('FollowersModal')">
-                                    {{
-                                        $store.state.user.followers.length
-                                    }}<span class="text-sub-webapp text-sm">Followers </span>
-                                </p>
-                            </div> -->
-
                             <div
                                 class="flex flex-row items-center w-full gap-x-2 mt-3 justify-between overflow-x-auto no-scroll-btn">
                                 <p class="text-lg font-webapp flex flex-col items-center"
@@ -97,7 +69,8 @@
                                     <span class="text-sub-webapp text-sm">Saved
                                     </span>
                                 </p>
-                                <p class="text-lg font-webapp flex flex-col items-center cursor-pointer" @click="openModal('FollowingModal')">
+                                <p class="text-lg font-webapp flex flex-col items-center cursor-pointer"
+                                    @click="openModal('FollowingModal')">
                                     {{
                                         $store.state.user.following.length
                                     }}<span class="text-sub-webapp text-sm">Following </span>
@@ -121,8 +94,8 @@
                             class="user-btn flex-row items-center justify-center text-sm font-medium text-webapp w-full bg-white">Affiliate
                             profile</button>
                         <button @click="openModal('editProfileModal')"
-                            class="user-btn flex flex-row items-center justify-center text-sm font-medium  text-webapp md:ml-2 bg-white w-full"
-                            :class="{ 'w-full': $store.state.user.role === 'AGENT' }">Edit
+                            class="user-btn flex flex-row items-center justify-center text-sm font-medium text-webapp bg-white w-full"
+                            :class="{ 'w-full md:ml-2': $store.state.user.role === 'AGENT' }">Edit
                             profile</button>
                     </div>
                     <div class="flex flex-row items-center w-full mt-2">
@@ -192,11 +165,17 @@
                         <div class="basis-full md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0"
                             v-for="ad in agentDetails.ads" :key="ad">
                             <div class="flex flex-col items-start gap-y-2  border rounded-md border-gray-200 pb-2 ad feed">
-                                <img @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
-                                    class="w-full rounded-t-md feed-image" v-if="ad.images[0].link.includes('mp4') == false"
+                                <Skeleton v-if="!ad.imageLoaded" class=" w-full h-full rounded-t-md feed-image" style="width: 100%" />
+                                <img @click="$router.push('/listings/products/' + ad._id)"
+                                    :class="{ 'hidden': !ad.imageLoaded }" :src="ad.images[0].link"
+                                    @load="ad.imageLoaded = true" class="w-full rounded-t-md feed-image"
+                                    v-if="ad.images[0] && ad.images[0].link && ad.images[0].link.includes('mp4') == false"
                                     alt="">
-                                <video @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
-                                    class="w-full rounded-t-md feed-image" v-else autoplay muted loop></video>
+                                <video @loadedmetadata="ad.imageLoaded = true" :class="{ 'hidden': !ad.imageLoaded }"
+                                    @click="$router.push('/listings/products/' + ad._id)" preload="metadata"
+                                    :src="ad.images[0] && ad.images[0].link" class="w-full rounded-t-md feed-image" v-else
+                                    autoplay muted loop></video>
+
                                 <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
                                     @click="$router.push('/listings/products/' + ad._id)">
                                     {{ ad.title }}
@@ -247,11 +226,16 @@
                             :key="ad">
                             <div
                                 class="flex flex-col items-start gap-y-2 relative ad feed w-full border rounded-md border-gray-200 pb-2">
-                                <img @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
-                                    class="w-full h-full rounded-t-md feed-image"
-                                    v-if="ad.images[0].link.includes('mp4') == false" alt="">
-                                <video @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
-                                    class="w-full rounded-t-md feed-image" v-else autoplay muted></video>
+                                <Skeleton v-if="!ad.imageLoaded" class=" w-full h-full rounded-t-md feed-image" style="width: 100%" />
+                                <img @click="$router.push('/listings/products/' + ad._id)"
+                                    :class="{ 'hidden': !ad.imageLoaded }" :src="ad.images[0].link"
+                                    @load="ad.imageLoaded = true" class="w-full rounded-t-md feed-image"
+                                    v-if="ad.images[0] && ad.images[0].link && ad.images[0].link.includes('mp4') == false"
+                                    alt="">
+                                <video @loadedmetadata="ad.imageLoaded = true" :class="{ 'hidden': !ad.imageLoaded }"
+                                    @click="$router.push('/listings/products/' + ad._id)" preload="metadata"
+                                    :src="ad.images[0] && ad.images[0].link" class="w-full rounded-t-md feed-image" v-else
+                                    autoplay muted loop></video>
                                 <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
                                     @click="$router.push('/listings/products/' + ad._id)">
                                     {{ ad.title }}

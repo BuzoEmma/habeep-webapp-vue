@@ -91,7 +91,7 @@
 </template>
 
 <script setup>
-/* eslint-disable */
+ 
 import { onMounted, ref, watchEffect, watch } from 'vue'
 import moment from 'moment'
 import { useStore } from 'vuex'

@@ -39,8 +39,7 @@
                 <p class="text-webapp text-lg w-full md:block hidden"><span class="text-primary font-medium">{{
                     products.length }}</span>
                     ads result found
-                    in <span class="font-medium capitalize">{{ $route.query.location ? $route.query.location :
-                        'Nigeria' }}</span></p>
+                    in <span class="font-medium capitalize">{{ $route.query.location ? $route.query.location : country.country }}</span></p>
 
                 <!-- filters -->
                 <div class="flex flex-row items-center h-fit gap-x-4 w-full md:w-min  transition-all"
@@ -178,9 +177,10 @@
                             :class="{ 'hidden': !product.imageLoaded }" :src="product.images[0].link"
                             class="w-full h-full feed-image rounded-t-md"
                             v-if="product.images[0].link.includes('mp4') == false" alt="">
-                        <video @click="$router.push('/listings/products/' + product._id)" @loadedmetadata="product.imageLoaded = true"
-                            :class="{ 'hidden': !product.imageLoaded }" :src="product.images[0].link"
-                            class="w-full rounded-t-md feed-image" v-else autoplay muted preload="auto"></video>
+                        <video @click="$router.push('/listings/products/' + product._id)"
+                            @loadedmetadata="product.imageLoaded = true" :class="{ 'hidden': !product.imageLoaded }"
+                            :src="product.images[0].link" class="w-full rounded-t-md feed-image" v-else autoplay muted
+                            preload="auto"></video>
                         <p class="text-webapp text-lg font-medium w-full mx-2 cursor-pointer feed-image"
                             @click="$router.push('/listings/products/' + product._id)">
                             {{ product.title }}
@@ -278,6 +278,11 @@ useHead({
     ]
 })
 
+let country = ref({
+    country: '',
+    countryCode: ''
+})
+
 let filterData = reactive({
     location: {
         city: '',
@@ -291,7 +296,8 @@ let filterData = reactive({
 const states = ref([])
 const cities = ref([])
 let onState = ref(true)
-const currentState = ref(route.query.location || 'Nigeria')
+const currentState = ref(route.query.location)
+
 const currentCity = ref('All')
 
 const searchingData = ref(false)
@@ -356,10 +362,22 @@ async function getSearch(location, query) {
         })
 
         const getProducts = await axios.post(url, data)
+
+
         products.value = []
         products.value = getProducts.data.products
+
+        if (store.state.isAuthenticated) {
+            country.value = {
+                country: store.state.user.nationality,
+                countryCode: store.state.user.countryShortName
+            }
+        } else {
+            const getCountry = await axiosDefault.get('http://ip-api.com/json')
+            country.value = getCountry.data
+        }
         products.value.forEach(async product => {
-            const distance = await calculateDistance(product.location.city || product.location.address + ', Nigeria')
+            const distance = await calculateDistance(product.location.city || product.location.address + ', ' + country.country)
             if (distance) {
                 product.distance = distance
             }
@@ -423,42 +441,36 @@ function changeSortValue(index) {
 }
 
 async function getStates() {
-    const getState = await axiosDefault.get('https://locus.fkkas.com/api/states');
-
-    getState.data.data.forEach(async state => {
-        const getCities = await axiosDefault.get('https://locus.fkkas.com/api/regions/' + state.alias);
-
-        let formatted = {
-            state: state,
-            cities: getCities.data.data
+    try {
+        if (store.state.isAuthenticated) {
+            country.value = {
+                country: store.state.user.nationality,
+                countryCode: store.state.user.countryShortName
+            }
+        } else {
+            const getCountry = await axiosDefault.get('http://ip-api.com/json')
+            country.value = getCountry.data
         }
 
-        states.value.push(formatted)
+        if(!route.query.location) {
+            currentState.value = country.value.country
+        } 
 
-    })
+        const getState = await axios.get('/countries-api/states/' + country.value.countryCode)
 
-    states.value = states.value.sort(function (a, b) {
-        const nameA = a.state.name.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.state.name.toUpperCase(); // ignore upper and lowercase
-        if (nameA > nameB) {
-            return 1;
-        }
-        if (nameA < nameB) {
-            return -1;
-        }
+        getState.data.results.forEach(async state => {
+            const getCities = await axios.get(`/countries-api/cities/${country.value.countryCode}/${state.stateid}`)
 
-        // names must be equal
-        return 0;
-    });
+            let formatted = {
+                state: state,
+                cities: getCities.data.results
+            }
 
-    store.dispatch('saveStates', states.value)
-}
+            states.value.push(formatted)
 
-onMounted(() => {
-    getSearch(route.query.location, route.query.name || 'all')
+        })
 
-    if (store.state.allStates.length !== 0) {
-        states.value = store.state.allStates.sort(function (a, b) {
+        states.value = states.value.sort(function (a, b) {
             const nameA = a.state.name.toUpperCase(); // ignore upper and lowercase
             const nameB = b.state.name.toUpperCase(); // ignore upper and lowercase
             if (nameA > nameB) {
@@ -467,12 +479,18 @@ onMounted(() => {
             if (nameA < nameB) {
                 return -1;
             }
+
             // names must be equal
             return 0;
         });
-    } else {
-        getStates()
+    } catch (error) {
+        console.log(error)
     }
+}
+
+onMounted(() => {
+    getStates()
+    getSearch(route.query.location, route.query.name || 'all')
 
 })
 
@@ -518,9 +536,11 @@ function useFilters(filters) {
 }
 </script>
 
-<style scoped>.feed-image {
+<style scoped>
+.feed-image {
     height: 100%;
     width: 100% !important;
     object-fit: cover;
     max-height: 185px !important;
-}</style>
+}
+</style>

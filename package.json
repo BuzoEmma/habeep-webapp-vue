@@ -26,6 +26,7 @@
     "moment": "^2.29.4",
     "number_formatter": "^1.1.0",
     "random-color-rgb": "^1.1.1",
+    "smart-deep-sort": "^1.0.2",
     "socket.io-client": "^4.6.1",
     "uniqid": "^5.4.0",
     "vue": "^3.2.37",

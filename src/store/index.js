@@ -2,11 +2,11 @@ import { createStore } from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 export default createStore({
     state: {
-        allStates: [],
         feedLocation: {
             city: '',
             state: ''
         },
+        navOpen: false,
         isAuthenticated: false,
         user: [],
         sessionId: '',
@@ -39,9 +39,6 @@ export default createStore({
             state.isAuthenticated = false;
             state.sessionId = '';
             state.user = []
-        },
-        saveStates(state, data) {
-            state.allStates = data
         },
         changeFeedLocation(state, data) {
             state.feedLocation = data
@@ -83,6 +80,9 @@ export default createStore({
                 size: 0,
                 images: new FormData()
             }
+        },
+        changeNavState(state, data) {
+            state.navOpen = data
         }
     },
     actions: {
@@ -94,9 +94,6 @@ export default createStore({
         },
         unsetAuth({ commit }) {
             commit('unsetUserAuth')
-        },
-        saveStates({ commit }, data) {
-            commit('saveStates', data)
         },
     },
     modules: {

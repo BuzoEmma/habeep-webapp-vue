@@ -1,6 +1,6 @@
 <template>
-    <div :class="[bgClass, loaderClass, 'relative overflow-hidden']">
-      <div class="shimmer absolute top-0 right-0 bottom-0 left-0" :style="shimmerStyle"></div>
+    <div :class="[bgClass, loaderClass, 'overflow-hidden', {'relative': !$store.state.navOpen, 'static': $store.state.navOpen}]">
+      <div class="shimmer absolute top-0 right-0 bottom-0 left-0" v-if="!$store.state.navOpen" :style="shimmerStyle"></div>
       <slot />
     </div>
   </template>

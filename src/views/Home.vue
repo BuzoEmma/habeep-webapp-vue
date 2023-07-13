@@ -2,7 +2,7 @@
   <div
     class="w-screen min-w-full flex flex-col justify-between items-center bg-white h-full min-h-screen overflow-y-none">
     <!-- Header / Navbar -->
-    <HomeNavbar />
+    <HomeNavbar @openNav="mainNavOpen = true" @closeNav="mainNavOpen = false"/>
 
 
 
@@ -12,7 +12,7 @@
         Quick way to Find your dream Property</h1>
 
       <!-- Quick search -->
-      <div class="flex flex-col quick-search no-wrap relative">
+      <div class="flex flex-col quick-search no-wrap" :class="{'static': mainNavOpen, 'relative': !mainNavOpen}">
         <!-- Search bar -->
         <!-- desktop -->
         <div class="search-bar w-full hidden md:flex flex-row items-center bg-white pl-3 pr-1 h-12 py-1 gap-x-4">
@@ -117,6 +117,7 @@ const route = useRoute()
 const router = useRouter()
 // Manage quick search
 const onSearch = ref(false)
+const mainNavOpen = ref(false)
 
 if (route.query.reloadApp) {
   router.replace({ path: '/home', query: null });

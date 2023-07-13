@@ -72,6 +72,10 @@
             </div>
 
             <div v-if="onState" class="gap-y-2">
+                <div class="py-2" @click="changeStateModal('All', 'state')">
+                    <p class="text-sm mb-1 text-webapp cursor-pointer">All</p>
+                    <hr>
+                </div>
                 <div class="py-2" v-for="(state, index) in states" :key="(state, index)"
                     @click="changeStateModal(state, 'state')">
                     <p class="text-sm mb-1 text-webapp cursor-pointer" v-if="state.state.name !== 'Cross'">{{
@@ -142,7 +146,8 @@
                 </div>
 
                 <!-- filters -->
-                <div class="flex flex-row items-center h-fit gap-x-4 transition-all" :class="{ 'relative': onDropdown }">
+                <div class="flex flex-row items-center h-fit gap-x-4 transition-all"
+                    :class="{ 'relative': onDropdown && !$store.state.navOpen }">
                     <div @click="toggleDropdown('sort')"
                         class="border border-gray-300 w-56 py-1 justify-center hidden lg:flex flex-row items-center gap-x-2 rounded-full cursor-pointer ">
                         <span class="md:text-lg text-webapp text-sm flex flex-row gap-x-1"> Sort:
@@ -165,7 +170,7 @@
                     </div>
 
                     <!-- sort dropdown -->
-                    <div v-if="(onSortDropdown && onDropdown)"
+                    <div v-if="(onSortDropdown && onDropdown && !$store.state.navOpen)"
                         class="lg:flex hidden flex-col drop-shadow-md shadow-xl bg-white rounded-xl gap-y-3 border p-4 border-gray-300 absolute top-16 z-10"
                         style="width: 220px">
                         <div class="flex flex-row items-center justify-between">
@@ -183,7 +188,8 @@
                         </p>
                         <hr>
                         <p class="text-sm text-webapp mt-2 cursor-pointer"
-                            :class="{ 'text-blue-600': filterData.sortValue === 'Newest first' }" @click="changeSortValue(2)">
+                            :class="{ 'text-blue-600': filterData.sortValue === 'Newest first' }"
+                            @click="changeSortValue(2)">
                             Newest
                             first
                         </p>
@@ -198,7 +204,7 @@
                     </div>
 
                     <!-- location dropdown -->
-                    <div v-if="(onLocationDropdown && onDropdown)"
+                    <div v-if="(onLocationDropdown && onDropdown && !$store.state.navOpen)"
                         class="lg:flex hidden flex-col location drop-shadow-md overflow-y-auto shadow-xl bg-white rounded-xl gap-y-3 border p-4 border-gray-300 absolute top-16 right-0 z-10"
                         style="width: 220px; max-height: 394px;">
                         <div class="flex flex-row items-center justify-between">
@@ -335,6 +341,8 @@ import calculateDistance from '../composables/getAdDistance.js'
 import axios from "../composables/axios";
 import saveAd from "../composables/saveAd";
 
+import sort from 'smart-deep-sort'
+
 const title = ref('Habeep | Feeds(0)')
 import { useHead } from '@vueuse/head'
 
@@ -389,8 +397,8 @@ let filterData = reactive({
 const states = ref([])
 const cities = ref([])
 let onState = ref(true)
-const currentState = ref('Abuja')
-const currentCity = ref('Gwagwalada')
+const currentState = ref('All')
+const currentCity = ref('All')
 const fetchingFeeds = ref(false)
 const feeds = ref([])
 const started = ref(false)
@@ -400,12 +408,10 @@ const errorMsg = ref('')
 if (store.state.feedLocation.state) {
     currentState.value = store.state.feedLocation.state
     filterData.location.state = currentState.value
-    // useFilters(filterData)
 }
 if (store.state.feedLocation.city) {
     currentCity.value = store.state.feedLocation.city
     filterData.location.city = currentCity.value
-    // useFilters(filterData)
 }
 
 
@@ -425,7 +431,7 @@ async function getFeeds() {
         }
 
         feeds.value.forEach(async feed => {
-            const distance = await calculateDistance(feed.location.address + ', ' + feed.location.city || 'Calabar')
+            const distance = await calculateDistance(feed.location.address + ', ' + feed.location.city || store.state.user.nationality)
             if (distance) {
                 feed.distance = distance
             }
@@ -526,41 +532,22 @@ function saveFeedLocation() {
 }
 
 async function getStates() {
-    const getState = await axiosDefault.get('https://locus.fkkas.com/api/states');
+    try {
+        const getState = await axios.get('/countries-api/states/' + store.state.user.countryShortName)
 
-    getState.data.data.forEach(async state => {
-        const getCities = await axiosDefault.get('https://locus.fkkas.com/api/regions/' + state.alias);
+        getState.data.results.forEach(async state => {
+            const getCities = await axios.get(`/countries-api/cities/${store.state.user.countryShortName}/${state.stateid}`)
 
-        let formatted = {
-            state: state,
-            cities: getCities.data.data
-        }
+            let formatted = {
+                state: state,
+                cities: getCities.data.results
+            }
 
-        states.value.push(formatted)
+            states.value.push(formatted)
 
-    })
+        })
 
-    states.value = states.value.sort(function (a, b) {
-        const nameA = a.state.name.toUpperCase(); // ignore upper and lowercase
-        const nameB = b.state.name.toUpperCase(); // ignore upper and lowercase
-        if (nameA > nameB) {
-            return 1;
-        }
-        if (nameA < nameB) {
-            return -1;
-        }
-
-        // names must be equal
-        return 0;
-    });
-    store.dispatch('saveStates', states.value)
-}
-
-onMounted(async () => {
-    await getFeeds()
-
-    if (store.state.allStates.length !== 0) {
-        states.value = store.state.allStates.sort(function (a, b) {
+        states.value = states.value.sort(function (a, b) {
             const nameA = a.state.name.toUpperCase(); // ignore upper and lowercase
             const nameB = b.state.name.toUpperCase(); // ignore upper and lowercase
             if (nameA > nameB) {
@@ -573,9 +560,14 @@ onMounted(async () => {
             // names must be equal
             return 0;
         });
-    } else {
-        getStates()
+    } catch (error) {
+        console.log(error)
     }
+}
+
+onMounted(async () => {
+    getStates()
+    await getFeeds()
 })
 
 
@@ -606,6 +598,9 @@ function useFilters(filters) {
 
         // sort by time
         if (filters.sortValue.length > 0) {
+            if (filters.sortValue === 'Recommended') {
+                filteredFeeds.value = sort(filteredFeeds.value)
+            }
             if (filters.sortValue === 'Newest first') {
                 let sortedArray = filteredFeeds.value.sort((a, c) => {
                     return new Date(c.dateUpdated) - new Date(a.dateUpdated)

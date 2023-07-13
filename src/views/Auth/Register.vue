@@ -69,22 +69,50 @@
                         style="padding-left: 115px">
 
 
-                    <div class="flex flex-col items-center  drop-shadow-sm bg-white rounded-b-xl rounded-t-md gap-y-2 p-1 absolute h-48 overflow-auto py-2 top-24 left-1 z-10 w-32"
+                    <div :class="{ 'justify-center': loadingLocationInfo }"
+                        class="flex flex-col items-center  drop-shadow-sm bg-white rounded-b-xl rounded-t-md gap-y-2 p-1 absolute h-48 overflow-auto py-2 top-24 left-1 z-10 w-32 min-w-fit"
                         v-if="onContainer">
-                        <Preloader v-if="countriesInfo.length === 0"/>
-                        <p class="w-full flex flex-row justify-center gap-x-4 border-b items-center border-gray-100" v-else
-                            @click="pickCountryCode(index)" v-for="(country, index) in countriesInfo"
-                            :key="(country, index)">
-                            <img :src="country.flag" class="w-9 h-8" alt="">
-                            <span class="text-webapp text-sm font-medium">(+{{ country.callingCode }})</span>
-                        </p>
+                        <Preloader v-if="loadingLocationInfo" />
+                        <div class="flex-col flex items-start" v-else>
+                            <div
+                                @click="cleanSelections" v-if="selectedContinent.name"
+                                class="w-full flex text-primary cursor-pointer flex-row items-start gap-x-4 border-b pb-4 py-2 pl-3 border-gray-100">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                    class="w-5 h-5">
+                                    <path fill-rule="evenodd"
+                                        d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z"
+                                        clip-rule="evenodd" />
+                                </svg>
+
+                                <span class="text-sm capitalize">{{ selectedContinent.name }}</span>
+                            </div>
+                            <div class="w-full h-fit" v-if="allContinents.length > 0 && !selectedContinent.name">
+                                <p class="w-full flex cursor-pointer flex-row items-start gap-x-4 border-b py-2 pl-3 border-gray-100"
+                                    @click="pickContinent(continent)"
+                                    :class="{ 'border-none': index === allContinents.length - 1 }"
+                                    v-for="(continent, index) in allContinents" :key="(continent, index)">
+                                    <span class="text-webapp text-sm font-medium cursor-pointer capitalize text-left">{{
+                                        continent.name }}</span>
+                                </p>
+                            </div>
+                            <div class="w-full h-fit" v-if="selectedContinent.name">
+                                <p class="w-full flex flex-row cursor-pointer items-start gap-x-4 border-b py-2 pl-3 border-gray-100"
+                                    @click="pickCountry(country)"
+                                    :class="{ 'border-none': index === selectedContinentCountries.length - 1 }"
+                                    v-for="(country, index) in selectedContinentCountries" :key="(country, index)">
+                                    <span>{{ country.flag }}</span>
+                                    <span class="text-webapp text-sm font-medium cursor-pointer capitalize text-left">{{
+                                        country.name }}</span>
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="absolute top-8 left-1 flex flex-row items-center justify-center h-10 w-24 rounded-md"
-                        @click="openCountryCode" style="background: #F4F4F4" :class="{ 'bg-bg': onModal }">
+                    <div class="absolute top-8 left-1 flex flex-row items-center justify-center h-10 w-24 rounded-md cursor-pointer"
+                        @click="toggleCountryCodeContainer" style="background: #F4F4F4" :class="{ 'bg-bg': onModal }">
                         <p class="flex flex-row items-center w-full justify-center gap-x-3">
-                            <img :src="selectedCountry.flag" class="w-9 h-8" alt="">
-                            <span>+{{ selectedCountry.callingCode }}</span>
+                            <span>{{ selectedCountry.flag }}</span>
+                            <span>+{{ selectedCountry.phoneCode }}</span>
                         </p>
                     </div>
 
@@ -112,10 +140,9 @@
                 </p>
 
                 <!-- submit btn -->
-                <button @click.prevent="createUser"
-                    class="w-full rounded-lg grid place-items-center h-14 text-white"
+                <button @click.prevent="createUser" class="w-full rounded-lg grid place-items-center h-14 text-white"
                     :disabled="errorMsg.field === 'email'"
-                    :class="{ 'bg-blue-600': data.pin.toString().length === 4 && data.username.length > 5, 'bg-gray-300': data.pin.toString().length < 4 || data.username.length < 5}">
+                    :class="{ 'bg-blue-600': data.pin.toString().length === 4 && data.username.length > 5, 'bg-gray-300': data.pin.toString().length < 4 || data.username.length < 5 }">
                     <span v-if="!processing">Continue</span>
                     <Preloader v-else />
                 </button>
@@ -134,8 +161,8 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter, useRoute } from "vue-router";
 import axios from "../../composables/axios";
-import axiosDefault from 'axios'
-import { useStore } from "vuex";
+
+import sort from 'smart-deep-sort'
 
 import { registerValidate, formValidator } from '../../composables/2-validator'
 
@@ -146,8 +173,6 @@ const screenWidth = ref(window.innerWidth)
 
 const route = useRoute();
 const router = useRouter();
-
-const store = useStore();
 
 const onModal = ref(false)
 const onSuggestedListingsModal = ref(false)
@@ -179,57 +204,64 @@ function closeModal() {
 
 // get country codes
 let onContainer = ref(false)
-let countriesInfo = ref([])
+const allContinents = ref([])
+const loadingLocationInfo = ref(false)
+const selectedContinent = ref({})
+const selectedContinentCountries = ref([])
+
 let selectedCountry = ref({
     name: 'Nigeria',
-    callingCode: '234',
-    flag: 'https://flagcdn.com/ng.svg'
+    phoneCode: '234',
+    flag: '🇳🇬',
+    currency: 'NGN',
+    shortName: 'NG'
 });
 
 
-function openCountryCode() {
+function toggleCountryCodeContainer() {
     onContainer.value = !onContainer.value
 }
 
-function pickCountryCode(index) {
-    let countryInfo = countriesInfo.value[index]
-    selectedCountry.value = countryInfo
-    onContainer.value = false
+function pickContinent(continent) {
+    selectedContinent.value = continent
+    selectedContinentCountries.value = []
+    getContinentCountries(continent.id)
 }
 
-async function getCountries() {
+function cleanSelections() {
+    selectedContinent.value = {}
+    selectedContinentCountries.value = []
+}
+
+function pickCountry(country) {
+    selectedCountry.value = country
+    toggleCountryCodeContainer()
+}
+
+async function getContinents() {
     try {
-        const countries = await axiosDefault.get('https://restcountries.com/v3.1/subregion/africa')
-        // console.log(countries)
-        let unformattedData = []
-
-
-        for (const country of countries.data) {
-            try {
-                const countryMain = await axiosDefault.get('https://restcountries.com/v2/name/' + country.name.common)
-                unformattedData.push({
-                    name: country.name.common,
-                    callingCode: countryMain.data[0].callingCodes[0],
-                    flag: countryMain.data[0].flag
-                })
-            } catch (error) {
-                // consle.log(error)
-            }
-
-
-        }
-        let sortedArray = unformattedData.sort((country1, country2) => {
-            return Number(country2.callingCode) - Number(country1.callingCode)
-        })
-        countriesInfo.value = sortedArray
+        loadingLocationInfo.value = true
+        const continents = await axios.get('/countries-api/continents')
+        allContinents.value = sort(continents.data.results)
+        loadingLocationInfo.value = false
     } catch (error) {
-        // console.log('Err occured', error)
+        loadingLocationInfo.value = false
+    }
+}
+
+async function getContinentCountries(id) {
+    try {
+        loadingLocationInfo.value = true
+        const countries = await axios.get('countries-api/countries/' + id)
+        selectedContinentCountries.value = sort(countries.data.results)
+        loadingLocationInfo.value = false
+    } catch (error) {
+        loadingLocationInfo.value = false
     }
 }
 
 
 // manage registration
-
 const url = '/auth/register';
 
 
@@ -238,11 +270,13 @@ const data = reactive({
     fname: '',
     surname: '',
     email: '',
+    currency: '',
     countryCode: '',
     nationality: '',
     pin: '',
     phoneNumber: '',
     referralCode: '',
+    shortName: ''
 })
 
 
@@ -256,7 +290,6 @@ let errorMsg = ref({
     field: null
 })
 let newMsg = ref('')
-let warningMsg = ref('')
 const processing = ref(false)
 
 function validateFormField(field, data) {
@@ -275,9 +308,10 @@ function validateFormField(field, data) {
 }
 
 async function createUser() {
-    data.countryCode = selectedCountry.value.callingCode
+    data.countryCode = selectedCountry.value.phoneCode
+    data.currency = selectedCountry.value.currency
+    data.shortName = selectedCountry.value.shortName
     data.nationality = selectedCountry.value.name
-    // console.log(data)
     const validator = registerValidate(data);
 
     if (validator.success === false) {
@@ -347,7 +381,7 @@ const nextPage = () => {
 }
 
 onMounted(() => {
-    getCountries()
+    getContinents()
 })
 
 </script>
@@ -375,17 +409,17 @@ input:focus {
 
 .form-container::-webkit-scrollbar {
     height: .1rem;
-    width: 7px;
+    width: 5px;
 }
 
 .form-container::-webkit-scrollbar-track {
     background: rgb(241, 241, 241);
-    border-radius: 8px;
+    border-radius: 5ex;
 }
 
 .form-container::-webkit-scrollbar-thumb {
     background: #0f154d;
-    border-radius: 8px;
+    border-radius: 5px;
 }
 
 .bg-bg {

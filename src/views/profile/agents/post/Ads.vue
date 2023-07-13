@@ -115,12 +115,18 @@
                     <div class="basis-full md:basis-1/2 2xl:basis-1/3 p-3 border h-fit border-gray-200 rounded-lg"
                         v-for="item in activeProducts" :key="item">
                         <div class="flex flex-col items-start gap-y-2 ad relative rounded-t-md">
-                            <Skeleton v-if="!item.imageLoaded || !item.images[0]" class="w-full h-full rounded-md feed-image" style="width: 100%" />
+                            <Skeleton v-if="!item.imageLoaded || !item.images[0]"
+                                class="w-full h-full rounded-md feed-image" style="width: 100%" />
                             <img @click="$router.push('/listings/products/' + item._id)" :src="item.images[0].link"
-                                class="w-full h-full rounded-md feed-image" @load="item.imageLoaded = true"
-                                v-if="item.images[0] && item.images[0].link && item.images[0].link.includes('.mp4') == false" alt="">
-                            <video @click="$router.push('/listings/products/' + item._id)" @loadedmetadata="item.imageLoaded = true" :src="item.images[0].link"
-                                class="w-full rounded-md feed-image" v-if="item.images[0] && item.images[0].link && item.images[0].link.includes('.mp4') == true" autoplay muted preload="auto"></video>
+                                class="w-full h-full rounded-md feed-image" :class="{ 'hidden': !item.imageLoaded }"
+                                @load="item.imageLoaded = true"
+                                v-if="item.images[0] && item.images[0].link && item.images[0].link.includes('.mp4') == false"
+                                alt="">
+                            <video @click="$router.push('/listings/products/' + item._id)"
+                                :class="{ 'hidden': !item.imageLoaded }" @loadedmetadata="item.imageLoaded = true"
+                                :src="item.images[0].link" class="w-full rounded-md feed-image"
+                                v-if="item.images[0] && item.images[0].link && item.images[0].link.includes('.mp4') == true"
+                                autoplay muted preload="auto"></video>
                             <p class="text-webapp text-lg font-medium w-full  cursor-pointer"
                                 @click="$router.push('/listings/products/' + item._id)">
                                 {{ item.title }}
@@ -173,11 +179,18 @@
                     <div class="basis-full md:basis-1/2 2xl:basis-1/3 ad p-3 border h-fit rounded-md"
                         v-for="item in closedProducts" :key="item">
                         <div class="flex flex-col items-start gap-y-2 relative ad  rounded-t-md">
+                            <Skeleton v-if="!item.imageLoaded || !item.images[0]"
+                                class="w-full h-full rounded-md feed-image" style="width: 100%" />
                             <img @click="$router.push('/listings/products/' + item._id)" :src="item.images[0].link"
-                                class="w-full h-full rounded-md feed-image"
-                                v-if="item.images[0].link.includes('mp4') == false" alt="">
-                            <video @click="$router.push('/listings/products/' + item._id)" :src="item.images[0].link"
-                                class="w-full rounded-md feed-image" v-else autoplay muted></video>
+                                class="w-full h-full rounded-md feed-image" :class="{ 'hidden': !item.imageLoaded }"
+                                @load="item.imageLoaded = true"
+                                v-if="item.images[0] && item.images[0].link && item.images[0].link.includes('.mp4') == false"
+                                alt="">
+                            <video @click="$router.push('/listings/products/' + item._id)"
+                                :class="{ 'hidden': !item.imageLoaded }" @loadedmetadata="item.imageLoaded = true"
+                                :src="item.images[0].link" class="w-full rounded-md feed-image"
+                                v-if="item.images[0] && item.images[0].link && item.images[0].link.includes('.mp4') == true"
+                                autoplay muted preload="auto"></video>
                             <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
                                 @click="$router.push('/listings/products/' + item._id)">
                                 {{ item.title }}
@@ -441,5 +454,4 @@ input:focus {
     width: 100% !important;
     object-fit: fill;
     max-height: 164px !important;
-}
-</style>
+}</style>

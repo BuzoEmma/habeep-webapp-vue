@@ -102,15 +102,22 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useStore } from 'vuex'
 
 const onNavDropdown = ref(false)
 const onMobileNav = ref(false)
 
+const store = useStore()
+
+store.commit('changeNavState', false)
+
 function toggleNav() {
     onNavDropdown.value = !onNavDropdown.value
+    store.commit('changeNavState', onNavDropdown.value)
 }
 function toggleMobileNav() {
     onMobileNav.value = !onMobileNav.value
+    store.commit('changeNavState', onMobileNav.value)
 }
 </script>
 

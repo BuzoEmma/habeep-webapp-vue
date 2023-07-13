@@ -102,25 +102,35 @@
                 <span></span>
             </div>
 
-
-
-
         </div>
     </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { useStore } from 'vuex'
+const emit = defineEmits(['closeNav', 'openNav'])
+
+const store = useStore()
 
 
 const onNavDropdown = ref(false)
 const onMobileNav = ref(false)
 
+store.commit('changeNavState', false)
 function toggleNav() {
     onNavDropdown.value = !onNavDropdown.value
+    store.commit('changeNavState', onNavDropdown.value)
+    if(!onNavDropdown.value) {
+        emit('closeNav')
+    } else emit('openNav')
 }
 function toggleMobileNav() {
     onMobileNav.value = !onMobileNav.value
+    store.commit('changeNavState', onMobileNav.value)
+    if(!onMobileNav.value) {
+        emit('closeNav')
+    } else emit('openNav')
 }
 </script>
 
