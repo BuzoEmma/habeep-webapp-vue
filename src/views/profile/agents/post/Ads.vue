@@ -105,7 +105,7 @@
             <!-- tab for active ads -->
             <div class="ads-tab w-full h-fit mt-6 flex flex-row"
                 :class="{ 'justify-center items-center': activeProducts.length < 1 }" v-if="adsTab === 1">
-                <img src="../assets/images/rhombus-preloader.gif" class="m-auto" v-if="fetchingProducts === true" alt="">
+                <img src="../../../../assets/images/rhombus-preloader.gif" class="m-auto" v-if="fetchingProducts === true" alt="">
                 <div class="flex flex-col items-center gap-y-3 md:justify-center" v-else-if="activeProducts.length < 1">
                     <img src="../../../../assets/icons/no-ad.svg" alt="">
                     <span class="text-gray-300 text-lg">No active property yet</span>
