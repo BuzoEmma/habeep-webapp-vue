@@ -43,7 +43,7 @@ async function getWallet() {
             walletData.value = nairaWallet.data.data
         }
     } catch (error) {
-
+        console.log(error)
     }
 }
 

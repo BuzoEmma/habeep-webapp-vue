@@ -5,22 +5,22 @@
 
         <div class="w-full flex flex-row items-center gap-x-2 justify-between">
             <div class="flex flex-col gap-y-1 items-center cursor-pointer" v-motion-slide-left :delay="200"
-                @click="$router.push('/wallet?tab=naira&cont=deposit')">
+                @click="$router.push('/wallet?tab=currency&cont=deposit')">
                 <img src="../../../../../assets/icons/wallet/deposit.svg" alt="">
                 <span class="text-xs text-webapp">Deposit</span>
             </div>
-            <div class="flex flex-col gap-y-1 items-center" v-motion-slide-left :delay="300">
+            <div class="flex flex-col gap-y-1 items-center cursor-pointer" @click="$router.push('/wallet?tab=currency&cont=withdraw')" v-motion-slide-left :delay="300">
                 <img src="../../../../../assets/icons/wallet/withdraw.svg" alt="">
                 <span class="text-xs text-webapp">Withdraw</span>
             </div>
             <div class="flex flex-col gap-y-1 items-center cursor-pointer" v-motion-slide-left :delay="400"
-                @click="$router.push('/wallet?tab=naira&cont=swap')">
+                @click="$router.push('/wallet?tab=currency&cont=swap')">
                 <img src="../../../../../assets/icons/wallet/swap.svg" alt="">
                 <span class="text-xs text-webapp">Swap</span>
             </div>
         </div>
 
-        <button @click="$router.push('/wallet')"
+        <button @click="$router.push('/wallet?tab=currency')"
             class="user-btn flex-row items-center cursor-pointer  justify-center text-sm font-medium text-webapp w-full  bg-white">View
             Wallet</button>
     </div>

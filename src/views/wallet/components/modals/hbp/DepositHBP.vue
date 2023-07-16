@@ -55,6 +55,8 @@ import copy from 'copy-to-clipboard3';
 
 const props = defineProps(['wallet'])
 
+console.log(props.wallet)
+
 const linkCopied = ref(false)
 const copyLink = (code) => {
     copy(code)

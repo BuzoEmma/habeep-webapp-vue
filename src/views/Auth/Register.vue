@@ -309,7 +309,7 @@ function validateFormField(field, data) {
 
 async function createUser() {
     data.countryCode = selectedCountry.value.phoneCode
-    data.currency = selectedCountry.value.currency
+    data.currency = selectedCountry.value.currency.split(',')[0]
     data.shortName = selectedCountry.value.shortName
     data.nationality = selectedCountry.value.name
     const validator = registerValidate(data);

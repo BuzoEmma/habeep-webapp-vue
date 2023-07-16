@@ -1,11 +1,11 @@
 <template>
-  <div class="main flex flex-col md:h-64 z-10 overflow-y-auto no-scroll-btn  bg-white h-full relative">
+  <div class="main flex flex-col md:h-64 z-10 overflow-y-hidden no-scroll-btn  bg-white h-full relative">
     <div class="flex flex-row items-center justify-between w-full px-4 py-4 border-b border-b-gray-100">
       <span class="text-lg font-medium text-webapp">Edit profile</span>
       <img src="../../../../assets/icons/x.svg" class="cursor-pointer" @click="$emit('close')" alt="">
     </div>
 
-    <div class="profile relative flex flex-col w-full items-center gap-y-6 px-4">
+    <div class="profile relative flex flex-col w-full items-center gap-y-6 px-4 h-full">
       <div class="relative flex flex-row items-center justify-center w-24 h-24 rounded-full border border-gray-200">
         <img :src="imageData" class="w-24 h-24 min-h-full min-w-full  object-cover rounded-full cursor-pointer"
           v-if="imageData !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
@@ -87,23 +87,21 @@
           class="absolute right-5 top-10 cursor-pointer" alt="">
       </div>
 
+      <button class="bg-primary w-full rounded-lg grid place-items-center h-14 my-6 text-white" @click="updateProfile">
+        <span v-if="!processing">Continue</span>
+        <Preloader v-else />
+      </button>
+
       <!-- components -->
       <Toast :msg="errorMsg.msg" type="danger" v-if="onError" />
       <Toast :msg="newMsg" type="success" v-if="newMsg.length > 0" />
     </div>
 
-    <div class="bottom-0 absolute md:static px-4 w-full">
-      <button class="bg-primary  w-full rounded-lg grid place-items-center h-14 my-6 text-white" @click="updateProfile">
-        <span v-if="!processing">Continue</span>
-        <Preloader v-else />
-      </button>
-    </div>
   </div>
 </template>
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import { useRouter, useRoute } from "vue-router";
 import axios from "../../../../composables/axios";
 import { useStore } from "vuex";
 
@@ -113,9 +111,6 @@ import clm from 'country-locale-map'
 import { formValidator } from '../../../../composables/2-validator'
 
 const emit = defineEmits(['close'])
-
-const route = useRoute();
-const router = useRouter();
 
 const store = useStore();
 
@@ -166,7 +161,6 @@ async function savePhoto() {
 
     return saveImage.data.data[0].link
   } catch (error) {
-    console.log(error)
     return 'https://i.ibb.co/gtpxMJz/21.png'
   }
 }
@@ -179,11 +173,20 @@ const loadingLocationInfo = ref(false)
 const selectedContinent = ref({})
 const selectedContinentCountries = ref([])
 
+function getEmoji(country) {
+  const emoji = clm.getCountryByName(country)
+  if(emoji) {
+    return emoji.emoji
+  } else return '↺'
+}
+
+
 let selectedCountry = ref({
   name: store.state.user.nationality,
   phoneCode: store.state.user.countryCode,
-  flag: clm.getCountryByName(store.state.user.nationality).emoji,
-  currency: store.state.user.currency
+  flag: getEmoji(store.state.user.nationality),
+  currency: store.state.user.currency,
+  shortName: store.state.user.countryShortName
 });
 
 
@@ -251,7 +254,8 @@ const data = reactive({
   fname: '',
   surname: '',
   countryCode: '',
-  currency: '',
+  countryShortName: '',
+  currency: null,
   nationality: '',
   phoneNumber: store.state.user.phoneNumber,
   fullName: store.state.user.fname + ' ' + store.state.user.surname
@@ -263,7 +267,6 @@ let errorMsg = ref({
   field: null
 })
 let newMsg = ref('')
-let warningMsg = ref('')
 const processing = ref(false)
 
 function validateFormField(field, data) {
@@ -286,34 +289,28 @@ async function updateProfile() {
     if (data.phoneNumber.toString().length >= 10) {
       processing.value = true
       data.countryCode = selectedCountry.value.phoneCode
-      data.currency = selectedCountry.value.currency
+      data.countryShortName = selectedCountry.value.shortName
+      data.currency = selectedCountry.value.currency.split(',')[0]
       data.nationality = selectedCountry.value.name
-      data.profilePicture = await savePhoto()
+
+      if (store.state.user.userProfileImage !== imageData.value) {
+        data.profilePicture = await savePhoto()
+      }
+
       if (data.fullName.length > 5) {
         let name = formatNames(data.fullName)
         data.fname = name.fname
         data.surname = name.surname ? name.surname : store.state.user.surname
 
         const update = await axios.put(url, data)
-        if (!update.data.success) {
-          onError.value = true
-          errorMsg.value.msg = update.data.message
 
-          setTimeout(() => {
-            processing.value = false
-            onError.value = false
-            errorMsg.value.msg = ''
-          }, 2000);
-        } else {
-          newMsg.value = update.data.message + '. Changes will take effect in a few minutes'
+        newMsg.value = update.data.message + '. Changes will take effect in a few minutes'
 
-          setTimeout(() => {
-            processing.value = false
-            newMsg.value = ''
-            emit('close')
-          }, 2000);
-
-        }
+        setTimeout(() => {
+          processing.value = false
+          newMsg.value = ''
+          emit('close')
+        }, 2000);
       } else {
         onError.value = true
         errorMsg.value.msg = 'Input your Full Name'
@@ -325,7 +322,7 @@ async function updateProfile() {
   } catch (error) {
     processing.value = false
     onError.value = true
-    errorMsg.value.msg = error.response.data.error
+    errorMsg.value.msg = error.response.data.message
 
     setTimeout(() => {
       onError.value = false

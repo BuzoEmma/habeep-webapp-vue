@@ -188,7 +188,7 @@ async function getWallet() {
             getTransactions(hbpWallet.data.data.recentActivities)
         }
     } catch (error) {
-
+        console.log(error)
     }
 }
 
@@ -202,7 +202,7 @@ async function getTransactions(txns) {
             }
         }
     } catch (error) {
-
+        console.log(error)
     }
 }
 

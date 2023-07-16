@@ -141,6 +141,9 @@ if (route.query.cont) {
     if (route.query.cont === 'swap') {
         emit('openModal', 'swapModal')
     }
+    if (route.query.cont === 'withdraw') {
+        emit('openModal', 'chooseWithdrawalMethodModal')
+    }
     router.replace({ query: null });
 }
 
