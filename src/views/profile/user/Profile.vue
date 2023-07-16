@@ -118,7 +118,7 @@
                         <div class="cursor-pointer flex flex-row items-center justify-center w-24 pb-1 py-2"
                             @click="changeWalletTab(1)"
                             :class="{ 'text-blue-600 border-b-blue-700 border-b-2': walletTab === 1 }">
-                            Naira
+                            {{ $store.state.user.currency }}
                         </div>
                         <div class="cursor-pointer flex flex-row items-center justify-center w-24 pb-1 py-2"
                             @click="changeWalletTab(2)"
@@ -128,7 +128,7 @@
                     </div>
 
                     <div class="px-20 py-10 w-full">
-                        <Naira v-if="walletTab === 1" />
+                        <Currency v-if="walletTab === 1" />
                         <HBP v-if="walletTab === 2" />
                     </div>
                 </div>
@@ -188,7 +188,8 @@
                                 </div>
 
                                 <div class="flex flex-row items-center w-full justify-between px-3">
-                                    <p class="text-sm text-webapp font-medium">N{{ formatNumber(ad.price) }} /
+                                    <p class="text-sm text-webapp font-medium">
+                                        <PriceFormatter :from="ad.priceCurrency" :to="$store.state.user.currency" :amount="ad.price" /> /
                                         <span v-if="ad.for === 'rent'">Rent</span>
                                         <span v-if="ad.for === 'sale'">Sale</span>
                                     </p>
@@ -248,7 +249,8 @@
                                 </div>
 
                                 <div class="flex flex-row items-center w-full justify-between px-3">
-                                    <p class="text-sm text-webapp font-medium">N{{ formatNumber(ad.price) }} /
+                                    <p class="text-sm text-webapp font-medium">
+                                        <PriceFormatter :from="ad.priceCurrency" :to="$store.state.user.currency" :amount="ad.price" /> /
                                         <span v-if="ad.for === 'rent'">Rent</span>
                                         <span v-if="ad.for === 'sale'">Sale</span>
                                     </p>
@@ -278,18 +280,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import ProfileNavbar from '../../../components/ProfileNavbar.vue'
 import FollowingPage from './components/modal/FollowingModal.vue'
 import FollowersPage from './components/modal/FollowersModal.vue'
 import Affiliate from './components/modal/Affiliate.vue'
 import EditUserProfile from './components/EditUserProfile.vue'
 import pincodeModal from './components/pincodeModal.vue'
-import Naira from './components/wallet/Naira.vue'
+import Currency from './components/wallet/Currency.vue'
 import HBP from './components/wallet/HBP.vue'
 import saveAd from "../../../composables/saveAd";
 import axios from "../../../composables/axios"
-import formatNumber from "number_formatter"
 import Referrals from './components/modal/Referrals.vue'
 import calculateDistance from '../../../composables/getAdDistance.js'
 

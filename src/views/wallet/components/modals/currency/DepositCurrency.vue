@@ -11,27 +11,25 @@
         </div>
         <div class="w-full px-4 py-6 flex flex-col items-start ">
             <span class="text-sub-webapp text-lg w-full text-left">Provide the amount and deposit method you
-                wish to deposit to your naira wallet</span>
+                wish to deposit to your {{ $store.state.user.currency }} wallet</span>
 
             <div class="flex flex-col items-start gap-y-1 w-full mt-5 relative">
                 <span class="text-webapp text-sm">Amount to top-up</span>
                 <input type="number" v-model="depositData.amount" placeholder="0.00"
                     class="w-full outline-none h-14 rounded-lg border border-gray p-2">
 
-                <div class="absolute top-8 h-10 w-9 right-2 rounded grid place-items-center" style="background: #EBEBEB;">N
+                <div class="absolute top-8 h-10 w-9 right-2 rounded grid place-items-center" style="background: #EBEBEB;">
+                    {{ getSymbolFromCurrency($store.state.user.currency) }}
                 </div>
             </div>
 
             <div class="flex flex-col items-start gap-y-1 w-full mt-5 relative">
                 <span class="text-webapp text-sm">Deposit fee</span>
-                <!-- <input type="text" disabled value="0.00" placeholder="0.00"
-                    v-if="depositData.paymentMethod !== 'bank-transfer'"
-                    class="w-full outline-none h-14 rounded-lg border border-gray p-2"> -->
                 <input type="text" disabled value="0.00" class="w-full outline-none h-14 rounded-lg border border-gray p-2">
 
                 <div class="absolute top-8 h-10 px-2 right-2 rounded grid place-items-center" style="background: #EBEBEB;">
                     <p class="flex flex-row items-center gap-x-4"><span
-                            v-if="depositData.paymentMethod !== 'bank-transfer'">Free</span> N</p>
+                            v-if="depositData.paymentMethod !== 'bank-transfer'">Free</span> {{ getSymbolFromCurrency($store.state.user.currency) }}</p>
                 </div>
             </div>
 
@@ -65,8 +63,12 @@
                         <span>Pay with Flutterwave</span>
                         <!-- <span class="text-xs font-extralight text-webapp">#comingsoon</span> -->
                     </p>
-                    <p class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer">
+                    <p class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer" v-if="store.state.user.currency === 'NGN'">
                         <span>Pay with E-naira</span>
+                        <span class="text-xs font-extralight text-webapp">#comingsoon</span>
+                    </p>
+                    <p class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer" v-else>
+                        <span>Pay with Paypal</span>
                         <span class="text-xs font-extralight text-webapp">#comingsoon</span>
                     </p>
                 </div>
@@ -78,8 +80,8 @@
             <Flutterwave @success="processPayment" @cancel="handleFlwClose" @errorLoading="$router.go()"
                 v-if="depositData.paymentMethod === 'flutterwave' && proceededPayment" :payment-info="getFlwDetails()" />
 
-            <button @click="proceedToPayment" :disabled="depositData.amount < 100 || depositData.paymentMethod.length < 1"
-                :class="{ 'bg-blue-600 text-white': depositData.amount > 99 && depositData.paymentMethod.length > 1, 'bg-gray-300': depositData.amount < 100 || depositData.paymentMethod.length < 1, }"
+            <button @click="proceedToPayment" :disabled="depositData.amount < 10 || depositData.paymentMethod.length < 1"
+                :class="{ 'bg-blue-600 text-white': depositData.amount > 9 && depositData.paymentMethod.length > 1, 'bg-gray-300': depositData.amount < 10 || depositData.paymentMethod.length < 1, }"
                 class="grid rounded-lg place-items-center h-14 my-6 w-full">
                 <span v-if="!processingDeposit">Continue</span>
                 <Preloader v-else />
@@ -101,6 +103,8 @@ import axios from '../../../../../composables/axios'
 import moment from 'moment'
 import Paystack from './deposits/Paystack.vue'
 import Flutterwave from './deposits/Flutterwave.vue'
+
+import getSymbolFromCurrency from 'currency-symbol-map'
 
 const store = useStore()
 const router = useRouter()
@@ -164,7 +168,7 @@ function getPaystackDetails() {
         key: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY,
         email: store.state.user.email,
         amount: depositData.amount * 100,
-        currency: 'NGN',
+        currency: store.state.user.currency,
         ref: genRef(),
         channels: channels(),
         metadata: {
@@ -179,10 +183,10 @@ function getFlwDetails() {
     return {
         public_key: import.meta.env.VITE_FLW_PUBLIC_KEY,
         amount: depositData.amount,
-        country: "NG",
-        currency: "NGN",
+        country: store.state.user.countryShortName,
+        currency: store.state.user.currency,
         customer: { email: store.state.user.email, name: store.state.user.fname + ' ' + store.state.user.surname, phone_number: '+' + store.state.user.countryCode + store.state.user.phoneNumber.toString() },
-        customizations: { description: "Deposit money into your naira wallet", logo: getLogo(), title: store.state.user.fname + ' ' + store.state.user.surname },
+        customizations: { description:`Deposit money into your ${store.state.user.currency}  wallet`, logo: getLogo(), title: store.state.user.fname + ' ' + store.state.user.surname },
         payment_options: "card,ussd,banktransfer,account,nqr",
         redirect_url: null,
         tx_ref: flwRef.value
@@ -210,7 +214,7 @@ const processPayment = async (response) => {
         } else reference = 'wallet deposit'
 
         let data = {
-            accountId: store.state.user.wallet.naira,
+            accountId: store.state.user.wallet[store.state.user.currency],
             amount: depositData.amount,
             referenceId: reference,
             status: 'COMPLETED',
@@ -224,7 +228,7 @@ const processPayment = async (response) => {
             }
         }
 
-        const saveDeposit = await axios.post('/wallet/deposit/naira', data)
+        const saveDeposit = await axios.post('/wallet/deposit/currency', data)
         newMsg.value = saveDeposit.data.message
         
         setTimeout(() => {

@@ -10,7 +10,7 @@
                     <img src="../../../../assets/icons/coin.png" class="w-8 h-6" alt="">
                     <p class="text-gray-200 text-sm font-medium">Rewards</p>
                 </div>
-                <span class="font-black text-sm text-white">{{ agentDetails.rewards.toFixed(2) }}</span>
+                <span class="font-black text-sm text-white">{{ agentDetails.rewards.toFixed(2) }} <strike>HBP</strike></span>
             </div>
 
             <h3 class="text-white font-medium md:text-4xl text-2xl w-full text-left mt-8 md:mt-0">Welcome {{
@@ -105,9 +105,11 @@
             <!-- tab for active ads -->
             <div class="ads-tab w-full h-fit mt-6 flex flex-row"
                 :class="{ 'justify-center items-center': activeProducts.length < 1 }" v-if="adsTab === 1">
-                <div class="flex flex-col items-center gap-y-3 md:justify-center" v-if="activeProducts.length < 1">
+                <img src="../assets/images/rhombus-preloader.gif" class="m-auto" v-if="fetchingProducts === true" alt="">
+                <div class="flex flex-col items-center gap-y-3 md:justify-center" v-else-if="activeProducts.length < 1">
                     <img src="../../../../assets/icons/no-ad.svg" alt="">
                     <span class="text-gray-300 text-lg">No active property yet</span>
+                    
                 </div>
                 <div class="flex flex-row w-full h-full flex-wrap" v-else>
 
@@ -141,11 +143,14 @@
                             </div>
 
                             <div class="flex flex-row items-center w-full justify-start">
-                                <p v-if="item.for === 'rent'"><span class="text-lg text-webapp font-medium">₦{{
-                                    formatNumber(item.price)
-                                }}</span><span class="text-gray-400 text-sm"> / Year</span></p>
-                                <p v-else><span class="text-lg text-webapp font-medium">₦{{ formatNumber(item.price)
-                                }}</span><span class="text-gray-500 text-sm"> / Sale</span></p>
+                                <p v-if="item.for === 'rent'"><span class="text-lg text-webapp font-medium">
+                                        <PriceFormatter :from="item.priceCurrency" :to="$store.state.user.currency"
+                                            :amount="item.price" />
+                                    </span><span class="text-gray-400 text-sm"> / Year</span></p>
+                                <p v-else><span class="text-lg text-webapp font-medium">
+                                        <PriceFormatter :from="item.priceCurrency" :to="$store.state.user.currency"
+                                            :amount="item.price" />
+                                    </span><span class="text-gray-500 text-sm"> / Sale</span></p>
                             </div>
 
                             <div class="mt-3 flex flex-row items-center justify-between gap-x-2 w-full">
@@ -205,13 +210,16 @@
                             </div>
 
                             <div class="flex flex-row items-center w-full justify-start">
-                                <p v-if="item.for === 'rent'"><span class="text-lg text-webapp font-medium">₦{{
-                                    formatNumber(item.price) }}
+                                <p v-if="item.for === 'rent'"><span class="text-lg text-webapp font-medium">
+                                        <PriceFormatter :from="item.priceCurrency" :to="$store.state.user.currency"
+                                            :amount="item.price" />
                                     </span>
                                     <span class="text-gray-400 text-sm">/ Year</span>
                                 </p>
-                                <p v-else><span class="text-lg text-webapp font-medium">₦{{ formatNumber(item.price)
-                                }}</span><span class="text-gray-500 text-sm">/ Sale</span></p>
+                                <p v-else><span class="text-lg text-webapp font-medium">
+                                        <PriceFormatter :from="item.priceCurrency" :to="$store.state.user.currency"
+                                            :amount="item.price" />
+                                    </span><span class="text-gray-500 text-sm">/ Sale</span></p>
                             </div>
 
                             <div class="mt-3 flex flex-row items-center justify-between gap-x-2 w-full">
@@ -236,8 +244,6 @@ import { ref, onMounted, reactive } from 'vue'
 import MainNavbarVue from "../../../../components/MainNavbar.vue";
 import axios from "../../../../composables/axios";
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
-import formatNumber from "number_formatter"
 
 const store = useStore()
 
@@ -338,8 +344,11 @@ function changeSort(value) {
     toggleDropdown('sort')
 }
 
+const fetchingProducts = ref(false)
+
 async function getAllAds() {
     try {
+        fetchingProducts.value = true
         const products = await axios.post(url, data)
         allProducts.value = products.data.products
         agentDetails.rewards = products.data.agentDetails.rewards
@@ -354,7 +363,9 @@ async function getAllAds() {
         })
         closedProducts.value = closed
         mainClosedProducts.value = closed
+        fetchingProducts.value = false
     } catch (error) {
+        fetchingProducts.value = false
         alert('Error fetching agent details')
     }
 }
@@ -452,6 +463,7 @@ input:focus {
 .feed-image {
     height: 164px;
     width: 100% !important;
-    object-fit: fill;
+    object-fit: cover;
     max-height: 164px !important;
+    object-position: center;
 }</style>

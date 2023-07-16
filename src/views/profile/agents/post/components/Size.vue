@@ -70,7 +70,7 @@
                     <span class="text-xl font-medium text-webapp underline cursor-pointer"
                         @click="$emit('goBack', { to: 'TitlePrice', from: 'Size'})">Back</span>
                     <button @click="$emit('passData', data)" v-if="$store.state.listingProcess.type !== 'land'"
-                        :disabled="data.data.bedrooms < 1 && data.data.bathrooms < 1 && data.data.size < 1"
+                        :disabled="data.data.bedrooms < 1 || data.data.bathrooms < 1 || data.data.size < 1"
                         :class="{ 'bg-slate-400 text-white': data.data.bedrooms < 1 || data.data.bathrooms < 1 || data.data.size < 1 }"
                         class="h-10 w-24 rounded-lg bg-primary text-white text-sm text-medium">Next</button>
                     <button @click="$emit('passData', data)" v-else

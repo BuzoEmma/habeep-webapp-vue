@@ -38,7 +38,7 @@
             <div class="flex flex-row items-center justify-between w-full py-4 px-4 mt-5 rounded-md"
                 style="background: #F2F4F9;" @click="$emit('gotoDeposit')">
                 <p class="flex flex-row items-center gap-x-1">
-                    <span class="text-sm font-medium text-webapp">Fund Naira Account</span>
+                    <span class="text-sm font-medium text-webapp">Fund {{ $store.state.user.currency }} Account</span>
                 </p>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-6 h-6">

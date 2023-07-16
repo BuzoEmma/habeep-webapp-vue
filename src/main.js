@@ -11,6 +11,7 @@ import VueSocialSharing from 'vue-social-sharing'
 
 import AvatarInitials from './components/reusables/AvatarInitials.vue'
 import SkeletonLoader from './components/reusables/SkeletonLoader.vue'
+import PriceFormatter from './components/reusables/PriceFormatter.vue'
 
 import { createHead } from "@vueuse/head"
 
@@ -35,6 +36,7 @@ myApp.component('Toast', Toast)
 myApp.component('Preloader', Preloader)
 myApp.component('Skeleton', SkeletonLoader)
 myApp.component('Avatar', AvatarInitials)
+myApp.component('PriceFormatter', PriceFormatter)
 
 myApp.use(MotionPlugin)
 myApp.use(VMdPreview);

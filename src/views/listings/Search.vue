@@ -195,7 +195,8 @@
                         </div>
 
                         <div class="flex flex-row items-center w-full justify-between px-2">
-                            <p class="text-sm text-webapp font-medium">₦{{ formatNumber(product.price) }} /
+                            <p class="text-sm text-webapp font-medium">
+                                <PriceFormatter :from="product.priceCurrency" :to="country.currency" :amount="product.price" /> /
                                 <span v-if="product.for === 'rent'">Rent</span>
                                 <span v-if="product.for === 'sale'">Sale</span>
                             </p>
@@ -231,12 +232,12 @@
 import { ref, reactive, onMounted, watch } from 'vue'
 import { useStore } from 'vuex'
 import MainNavbar from '../../components/MainNavbar.vue'
-import formatNumber from 'number_formatter';
 import saveAd from '../../composables/saveAd'
 import calculateDistance from '../../composables/getAdDistance.js'
 import axiosDefault from 'axios'
 import axios from "../../composables/axios";
 import { useRoute } from 'vue-router';
+import clm from 'country-locale-map'
 
 // ui conditionals
 const onSortDropdown = ref(false)
@@ -280,7 +281,8 @@ useHead({
 
 let country = ref({
     country: '',
-    countryCode: ''
+    countryCode: '',
+    currency: ''
 })
 
 let filterData = reactive({
@@ -370,11 +372,13 @@ async function getSearch(location, query) {
         if (store.state.isAuthenticated) {
             country.value = {
                 country: store.state.user.nationality,
-                countryCode: store.state.user.countryShortName
+                countryCode: store.state.user.countryShortName,
+                currency: store.state.user.currency
             }
         } else {
             const getCountry = await axiosDefault.get('http://ip-api.com/json')
             country.value = getCountry.data
+            country.value.currency = clm.getCurrencyByAlpha2(country.value.countryCode)
         }
         products.value.forEach(async product => {
             const distance = await calculateDistance(product.location.city || product.location.address + ', ' + country.country)

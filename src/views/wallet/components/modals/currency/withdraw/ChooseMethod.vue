@@ -6,12 +6,12 @@
                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6 block md:hidden font-bold">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
-            <span class="text-xl font-medium text-webapp">Withdraw NGN</span>
+            <span class="text-xl font-medium text-webapp">Withdraw {{ $store.state.user.currency }}</span>
             <img src="../../../../../../assets/icons/x.svg" class="cursor-pointer collapse md:visible"
                 @click="$emit('close')" alt="">
         </div>
         <div class="w-full px-4 py-3 flex flex-col items-start" v-if="!selectedMethod">
-            <span class="text-sub-webapp text-lg w-full text-left">Where would you like to withdraw Naira(NGN)?</span>
+            <span class="text-sub-webapp text-lg w-full text-left">Where would you like to withdraw {{ $store.state.user.currency }}?</span>
 
             <div class="flex flex-row items-center cursor-pointer justify-between w-full py-4 px-4 mt-8 rounded-md"
                 style="background: #F2F4F9;" @click="selectedMethod = 'bank'">

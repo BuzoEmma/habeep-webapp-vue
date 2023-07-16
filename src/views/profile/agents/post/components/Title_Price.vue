@@ -26,9 +26,11 @@
                         class="w-full h-16 rounded-lg title">
                 </div>
                 <div class="flex flex-col items-start w-full gap-y-1 md:w-4/6 xl:w-3/5">
-                    <label for="" class="text-lg font-medium text-webapp">Price in Naira</label>
-                    <div class="flex flex-row gap-x-2 items-center w-full border border-gray-200 rounded-lg h-16 p-3">
-                        <img src="../../../../../assets/icons/listings/naira.svg" alt="">
+                    <label for="" class="text-lg font-medium text-webapp">Price in {{ $store.state.user.currency }}</label>
+                    <div class="flex flex-row gap-x-2 items-center w-full border border-gray-200 rounded-lg h-16 p-1.5">
+                        <div class="bg-gray-200 h-full w-14 rounded-md text-gray-700 text-xl div-center-col">
+                            {{ getSymbolFromCurrency($store.state.user.currency) }}
+                        </div>
                         <input inputmode="numeric" @keyup="formatPrice" v-model="data.data.price" type="text" data-type="number"
                             placeholder="Type a price for this listing" class="w-full h-full rounded-lg price">
                     </div>
@@ -55,8 +57,7 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import MainNavbarVue from "../../../../../components/MainNavbar.vue";
-import axiosDefault from 'axios'
+import getSymbolFromCurrency from 'currency-symbol-map'
 
 const store = useStore()
 const emit = defineEmits(['passData'])

@@ -140,8 +140,10 @@
                                     class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 feed">
                                     <img @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
                                         class="w-full h-full rounded-t-md feed-image"
-                                        v-if="ad.images[0].link.includes('mp4') == false" alt="">
-                                    <video @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
+                                        v-if="ad.images && ad.images[0] && ad.images[0].link.includes('mp4') == false"
+                                        alt="">
+                                    <video @click="$router.push('/listings/products/' + ad._id)"
+                                        :src="ad.images && ad.images[0] && ad.images[0].link"
                                         class="w-full rounded-t-md feed-image" v-else autoplay muted></video>
                                     <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
                                         @click="$router.push('/listings/products/' + ad._id)">
@@ -158,9 +160,8 @@
 
                                     <div class="flex flex-row items-center w-full justify-between px-3">
                                         <span class="text-sm text-webapp font-medium">
-                                            ₦{{
-                                                formatNumber(ad.price)
-                                            }}
+                                            <PriceFormatter :from="ad.priceCurrency" :to="$store.state.user.currency"
+                                                :amount="ad.price" />
                                         </span>
                                         <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
                                             v-if="$store.state.isAuthenticated"
@@ -426,5 +427,4 @@ onMounted(() => {
     width: 100% !important;
     object-fit: cover;
     max-height: 164px !important;
-}
-</style>
+}</style>

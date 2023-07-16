@@ -14,11 +14,13 @@
         <div class="calculator w-full flex flex-col items-center px-5 py-3 gap-y-10 mt-5">
             <div class="flex flex-col items-end w-full gap-y-2">
                 <div class="w-full border border-gray-200 relative flex flex-col justify-end px-2 rounded-md h-24">
-                    <input type="number" v-model="data.naira" @input="updateSwapValue('naira')" placeholder="0.00"
+                    <input type="number" v-model="data.currency" @input="updateSwapValue('currency')" placeholder="0.00"
                         class="outline-none h-10 text-3xl text-sub-webapp">
-                    <div class="px-2 bg-gray-200 rounded-md py-1 absolute -top-4 left-2 text-sm">You pay - NGN</div>
+                    <div class="px-2 bg-gray-200 rounded-md py-1 absolute -top-4 left-2 text-sm">You pay - {{
+                        $store.state.user.currency }}</div>
                 </div>
-                <span class="text-sm text-webapp">Available NGN: {{ formatNumber(walletData.accountValue) }}</span>
+                <span class="text-sm text-webapp">Available {{ $store.state.user.currency }}: {{
+                    formatNumber(walletData.accountValue) }}</span>
             </div>
 
             <div class="flex flex-col items-end w-full gap-y-2">
@@ -30,9 +32,9 @@
             </div>
 
             <button @click="processSwap"
-                :class="{ 'bg-blue-600 text-white': data.naira <= walletData.accountValue && data.hbp > 0, 'bg-gray-300': data.naira < 1 || data.naira > walletData.accountValue || data.hbp == 0, }"
+                :class="{ 'bg-blue-600 text-white': data.currency <= walletData.accountValue && data.hbp > 0, 'bg-gray-300': data.currency < 1 || data.currency > walletData.accountValue || data.hbp == 0, }"
                 class="grid rounded-lg place-items-center h-14 my-6 w-full"
-                :disabled="data.naira < 1 || data.naira > walletData.accountValue || data.hbp == 0">
+                :disabled="data.currency < 1 || data.currency > walletData.accountValue || data.hbp == 0">
                 <span v-if="!processingSwap">Swap</span>
                 <Preloader v-else />
             </button>
@@ -52,15 +54,18 @@ import { useStore } from 'vuex'
 import axios from '../../../../../composables/axios'
 import formatNumber from 'number_formatter'
 import moment from 'moment'
+import converter from 'currency-exchanger-js'
 
 const store = useStore()
 const router = useRouter()
 const emit = defineEmits(['close'])
 
 const data = reactive({
-    naira: null,
+    currency: null,
     hbp: null
 })
+
+const nairaValueOfCurrency = ref(0)
 
 const walletData = ref({
     accountValue: 0
@@ -72,22 +77,22 @@ let newMsg = ref('')
 
 function updateSwapValue(token) {
     onError.value = false
-    if (token == 'naira') {
-        if (data.naira > walletData.value.accountValue) {
+    if (token == 'currency') {
+        if (data.currency > walletData.value.accountValue) {
             onError.value = true
-            errorMsg.value = 'Swap amount is lower than wallet balance. Deposit ' + (Number(data.naira) - Number(walletData.value.accountValue)) + ' to swap'
+            errorMsg.value = 'Swap amount is lower than wallet balance. Deposit ' + (Number(data.currency) - Number(walletData.value.accountValue)) + ' ' + store.state.user.currency + ' to swap'
         } else {
-            data.hbp = data.naira / 87
+            data.hbp = (data.currency / nairaValueOfCurrency.value).toFixed(2)
             setTimeout(() => {
                 onError.value = false
             }, 3000);
         }
     } else {
-        if (data.naira > walletData.value.accountValue) {
+        if (data.currency > walletData.value.accountValue) {
             onError.value = true
-            errorMsg.value = 'Swap amount is lower than wallet balance. Deposit ' + (data.naira - walletData.value.accountValue) + ' to swap'
+            errorMsg.value = 'Swap amount is lower than wallet balance. Deposit ' + (data.currency - walletData.value.accountValue) + ' ' + store.state.user.currency + ' to swap'
         } else {
-            data.naira = data.hbp * 87
+            data.currency = (data.hbp * nairaValueOfCurrency.value).toFixed(2)
             setTimeout(() => {
                 onError.value = false
             }, 3000);
@@ -100,9 +105,9 @@ const processingSwap = ref(false)
 
 async function getWallet() {
     try {
-        const nairaWallet = await axios.post('/wallet/fetch-wallet', { wallet: 'naira' })
-        if (nairaWallet.data.error === false) {
-            walletData.value = nairaWallet.data.data
+        const currencyWallet = await axios.post('/wallet/fetch-wallet', { wallet: 'currency' })
+        if (currencyWallet.data.error === false) {
+            walletData.value = currencyWallet.data.data
         }
     } catch (error) {
 
@@ -118,8 +123,8 @@ const processSwap = async () => {
 
         let mainData = {
             wallet: walletData.value.accountID,
-            amount: data.naira,
-            tokenToSwap: 'naira',
+            amount: data.currency,
+            tokenToSwap: store.state.user.currency,
             dates: {
                 createdAt: moment().format('LLL'),
                 time: moment().format('LTS'),
@@ -139,6 +144,7 @@ const processSwap = async () => {
     } catch (error) {
         onError.value = true
         errorMsg.value = error.response.data.message
+        processingSwap.value = false
 
         setTimeout(() => {
             onError.value = false
@@ -148,7 +154,9 @@ const processSwap = async () => {
 
 }
 
-
+onMounted(async () => {
+    nairaValueOfCurrency.value = await converter.convert(87, 'ngn', store.state.user.currency.toLowerCase())
+})
 </script>
   
 <style scoped>

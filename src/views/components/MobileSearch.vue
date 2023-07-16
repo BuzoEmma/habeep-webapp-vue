@@ -44,6 +44,8 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useRoute, useRouter } from "vue-router";
 
+const props = defineProps(['location'])
+
 const router = useRouter()
 
 const data = reactive({
@@ -67,15 +69,7 @@ const checkForEnter = (e) => {
 
 const input = ref(null)
 
-const locations = ref([
-    'Abuja',
-    'Lagos',
-    'Calabar',
-    'Enugu',
-    'Kano',
-    'Onitsha',
-    'Ikom',
-])
+const locations = ref(props.location)
 
 onMounted(() => {
     input.value.focus()

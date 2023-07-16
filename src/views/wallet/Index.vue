@@ -40,14 +40,14 @@
             <div class="flex flex-row items-center mt-6 ml-7 ">
                 <div class="cursor-pointer flex flex-row items-center justify-center w-24 py-4 pb-1"
                     @click="changeWalletTab(1)" :class="{ 'text-blue-600 border-b-blue-700 border-b-2': walletTab === 1 }">
-                    Naira
+                    {{ $store.state.user.currency }}
                 </div>
                 <div class="cursor-pointer flex flex-row items-center justify-center w-24 pb-1 py-4"
                     @click="changeWalletTab(2)" :class="{ 'text-blue-600 border-b-blue-700 border-b-2': walletTab === 2 }">
                     HBP
                 </div>
             </div>
-            <Naira @sendWallet="getData" v-if="walletTab === 1" @openModal="openModal" />
+            <Currency @sendWallet="getData" v-if="walletTab === 1" @openModal="openModal" />
             <HBP v-if="walletTab === 2" @sendWallet="getTokenWallet" @openModal="openModal" />
         </div>
     </div>
@@ -69,20 +69,20 @@ useHead({
   ]
 })
 
-// naira components
-import Naira from './components/Naira.vue';
-import DepositModal from './components/modals/naira/DepositNaira.vue';
-import SwapModal from './components/modals/naira/Swap.vue';
-import ChooseMethod from './components/modals/naira/withdraw/ChooseMethod.vue';
-import ChooseHBPMethod from './components/modals/hbp/withdraw/ChooseMethod.vue';
+// currency components
+import Currency from './components/Currency.vue';
+import DepositModal from './components/modals/currency/DepositCurrency.vue';
+import SwapModal from './components/modals/currency/Swap.vue';
+import ChooseMethod from './components/modals/currency/withdraw/ChooseMethod.vue';
 
-import Withdraw from './components/modals/naira/Withdraw.vue';
+import Withdraw from './components/modals/currency/Withdraw.vue';
 
 // hbp components
 import HBP from './components/HBP.vue';
 import SwapHBP from './components/modals/hbp/Swap.vue';
 import TransferHBP from './components/modals/hbp/Transfer.vue';
 import DepositHBP from './components/modals/hbp/DepositHBP.vue';
+import ChooseHBPMethod from './components/modals/hbp/withdraw/ChooseMethod.vue';
 
 
 const route = useRoute()
@@ -94,7 +94,7 @@ if (route.query.reloadApp) {
         router.go()
     }, 1000);
 }
-// naira components
+// currency components
 const withdrawAmount = ref(0)
 function openWithdrawalModal(e) {
     withdrawAmount.value = e
@@ -171,7 +171,7 @@ function changeWalletTab(tab) {
 }
 
 if (route.query.tab) {
-    if (route.query.tab === 'naira') {
+    if (route.query.tab === 'currency') {
         walletTab.value = 1
     } else walletTab.value = 2
 }

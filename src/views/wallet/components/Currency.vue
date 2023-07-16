@@ -4,7 +4,7 @@
             <div class="top justify-center items-center h-1/2 w-full flex flex-col py-7">
                 <p class="text-6xl font-bold text-webapp flex flex-row items-end">{{ formatNumber(walletData.accountValue)
                 }}
-                    <span class="text-sm">NGN</span>
+                    <span class="text-sm">{{ $store.state.user.currency }}</span>
                 </p>
             </div>
             <div class="bottom justify-center items-center h-1/2 w-full flex flex-col py-10">
@@ -48,7 +48,9 @@
                                     <td class="">{{ txn.date + ' @ ' + txn.time }}</td>
                                     <td class="capitalize">Wallet {{ txn.txnType }}</td>
                                     <td class="">{{ txn.reference }}</td>
-                                    <td class="font amount">₦{{ formatNumber(txn.amount) }}</td>
+                                    <td class="font amount">
+                                        <PriceFormatter :from="$store.state.user.currency" :to="$store.state.user.currency" :amount="txn.amount" />
+                                    </td>
                                     <td>
                                         <div class="w-32 py-2 rounded-md text-center"
                                             style="background: rgb(28,170,67, 0.1)">
@@ -112,6 +114,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
+import getSymbolFromCurrency from 'currency-symbol-map'
 
 import { useStore } from "vuex";
 import axios from '../../../composables/axios'
@@ -179,13 +182,13 @@ function paginateEvent(page, arrayToFilter, newArray, pageType, pgstr) {
 
 async function getWallet() {
     try {
-        const nairaWallet = await axios.post('/wallet/fetch-wallet', { wallet: 'naira' })
-        if (nairaWallet.data.error === false) {
-            walletData.value = nairaWallet.data.data
+        const currencyWallet = await axios.post('/wallet/fetch-wallet', { wallet: 'currency' })
+        if (currencyWallet.data.error === false) {
+            walletData.value = currencyWallet.data.data
 
             emit('sendWallet', walletData.value)
 
-            getTransactions(nairaWallet.data.data.recentActivities)
+            getTransactions(currencyWallet.data.data.recentActivities)
         }
     } catch (error) {
 

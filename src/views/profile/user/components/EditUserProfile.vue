@@ -108,6 +108,7 @@ import axios from "../../../../composables/axios";
 import { useStore } from "vuex";
 
 import sort from 'smart-deep-sort'
+import clm from 'country-locale-map'
 
 import { formValidator } from '../../../../composables/2-validator'
 
@@ -181,10 +182,9 @@ const selectedContinentCountries = ref([])
 let selectedCountry = ref({
   name: store.state.user.nationality,
   phoneCode: store.state.user.countryCode,
-  flag: `https://flagsapi.com/${store.state.user.nationality.substring(0, 2).toUpperCase()}/flat/48.png`,
+  flag: clm.getCountryByName(store.state.user.nationality).emoji,
+  currency: store.state.user.currency
 });
-
-console.log(`https://flagsapi.com/${store.state.user.nationality.substring(0, 2).toUpperCase()}/flat/64.png`)
 
 
 function toggleCountryCodeContainer() {
@@ -251,6 +251,7 @@ const data = reactive({
   fname: '',
   surname: '',
   countryCode: '',
+  currency: '',
   nationality: '',
   phoneNumber: store.state.user.phoneNumber,
   fullName: store.state.user.fname + ' ' + store.state.user.surname

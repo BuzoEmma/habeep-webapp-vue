@@ -302,7 +302,8 @@
 
                         <div class="flex flex-row items-center w-full justify-between px-2">
                             <p @click="$router.push('/listings/products/' + feed._id)"
-                                class="text-sm text-webapp font-medium">₦{{ formatNumber(feed.price) }} /
+                                class="text-sm text-webapp font-medium">
+                                <PriceFormatter :from="feed.priceCurrency" :to="$store.state.user.currency" :amount="feed.price" /> /
                                 <span v-if="feed.for === 'rent'">Rent</span>
                                 <span v-if="feed.for === 'sale'">Sale</span>
                             </p>
@@ -332,8 +333,6 @@
 
 <script setup>
 import { ref, onMounted, reactive } from 'vue'
-import formatNumber from "number_formatter"
-import axiosDefault from 'axios'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from "vue-router";
 import MainNavbar from '../components/HomeNavbar.vue'

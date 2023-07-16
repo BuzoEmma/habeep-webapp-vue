@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col items-center justify-between w-full h-full gap-y-9">
-        <p class="text-webapp text-3xl font-bold">{{ formatNumber(walletData.accountValue) }}<sub
-                class="text-webapp text-sm font-bold">NGN</sub></p>
+        <p class="text-webapp text-3xl font-bold">{{ number_formatter(walletData.accountValue) }}<sub
+                class="text-webapp text-sm font-bold uppercase">{{ $store.state.user.currency }}</sub></p>
 
         <div class="w-full flex flex-row items-center gap-x-2 justify-between">
             <div class="flex flex-col gap-y-1 items-center cursor-pointer" v-motion-slide-left :delay="200"
@@ -29,7 +29,7 @@
 <script setup>
 import { ref } from 'vue'
 import axios from '../../../../../composables/axios'
-import formatNumber from 'number_formatter'
+import number_formatter from 'number_formatter';
 
 const walletData = ref({
     accountValue: 0
@@ -38,12 +38,12 @@ const walletData = ref({
 
 async function getWallet() {
     try {
-        const nairaWallet = await axios.post('/wallet/fetch-wallet', { wallet: 'naira' })
-        if (nairaWallet.data.error === false) {
-            walletData.value = nairaWallet.data.data
+        const currencyWallet = await axios.post('/wallet/fetch-wallet', { wallet: 'currency' })
+        if (currencyWallet.data.error === false) {
+            walletData.value = currencyWallet.data.data
         }
     } catch (error) {
-
+        console.log(error)
     }
 }
 

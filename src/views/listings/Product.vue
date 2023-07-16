@@ -24,9 +24,9 @@
                     <div class="w-full absolute flex flex-row top-5 items-center justify-between px-2">
                         <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
                         <div class="flex flex-row gap-x-3 items-center">
-                            <ShareNetwork network="twitter" popup.width="500px" popup.height="500px"
+                            <ShareNetwork network="whatsapp" popup.width="500px" popup.height="500px"
                                 :url="'https://habeep.org' + $route.fullPath"
-                                :title="'Purchase this awesome house at ₦' + formatNumber(product.price)"
+                                :title="'Purchase this awesome house now at an affordable rate'"
                                 :description="product.description" :media="product.images[0].link">
                                 <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
                             </ShareNetwork>
@@ -85,7 +85,7 @@
                     <div class="flex flex-row gap-x-3 items-center">
                         <ShareNetwork :popup="{ width: 400, height: 200 }" network="whatsapp"
                             :url="'https://habeep.org' + $route.fullPath"
-                            :title="product.title + ' at ₦' + formatNumber(product.price)"
+                            :title="product.title"
                             :description="product.description" :media="product.images[0].link">
                             <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
                         </ShareNetwork>
@@ -155,9 +155,8 @@
                             </p>
                         </div>
                         <div class="md:flex hidden flex-col ">
-                            <h2 class="text-webapp text-2xl md:text-xl xl:text-2xl font-medium product-price">₦{{
-                                formatNumber(product.price)
-                            }}
+                            <h2 class="text-webapp text-2xl md:text-xl xl:text-2xl font-medium product-price">
+                                <PriceFormatter :from="product.priceCurrency" :to="$store.state.user.currency" :amount="product.price" />
                             </h2>
                             <p v-if="product.for === 'rent'"
                                 class="text-sm  xl:text-lg font-medium product-price text-webapp">Rent
@@ -348,9 +347,8 @@
                     <div
                         class="flex md:hidden py-5  flex-row items-center fixed bottom-0 px-4 z-10 left-0 bg-white w-screen justify-between mt-4 border-t pt-2 border-t-gray-300">
                         <div class="flex flex-col">
-                            <h2 class="text-webapp text-xl xl:text-2xl font-medium product-price">₦{{
-                                formatNumber(product.price)
-                            }}
+                            <h2 class="text-webapp text-xl xl:text-2xl font-medium product-price">
+                                <PriceFormatter :from="product.priceCurrency" :to="$store.state.user.currency" :amount="product.price" />
                             </h2>
                             <p v-if="product.for === 'rent'"
                                 class="text-sm md:text-xl xl:text-2xl font-medium product-price text-webapp">Yearly
@@ -675,6 +673,7 @@ onMounted(() => {
 .feed-image-short {
     width: 100% !important;
     object-fit: cover;
+    height: 100% !important;
 }
 
 .feed-image {

@@ -2,7 +2,7 @@
   <div
     class="w-screen min-w-full flex flex-col justify-between items-center bg-white h-full min-h-screen overflow-y-none">
     <!-- Header / Navbar -->
-    <HomeNavbar @openNav="mainNavOpen = true" @closeNav="mainNavOpen = false"/>
+    <HomeNavbar @openNav="mainNavOpen = true" @closeNav="mainNavOpen = false" />
 
 
 
@@ -12,7 +12,7 @@
         Quick way to Find your dream Property</h1>
 
       <!-- Quick search -->
-      <div class="flex flex-col quick-search no-wrap" :class="{'static': mainNavOpen, 'relative': !mainNavOpen}">
+      <div class="flex flex-col quick-search no-wrap" :class="{ 'static': mainNavOpen, 'relative': !mainNavOpen }">
         <!-- Search bar -->
         <!-- desktop -->
         <div class="search-bar w-full hidden md:flex flex-row items-center bg-white pl-3 pr-1 h-12 py-1 gap-x-4">
@@ -79,15 +79,16 @@
       <img src="../assets/illustrations/home-right.svg" v-lazy class="xl:flex hidden" alt="">
     </div>
 
-    <MobileSearch v-if="onSearch" @leaveSearch="onSearch = false" :delay="100" v-motion
+    <MobileSearch :location="locations" v-if="onSearch" @leaveSearch="onSearch = false" :delay="100" v-motion
       :initial="{ opacity: 0.5, y: 100 }" :enter="{ opacity: 1, y: 0 }" />
   </div>
 </template>
 
 <script setup>
-import { ref, reactive } from "vue"
+import { ref, reactive, onMounted } from "vue"
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
+import axios from '../composables/axios'
 
 import { useHead } from '@vueuse/head'
 useHead({
@@ -142,15 +143,71 @@ const checkForEnter = (e) => {
 // search variables
 
 
-const locations = ref([
-  'Abuja',
-  'Lagos',
-  'Calabar',
-  'Enugu',
-  'Kano',
-  'Onitsha',
-  'Ikom',
-])
+const locations = ref([])
+
+async function getStates() {
+  try {
+    const states = ref([])
+    let country = ref({
+      country: '',
+      countryCode: '',
+      currency: ''
+    })
+
+    if (store.state.isAuthenticated) {
+      country.value = {
+        country: store.state.user.nationality,
+        countryCode: store.state.user.countryShortName
+      }
+    } else {
+      const getCountry = await axiosDefault.get('http://ip-api.com/json')
+      country.value = getCountry.data
+    }
+
+    const getState = await axios.get('/countries-api/states/' + country.value.countryCode)
+
+    getState.data.results.forEach(async state => {
+      const getCities = await axios.get(`/countries-api/cities/${country.value.countryCode}/${state.stateid}`)
+
+      let formatted = {
+        state: state,
+        cities: getCities.data.results
+      }
+
+      formatted.cities.forEach(city => {
+        if(city.type === 'Capital') {
+          locations.value.push(city.name)
+        }
+        if(city.type === 'City' && locations.value.length <= 4) {
+          locations.value.push(city.name)
+        }
+      })
+
+      states.value.push(formatted)
+
+    })
+
+    states.value = states.value.sort(function (a, b) {
+      const nameA = a.state.name.toUpperCase(); // ignore upper and lowercase
+      const nameB = b.state.name.toUpperCase(); // ignore upper and lowercase
+      if (nameA > nameB) {
+        return 1;
+      }
+      if (nameA < nameB) {
+        return -1;
+      }
+
+      // names must be equal
+      return 0;
+    });
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+onMounted(() => {
+  getStates()
+})
 </script>
 
 <style scoped>
