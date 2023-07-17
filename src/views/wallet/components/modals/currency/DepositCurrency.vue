@@ -29,7 +29,8 @@
 
                 <div class="absolute top-8 h-10 px-2 right-2 rounded grid place-items-center" style="background: #EBEBEB;">
                     <p class="flex flex-row items-center gap-x-4"><span
-                            v-if="depositData.paymentMethod !== 'bank-transfer'">Free</span> {{ getSymbolFromCurrency($store.state.user.currency) }}</p>
+                            v-if="depositData.paymentMethod !== 'bank-transfer'">Free</span> {{
+                                getSymbolFromCurrency($store.state.user.currency) }}</p>
                 </div>
             </div>
 
@@ -63,7 +64,8 @@
                         <span>Pay with Flutterwave</span>
                         <!-- <span class="text-xs font-extralight text-webapp">#comingsoon</span> -->
                     </p>
-                    <p class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer" v-if="store.state.user.currency === 'NGN'">
+                    <p class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer"
+                        v-if="store.state.user.currency === 'NGN'">
                         <span>Pay with E-naira</span>
                         <span class="text-xs font-extralight text-webapp">#comingsoon</span>
                     </p>
@@ -155,12 +157,8 @@ function proceedToPayment() {
 }
 
 function cancelPayment(e) {
-    if(e && e.method === 'paystack' && e.reference) {
-        processPayment({ reference: e.reference})
-    } else {
-        proceededPayment.value = false
-        processingDeposit.value = false
-    }
+    proceededPayment.value = false
+    processingDeposit.value = false
 }
 
 function getPaystackDetails() {
@@ -186,7 +184,7 @@ function getFlwDetails() {
         country: store.state.user.countryShortName,
         currency: store.state.user.currency,
         customer: { email: store.state.user.email, name: store.state.user.fname + ' ' + store.state.user.surname, phone_number: '+' + store.state.user.countryCode + store.state.user.phoneNumber.toString() },
-        customizations: { description:`Deposit money into your ${store.state.user.currency}  wallet`, logo: getLogo(), title: store.state.user.fname + ' ' + store.state.user.surname },
+        customizations: { description: `Deposit money into your ${store.state.user.currency}  wallet`, logo: getLogo(), title: store.state.user.fname + ' ' + store.state.user.surname },
         payment_options: "card,ussd,banktransfer,account,nqr",
         redirect_url: null,
         tx_ref: flwRef.value
@@ -230,7 +228,7 @@ const processPayment = async (response) => {
 
         const saveDeposit = await axios.post('/wallet/deposit/currency', data)
         newMsg.value = saveDeposit.data.message
-        
+
         setTimeout(() => {
             emit('close')
             processingDeposit.value = false

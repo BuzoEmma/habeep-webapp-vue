@@ -34,7 +34,6 @@ const secret_key = import.meta.env.VITE_PAYSTACK_SECRET_KEY
 
 async function confirmPayment(response) {
     try {
-        console.log(response, 'newResponse')
         if (response.status === 'success') {
 
             axios.defaults.headers.common = {
@@ -55,8 +54,7 @@ async function confirmPayment(response) {
     }
 }
 
-function closePayment(e) {
-    console.log(e, 'hello')
+function closePayment() {
     emit('cancel', { method: 'paystack', reference: props.paymentInfo.ref })
 }
 
