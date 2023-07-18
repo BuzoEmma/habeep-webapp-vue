@@ -86,7 +86,7 @@
             <p @click="$router.push('/wallet')" class="text-sm text-webapp mt-1 cursor-pointer"
                 :class="{ 'text-blue-700': $route.name === 'Wallet' }" v-if="$store.state.isAuthenticated">Wallet</p>
 
-            <span class="text-sm text-webapp mt-1 md:hidden mobile-nav-item"
+            <span class="text-sm text-webapp mt-1 md:hidden mobile-nav-item cursor-pointer"
                 :class="{ 'text-blue-700': $route.fullPath.includes('blog') === true }"
                 @click="$router.push('/blog')">BLOG</span>
 

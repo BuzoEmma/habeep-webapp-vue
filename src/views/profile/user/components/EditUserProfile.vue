@@ -104,6 +104,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import axios from "../../../../composables/axios";
 import { useStore } from "vuex";
+import { useRouter } from 'vue-router'
 
 import sort from 'smart-deep-sort'
 import clm from 'country-locale-map'
@@ -113,6 +114,7 @@ import { formValidator } from '../../../../composables/2-validator'
 const emit = defineEmits(['close'])
 
 const store = useStore();
+const router = useRouter()
 
 
 const formData = new FormData();
@@ -134,11 +136,7 @@ const previewImg = async (event, value) => {
     pic.value = input.files[0]
     // create a new FileReader to read this image and convert to base64 format
     var reader = new FileReader();
-    // Define a callback function to run, when FileReader finishes its job
-    // reader.readAsDataURL(eval(`pic${value}`).value)
     reader.onload = (e) => {
-      // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
-      // Read image as base64 and set to imageData
       imageData.value = e.target.result;
     }
 
@@ -304,11 +302,12 @@ async function updateProfile() {
 
         const update = await axios.put(url, data)
 
-        newMsg.value = update.data.message + '. Changes will take effect in a few minutes'
+        newMsg.value = update.data.message + '. Changes will take effect in a few seconds'
 
         setTimeout(() => {
           processing.value = false
           newMsg.value = ''
+          router.go()
           emit('close')
         }, 2000);
       } else {

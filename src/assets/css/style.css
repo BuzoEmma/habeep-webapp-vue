@@ -10,6 +10,7 @@
 
 :root {
   font-family: 'Aeonik', sans-serif;
+  --maz-color-primary: hsl(228, 100%, 60%) !important;
 }
 
 

@@ -39,7 +39,8 @@
                 <p class="text-webapp text-lg w-full md:block hidden"><span class="text-primary font-medium">{{
                     products.length }}</span>
                     ads result found
-                    in <span class="font-medium capitalize">{{ $route.query.location ? $route.query.location : country.country }}</span></p>
+                    in <span class="font-medium capitalize">{{ $route.query.location ? $route.query.location :
+                        country.country }}</span></p>
 
                 <!-- filters -->
                 <div class="flex flex-row items-center h-fit gap-x-4 w-full md:w-min  transition-all"
@@ -84,7 +85,8 @@
                         </p>
                         <hr>
                         <p class="text-sm text-webapp mt-2 cursor-pointer"
-                            :class="{ 'text-blue': filterData.sortValue === 'Newest_first' }" @click="changeSortValue(2)">
+                            :class="{ 'text-blue-600': filterData.sortValue === 'Newest first' }"
+                            @click="changeSortValue(2)">
                             Newest
                             first
                         </p>
@@ -114,10 +116,10 @@
 
 
                         <div class="mt-1" v-if="onState">
-                            <p class="text-sm mb-1 text-webapp cursor-pointer gap-x-2 flex flex-row"><img
-                                    src="../../assets/icons/location-checked.svg" alt="">{{ currentState + ' - ' +
-                                        currentCity
-                                    }}</p>
+                            <p class="text-sm mb-1 text-webapp cursor-pointer gap-x-2 flex flex-row">
+                                <img src="../../assets/icons/location-checked.svg" alt="">{{ currentState }}
+                                <span v-if="currentState !== 'All'">{{ ' - ' + currentCity }}</span>
+                            </p>
                             <hr>
                         </div>
                         <div class="mt-1" v-if="!onState">
@@ -196,7 +198,8 @@
 
                         <div class="flex flex-row items-center w-full justify-between px-2">
                             <p class="text-sm text-webapp font-medium">
-                                <PriceFormatter :from="product.priceCurrency" :to="country.currency" :amount="product.price" /> /
+                                <PriceFormatter :from="product.priceCurrency" :to="country.currency"
+                                    :amount="product.price" /> /
                                 <span v-if="product.for === 'rent'">Rent</span>
                                 <span v-if="product.for === 'sale'">Sale</span>
                             </p>
@@ -388,7 +391,7 @@ async function getSearch(location, query) {
         })
 
         const uniqueIds = [];
-        const uniqueFeeds = products.value.filter(element => {
+        const uniqueProducts = products.value.filter(element => {
             const isDuplicate = uniqueIds.includes(element._id);
 
             if (!isDuplicate) {
@@ -397,8 +400,8 @@ async function getSearch(location, query) {
             }
             return false;
         });
-        products.value = uniqueFeeds
-        filteredProducts.value = uniqueFeeds
+        products.value = uniqueProducts
+        filteredProducts.value = uniqueProducts
 
         searchingData.value = false
         useFilters(filterData)
@@ -442,6 +445,7 @@ function changeSortValue(index) {
     }
 
     toggleDropdown('sort')
+    useFilters(filterData)
 }
 
 async function getStates() {
@@ -456,9 +460,9 @@ async function getStates() {
             country.value = getCountry.data
         }
 
-        if(!route.query.location) {
+        if (!route.query.location) {
             currentState.value = country.value.country
-        } 
+        }
 
         const getState = await axios.get('/countries-api/states/' + country.value.countryCode)
 
@@ -524,8 +528,27 @@ function useFilters(filters) {
             }
         }
 
+        // sort by time
+        if (filters.sortValue.length > 0) {
+            if (filters.sortValue === 'Recommended') {
+                filteredProducts.value = sort(filteredProducts.value)
+            }
+            if (filters.sortValue === 'Newest first') {
+                let sortedArray = filteredProducts.value.sort((a, c) => {
+                    return new Date(c.dateUpdated) - new Date(a.dateUpdated)
+                })
+                filteredProducts.value = sortedArray
+            }
+            if (filters.sortValue === 'Oldest first') {
+                let sortedArray = filteredProducts.value.sort((c, a) => {
+                    return new Date(c.dateUpdated) - new Date(a.dateUpdated)
+                })
+                filteredProducts.value = sortedArray
+            }
+        }
+
         const uniqueIds = [];
-        const uniqueFeeds = filteredProducts.value.filter(element => {
+        const uniqueProducts = filteredProducts.value.filter(element => {
             const isDuplicate = uniqueIds.includes(element._id);
             if (!isDuplicate) {
                 uniqueIds.push(element._id);
@@ -534,7 +557,7 @@ function useFilters(filters) {
             return false;
         });
 
-        filteredProducts.value = uniqueFeeds
+        filteredProducts.value = uniqueProducts
         title.value = `Habeep | Results(${filteredProducts.value.length})`
     }
 }
@@ -546,5 +569,4 @@ function useFilters(filters) {
     width: 100% !important;
     object-fit: cover;
     max-height: 185px !important;
-}
-</style>
+}</style>

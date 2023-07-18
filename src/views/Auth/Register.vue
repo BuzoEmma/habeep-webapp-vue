@@ -62,60 +62,17 @@
 
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8 relative">
                     <label for="" class="text-sm text-webapp">Phone number</label>
-                    <input type="number" name="tel" v-model="data.phoneNumber" maxlength="12"
-                        @input="validateFormField('phone', data.phoneNumber.toString())" placeholder="Phone number"
-                        class="w-full h-14 rounded-lg bg-transaparent"
-                        :class="{ 'bg-bg': onModal, 'invalidField': errorMsg.field === 'phone' }"
-                        style="padding-left: 115px">
-
-
-                    <div :class="{ 'justify-center': loadingLocationInfo }"
-                        class="flex flex-col items-center  drop-shadow-sm bg-white rounded-b-xl rounded-t-md gap-y-2 p-1 absolute h-48 overflow-auto py-2 top-24 left-1 z-10 w-32 min-w-fit"
-                        v-if="onContainer">
-                        <Preloader v-if="loadingLocationInfo" />
-                        <div class="flex-col flex items-start" v-else>
-                            <div
-                                @click="cleanSelections" v-if="selectedContinent.name"
-                                class="w-full flex text-primary cursor-pointer flex-row items-start gap-x-4 border-b pb-4 py-2 pl-3 border-gray-100">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                    class="w-5 h-5">
-                                    <path fill-rule="evenodd"
-                                        d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z"
-                                        clip-rule="evenodd" />
-                                </svg>
-
-                                <span class="text-sm capitalize">{{ selectedContinent.name }}</span>
-                            </div>
-                            <div class="w-full h-fit" v-if="allContinents.length > 0 && !selectedContinent.name">
-                                <p class="w-full flex cursor-pointer flex-row items-start gap-x-4 border-b py-2 pl-3 border-gray-100"
-                                    @click="pickContinent(continent)"
-                                    :class="{ 'border-none': index === allContinents.length - 1 }"
-                                    v-for="(continent, index) in allContinents" :key="(continent, index)">
-                                    <span class="text-webapp text-sm font-medium cursor-pointer capitalize text-left">{{
-                                        continent.name }}</span>
-                                </p>
-                            </div>
-                            <div class="w-full h-fit" v-if="selectedContinent.name">
-                                <p class="w-full flex flex-row cursor-pointer items-start gap-x-4 border-b py-2 pl-3 border-gray-100"
-                                    @click="pickCountry(country)"
-                                    :class="{ 'border-none': index === selectedContinentCountries.length - 1 }"
-                                    v-for="(country, index) in selectedContinentCountries" :key="(country, index)">
-                                    <span>{{ country.flag }}</span>
-                                    <span class="text-webapp text-sm font-medium cursor-pointer capitalize text-left">{{
-                                        country.name }}</span>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="absolute top-8 left-1 flex flex-row items-center justify-center h-10 w-24 rounded-md cursor-pointer"
-                        @click="toggleCountryCodeContainer" style="background: #F4F4F4" :class="{ 'bg-bg': onModal }">
-                        <p class="flex flex-row items-center w-full justify-center gap-x-3">
-                            <span>{{ selectedCountry.flag }}</span>
-                            <span>+{{ selectedCountry.phoneCode }}</span>
-                        </p>
-                    </div>
-
+                    <MazPhoneNumberInput class="w-full" v-model="data.phoneNumber" show-code-on-list color="primary"
+                        :preferred-countries="['NG']" :translations="{
+                            countrySelector: {
+                                placeholder: 'Country Prefix',
+                                error: 'Choose country',
+                            },
+                            phoneInput: {
+                                placeholder: 'Phone number',
+                                example: 'E.g:',
+                            }
+                        }" @update="logPhone" />
                 </div>
 
                 <div class="flex flex-col sm:flex-row items-center relative w-full gap-x-3 justify-between">
@@ -142,7 +99,7 @@
                 <!-- submit btn -->
                 <button @click.prevent="createUser" class="w-full rounded-lg grid place-items-center h-14 text-white"
                     :disabled="errorMsg.field === 'email'"
-                    :class="{ 'bg-blue-600': data.pin.toString().length === 4 && data.username.length > 5, 'bg-gray-300': data.pin.toString().length < 4 || data.username.length < 5 }">
+                    :class="{ 'bg-blue-600': data.pin.toString().length === 4 && data.username.length > 5 && selectedCountry && selectedCountry.isValid, 'bg-gray-300': data.pin.toString().length < 4 || data.username.length < 5 || !selectedCountry }">
                     <span v-if="!processing">Continue</span>
                     <Preloader v-else />
                 </button>
@@ -152,7 +109,6 @@
             <!-- components -->
             <Toast :msg="errorMsg.msg" type="danger" v-if="onError" />
             <Toast :msg="newMsg" type="success" v-if="newMsg.length > 0" />
-            <!-- <Toast :msg="warningMsg" type="warning" /> -->
         </div>
     </div>
 </template>
@@ -161,8 +117,8 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter, useRoute } from "vue-router";
 import axios from "../../composables/axios";
-
-import sort from 'smart-deep-sort'
+import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
+import clm from 'country-locale-map'
 
 import { registerValidate, formValidator } from '../../composables/2-validator'
 
@@ -177,6 +133,10 @@ const router = useRouter();
 const onModal = ref(false)
 const onSuggestedListingsModal = ref(false)
 const onSuggestedFollowersModal = ref(false)
+
+function logPhone(e) {
+    selectedCountry.value = e
+}
 
 
 function gotoModal(modal) {
@@ -203,62 +163,8 @@ function closeModal() {
 }
 
 // get country codes
-let onContainer = ref(false)
-const allContinents = ref([])
-const loadingLocationInfo = ref(false)
-const selectedContinent = ref({})
-const selectedContinentCountries = ref([])
 
-let selectedCountry = ref({
-    name: 'Nigeria',
-    phoneCode: '234',
-    flag: '🇳🇬',
-    currency: 'NGN',
-    shortName: 'NG'
-});
-
-
-function toggleCountryCodeContainer() {
-    onContainer.value = !onContainer.value
-}
-
-function pickContinent(continent) {
-    selectedContinent.value = continent
-    selectedContinentCountries.value = []
-    getContinentCountries(continent.id)
-}
-
-function cleanSelections() {
-    selectedContinent.value = {}
-    selectedContinentCountries.value = []
-}
-
-function pickCountry(country) {
-    selectedCountry.value = country
-    toggleCountryCodeContainer()
-}
-
-async function getContinents() {
-    try {
-        loadingLocationInfo.value = true
-        const continents = await axios.get('/countries-api/continents')
-        allContinents.value = sort(continents.data.results)
-        loadingLocationInfo.value = false
-    } catch (error) {
-        loadingLocationInfo.value = false
-    }
-}
-
-async function getContinentCountries(id) {
-    try {
-        loadingLocationInfo.value = true
-        const countries = await axios.get('countries-api/countries/' + id)
-        selectedContinentCountries.value = sort(countries.data.results)
-        loadingLocationInfo.value = false
-    } catch (error) {
-        loadingLocationInfo.value = false
-    }
-}
+let selectedCountry = ref(null);
 
 
 // manage registration
@@ -308,55 +214,67 @@ function validateFormField(field, data) {
 }
 
 async function createUser() {
-    data.countryCode = selectedCountry.value.phoneCode
-    data.currency = selectedCountry.value.currency.split(',')[0]
-    data.shortName = selectedCountry.value.shortName
-    data.nationality = selectedCountry.value.name
-    const validator = registerValidate(data);
+    if (selectedCountry.value && selectedCountry.value.isValid) {
+        const country = clm.getCountryByAlpha2(selectedCountry.value.countryCode)
+        if (country) {
+            data.countryCode = selectedCountry.value.countryCallingCode
+            data.currency = country.currency
+            data.phoneNumber = selectedCountry.value.nationalNumber
+            data.shortName = selectedCountry.value.countryCode
+            data.nationality = country.name
+            const validator = registerValidate(data);
 
-    if (validator.success === false) {
-        onError.value = true
-        errorMsg.value.msg = validator.message
-        errorMsg.value.field = validator.field
-
-        setTimeout(() => {
-            onError.value = false
-        }, 3000);
-    } else {
-
-        try {
-            processing.value = true
-            const create = await axios.post(url, data)
-            if (!create.data.success) {
+            if (validator.success === false) {
                 onError.value = true
-                errorMsg.value.msg = create.data.message
+                errorMsg.value.msg = validator.message
+                errorMsg.value.field = validator.field
 
                 setTimeout(() => {
-                    processing.value = false
                     onError.value = false
-                    errorMsg.value.msg = ''
                 }, 3000);
             } else {
-                newMsg.value = create.data.message
 
-                setTimeout(() => {
+                try {
+                    processing.value = true
+                    const create = await axios.post(url, data)
+                    if (!create.data.success) {
+                        onError.value = true
+                        errorMsg.value.msg = create.data.message
+
+                        setTimeout(() => {
+                            processing.value = false
+                            onError.value = false
+                            errorMsg.value.msg = ''
+                        }, 3000);
+                    } else {
+                        newMsg.value = create.data.message
+
+                        setTimeout(() => {
+                            processing.value = false
+                            newMsg.value = ''
+
+                            gotoModal('listings')
+                        }, 1000);
+
+                    }
+                } catch (error) {
                     processing.value = false
-                    newMsg.value = ''
+                    onError.value = true
+                    errorMsg.value.msg = error.response.data.message;
 
-                    gotoModal('listings')
-                }, 1000);
-
+                    setTimeout(() => {
+                        onError.value = false
+                    }, 5000);
+                }
             }
-        } catch (error) {
-            processing.value = false
+        } else {
             onError.value = true
-            errorMsg.value.msg = error.response.data.message;
+            errorMsg.value.msg = 'Country is not supported or is invalid. Try again later'
 
             setTimeout(() => {
                 onError.value = false
-            }, 5000);
+            }, 3000);
         }
-
     }
 }
 
@@ -380,13 +298,10 @@ const nextPage = () => {
     }, 1000);
 }
 
-onMounted(() => {
-    getContinents()
-})
-
 </script>
 
 <style scoped>
+
 input::placeholder {
     color: #71759D;
     font-size: 14px;
@@ -425,4 +340,5 @@ input:focus {
 .bg-bg {
     background: #161622;
     opacity: 0.5;
-}</style>
+}
+</style>

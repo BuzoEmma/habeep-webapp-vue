@@ -10,7 +10,7 @@
             </div>
 
             <div class="w-full h-full grid place-items-center mt-10" v-if="blogs.length === 0 && !fetchingBlogs">
-                <p class="bacasime text-5xl font-semibold">No blogs posted yet</p>
+                <p class="montserrat text-5xl font-semibold">No blogs posted yet</p>
             </div>
             <!-- blogs -->
             <div class="flex flex-row mt-6 md:mt-10 w-full h-fit flex-wrap flex-auto"
@@ -57,7 +57,7 @@
                         store or google playstore</p>
                     <!-- download stores -->
                     <div class="flex flex-row gap-x-2 items-center w-fit mt-4">
-                        <img src="../../assets/images/apple-download.svg" alt="">
+                        <!-- <img src="../../assets/images/apple-download.svg" alt=""> -->
 
                         <a href="https://play.google.com/store/apps/details?id=org.habeep" target="_blank"
                             class="no-underline cursor-pointer"><img src="../../assets/images/android-download.svg"

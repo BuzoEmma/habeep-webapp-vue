@@ -81,6 +81,14 @@
 
     <MobileSearch :location="locations" v-if="onSearch" @leaveSearch="onSearch = false" :delay="100" v-motion
       :initial="{ opacity: 0.5, y: 100 }" :enter="{ opacity: 1, y: 0 }" />
+
+    <!-- seo snippets link -->
+    <footer class="hidden">
+      <a href="https://habeep.org/blog" class="hidden">Blogs</a>
+      <a href="https://habeep.org/help" class="hidden">Help</a>
+      <a href="https://habeep.org/terms-of-service" class="hidden">Terms of Service</a>
+      <a href="https://habeep.org/blog/64a1f4f6c8b14fa0a1e5d238" class="hidden">Habeep Reward System</a>
+    </footer>
   </div>
 </template>
 
@@ -175,10 +183,10 @@ async function getStates() {
       }
 
       formatted.cities.forEach(city => {
-        if(city.type === 'Capital') {
+        if (city.type === 'Capital') {
           locations.value.push(city.name)
         }
-        if(city.type === 'City' && locations.value.length <= 4) {
+        if (city.type === 'City' && locations.value.length <= 4) {
           locations.value.push(city.name)
         }
       })

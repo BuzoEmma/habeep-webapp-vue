@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import './assets/css/style.css'
 import './assets/css/tailwind.css'
+import './assets/css/maz-ui.css'
 import App from './App.vue'
 import { router, routes } from './router/index.js'
 import store from './store'

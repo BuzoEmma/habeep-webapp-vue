@@ -221,10 +221,11 @@
 
 
                         <div class="mt-1" v-if="onState">
-                            <p class="text-sm mb-1 text-webapp cursor-pointer gap-x-2 flex flex-row"><img
-                                    src="../assets/icons/location-checked.svg" alt="">{{ currentState + ' - ' + currentCity
-                                    }}</p>
-                            <hr>
+                            <p class="text-sm mb-1 text-webapp cursor-pointer gap-x-2 flex flex-row">
+                                <img src="../../assets/icons/location-checked.svg" alt="">
+                                <span v-if="currentState === 'All'">{{ currentState + ' Cities' }}</span>
+                                <span v-if="currentState !== 'All'">{{ ' - ' + currentCity }}</span>
+                            </p>
                         </div>
                         <div class="mt-1" v-if="!onState">
                             <p class="text-sm mb-1 text-webapp cursor-pointer gap-x-2 flex flex-row">
@@ -303,7 +304,8 @@
                         <div class="flex flex-row items-center w-full justify-between px-2">
                             <p @click="$router.push('/listings/products/' + feed._id)"
                                 class="text-sm text-webapp font-medium">
-                                <PriceFormatter :from="feed.priceCurrency" :to="$store.state.user.currency" :amount="feed.price" /> /
+                                <PriceFormatter :from="feed.priceCurrency" :to="$store.state.user.currency"
+                                    :amount="feed.price" /> /
                                 <span v-if="feed.for === 'rent'">Rent</span>
                                 <span v-if="feed.for === 'sale'">Sale</span>
                             </p>
@@ -426,7 +428,11 @@ async function getFeeds() {
 
         if (getFeeds.data) {
             feeds.value = getFeeds.data.feed
-            title.value = `Habeep | Feeds(${feeds.value.length})`
+            if (feeds.value.length === 0) {
+                title.value = `Habeep | No Feeds`
+            } else {
+                title.value = `Habeep | Feeds(${feeds.value.length})`
+            }
         }
 
         feeds.value.forEach(async feed => {
@@ -502,7 +508,6 @@ function toggleDropdown(type) {
         onLocationDropdown.value = false
         if (onSortDropdown.value === false) {
             onDropdown.value = true
-            // onLocationDropdown.value = !onLocationDropdown.value
             onSortDropdown.value = true
         } else {
             onSortDropdown.value = false
@@ -555,8 +560,6 @@ async function getStates() {
             if (nameA < nameB) {
                 return -1;
             }
-
-            // names must be equal
             return 0;
         });
     } catch (error) {
@@ -625,7 +628,12 @@ function useFilters(filters) {
         });
 
         filteredFeeds.value = uniqueFeeds
-        title.value = `Habeep | Feeds(${filteredFeeds.value.length})`
+        if (filteredFeeds.value.length === 0) {
+            title.value = `Habeep | No Feeds`
+        } else {
+            title.value = `Habeep | Feeds(${filteredFeeds.value.length})`
+        }
+
     }
 }
 
