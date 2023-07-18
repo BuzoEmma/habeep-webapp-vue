@@ -42,7 +42,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>
-                        <input type="text" placeholder="Search" @input="queryBank" @beforeinput="checkForInput" v-model="bankQuery"
+                        <input type="text" placeholder="Search" @input="queryBank" @beforeinput="checkForInput"
+                            v-model="bankQuery"
                             class="text-sm outline-none border-none w-full h-full text-sub-webapp bg-transparent">
                     </div>
 
@@ -68,16 +69,13 @@
                 <Preloader v-if="checkingForAccount" class="p-2" />
             </div>
 
-
-            <div class="absolute md:static px-4 md:px-0 md:my-6 w-full h-14 bottom-10 left-0">
-                <button @click="withdrawMoney"
-                    :disabled="withdrawalDetails.bank.length < 1 || withdrawalDetails.accountNumber.length < 10"
-                    :class="{ 'bg-blue-600 text-white': verifiedAccount && verifiedAccount.account_name.length > 0 && withdrawalDetails.accountNumber.toString().length >= 10, 'bg-gray-300 text-white': !verifiedAccount || withdrawalDetails.accountNumber.toString().length < 10 }"
-                    class="grid rounded-lg place-items-center h-14 w-full">
-                    <span v-if="!processingWithdrawal">Withdraw</span>
-                    <Preloader v-else />
-                </button>
-            </div>
+            <button @click="withdrawMoney"
+                :disabled="withdrawalDetails.bank.length < 1 || withdrawalDetails.accountNumber.length < 10"
+                :class="{ 'bg-blue-600 text-white': verifiedAccount && verifiedAccount.account_name.length > 0 && withdrawalDetails.accountNumber.toString().length >= 10, 'bg-gray-300 text-white': !verifiedAccount || withdrawalDetails.accountNumber.toString().length < 10 }"
+                class="grid rounded-lg place-items-center h-14 w-full">
+                <span v-if="!processingWithdrawal">Withdraw</span>
+                <Preloader v-else />
+            </button>
 
 
         </div>
@@ -126,7 +124,7 @@ function queryBank(e) {
 
 const checkForInput = (e) => {
     if (bankQuery.value.length === 0) {
-        if(e.inputType.includes('delete')) {
+        if (e.inputType.includes('delete')) {
             onSelectMethod.value = false
         }
     }
@@ -169,7 +167,7 @@ async function verifyAccountDetails() {
 
             checkingForAccount.value = false
             if (verify.data.status === true) {
-                if(verify.data.data.account_name.toLowerCase().includes(store.state.user.fname.toLowerCase()) && verify.data.data.account_name.toLowerCase().includes(store.state.user.surname.toLowerCase())) {
+                if (verify.data.data.account_name.toLowerCase().includes(store.state.user.fname.toLowerCase()) && verify.data.data.account_name.toLowerCase().includes(store.state.user.surname.toLowerCase())) {
                     verifiedAccount.value = verify.data.data
                 } else {
                     accountError.value = "Bank name doesn't match your name!"
