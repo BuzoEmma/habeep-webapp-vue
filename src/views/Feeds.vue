@@ -55,7 +55,7 @@
 
             <div class="mt-1" v-if="onState">
                 <p class="text-sm mb-1 text-webapp cursor-pointer gap-x-2 flex flex-row">
-                    <img src="../../assets/icons/location-checked.svg" alt="">
+                    <img src="../assets/icons/location-checked.svg" alt="">
                     <span v-if="currentState === 'All'">{{ currentState + ' Cities' }}</span>
                     <span v-if="currentState !== 'All'">{{ ' - ' + currentCity }}</span>
                 </p>
@@ -223,7 +223,7 @@
 
                         <div class="mt-1" v-if="onState">
                             <p class="text-sm mb-1 text-webapp cursor-pointer gap-x-2 flex flex-row">
-                                <img src="../../assets/icons/location-checked.svg" alt="">
+                                <img src="../assets/icons/location-checked.svg" alt="">
                                 <span v-if="currentState === 'All'">{{ currentState + ' Cities' }}</span>
                                 <span v-if="currentState !== 'All'">{{ ' - ' + currentCity }}</span>
                             </p>
