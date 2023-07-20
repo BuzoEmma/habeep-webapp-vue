@@ -110,7 +110,7 @@ async function debitFee() {
     if (alreadyDebited.value === false) {
         if (walletData.value.accountValue < amountToDebit) {
             onError.value = true
-            errorMsg.value.msg = 'Swap naira to ' + (amountToDebit - walletData.value.accountValue) + ' HBP to continue. Redirecting to swap page in 2sec'
+            errorMsg.value.msg = 'Deposit ' + (amountToDebit - walletData.value.accountValue) + ' HBP to continue. Redirecting to deposit page in 2sec'
 
             setTimeout(() => {
                 router.push('/wallet?tab=hbp&cont=deposit&reloadApp=true')

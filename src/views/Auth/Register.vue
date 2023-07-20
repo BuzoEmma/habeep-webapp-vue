@@ -162,7 +162,6 @@ function closeModal() {
     onSuggestedFollowersModal.value = false
 }
 
-// get country codes
 
 let selectedCountry = ref(null);
 
@@ -275,6 +274,13 @@ async function createUser() {
                 onError.value = false
             }, 3000);
         }
+    } else {
+        onError.value = true
+        errorMsg.value.msg = 'Invalid Phone Number'
+
+        setTimeout(() => {
+            onError.value = false
+        }, 3000);
     }
 }
 
@@ -301,7 +307,6 @@ const nextPage = () => {
 </script>
 
 <style scoped>
-
 input::placeholder {
     color: #71759D;
     font-size: 14px;

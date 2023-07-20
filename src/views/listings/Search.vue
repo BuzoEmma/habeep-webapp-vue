@@ -237,10 +237,10 @@ import { useStore } from 'vuex'
 import MainNavbar from '../../components/MainNavbar.vue'
 import saveAd from '../../composables/saveAd'
 import calculateDistance from '../../composables/getAdDistance.js'
-import axiosDefault from 'axios'
 import axios from "../../composables/axios";
 import { useRoute } from 'vue-router';
 import clm from 'country-locale-map'
+import axiosDefault from 'axios'
 
 // ui conditionals
 const onSortDropdown = ref(false)
