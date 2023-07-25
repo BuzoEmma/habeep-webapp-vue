@@ -183,7 +183,7 @@
                             @loadedmetadata="product.imageLoaded = true" :class="{ 'hidden': !product.imageLoaded }"
                             :src="product.images[0].link" class="w-full rounded-t-md feed-image" v-else autoplay muted
                             preload="auto"></video>
-                        <p class="text-webapp text-lg font-medium w-full mx-2 cursor-pointer feed-image"
+                        <p class="text-webapp text-lg font-medium w-full px-2 cursor-pointer feed-image"
                             @click="$router.push('/listings/products/' + product._id)">
                             {{ product.title }}
 
