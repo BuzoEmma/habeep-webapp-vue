@@ -22,7 +22,7 @@
                     <div class="flex flex-row items-center gap-x-3">
                         <img src="../../../../../assets/icons/listings/minus-light.svg" v-if="data.bedrooms > 0"
                             @click="subtract('bedroom')" class="cursor-pointer" alt="">
-                        <img src="../../../../assets/icons/listings/minus-light.svg" v-else class="cursor-pointer" alt="">
+                        <img src="../../../../../assets/icons/listings/minus-light.svg" v-else class="cursor-pointer" alt="">
                         <span class="text-lg text-webapp">{{ data.bedrooms }}</span>
                         <img src="../../../../../assets/icons/listings/add.svg" @click="add('bedroom')" class="cursor-pointer" alt="">
                     </div>
