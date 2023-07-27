@@ -3,9 +3,29 @@
   "subtitle": "Learn more about us and get to know us better",
   "articles": [
     {
-      "title": "FAQ",
-      "subtitle": "Learn more about us and get to know us better",
-      "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. At eu, egestas quam volutpat accumsan. Dictum ipsum volutpat urna, nibh. Potenti ornare urna, non ultricies nibh pretium, magna. Arcu metus, in aliquet vitae tellus mi dictum viverra.Lorem ipsum dolor sit amet, consectetur adipiscing elit. At eu, egestas quam volutpat accumsan. Dictum ipsum volutpat urna, nibh. Potenti ornare urna, non ultricies nibh pretium, magna. Arcu metus, in aliquet vitae tellus mi dictum viverra.Lorem ipsum dolor sit amet, consectetur adipiscing elit. At eu, egestas quam volutpat accumsan. Dictum ipsum volutpat urna, nibh. Potenti ornare urna, non ultricies nibh pretium, magna. Arcu metus, in aliquet vitae tellus mi dictum viverra."
+      "title": "What is Habeep?",
+      "subtitle": "Learn more about Habeep",
+      "content": "Habeep is a groundbreaking mobile application that aims to revolutionise real estate in Nigeria. It serves as a comprehensive platform, bridging the gap between tenants, landlords, and real estate management firms. Habeep enhances the renting experience for all parties involved by offering innovative features and services."
+    },
+    {
+      "title": "How does Habeep benefit House Agents?",
+      "subtitle": "Learn more about Habeep",
+      "content": "Habeep benefits Agents, by providing a user-friendly interface to search for rental properties, connect directly with potential clients, thereby easing the stress of having to look for clients."
+    },
+    {
+      "title": "What are the advantages of becoming a certified agent on Habeep?",
+      "subtitle": "Learn more about Habeep",
+      "content": "<h1>Becoming a certified agent on Habeep comes with numerous advantages, including:</h1> <li> Access to a user-friendly interface to manage listings and interactions with clients.</li> <li>A vast network of potential clients actively seeking rental properties.</li> <li>Participation in the innovative Residual Income Program with attractive referral incentives. </li> <li>Exposure to a dynamic community of agents for collaboration and support.</li> "
+    },
+    {
+      "title": "How can I become a certified agent on Habeep?",
+      "subtitle": "Learn more about Habeep",
+      "content": "<h1>To become a certified agent on Habeep, follow these steps:</h1> <li> Download the Habeep app from the <a href='https://play.google.com/store/apps/details?id=org.habeep' class='underline text-blue-600'>Playstore</a> or visit the <a href='https://habeep.org/home' class='underline text-blue-600'>website</a>.</li> <li>Sign up with your email and create a four-digit PIN for security.</li> <li>Log into your account and tap on 'Become an Agent'.</li> <li>Fill the form with your name, location, and other basic information.</li> <li> Make a one-time payment of 50 HBP ($0.11) using your Habeep wallet and unlock the next level of your real estate career.</li>"
+    },
+    {
+      "title": "How does Habeep's Referral Program work?",
+      "subtitle": "Learn more about Habeep",
+      "content": "<p class='w-full text-left'> Habeep's Referral Program allows certified agents to earn a 40% commission for every agent they refer to the platform. </p> <br> <p class='w-full text-left'>When the referred agent completes transactions, both the referring and referred agents receive commission rewards. This program is a fantastic opportunity to build residual income and expand your network.</p>"
     }
   ],
   "writer": "Habeep Support"

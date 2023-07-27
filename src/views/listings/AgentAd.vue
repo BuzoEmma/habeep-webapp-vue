@@ -129,12 +129,9 @@
                     <!-- top product info -->
                     <div class="flex flex-row main-info items-center w-full justify-between">
                         <div class="flex flex-col gap-y-2 w-fit">
-                            <p class="text-webapp text-2xl md:text-xl xl:text-2xl font-semibold xl:font-medium product-name"
-                                v-if="!onEditingMode">
+                            <p
+                                class="text-webapp text-2xl md:text-xl xl:text-2xl font-semibold xl:font-medium product-name">
                                 {{ product.title }}</p>
-                            <input type="text" v-model="data.title" placeholder="Type a title for this listing" v-else
-                                class="w-full h-12 rounded-lg pl-2 title outline-none border-2 border-gray-100 focus:border-blue-600">
-
                             <p
                                 class="text-sub-webapp text-lg md:text-sm xl:text-lg product-location flex flex-row items-center gap-x-2">
                                 <img src="../../assets/icons/map-pin-blue.svg" alt="">{{
@@ -144,25 +141,24 @@
                             </p>
                         </div>
                         <div class="md:flex hidden flex-col ">
-                            <p class="text-webapp text-2xl md:text-xl xl:text-2xl font-medium product-price" v-if="!onEditingMode">₦{{formatNumber(product.price)}}
+                            <p class="text-webapp text-2xl md:text-xl xl:text-2xl font-medium product-price">
+                                <PriceFormatter :from="product.priceCurrency" :to="$store.state.user.currency"
+                                    :amount="product.price" />
                             </p>
-                            <input type="number" v-model="data.price" v-else placeholder="Type a price to this listing"
-                                class="w-full h-12 rounded-lg pl-2 title outline-none border-2 border-gray-100 focus:border-blue-600">
                             <p v-if="product.for === 'rent'"
-                                class="text-sm  xl:text-lg font-medium product-price text-webapp flex flex-row justify-end">Rent
+                                class="text-sm  xl:text-lg font-medium product-price text-webapp flex flex-row justify-end">
+                                Rent
                             </p>
                             <p v-else
-                                class="text-sub-webapp text-sm xl:text-lg product-duration flex flex-row justify-end ">Sale</p>
+                                class="text-sub-webapp text-sm xl:text-lg product-duration flex flex-row justify-end ">Sale
+                            </p>
 
-                            <select name="for" id="" v-if="onEditingMode">
-                                <option value="rent" :selected="product.for === 'rent'">Rent</option>
-                                <option value="sale" :selected="product.for === 'sale'">Sale</option>
-                            </select>
                         </div>
                     </div>
 
                     <div class="flex flex-row py-2 border-y mt-8 border-y-gray-200 w-full divide-x">
-                        <div class="flex flex-col gap-y-2 items-center w-64 md:w-auto md:pr-20" v-if="product.type !== 'land'">
+                        <div class="flex flex-col gap-y-2 items-center w-64 md:w-auto md:pr-20"
+                            v-if="product.type !== 'land'">
                             <span class="text-2xl font-medium text-webapp">{{ product.bedrooms }}</span>
                             <span class="text-sm text-sub-webapp">Bedroom</span>
                         </div>
@@ -223,12 +219,12 @@
                         <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
                             v-if="product.features.includes('surveyed')">
                             <img src="../../assets/icons/listings/surveyed.svg" class="w-6 h-6" alt="">
-                    <span class="text-sm text-sub-webapp">Surveyed</span>
+                            <span class="text-sm text-sub-webapp">Surveyed</span>
                         </div>
                         <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
                             v-if="product.features.includes('c-of-o')">
                             <img src="../../assets/icons/listings/certificate.svg" class="w-6 h-6" alt="">
-                    <span class="text-sm text-sub-webapp">C of O</span>
+                            <span class="text-sm text-sub-webapp">C of O</span>
                         </div>
                     </div>
                 </div>
@@ -238,30 +234,17 @@
                     class="agent-info md:flex hidden p-4 bg-white flex-col w-2/3 xl:w-2/6 2xl:w-1/4 items-start ml-3 h-fit">
                     <h3 class="text-lg xl:text-xl font-medium  text-webapp">Description</h3>
 
-                    <div class="text-sub-webapp text-lg text-left mt-1 xl:mt-3" v-if="!onEditingMode">
+                    <div class="text-sub-webapp text-lg text-left mt-1 xl:mt-3">
                         <pre class="w-full whitespace-pre-wrap"
                             v-if="!openFullDesc">{{ product.description.slice(0, 250) }}<span class="text-primary cursor-pointer" v-if="product.description.length > 250" @click="openFullDesc = true">... Read more</span></pre>
                         <pre class="w-full whitespace-pre-wrap"
                             v-else>{{ product.description }} <span class="text-primary cursor-pointer" v-if="product.description.length > 250" @click="openFullDesc = false">..Hide</span></pre>
                     </div>
-                    <textarea v-else name="description" id="" cols="10" rows="10"
-                        class="text-sub-webapp border border-gray-300 rounded-lg p-2 text-sm text-left mt-1 xl:mt-3 w-full whitespace-pre-wrap"
-                        v-model="data.description"></textarea>
-
                     <hr class="my-3 text-gray-300 w-full">
 
                     <div class="flex flex-col xl:flex-row items-center w-full gap-y-1 xl:justify-between mt-1 xl:mt-3">
-                        <button v-if="!onEditingMode" @click="enterEditingMode"
-                            class="agent-btn flex-row items-center justify-center text-sm font-medium text-primary w-full bg-white">
-                            <span>Edit ad</span>
-                        </button>
-                        <button v-if="onEditingMode && hasEdited()"
-                            @click="saveEditedAd"
-                            class="agent-btn flex-row items-center justify-center text-sm font-medium text-primary w-full  bg-white">
-                            <span v-if="!savingUpdate">Save ad</span>
-                            <Preloader v-else />
-                        </button>
-                        <button @click="changeAdStatus('CLOSED')" v-else-if="product.status === 'AVAILABLE' && !hasEdited() && !onEditingMode"
+
+                        <button @click="changeAdStatus('CLOSED')" v-if="product.status === 'AVAILABLE'"
                             class="agent-btn cursor-pointer flex flex-row items-center justify-center text-sm font-medium  mr-2 text-white ml-2 bg-primary w-full">
                             <span v-if="!updatingStatus">Close ad</span>
                             <Preloader v-else />
@@ -279,25 +262,21 @@
 
                     <h3 class="text-lg font-medium text-webapp">Description</h3>
 
-                    <div class="text-sub-webapp text-sm text-left mt-1 xl:mt-3" v-if="!onEditingMode">
+                    <div class="text-sub-webapp text-sm text-left mt-1 xl:mt-3">
                         <pre class="w-full whitespace-pre-wrap"
                             v-if="!openFullDesc">{{ product.description.slice(0, 250) }}<span class="text-primary" v-if="product.description.length > 250" @click="openFullDesc = true">... Read more</span></pre>
                         <pre class="w-full whitespace-pre-wrap"
                             v-else>{{ product.description }} <span class="text-primary" v-if="product.description.length > 250" @click="openFullDesc = false">..Hide</span></pre>
                     </div>
-                    <textarea v-else name="description" id="" cols="10" rows="6"
-                        class="text-sub-webapp border ounded-lg p-2 border-gray-200 text-sm text-left mt-1 xl:mt-3 w-full whitespace-pre-wrap"
-                        v-model="data.description"></textarea>
 
                     <div
                         class="flex md:hidden py-5  flex-row items-center fixed bottom-0 px-4 z-10 left-0 bg-white w-screen justify-between mt-4 border-t pt-2 border-t-gray-300">
                         <div class="flex flex-col">
-                            <p class="text-webapp text-xl xl:text-2xl font-medium product-price" v-if="!onEditingMode">₦{{
-                                formatNumber(product.price)
-                            }}
+                            <p class="text-webapp text-xl xl:text-2xl font-medium product-price">
+                                <PriceFormatter :from="product.priceCurrency" :to="$store.state.user.currency"
+                                    :amount="product.price" />
                             </p>
-                            <input type="number" v-model="data.price" v-else placeholder="Type a price to this listing"
-                                class="w-11/12 h-10 rounded-lg pl-2 title outline-none border-2 border-gray-100 focus:border-blue-600">
+
                             <p v-if="product.for === 'rent'"
                                 class="text-sm md:text-xl xl:text-2xl font-medium product-price text-webapp">Rent
                             </p>
@@ -305,16 +284,8 @@
                                 class="text-sub-webapp text-sm md:text-sm xl:text-lg product-duration flex flex-row justify-start ">
                                 Sale</p>
                         </div>
-                        <button v-if="!onEditingMode" @click="enterEditingMode"
-                            class="agent-btn flex-row items-center justify-center text-sm font-medium text-primary w-3/5 bg-white">
-                            <span>Edit ad</span>
-                        </button>
-                        <button v-else-if="hasEdited()" @click="saveEditedAd"
-                            class="agent-btn flex-row items-center justify-center text-sm font-medium text-primary w-1/2  bg-white">
-                            <span v-if="!savingUpdate">Save ad</span>
-                            <Preloader v-else />
-                        </button>
-                        <button @click="changeAdStatus('CLOSED')" v-else-if="product.status === 'AVAILABLE' && !hasEdited()"
+
+                        <button @click="changeAdStatus('CLOSED')" v-if="product.status === 'AVAILABLE'"
                             class="agent-btn cursor-pointer flex flex-row items-center justify-center text-sm font-medium  w-3/5 mr-2 text-white ml-2 bg-primary xl:w-1/2">
                             <span v-if="!updatingStatus">Close ad</span>
                             <Preloader v-else />
@@ -452,59 +423,9 @@ function changeWidth() {
     screenWidth.value = window.innerWidth
 }
 
-
-// setup editors
-const onEditingMode = ref(false)
 const newMsg = ref('')
 const errorMsg = ref('')
 const updatingStatus = ref(false)
-const savingUpdate = ref(false)
-
-const data = reactive({
-    description: '',
-    title: '',
-    price: 0,
-    for: ''
-})
-
-function enterEditingMode() {
-    onEditingMode.value = true
-}
-
-function hasEdited() {
-    if(data.description !== product.value.description || data.title !== product.value.title || data.price !== product.value.price || data.for !== product.value.for) {
-        return true
-    } else return false
-}
-
-async function saveEditedAd() {
-    try {
-        let info = {
-            id: route.params.id,
-            data: data
-        }
-
-        savingUpdate.value = true
-        const update = await axios.patch('/listings/agent/edit-product', info)
-
-        savingUpdate.value = false
-        onEditingMode.value = false
-        newMsg.value = update.data.message
-
-        // update data
-        product.value.description = data.description
-        product.value.title = data.title
-        product.value.price = data.price
-        product.value.for = data.for
-    } catch (error) {
-        savingUpdate.value = false
-        if (error.response) {
-            errorMsg.value = error.response.data.message
-        } else {
-            errorMsg.value = error.message
-        }
-    }
-}
 
 async function changeAdStatus(status) {
     try {
@@ -578,5 +499,4 @@ onMounted(() => {
     width: 100% !important;
     object-fit: cover;
     height: 100% !important;
-}
-</style>
+}</style>

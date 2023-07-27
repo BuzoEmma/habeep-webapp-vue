@@ -1,27 +1,27 @@
 <template>
     <div class="flex-row-center text-sub-webapp text-sm gap-x-1 w-full breadcrumb">
-        <span class="cursor-pointer" @click="$emit('goBack')">All Articles ></span> <span class="cursor-pointer"
-            @click="readingArticle = null">{{ props.data.title }} </span> <span
+        <span data-nosnippet class="cursor-pointer" @click="$emit('goBack')">All Articles ></span> <span
+            class="cursor-pointer" @click="readingArticle = null">{{ props.data.title }} </span> <span
             v-if="props.data.articles.length > 1 && readingArticle"> > {{
                 readingArticle.title }}</span>
     </div>
 
-    <div class="article-container p-5 md:px-20 md:py-14 w-full" v-if="readingArticle">
+    <div class="article-container p-5 md:px-20 md:py-14 w-full" v-if="readingArticle" v-motion-slide-bottom :delay="20">
         <h1 class="text-webapp font-medium text-3xl" v-if="props.data.articles.length > 1">{{ readingArticle.title }}</h1>
         <h1 class="text-webapp font-medium text-3xl" v-else>{{ props.data.title }}</h1>
 
-        <h3 class="text-xl text-sub-webapp mt-2" v-if="props.data.articles.length > 1">{{ readingArticle.subtitle }}</h3>
-        <h3 class="text-xl text-sub-webapp mt-2" v-else>{{ props.data.subtitle }}</h3>
+        <h2 class="text-xl text-sub-webapp mt-2" v-if="props.data.articles.length > 1">{{ readingArticle.subtitle }}</h2>
+        <h2 class="text-xl text-sub-webapp mt-2" v-else>{{ props.data.subtitle }}</h2>
 
         <div class="flex-row-center gap-x-2 w-fit mt-4">
-            <img src="../../../assets/icons/habeep-small-logo.svg" alt="">
+            <img data-nosnippet src="../../../assets/icons/habeep-small-logo.svg" alt="">
 
             <span class="text-sub-webapp text-sm">Written by: <strong class="text-webapp uppercase">{{
                 props.data.writer }}</strong></span>
         </div>
 
-
-        <p class="mt-10 w-full break-words text-sub-webapp md:text-xl sm:text-lg text-sm ">{{ readingArticle.content }}</p>
+        <article class="mt-10 break-words w-full h-fit text-sub-webapp sm:text-lg text-sm" v-html="readingArticle.content">
+        </article>
     </div>
 
     <div class="w-full gap-y-10 flex flex-col items-center" v-else>
@@ -32,12 +32,12 @@
 
             <div class="flex flex-col w-fit h-full justify-between gap-y-3">
                 <div class="flex-col flex w-fit gap-y-1">
-                    <h3 class="text-webapp text-lg md:text-xl font-medium">{{ article.title }}</h3>
-                    <h4 class="text-sub-webapp text-sm md:text-lg">{{ article.subtitle }}</h4>
+                    <h1 class="text-webapp text-lg md:text-xl font-medium">{{ article.title }}</h1>
+                    <h2 class="text-sub-webapp text-sm md:text-lg">{{ article.subtitle }}</h2>
                 </div>
 
                 <div class="flex-row-center gap-x-2 w-fit mt-4">
-                    <img src="../../../assets/icons/habeep-small-logo.svg" alt="">
+                    <img data-nosnippet src="../../../assets/icons/habeep-small-logo.svg" alt="">
 
                     <span class="text-sub-webapp text-sm">Written by: <strong class="text-webapp uppercase">{{
                         props.data.writer }}</strong></span>

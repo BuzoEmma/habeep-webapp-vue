@@ -1,22 +1,20 @@
 <template>
-    <div v-motion :initial="{ opacity: 0.2, x: -100 }" :enter="{ opacity: 1, x: 0 }" :leave="{ x: 100, opacity: 0, }"
-        class="w-screen min-w-full flex flex-col lg:flex-row items-center bg-white h-full md:h-screen min-h-full overflow-y-auto 2xl:overflow-hidden">
+    <div v-motion :initial="{ x: -100 }" :enter="{ x: 0 }"
+        class="w-screen min-w-full flex flex-col lg:flex-row items-center bg-white h-full md:h-screen min-h-full overflow-y-auto no-scroll-btn 2xl:overflow-hidden">
         <div class="flex flex-col items-start gap-y-6 h-2/6 lg:h-full bg-webapp justify-between w-full lg:w-2/5 px-10">
-            <div class="logo md:flex hidden flex-row items-center justify-start pt-10 w-full gap-x-2 cursor-pointer"
-                @click="$router.push('/')">
-                <img src="../../../../../assets/icons/logo-white.svg" alt="Logo">
-                <span class="text-white text-2xl">Habeep</span>
+            <div class="w-full flex-row-center justify-between pt-10">
+                <img src="../../../../../assets/icons/chevron-left.svg" @click="$emit('goBack')" class="block" alt="">
+
             </div>
-            <img src="../../../../../assets/icons/chevron-left.svg" @click="$emit('goBack')" class="md:hidden block pt-10"
-                alt="">
-            <h1 class="text-white font-medium text-2xl md:text-4xl xl:text-5xl   w-full text-left">What kind of property do you
+            <h1 class="text-white font-medium text-2xl md:text-4xl xl:text-5xl   w-full text-left">What kind of property do
+                you
                 want to
                 list?</h1>
             <p></p>
         </div>
 
         <div
-            class="form-container flex flex-col items-center justify-between relative bg-white gap-y-3 w-full lg:w-3/5 min-h-fit h-full lg:h-full overflow-y-auto">
+            class="form-container flex flex-col items-center justify-between w-full lg:w-3/5 h-full lg:h-full overflow-y-hidden no-scroll-btn">
 
             <div class="flex flex-col gap-y-4 w-full justify-center p-5 md:p-16 2xl:p-24 overflow-y-auto no-scroll-btn">
 
@@ -71,11 +69,9 @@
                 </div>
 
                 <div class="border-2 border-gray-200 w-full flex flex-row items-center justify-between p-3 rounded-lg cursor-pointer"
-                    @click="selectHouseType({ type: 7, data: 'land' })"
-                    :class="{ 'border-blue-600': activeType === 7 }">
+                    @click="selectHouseType({ type: 7, data: 'land' })" :class="{ 'border-blue-600': activeType === 7 }">
 
-                    <span class="text-webapp font-xl font-medium"
-                        :class="{ 'text-blue-600': activeType === 7 }">Land</span>
+                    <span class="text-webapp font-xl font-medium" :class="{ 'text-blue-600': activeType === 7 }">Land</span>
                     <img src="../../../../../assets/icons/listings/land.jpeg" alt="" class="h-12 w-28 rounded-lg">
                 </div>
 
@@ -87,41 +83,82 @@
                 </div>
                 <div class="flex flex-row p-6 w-full items-center justify-between">
                     <span class="text-xl font-medium text-webapp underline cursor-pointer"
-                        @click="$emit('goBack', { to: 'ForPage', from: 'HouseTypePage'})">Back</span>
-                    <button @click="$emit('passData', data)" :disabled="data.data.length < 1"
-                        :class="{ 'bg-slate-400 text-white': data.data.length < 1 }"
-                        class="h-10 w-24 rounded-lg bg-primary text-white text-sm text-medium">Next</button>
+                        @click="$emit('goBack')">Back</span>
+                    <button @click="updateProduct" :disabled="updating"
+                        class="h-10 w-24 rounded-lg bg-blue-700 text-white text-sm text-medium">
+                        <Preloader v-if="updating" class="scale-75" />
+                        <span v-else>Next</span>
+                    </button>
                 </div>
             </div>
         </div>
+
+        <Toast :msg="errorMsg" type="danger" v-if="onError" />
     </div>
 </template>
 
 <script setup>
 import { ref, reactive } from 'vue'
-import MainNavbarVue from "../../../../../components/MainNavbar.vue";
-import { useStore } from 'vuex'
-const store = useStore()
+
+import axios from '../../../../../composables/axios'
+
+const props = defineProps(['data'])
+const emit = defineEmits(['finish'])
+
+const errorMsg = ref('')
+const onError = ref(false)
+const updating = ref(false)
+
+const typesArray = ['apartment', 'bungalow', 'duplex', 'flat', 'office', 'room_parlor', 'land']
 
 const data = reactive({
-    type: 'type',
-    data: ''
+    type: props.data.type,
 })
 
 let activeType = ref(0)
 
 const selectHouseType = (type) => {
     activeType.value = type.type
-    data.data = type.data
+    data.type = type.data
 }
 
-const typesArray = ['apartment', 'bungalow', 'duplex', 'flat', 'office', 'room_parlor', 'land']
-if (store.state.listingProcess.type.length > 0) {
-    data.data = store.state.listingProcess.type
-    for (let i = 0; i < typesArray.length; i++) {
-        if(data.data === typesArray[i]) {
-            activeType.value = i + 1
-        } 
+for (let i = 0; i < typesArray.length; i++) {
+    if (props.data.type === typesArray[i]) {
+        activeType.value = i + 1
+    }
+}
+
+
+async function updateProduct() {
+    try {
+        updating.value = true
+        let edited = false
+        Object.keys(data).forEach(key => {
+            if (props.data[key] !== data[key]) {
+                edited = true
+                return;
+            }
+        })
+        if (edited) {
+            await axios.patch('/listings/agent/edit-product/' + props.data._id, data)
+            emit('finish', data)
+        } else {
+            emit('finish')
+        }
+        updating.value = false
+    } catch (error) {
+        updating.value = false
+        onError.value = true
+        if (error.response) {
+            errorMsg.value = error.response.data.message
+        } else {
+            errorMsg.value = error.message
+        }
+
+        setTimeout(() => {
+            onError.value = false
+            errorMsg.value = ''
+        }, 3000);
     }
 }
 </script>
@@ -143,8 +180,7 @@ input:focus {
 }
 
 .form-container::-webkit-scrollbar {
-    height: .1rem;
-    width: 3px;
+    display: none;
 }
 
 .form-container::-webkit-scrollbar-track {

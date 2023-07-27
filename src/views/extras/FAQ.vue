@@ -38,16 +38,16 @@
                     <img src="../../assets/icons/book.svg" alt="">
 
                     <div class="flex flex-col w-fit h-full justify-between gap-y-3">
-                        <p class="flex-col flex w-fit gap-y-1">
-                            <span class="text-webapp text-lg md:text-xl font-medium">{{ collection.title }}</span>
-                            <span class="text-sub-webapp text-sm md:text-lg">{{ collection.subtitle }}</span>
-                        </p>
+                        <div class="flex-col flex w-fit gap-y-1">
+                            <h1 class="text-webapp text-lg md:text-xl font-medium">{{ collection.title }}</h1>
+                            <h2 class="text-sub-webapp text-sm md:text-lg">{{ collection.subtitle }}</h2>
+                        </div>
 
                         <div class="flex-row-center gap-x-2 w-fit">
                             <img src="../../assets/icons/habeep-small-logo.svg" alt="">
 
                             <p class="flex-col flex w-fit gap-y-1">
-                                <span class="text-sub-webapp text-sm">{{ collection.articles.length }} article in this
+                                <span class="text-sub-webapp text-sm" data-nosnippet>{{ collection.articles.length }} article in this
                                     collection</span>
                                 <span class="text-sub-webapp text-sm">Written by: <strong class="text-webapp uppercase">{{
                                     collection.writer }}</strong></span>
@@ -101,6 +101,9 @@
             <router-link to="/terms-of-service" class="underline text-webapp">Terms of service</router-link>
             <router-link to="/listings/search?name=Houses" class="underline text-webapp">Products</router-link>
             <router-link to="/help" class="underline text-blue-600">Help</router-link>
+
+            <a href="https://habeep.org/terms-of-service" class="hidden">Habeep Terms of service</a>
+            <a href="https://habeep.org/blog" class="hidden">Habeep Blogs</a>
         </div>
 
 
@@ -118,14 +121,14 @@ import Article from './components/Article.vue';
 
 import faq from './data/articles/faq.json';
 import contact_us from './data/articles/contact-us.json'
-import hbptoken from './data/articles/hbptoken.json'
-import wallet from './data/articles/wallet.json'
+// import hbptoken from './data/articles/hbptoken.json'
+// import wallet from './data/articles/wallet.json'
 
 const collections = []
 const filteredCollections = ref([])
 collections.push(faq)
-collections.push(hbptoken)
-collections.push(wallet)
+// collections.push(hbptoken)
+// collections.push(wallet)
 collections.push(contact_us)
 filteredCollections.value = collections
 

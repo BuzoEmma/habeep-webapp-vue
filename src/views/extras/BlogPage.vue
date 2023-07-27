@@ -16,7 +16,7 @@
             <Skeleton class="w-full blog-image" v-if="fetchingBlog || !blog.imageLoaded" />
             <img :src="blog.imageCover" @load="blog.imageLoaded = true"
                 :class="{ 'hidden': !blog.imageLoaded || fetchingBlog }"
-                class="blog-image mt-10 w-full object-cover object-center" :alt="blog.title + 'Image cover'">
+                class="blog-image mt-10 w-full object-cover object-center" :alt="blog.title">
         </div>
 
         <div class="flex flex-col w-full sm:w-5/6 md:w-3/5 items-center h-fit mt-5 px-4 pb-16"
@@ -26,23 +26,23 @@
                     <img src="../../assets//icons/logo-mini.svg" alt="" class="h-14 w-14 rounded-full">
                     <div class="flex-col flex items-start text-black">
                         <span class="uppercase text-lg font-bold">{{ blog.username }}</span>
-                        <span class="text-sm text-normal">{{ moment(blog.createdAt).format('MMM DD, YYYY') }} . 2 min
-                            read</span>
+                        <p class="text-sm text-normal">{{ moment(blog.createdAt).format('MMM DD, YYYY') }} . 2 min
+                            read</p>
                     </div>
                 </div>
 
                 <div class="flex-row-center justify-start md:mt-0 mt-4 md:justify-end w-full">
-                    <a href="https://twitter.com/habeepng" target="_blank" class="cursor-pointer">
+                    <a href="https://twitter.com/habeep_re" target="_blank" class="cursor-pointer">
                         <div class="social-media-box grid place-items-center px-10">
                             <img src="../../assets/icons/fb.svg" alt="Facebook page link">
                         </div>
                     </a>
-                    <a href="https://twitter.com/habeepng" target="_blank" class="cursor-pointer">
+                    <a href="https://twitter.com/habeep_re" target="_blank" class="cursor-pointer">
                         <div class="social-media-box grid place-items-center px-10">
                             <img src="../../assets/icons/twitter.svg" alt="twitter page">
                         </div>
                     </a>
-                    <a href="https://twitter.com/habeepng" target="_blank" class="cursor-pointer">
+                    <a href="https://twitter.com/habeep_re" target="_blank" class="cursor-pointer">
                         <div class="social-media-box grid place-items-center px-10">
                             <img src="../../assets/icons/whatsapp.svg" alt="whatsapp link">
                         </div>

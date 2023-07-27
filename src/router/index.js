@@ -136,27 +136,29 @@ const routes = [
         path: '/listings/products/:id',
         name: 'Listings-product',
         component: () => import('../views/listings/Product.vue'),
-        // meta: {
-        //     title: "Product"
-        // }
+    },
+    {
+        path: '/listings/agent/view/products/:id',
+        name: 'Listings-product-view',
+        component: () => import('../views/listings/AgentAd.vue'),
+        meta: {
+            title: "View your Listing"
+        }
     },
     {
         path: '/listings/agent/products/:id',
         name: 'Listings-product-Agent',
         beforeEnter: guardMyrouteForAgent,
-        component: () => import('../views/listings/AgentAd.vue'),
+        component: () => import('../views/profile/agents/post/EditAd.vue'),
         meta: {
-            title: "Agent Listing"
+            title: "Edit your listing"
         }
-    },
+      },
     // profile
     {
         path: '/:username',
         name: 'UserProfiles',
         component: () => import('../views/profile/agents/Profile.vue'),
-        // meta: {
-        //     title: 'Profile'
-        // }
     },
     {
         path: '/agent/ads',

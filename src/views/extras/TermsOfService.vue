@@ -5,7 +5,7 @@
 
         <div class="body px-6 2xl:px-44 md:px-20 w-full flex flex-col h-fit items-start gap-y-8">
             <div class="flex flex-col w-full items-start gap-y-4 mt-16">
-                <p class="text-webapp text-3xl md:text-4xl font-medium w-full">Terms of service</p>
+                <h1 class="text-webapp text-3xl md:text-4xl font-medium w-full">Terms of service</h1>
                 <p class="text-sub-webapp text-xl xl:w-4/5 w-full ">Welcome to Habeep. These terms of service ("Terms") set
                     out the terms and conditions that govern your access to and use of Habeep, an online platform for real
                     estate management. By accessing or using Habeep, you agree to be bound by these Terms and our privacy
@@ -16,14 +16,14 @@
 
 
             <div class="flex flex-col w-full items-start gap-y-4 mt-10">
-                <p class="text-webapp text-2xl md:text-3xl font-medium w-full">1. Use of Habeep</p>
+                <h2 class="text-webapp text-2xl md:text-3xl font-medium w-full">1. Use of Habeep</h2>
                 <p class="text-sub-webapp text-lg  w-full ">Habeep provides a platform for users to search for, list, and
                     manage real estate properties. You must be at least 18 years old to use Habeep.
                 </p>
             </div>
 
             <div class="flex flex-col w-full items-start gap-y-4 mt-3">
-                <p class="text-webapp text-2xl md:text-3xl font-medium w-full">2. User Roles</p>
+                <h2 class="text-webapp text-2xl md:text-3xl font-medium w-full">2. User Roles</h2>
                 <p class="text-sub-webapp text-lg  w-full ">Habeep allows four types of users to access its platform:</p>
 
                 <li class="text-sub-webapp text-lg  w-full ml-5">Agents: registered and licensed real estate agents
@@ -45,7 +45,7 @@
             </div>
 
             <div class="flex flex-col w-full items-start gap-y-4 mt-3">
-                <p class="text-webapp text-2xl md:text-3xl font-medium w-full">3. User Conduct</p>
+                <h2 class="text-webapp text-2xl md:text-3xl font-medium w-full">3. User Conduct</h2>
                 <p class="text-sub-webapp text-lg  w-full ">You are solely responsible for your conduct on Habeep. By using
                     Habeep, you agree not to:</p>
 
@@ -67,7 +67,7 @@
             </div>
 
             <div class="flex flex-col w-full items-start  mt-10">
-                <p class="text-webapp text-2xl md:text-3xl font-medium w-full">4. Registration Fee</p>
+                <h2 class="text-webapp text-2xl md:text-3xl font-medium w-full">4. Registration Fee</h2>
                 <p class="text-sub-webapp text-lg  w-full mt-4">Before activating your account on Habeep, you are required
                     to
                     pay a non-refundable registration fee, the amount of which is determined by your user type. The
@@ -81,20 +81,20 @@
             </div>
 
             <div class="flex flex-col w-full items-start  mt-10">
-                <p class="text-webapp text-2xl md:text-3xl font-medium w-full">5. Intellectual Property</p>
-                <p class="text-sub-webapp text-lg  w-full mt-4">Habeep and its content are protected by copyright,
+                <h2 class="text-webapp text-2xl md:text-3xl font-medium w-full">5. Intellectual Property</h2>
+                <h3 class="text-sub-webapp text-lg  w-full mt-4">Habeep and its content are protected by copyright,
                     trademark, and other laws. You may not copy, modify, distribute, or create derivative works of Habeep or
                     its content without our express written consent.
-                </p>
-                <p class="text-sub-webapp text-lg  w-full ">
+                </h3>
+                <p class="text-sub-webapp text-lg  w-full">
                     You acknowledge and agree that all rights, title, and interest in and to Habeep and its content are and
                     shall remain the exclusive property of Habeep or its licensors.
                 </p>
             </div>
 
             <div class="flex flex-col w-full items-start  mt-10">
-                <p class="text-webapp text-2xl md:text-3xl font-medium w-full">6. Disclaimers and Limitations of Liability
-                </p>
+                <h2 class="text-webapp text-2xl md:text-3xl font-medium w-full">6. Disclaimers and Limitations of Liability
+                </h2>
                 <p class="text-sub-webapp text-lg  w-full mt-4">Habeep is provided "as is" without warranty of any kind,
                     either express or implied. We do not guarantee that Habeep will be uninterrupted or error-free.
 
@@ -111,8 +111,8 @@
             </div>
 
             <div class="flex flex-col w-full items-start  mt-10">
-                <p class="text-webapp text-2xl md:text-3xl font-medium w-full">7. Indemnification
-                </p>
+                <h2 class="text-webapp text-2xl md:text-3xl font-medium w-full">7. Indemnification
+                </h2>
                 <p class="text-sub-webapp text-lg  w-full mt-4">Habeep and its entire contents, features, and functionality
                     (including but not limited to all information, software, text, displays, images, video, and audio, and
                     the design, selection, and arrangement thereof), are owned by Habeep, its licensors, or other providers
@@ -169,9 +169,9 @@
             </div>
 
             <div class="flex flex-col w-full items-start  mt-10">
-                <p class="text-webapp text-2xl md:text-3xl font-medium w-full">8. User Content
+                <h2 class="text-webapp text-2xl md:text-3xl font-medium w-full">8. User Content
 
-                </p>
+                </h2>
                 <p class="text-sub-webapp text-lg  w-full mt-4">Habeep allows users to post content, including but not
                     limited to property listings, reviews, and comments. You are solely responsible for the content that you
                     post on Habeep, and you represent and warrant that you have all rights necessary to post such content.
@@ -196,9 +196,9 @@
             </div>
 
             <div class="flex flex-col w-full items-start  mt-10">
-                <p class="text-webapp text-2xl md:text-3xl font-medium w-full">9. Registration
+                <h2 class="text-webapp text-2xl md:text-3xl font-medium w-full">9. Registration
 
-                </p>
+                </h2>
                 <p class="text-sub-webapp text-lg  w-full mt-4">In order to use Habeep, you must register and create an
                     account. You agree to provide accurate, current, and complete information during the registration
                     process and to update such information to keep it accurate, current, and complete. Habeep reserves the
@@ -207,9 +207,9 @@
                 </p>
             </div>
             <div class="flex flex-col w-full items-start  mt-10">
-                <p class="text-webapp text-2xl md:text-3xl font-medium w-full">11. Links to Third-Party Websites
+                <h2 class="text-webapp text-2xl md:text-3xl font-medium w-full">11. Links to Third-Party Websites
 
-                </p>
+                </h2>
                 <p class="text-sub-webapp text-lg  w-full mt-4">Habeep may contain links to third-party websites or services
                     that are not owned or controlled by Habeep. Habeep has no control over and assumes no responsibility
                     for, the content, privacy policies, or practices of any third-party websites or services. If you access
@@ -217,39 +217,44 @@
                     Habeep's Privacy Policy do not apply to your use of such sites.
 
                 </p>
+            </div>
+        </div>
+
+        <div class="flex flex-row mt-24 md:mb-16 mb-12 items-center gap-x-4">
+            <router-link to="/terms-of-service" class="underline text-primary font-semibold">Terms of service</router-link>
+            <router-link to="/listings/search?name=Houses" class="underline text-webapp">Products</router-link>
+            <router-link to="/help" class="underline text-webapp">Help</router-link>
+
+            <a href="https://habeep.org/terms-of-service" class="hidden">Habeep Terms of service</a>
+            <a href="https://habeep.org/blog" class="hidden">Habeep Blogs</a>
         </div>
     </div>
-
-    <div class="flex flex-row mt-24 md:mb-16 mb-12 items-center gap-x-4">
-        <router-link to="/terms-of-service" class="underline text-primary font-semibold">Terms of service</router-link>
-        <router-link to="/listings/search?name=Houses" class="underline text-webapp">Products</router-link>
-        <router-link to="/help" class="underline text-webapp">Help</router-link>
-    </div>
-</div></template>
+</template>
 
 <script setup>
 import HomeNavbar from '../../components/HomeNavbar.vue'
 
 import { useHead } from '@vueuse/head'
 useHead({
-  title: 'Habeep - Terms of Service',
-  meta: [
-      { charset: 'utf-8' },
-      { name: 'description', content: 'Read our Legal Documents' },
+    title: 'Habeep - Terms of Service',
+    meta: [
+        { charset: 'utf-8' },
+        { name: 'description', content: 'Read our Legal Documents' },
 
-      { name: 'og:title', content: 'Habeep Terms of Service' },
-      { name: 'og:image', content: 'https://media.istockphoto.com/id/1179640294/vector/contract-or-document-signing-icon-document-folder-with-stamp-and-text-contract-conditions.jpg?s=612x612&w=0&k=20&c=87Bu41EuMtdXDfJbm1YrquzUmHtPjFiCb9PCsrsWP1c=' },
-      { name: 'og:url', content: 'https://habeep.org/terms-of-service' },
-      { name: 'og:website', content: 'website' },
-      { name: 'og:description', content: 'Read our Legal Documents including Privacy Policy' },
+        { name: 'og:title', content: 'Habeep Terms of Service' },
+        { name: 'og:image', content: 'https://media.istockphoto.com/id/1179640294/vector/contract-or-document-signing-icon-document-folder-with-stamp-and-text-contract-conditions.jpg?s=612x612&w=0&k=20&c=87Bu41EuMtdXDfJbm1YrquzUmHtPjFiCb9PCsrsWP1c=' },
+        { name: 'og:url', content: 'https://habeep.org/terms-of-service' },
+        { name: 'og:website', content: 'website' },
+        { name: 'og:description', content: 'Read our Legal Documents including Privacy Policy' },
 
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' }
     ]
 })
 
 </script>
 
-<style scoped>@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
 
 .page {
     font-family: 'Ubuntu', sans-serif !important;

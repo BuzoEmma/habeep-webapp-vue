@@ -119,18 +119,18 @@
                         <div class="flex flex-col items-start gap-y-2 ad relative rounded-t-md">
                             <Skeleton v-if="!item.imageLoaded || !item.images[0]"
                                 class="w-full h-full rounded-md feed-image" style="width: 100%" />
-                            <img @click="$router.push('/listings/products/' + item._id)" :src="item.images[0].link"
+                            <img @click="$router.push('/listings/agent/view/products/' + item._id)" :src="item.images[0].link"
                                 class="w-full h-full rounded-md feed-image" :class="{ 'hidden': !item.imageLoaded }"
                                 @load="item.imageLoaded = true"
                                 v-if="item.images[0] && item.images[0].link && item.images[0].link.includes('.mp4') == false"
                                 alt="">
-                            <video @click="$router.push('/listings/products/' + item._id)"
+                            <video @click="$router.push('/listings/agent/view/products/' + item._id)"
                                 :class="{ 'hidden': !item.imageLoaded }" @loadedmetadata="item.imageLoaded = true"
                                 :src="item.images[0].link" class="w-full rounded-md feed-image"
                                 v-if="item.images[0] && item.images[0].link && item.images[0].link.includes('.mp4') == true"
                                 autoplay muted preload="auto"></video>
                             <p class="text-webapp text-lg font-medium w-full  cursor-pointer"
-                                @click="$router.push('/listings/products/' + item._id)">
+                                @click="$router.push('/listings/agent/view/products/' + item._id)">
                                 {{ item.title }}
                             </p>
 
@@ -154,7 +154,7 @@
                             </div>
 
                             <div class="mt-3 flex flex-row items-center justify-between gap-x-2 w-full">
-                                <button @click="$router.push('/listings/agent/products/' + item._id)"
+                                <button @click="$router.push('/listings/agent/view/products/' + item._id)"
                                     class="border border-blue-700 flex flex-row justify-center cursor-pointer items-center gap-x-2 rounded-md w-1/2 h-12">
                                     <img src="../../../../assets/icons/listings/edit.svg" alt="">
                                     <span class="text-sm text-primary">Edit ad</span>
@@ -186,18 +186,18 @@
                         <div class="flex flex-col items-start gap-y-2 relative ad  rounded-t-md">
                             <Skeleton v-if="!item.imageLoaded || !item.images[0]"
                                 class="w-full h-full rounded-md feed-image" style="width: 100%" />
-                            <img @click="$router.push('/listings/products/' + item._id)" :src="item.images[0].link"
+                            <img @click="$router.push('/listings/agent/view/products/' + item._id)" :src="item.images[0].link"
                                 class="w-full h-full rounded-md feed-image" :class="{ 'hidden': !item.imageLoaded }"
                                 @load="item.imageLoaded = true"
                                 v-if="item.images[0] && item.images[0].link && item.images[0].link.includes('.mp4') == false"
                                 alt="">
-                            <video @click="$router.push('/listings/products/' + item._id)"
+                            <video @click="$router.push('/listings/agent/view/products/' + item._id)"
                                 :class="{ 'hidden': !item.imageLoaded }" @loadedmetadata="item.imageLoaded = true"
                                 :src="item.images[0].link" class="w-full rounded-md feed-image"
                                 v-if="item.images[0] && item.images[0].link && item.images[0].link.includes('.mp4') == true"
                                 autoplay muted preload="auto"></video>
                             <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
-                                @click="$router.push('/listings/products/' + item._id)">
+                                @click="$router.push('/listings/agent/view/products/' + item._id)">
                                 {{ item.title }}
                             </p>
 

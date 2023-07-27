@@ -84,8 +84,7 @@
                     <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
                     <div class="flex flex-row gap-x-3 items-center">
                         <ShareNetwork :popup="{ width: 400, height: 200 }" network="whatsapp"
-                            :url="'https://habeep.org' + $route.fullPath"
-                            :title="product.title"
+                            :url="'https://habeep.org' + $route.fullPath" :title="product.title"
                             :description="product.description" :media="product.images[0].link">
                             <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
                         </ShareNetwork>
@@ -156,7 +155,8 @@
                         </div>
                         <div class="md:flex hidden flex-col ">
                             <h2 class="text-webapp text-2xl md:text-xl xl:text-2xl font-medium product-price">
-                                <PriceFormatter :from="product.priceCurrency" :to="$store.state.user.currency" :amount="product.price" />
+                                <PriceFormatter :from="product.priceCurrency" :to="country.currency"
+                                    :amount="product.price" />
                             </h2>
                             <p v-if="product.for === 'rent'"
                                 class="text-sm  xl:text-lg font-medium product-price text-webapp">Rent
@@ -348,7 +348,8 @@
                         class="flex md:hidden py-5  flex-row items-center fixed bottom-0 px-4 z-10 left-0 bg-white w-screen justify-between mt-4 border-t pt-2 border-t-gray-300">
                         <div class="flex flex-col">
                             <h2 class="text-webapp text-xl xl:text-2xl font-medium product-price">
-                                <PriceFormatter :from="product.priceCurrency" :to="$store.state.user.currency" :amount="product.price" />
+                                <PriceFormatter :from="product.priceCurrency" :to="country.currency"
+                                    :amount="product.price" />
                             </h2>
                             <p v-if="product.for === 'rent'"
                                 class="text-sm md:text-xl xl:text-2xl font-medium product-price text-webapp">Yearly
@@ -410,6 +411,9 @@ import { useRoute, useRouter } from 'vue-router'
 import formatNumber from "number_formatter"
 import saveAd from '../../composables/saveAd'
 import { useStore } from 'vuex';
+import axiosDefault from 'axios'
+import clm from 'country-locale-map'
+
 
 const route = useRoute()
 const router = useRouter()
@@ -451,13 +455,31 @@ const processingProduct = ref(false)
 const product = ref({})
 const agentDetails = ref({ ads: [] })
 
-const changingCarousel = ref(false)
-const inNewCarousel = ref(false)
 const activeCarouselImg = ref(1)
 const onImageViewer = ref(false)
 const openFullDesc = ref(false)
 
 const images = ref(null)
+
+let country = ref({
+    country: 'Nigeria',
+    countryCode: 'NG',
+    currency: 'NGN'
+})
+
+async function getResidence() {
+    if (store.state.isAuthenticated) {
+        country.value = {
+            country: store.state.user.nationality,
+            countryCode: store.state.user.countryShortName,
+            currency: store.state.user.currency
+        }
+    } else {
+        const getCountry = await axiosDefault.get('http://ip-api.com/json')
+        country.value = getCountry.data
+        country.value.currency = clm.getCurrencyByAlpha2(country.value.countryCode)
+    }
+}
 
 const getProduct = async () => {
     try {
@@ -631,6 +653,7 @@ function changeWidth() {
 }
 
 onMounted(() => {
+    getResidence()
     getProduct()
 })
 </script>

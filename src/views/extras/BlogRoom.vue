@@ -4,13 +4,13 @@
 
         <div class="body px-6 2xl:px-44 md:px-20 w-full flex flex-col h-fit items-start gap-y-8">
             <div class="flex flex-col w-full items-start gap-y-4 mt-16">
-                <p class="text-webapp text-3xl md:text-4xl font-medium w-full">Blogroom</p>
-                <p class="text-sub-webapp text-xl  w-full">Get latest information on company news and platform updates
-                    and features</p>
+                <h1 class="text-webapp text-3xl md:text-4xl font-medium w-full">Blogroom</h1>
+                <h2 class="text-sub-webapp text-xl  w-full">Get latest information on company news and platform updates
+                    and features</h2>
             </div>
 
             <div class="w-full h-full grid place-items-center mt-10" v-if="blogs.length === 0 && !fetchingBlogs">
-                <p class="montserrat text-5xl font-semibold">No blogs posted yet</p>
+                <p data-nosnippet class="montserrat text-5xl font-semibold">No blogs posted yet</p>
             </div>
             <!-- blogs -->
             <div class="flex flex-row mt-6 md:mt-10 w-full h-fit flex-wrap flex-auto"
@@ -20,18 +20,18 @@
                     @click="$router.push('/blog/' + blog._id)" v-motion-fade v-for="blog in blogs" :key="blog">
                     <div class="w-full rounded-lg border border-gray-100">
                         <Skeleton class="w-full blog-image" v-if="!blog.imageLoaded" />
-                        <img :src="blog.imageCover" alt="" @load="blog.imageLoaded = true"
+                        <img :src="blog.imageCover" :alt="blog.title" @load="blog.imageLoaded = true"
                             :class="{ 'hidden': !blog.imageLoaded }" class="w-full rounded-lg blog-image">
                     </div>
-                    <p class="text-webapp text-lg font-medium ubuntu mt-2 w-full">{{ blog.title }}</p>
-                    <p class="text-sub-webapp text-sm w-full mt-1">{{ blog.subtitle }}</p>
-                    <p class="text-sub-webapp text-sm w-full mt-1">{{ moment(blog.createdAt).format('MMM DD, YYYY') }} .
+                    <h1 class="text-webapp text-lg font-medium ubuntu mt-2 w-full">{{ blog.title }}</h1>
+                    <h2 class="text-sub-webapp text-sm w-full mt-1">{{ blog.subtitle }}</h2>
+                    <time class="text-sub-webapp text-sm w-full mt-1">{{ moment(blog.createdAt).format('MMM DD, YYYY') }} .
                         <span class="text-webapp font-bold">{{ blog.username }}</span>
-                    </p>
+                    </time>
                 </div>
             </div>
 
-            <div class="flex flex-row mt-6  md:mt-10 w-full h-fit flex-wrap" v-if="blogs.length === 0 && fetchingBlogs">
+            <div data-nosnippet="" class="flex flex-row mt-6  md:mt-10 w-full h-fit flex-wrap" v-if="blogs.length === 0 && fetchingBlogs">
                 <!-- blog article skeleton -->
                 <div class="flex flex-col w-full items-start gap-y-3 md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0"
                     v-for="item in 4" :key="item">
@@ -48,13 +48,13 @@
             <div
                 class="download-app-animation sm:w-5/6 w-full md:w-3/5 self-center xl:w-3/4 border-2 p-4  rounded xl:relative border-gray-300 h-fit xl:p-8 2xl:p-16 mt-24 md:mt-32 xl:mt-48">
                 <div class="flex flex-col items-center xl:items-start gap-y-4 xl:gap-y-3 xl:w-1/2">
-                    <p
+                    <h1
                         class="text-webapp text-2xl md:text-3xl  xl:text-4xl font-bold xl:w-full w-full md:w-5/6 text-left md:text-center xl:text-left">
-                        House search in just a click</p>
-                    <p
+                        House search in just a click</h1>
+                    <h2
                         class="text-sub-webapp text-sm  md:text-lg xl:w-full w-full md:w-4/6 text-left md:text-center xl:text-left">
                         Get the app on any device you use on apple
-                        store or google playstore</p>
+                        store or google playstore</h2>
                     <!-- download stores -->
                     <div class="flex flex-row gap-x-2 items-center w-fit mt-4">
                         <!-- <img src="../../assets/images/apple-download.svg" alt=""> -->
@@ -66,7 +66,7 @@
                 </div>
 
                 <!-- phone anime -->
-                <img src="../../assets/images/phone-blog-anime.svg"
+                <img src="../../assets/images/phone-blog-anime.svg" data-nosnippet=""
                     class="hidden lg:block absolute -top-2/4 2xl:-bottom-full right-10" alt="screenshot of habeep app">
 
             </div>

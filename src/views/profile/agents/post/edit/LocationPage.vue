@@ -3,7 +3,7 @@
         class="w-screen min-w-full flex flex-col lg:flex-row items-center bg-white h-full md:h-screen min-h-full overflow-y-auto md:overflow-hidden">
         <div class="flex flex-col items-start gap-y-6 h-2/6 lg:h-full bg-webapp justify-between w-full lg:w-2/5 px-10">
             <div class="logo md:flex hidden flex-row items-center justify-start pt-10 w-full gap-x-2 cursor-pointer"
-                @click="$router.push('/')">
+                @click="$emit('goBack')">
                 <img src="../../../../../assets/icons/logo-white.svg" alt="Logo">
                 <span class="text-white text-2xl">Habeep</span>
             </div>
@@ -31,7 +31,7 @@
                 <div class="form-fields flex flex-col gap-y-5 items-center justify-center absolute w-full h-full z-10">
                     <div class="flex flex-row justify-between items-center h-14 w-72 rounded-full bg-white px-4 cursor-pointer"
                         @click="toggleCityModal('open')">
-                        <span class="text-xl text-webapp" v-if="data.data.city.length > 5">{{ data.data.city }}</span>
+                        <span class="text-xl text-webapp" v-if="data.city.length > 5">{{ data.city }}</span>
                         <span class="text-xl text-webapp" v-else>{{ store.state.user.nationality }}</span>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="#71759D" class="w-4 h-4 cursor-pointer">
@@ -45,7 +45,7 @@
                                 clip-rule="evenodd" />
                         </svg>
 
-                        <input type="text" class="outline-none border-none w-5/6" v-model="data.data.address"
+                        <input type="text" class="outline-none border-none w-5/6" v-model="data.address"
                             @mouseleave="changeMapAddress('addr')" placeholder="Enter property address">
                     </div>
                 </div>
@@ -98,13 +98,16 @@
                 </div>
                 <div class="flex flex-row p-6 w-full items-center justify-between">
                     <span class="text-xl font-medium text-webapp underline cursor-pointer"
-                        @click="$emit('goBack', { to: 'HouseTypePage', from: 'Location' })">Back</span>
-                    <button @click="$emit('passData', data)" :disabled="data.data.address.length < 1"
-                        :class="{ 'bg-slate-400 text-white': data.data.address.length < 1 }"
-                        class="h-10 w-24 rounded-lg bg-primary text-white text-sm text-medium">Next</button>
+                        @click="$emit('goBack')">Back</span>
+                    <button @click="updateProduct" :disabled="updating" class="h-10 w-24 rounded-lg bg-blue-700 text-white text-sm text-medium">
+                        <Preloader v-if="updating" class="scale-75" />
+                        <span v-else>Next</span>
+                    </button>
                 </div>
             </div>
         </div>
+
+        <Toast :msg="errorMsg" type="danger" v-if="onError" />
     </div>
 </template>
 
@@ -115,28 +118,32 @@ import axios from '../../../../../composables/axios'
 
 const store = useStore()
 
+const props = defineProps(['data'])
+const emit = defineEmits(['finish'])
+
 
 const data = reactive({
-    type: 'location',
-    data: {
-        address: '',
-        city: ''
-    }
+    address: props.data.location.address,
+    city: props.data.location.city
 })
+
+const errorMsg = ref('')
+const onError = ref(false)
+const updating = ref(false)
 
 
 let mapAddress = ref(store.state.user.nationality)
 
 function changeMapAddress(change) {
     if (change === 'city') {
-        if (data.data.address.length > 2) {
-            let formattedCity = data.data.city.split(',')[0]
-            mapAddress.value = data.data.address + ' ' + formattedCity
-        } else mapAddress.value = data.data.city
+        if (data.address.length > 2) {
+            let formattedCity = data.city.split(',')[0]
+            mapAddress.value = data.address + ' ' + formattedCity
+        } else mapAddress.value = data.city
     }
 
     if (change === 'addr') {
-        mapAddress.value = data.data.address + ' ' + data.data.city
+        mapAddress.value = data.address + ' ' + data.city
     }
 }
 
@@ -152,7 +159,7 @@ function toggleCityModal(state) {
 // select city
 function selectCity(match) {
     toggleCityModal('close')
-    data.data.city = match.city + ', ' + match.state
+    data.city = match.city + ', ' + match.state
     changeMapAddress('city')
 }
 
@@ -182,6 +189,37 @@ function checkForCity() {
     }
 }
 
+async function updateProduct() {
+    try {
+        updating.value = true
+        let edited = false
+        if(props.data.location.address !== data.address || props.data.location.city !== data.city) {
+            edited = true
+        }
+        if(edited) {
+            await axios.patch('/listings/agent/edit-product/' + props.data._id, {
+                location: data
+            })
+            emit('finish', { location: data})
+        } else {
+            emit('finish')
+        }
+        updating.value = false
+    } catch (error) {
+        updating.value = false
+        onError.value = true
+        if (error.response) {
+            errorMsg.value = error.response.data.message
+        } else {
+            errorMsg.value = error.message
+        }
+
+        setTimeout(() => {
+            onError.value = false
+            errorMsg.value = ''
+        }, 3000);
+    }
+}
 
 
 async function getStates() {
@@ -226,10 +264,6 @@ async function getStates() {
     } catch (error) {
         console.log(error)
     }
-}
-
-if (store.state.listingProcess.location.address) {
-    data.data = store.state.listingProcess.location
 }
 
 onMounted(() => {
