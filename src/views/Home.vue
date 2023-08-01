@@ -105,7 +105,7 @@ useHead({
   titleTemplate: '%s | Quick way to Find your dream Property',
   meta: [
     { charset: 'utf-8' },
-    { name: 'description', content: 'Search for new listings' },
+    { name: 'description', content: 'Search for your new dream house at Habeep. You can also search for lands and other properties only at Habeep!!' },
 
     { name: 'og:title', content: 'Search Ads' },
     { name: 'og:image', content: 'https://logos.flamingtext.com/Word-Logos/property-design-sketch-name.png' },
