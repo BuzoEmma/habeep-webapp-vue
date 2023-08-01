@@ -16,7 +16,7 @@
                 <span class="text-sub-webapp text-lg font-normal">Download our app at</span>
                 <!-- <img src="../assets/icons/apple.svg" alt=""> -->
                 <a href="https://play.google.com/store/apps/details?id=org.habeep" class="no-underline cursor-pointer"><img
-                        src="../assets/icons/playstore.svg" alt=""></a>
+                        src="../assets/icons/playstore.svg" alt="Habeep Google playstore link"></a>
             </div>
             <div class="flex flex-row gap-x-10 items-start md:items-center pl-6">
                 <span class="uppercase text-lg text-webapp cursor-pointer" :class="{ 'text-blue-700': $route.fullPath.includes('blog') === true }" @click="$router.push('/blog')">BLOG</span>

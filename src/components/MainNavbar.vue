@@ -28,7 +28,7 @@
                 <span class="text-sub-webapp text-lg font-normal">Download our app at</span>
                 <!-- <img src="../assets/icons/apple.svg" alt=""> -->
                 <a href="https://play.google.com/store/apps/details?id=org.habeep" class="no-underline cursor-pointer"><img
-                        src="../assets/icons/playstore.svg" alt=""></a>
+                        src="../assets/icons/playstore.svg" alt="Habeep Google playstore link"></a>
 
             </div>
 
