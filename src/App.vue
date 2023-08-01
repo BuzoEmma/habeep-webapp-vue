@@ -16,7 +16,7 @@ const computedAccessToken = computed(() => {
 })
 
 watch(computedAccessToken, (newId) => {
-  if (newId.length > 0) {
+  if (newId && newId.length > 0) {
     updateToken(newId)
   }
 })
@@ -88,7 +88,7 @@ async function getNotifications() {
 
     if (store.state.isAuthenticated === true) {
       const notifs = await axios.get('/notification/get/user')
-      if (notifs.data.data.length > 0) {
+      if (notifs.data && notifs.data.data && notifs.data.data.length > 0) {
         notifs.data.data.forEach(notif => {
           allNotifications.value.push(notif)
         })
