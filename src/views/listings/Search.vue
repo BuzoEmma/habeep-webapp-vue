@@ -241,6 +241,7 @@ import axios from "../../composables/axios";
 import { useRoute } from 'vue-router';
 import clm from 'country-locale-map'
 import axiosDefault from 'axios'
+import sort from 'smart-deep-sort'
 
 // ui conditionals
 const onSortDropdown = ref(false)
@@ -284,7 +285,7 @@ useHead({
 
 let country = ref({
     country: '',
-    countryCode: '',
+    cc: '',
     currency: ''
 })
 
@@ -367,21 +368,19 @@ async function getSearch(location, query) {
         })
 
         const getProducts = await axios.post(url, data)
-
-
         products.value = []
         products.value = getProducts.data.products
 
         if (store.state.isAuthenticated) {
             country.value = {
                 country: store.state.user.nationality,
-                countryCode: store.state.user.countryShortName,
+                cc: store.state.user.countryShortName,
                 currency: store.state.user.currency
             }
         } else {
-            const getCountry = await axiosDefault.get('http://ip-api.com/json')
+            const getCountry = await axiosDefault.get('https://api.myip.com')
             country.value = getCountry.data
-            country.value.currency = clm.getCurrencyByAlpha2(country.value.countryCode)
+            country.value.currency = clm.getCurrencyByAlpha2(country.value.cc)
         }
         products.value.forEach(async product => {
             const distance = await calculateDistance(product.location.city || product.location.address + ', ' + country.country)
@@ -406,7 +405,24 @@ async function getSearch(location, query) {
         searchingData.value = false
         useFilters(filterData)
     } catch (error) {
-        console.log('error getting location')
+        if (products.value.length > 0) {
+            console.log('error getting location')
+            const uniqueIds = [];
+            const uniqueProducts = products.value.filter(element => {
+                const isDuplicate = uniqueIds.includes(element._id);
+
+                if (!isDuplicate) {
+                    uniqueIds.push(element._id);
+                    return true;
+                }
+                return false;
+            });
+            products.value = uniqueProducts
+            filteredProducts.value = uniqueProducts
+
+            searchingData.value = false
+            useFilters(filterData)
+        }
     }
 
 }
@@ -453,10 +469,10 @@ async function getStates() {
         if (store.state.isAuthenticated) {
             country.value = {
                 country: store.state.user.nationality,
-                countryCode: store.state.user.countryShortName
+                cc: store.state.user.countryShortName
             }
         } else {
-            const getCountry = await axiosDefault.get('http://ip-api.com/json')
+            const getCountry = await axiosDefault.get('https://api.myip.com')
             country.value = getCountry.data
         }
 
@@ -464,10 +480,10 @@ async function getStates() {
             currentState.value = country.value.country
         }
 
-        const getState = await axios.get('/countries-api/states/' + country.value.countryCode)
+        const getState = await axios.get('/countries-api/states/' + country.value.cc)
 
         getState.data.results.forEach(async state => {
-            const getCities = await axios.get(`/countries-api/cities/${country.value.countryCode}/${state.stateid}`)
+            const getCities = await axios.get(`/countries-api/cities/${country.value.cc}/${state.stateid}`)
 
             let formatted = {
                 state: state,
@@ -569,4 +585,5 @@ function useFilters(filters) {
     width: 100% !important;
     object-fit: cover;
     max-height: 185px !important;
-}</style>
+}
+</style>

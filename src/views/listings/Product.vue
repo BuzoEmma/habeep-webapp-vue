@@ -109,7 +109,7 @@
                     v-if="carouselImg.link && carouselImg.link.toString().includes('.mp4') == false"
                     @click="enterImageViewer()">
                 <video :alt="product.title" :src="carouselImg.link" loop class="w-full feed-image"
-                    @load="carouselImg.imageLoaded = true" :class="{ 'hidden': !carousel.imageLoaded }"
+                    @load="carouselImg.imageLoaded = true" :class="{ 'hidden': !carouselImg.imageLoaded }"
                     @click="enterImageViewer()" v-else autoplay muted preload="metadata"></video>
                 <!-- <img :src="images[activeCarouselImg - 1].link" class="h-full w-full new-img" :class="{'hidden': changeCarouselImg}"> -->
 
@@ -463,7 +463,7 @@ const images = ref(null)
 
 let country = ref({
     country: 'Nigeria',
-    countryCode: 'NG',
+    cc: 'NG',
     currency: 'NGN'
 })
 
@@ -471,13 +471,13 @@ async function getResidence() {
     if (store.state.isAuthenticated) {
         country.value = {
             country: store.state.user.nationality,
-            countryCode: store.state.user.countryShortName,
+            cc: store.state.user.countryShortName,
             currency: store.state.user.currency
         }
     } else {
-        const getCountry = await axiosDefault.get('http://ip-api.com/json')
+        const getCountry = await axiosDefault.get('https://api.myip.com/')
         country.value = getCountry.data
-        country.value.currency = clm.getCurrencyByAlpha2(country.value.countryCode)
+        country.value.currency = clm.getCurrencyByAlpha2(country.value.cc)
     }
 }
 

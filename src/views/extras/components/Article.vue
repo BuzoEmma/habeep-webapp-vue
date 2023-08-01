@@ -1,7 +1,7 @@
 <template>
     <div class="flex-row-center text-sub-webapp text-sm gap-x-1 w-full breadcrumb">
         <span data-nosnippet class="cursor-pointer" @click="$emit('goBack')">All Articles ></span> <span
-            class="cursor-pointer" @click="readingArticle = null">{{ props.data.title }} </span> <span
+            class="cursor-pointer" @click="leaveArticle">{{ props.data.title }} </span> <span
             v-if="props.data.articles.length > 1 && readingArticle"> > {{
                 readingArticle.title }}</span>
     </div>
@@ -100,6 +100,21 @@ function selectArticle(article) {
     })
 }
 
+function leaveArticle() {
+    readingArticle.value = null
+    useHead({
+        title: 'Habeep | ' + props.data.title,
+        meta: [
+            { charset: 'utf-8' },
+            { name: 'description', content: props.data.subtitle },
+            { name: 'og:title', content: 'Habeep | ' + props.data.title },
+            { name: 'og:url', content: 'https://habeep.org/help' },
+            { name: 'og:website', content: 'website' },
+            { name: 'og:description', content: props.data.subtitle },
+            { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+        ]
+    })
+}
 </script>
 
 <style scoped>

@@ -47,7 +47,8 @@
                             <img src="../../assets/icons/habeep-small-logo.svg" alt="">
 
                             <p class="flex-col flex w-fit gap-y-1">
-                                <span class="text-sub-webapp text-sm" data-nosnippet>{{ collection.articles.length }} article in this
+                                <span class="text-sub-webapp text-sm" data-nosnippet>{{ collection.articles.length }}
+                                    article in this
                                     collection</span>
                                 <span class="text-sub-webapp text-sm">Written by: <strong class="text-webapp uppercase">{{
                                     collection.writer }}</strong></span>
@@ -72,26 +73,30 @@
                 <p class="hero-subtitle-trans text-white">Stay in touch with the latest news and releases</p>
             </div>
             <div class="social-links flex flex-row gap-x-3">
-                <a href="#" class="link">
+                <a href="https://www.twitter.com/habeep_re" class="link">
                     <div class="bg-white h-10 w-10 sm:h-12 sm:w-12 grid-center" style="border-radius: 50%"><img
                             src="../../assets/images/socials/twitter.svg" alt=""></div>
                 </a>
-                <a href="#" class="link">
+                <a href="https://instagram.com/habeep_re" class="link">
                     <div class="bg-white h-10 w-10 sm:h-12 sm:w-12 grid-center" style="border-radius: 50%"><img
                             src="../../assets/images/socials/insta.svg" alt=""></div>
                 </a>
-                <a href="#" class="link">
+                <a href="https://www.facebook.com/profile.php?id=100069897356008&mibextid=ZbWKwL" class="link">
                     <div class="bg-white h-10 w-10 sm:h-12 sm:w-12 grid-center" style="border-radius: 50%"><img
                             src="../../assets/images/socials/fb.svg" alt=""></div>
                 </a>
-                <a href="#" class="link">
+                <a href="https://www.linkedin.com/company/habeep/" class="link">
+                    <div class="bg-white h-10 w-10 sm:h-12 sm:w-12 grid-center p-2" style="border-radius: 50%"><img
+                            src="../../assets/images/socials/linkedin.svg" alt=""></div>
+                </a>
+                <!-- <a href="#" class="link">
                     <div class="bg-white h-10 w-10 sm:h-12 sm:w-12 grid-center" style="border-radius: 50%"><img
                             src="../../assets/images/socials/telegram.svg" alt=""></div>
                 </a>
                 <a href="#" class="link">
                     <div class="bg-white h-10 w-10 sm:h-12 sm:w-12 grid-center" style="border-radius: 50%"><img
                             src="../../assets/images/socials/tiktok.svg" alt=""></div>
-                </a>
+                </a> -->
 
 
             </div>
@@ -108,7 +113,7 @@
 
 
         <div class="fixed z-20 right-0 bottom-0  md:top-1/2">
-            <a href="mailto:help@habeep.org?subject=I have a complain to make. It is ...." target="blank">
+            <a href="mailto:habeepsystems@gmail.com?subject=I have an enquiry. It is about ...." target="_blank">
                 <img class="cursor-pointer" src="../../assets/icons/send-mail.svg" alt="">
             </a>
         </div>
@@ -155,10 +160,38 @@ const articleData = ref(null)
 function selectCollection(collection) {
     onArticle.value = true
     articleData.value = collection
+
+    useHead({
+        title: 'Habeep | ' + collection.title,
+        meta: [
+            { charset: 'utf-8' },
+            { name: 'description', content: collection.subtitle },
+            { name: 'og:title', content: 'Habeep | ' + collection.title },
+            { name: 'og:url', content: 'https://habeep.org/help?article=' + collection.title },
+            { name: 'og:website', content: 'website' },
+            { name: 'og:description', content: collection.subtitle },
+            { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+        ]
+    })
 }
 function cleanArticle() {
     onArticle.value = false
     articleData.value = null
+
+    useHead({
+        title: 'Habeep | Support Center',
+        meta: [
+            { charset: 'utf-8' },
+            { name: 'description', content: 'Have an Issue and want to learn more about Habeep? Visit our help page to learn more' },
+
+            { name: 'og:title', content: 'Habeep | Support Center' },
+            { name: 'og:image', content: '../../assets/icons/book.svg' },
+            { name: 'og:url', content: 'https://habeep.org/help' },
+            { name: 'og:website', content: 'website' },
+            { name: 'og:description', content: 'Have an Issue and want to learn more about Habeep? Visit our help page to learn more' },
+            { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+        ]
+    })
 }
 
 const searchWord = ref('')
@@ -220,4 +253,5 @@ function searchArticles() {
     box-shadow: 0px 6px 14px -6px rgba(24, 39, 75, 0.07), 0px 10px 32px -4px rgba(24, 39, 75, 0.05);
     border-radius: 15px;
     min-height: 170px;
-}</style>
+}
+</style>

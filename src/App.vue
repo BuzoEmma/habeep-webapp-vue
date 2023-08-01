@@ -1,9 +1,9 @@
 <script setup>
 import { useStore } from "vuex";
 import { useRouter, useRoute } from "vue-router";
-import axios from "./composables/axios";
 import { ref, reactive, onMounted, computed, watch } from "vue";
 import { updateToken } from "./composables/axios";
+import axios from "./composables/axios";
 
 
 const store = useStore();
@@ -101,39 +101,37 @@ async function getNotifications() {
       allNotifications.value = allnotifs.data.data
     }
   } catch (error) {
-    console.log(error)
+    return;
   }
 }
 
 async function takeNotificationAction(notif) {
-  console.log('hello')
-  await deleteNotification(notif, null)
-  
   if (notif.additionalInfo) {
-    if (notif.additionalInfo.type === 'newProduct') {
-      router.push('/listings/products/' + notif.additionalInfo.id)
+        if (notif.additionalInfo.type === 'newProduct') {
+            await deleteNotification(notif, null)
+            router.push('/listings/products/' + notif.additionalInfo.id)
+        }
+    } else if (notif.msg === 'Verify your account to access all habeep features') {
+        router.push('/verify-otp?reason=user_verification&email=' + store.state.user.email)
+    } else {
+        deleteNotification(notif, null)
     }
-  } else if (notif.msg === 'Verify your account to access all habeep features') {
-    router.push('/verify-otp?reason=user_verification&email=' + store.state.user.email)
-  }
+
+  await deleteNotification(notif, null)
 }
 
 async function deleteNotification(notif, limit) {
-  // console.log(allNotifications.value.indexOf(notif))
-  console.log('nice')
   try {
     if (limit !== 'all') {
       allNotifications.value.splice(allNotifications.value.indexOf(notif))
     }
     if (notif.users !== ['all']) {
-      console.log('hello')
       await axios.delete('/notification/delete/' + notif._id)
     }
 
-    return true
+    return;
   } catch (error) {
-    console.log(error)
-    return false
+    return;
   }
 }
 
@@ -171,13 +169,12 @@ onMounted(() => {
           </div>
         </div>
         <svg xmlns="http://www.w3.org/2000/svg"
-          v-if="!notif.additionalInfo || !notif.msg === 'Verify your account to access all habeep features'"
+          v-if="!notif.additionalInfo && notif.msg !== 'Verify your account to access all habeep features'"
           viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
           <path
             d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
         </svg>
-
-        <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+        <svg xmlns="http://www.w3.org/2000/svg" v-else viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
           <path fill-rule="evenodd"
             d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
             clip-rule="evenodd" />

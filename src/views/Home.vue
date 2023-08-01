@@ -97,6 +97,7 @@ import { ref, reactive, onMounted } from "vue"
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import axios from '../composables/axios'
+import axiosDefault from 'axios'
 
 import { useHead } from '@vueuse/head'
 useHead({
@@ -150,7 +151,6 @@ const checkForEnter = (e) => {
 
 // search variables
 
-
 const locations = ref([])
 
 async function getStates() {
@@ -158,24 +158,24 @@ async function getStates() {
     const states = ref([])
     let country = ref({
       country: '',
-      countryCode: '',
+      cc: '',
       currency: ''
     })
 
     if (store.state.isAuthenticated) {
       country.value = {
         country: store.state.user.nationality,
-        countryCode: store.state.user.countryShortName
+        cc: store.state.user.countryShortName
       }
     } else {
-      const getCountry = await axiosDefault.get('http://ip-api.com/json')
+      const getCountry = await axiosDefault.get('https://api.myip.com')
       country.value = getCountry.data
     }
 
-    const getState = await axios.get('/countries-api/states/' + country.value.countryCode)
+    const getState = await axios.get('/countries-api/states/' + country.value.cc)
 
     getState.data.results.forEach(async state => {
-      const getCities = await axios.get(`/countries-api/cities/${country.value.countryCode}/${state.stateid}`)
+      const getCities = await axios.get(`/countries-api/cities/${country.value.cc}/${state.stateid}`)
 
       let formatted = {
         state: state,
