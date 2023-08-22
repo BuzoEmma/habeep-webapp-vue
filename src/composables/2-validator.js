@@ -54,7 +54,7 @@ export function formValidator(field, data) {
     }
 
     if (field === 'phone') {
-        if (data.length >= 10) {
+        if (data.length >= 1) {
             return {
                 success: true,
                 message: 'Please enter a valid phone number',

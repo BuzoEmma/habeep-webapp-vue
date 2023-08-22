@@ -28,7 +28,7 @@
 
       <div class="flex flex-col items-start w-full gap-y-1 relative">
         <label for="" class="text-sm text-webapp">Phone number</label>
-        <input type="number" v-model="data.phoneNumber" maxlength="12"
+        <input type="number" v-model="data.phoneNumber" maxlength="14"
           @input="validateFormField('phone', data.phoneNumber.toString())" placeholder="Phone number"
           class="w-full h-14 rounded-lg bg-transaparent"
           :class="{ 'bg-bg': onModal, 'invalidField': errorMsg.field === 'phone' }" style="padding-left: 115px">
