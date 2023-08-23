@@ -155,7 +155,15 @@ const processSwap = async () => {
 }
 
 onMounted(async () => {
-    nairaValueOfCurrency.value = await converter.convert(87, 'ngn', store.state.user.currency.toLowerCase())
+    let nairaValue = ref(87)
+    try {
+        const nairaValueOfHBP = await axios.get('/wallet/naira-value')
+        nairaValue.value = nairaValueOfHBP.data
+    } catch (error) {
+        nairaValue.value = 87
+    }
+
+    nairaValueOfCurrency.value = await converter.convert(nairaValue.value, 'ngn', store.state.user.currency.toLowerCase())
 })
 </script>
   
