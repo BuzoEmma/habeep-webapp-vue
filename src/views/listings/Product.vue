@@ -530,7 +530,11 @@ async function getAgent(agentId) {
 
         const images = []
         product.value.images.forEach(img => {
-            images.push(img.link)
+            if(!img.link.includes('.mp4')) {
+                images.push(img.link)
+            } else {
+                images.push(img.thumbnail)
+            }
         })
         // set google seo
         const structuredData = {
@@ -568,9 +572,7 @@ async function getAgent(agentId) {
                 "priceCurrency": "NGN",
                 price: product.value.price,
                 "itemCondition": "https://schema.org/NewCondition",
-                "availability": "https://schema.org/InStock",
-                "hasMerchantReturnPolicy": false,
-                "shippingDetails": "Pay on Delivery"
+                "availability": "https://schema.org/InStock"
             }
         }
 
