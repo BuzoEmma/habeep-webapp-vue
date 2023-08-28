@@ -138,11 +138,12 @@
                                 v-for="ad in agentDetails.ads" :key="ad">
                                 <div
                                     class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 feed">
-                                    <img @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
-                                        class="w-full h-full rounded-t-md feed-image"
+                                    <img :alt="ad.title" @click="$router.push('/listings/products/' + ad._id)"
+                                        :src="ad.images[0].link" class="w-full h-full rounded-t-md feed-image"
                                         v-if="ad.images && ad.images[0] && ad.images[0].link.includes('mp4') == false"
                                         alt="">
-                                    <video @click="$router.push('/listings/products/' + ad._id)"
+                                    <video :poster="ad.images[0].thumbnail" :alt="ad.title"
+                                        @click="$router.push('/listings/products/' + ad._id)"
                                         :src="ad.images && ad.images[0] && ad.images[0].link"
                                         class="w-full rounded-t-md feed-image" v-else autoplay muted></video>
                                     <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
@@ -160,7 +161,7 @@
 
                                     <div class="flex flex-row items-center w-full justify-between px-3">
                                         <span class="text-sm text-webapp font-medium">
-                                            <PriceFormatter :from="ad.priceCurrency" :to="$store.state.user.currency"
+                                            <PriceFormatter :from="ad.priceCurrency" :to="country.currency"
                                                 :amount="ad.price" />
                                         </span>
                                         <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
@@ -200,10 +201,11 @@
                                 v-for="ad in agentDetails.savedAds" :key="ad">
                                 <div
                                     class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 feed">
-                                    <img @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
-                                        class="w-full h-full rounded-t-md feed-image"
+                                    <img :alt="ad.title" @click="$router.push('/listings/products/' + ad._id)"
+                                        :src="ad.images[0].link" class="w-full h-full rounded-t-md feed-image"
                                         v-if="ad.images[0].link.includes('mp4') == false" alt="">
-                                    <video @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
+                                    <video :poster="ad.images[0].thumbnail" :alt="ad.title"
+                                        @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
                                         class="w-full rounded-t-md feed-image" v-else autoplay muted></video>
                                     <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
                                         @click="$router.push('/listings/products/' + ad._id)">
@@ -220,9 +222,8 @@
 
                                     <div class="flex flex-row items-center w-full justify-between px-3">
                                         <span class="text-sm text-webapp font-medium">
-                                            ₦{{
-                                                formatNumber(ad.price)
-                                            }}
+                                            <PriceFormatter :from="ad.priceCurrency" :to="country.currency"
+                                                :amount="ad.price" />
                                         </span>
                                         <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
                                             v-if="$store.state.isAuthenticated"
@@ -263,6 +264,8 @@ import formatNumber from "number_formatter"
 import saveAd from '../../../composables/saveAd'
 import calculateDistance from '../../../composables/getAdDistance.js'
 import { useStore } from 'vuex';
+import axiosDefault from 'axios'
+
 
 const route = useRoute()
 const router = useRouter()
@@ -297,6 +300,26 @@ const onModal = ref(false)
 
 const agentDetails = ref({})
 const ads = ref([])
+
+let country = ref({
+    country: 'Nigeria',
+    cc: 'NG',
+    currency: 'NGN'
+})
+
+async function getResidence() {
+    if (store.state.isAuthenticated) {
+        country.value = {
+            country: store.state.user.nationality,
+            cc: store.state.user.countryShortName,
+            currency: store.state.user.currency
+        }
+    } else {
+        const getCountry = await axiosDefault.get('https://api.myip.com/')
+        country.value = getCountry.data
+        country.value.currency = clm.getCurrencyByAlpha2(country.value.cc)
+    }
+}
 
 
 async function getAgent() {
@@ -405,6 +428,7 @@ async function manageAgentFollow() {
 }
 
 onMounted(() => {
+    getResidence()
     getAgent()
 })
 </script>
@@ -427,4 +451,5 @@ onMounted(() => {
     width: 100% !important;
     object-fit: cover;
     max-height: 164px !important;
-}</style>
+}
+</style>

@@ -369,11 +369,6 @@ const getProduct = async () => {
     images.value = getProduct.data.product.images
     carouselImg.value = getProduct.data.product.images[0]
 
-    data.description = product.value.description
-    data.title = product.value.title
-    data.price = product.value.price
-    data.for = product.value.for
-
     getAgent(product.value.agentId)
 }
 async function getAgent(agentId) {
@@ -396,23 +391,28 @@ function changeCarouselImg(value) {
 function exitImageViewer() {
     onImageViewer.value = false
 
-    const carouselInt = setInterval(() => {
+    carouselInt = setInterval(() => {
         let value = activeCarouselImg.value + 1
-        if (activeCarouselImg.value == images.value.length) {
-            value = 1
+        if (images.value) {
+            if (activeCarouselImg.value == images.value.length) {
+                value = 1
+            }
         }
         changeCarouselImg(value)
     }, 5000);
 }
+
 function enterImageViewer() {
-    onImageViewer.value = true
     clearInterval(carouselInt)
+    onImageViewer.value = true
 }
 
-const carouselInt = setInterval(() => {
+let carouselInt = setInterval(() => {
     let value = activeCarouselImg.value + 1
-    if (activeCarouselImg.value == images.value.length) {
-        value = 1
+    if (images.value) {
+        if (activeCarouselImg.value == images.value.length) {
+            value = 1
+        }
     }
     changeCarouselImg(value)
 }, 5000);

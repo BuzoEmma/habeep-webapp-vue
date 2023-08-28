@@ -17,7 +17,7 @@
                         @load="carouselImg.imageLoaded = true" :class="{ 'hidden': !carouselImg.imageLoaded }"
                         v-if="carouselImg.link.toString().includes('.mp4') == false" @click="enterImageViewer()"
                         :alt="product.title">
-                    <video :src="carouselImg.link" @click="enterImageViewer()" loop
+                    <video :poster="carouselImg.thumbnail" :src="carouselImg.link" @click="enterImageViewer()" loop
                         @loadedmetadata="carouselImg.imageLoaded = true" :class="{ 'hidden': !carouselImg.imageLoaded }"
                         class="w-full h-full rounded-lg feed-image" :alt="product.title" v-else autoplay muted></video>
 
@@ -55,7 +55,7 @@
                                 class=" h-full w-full rounded-lg feed-image-short"
                                 v-if="image.link && image.link.toString().includes('.mp4') === false"
                                 @click="enterImageViewer()" :key="image">
-                            <video :alt="product.title" @loadedmetadata="image.imageLoaded = true"
+                            <video :poster="image.thumbnail" :alt="product.title" @loadedmetadata="image.imageLoaded = true"
                                 :class="{ 'hidden': !image.imageLoaded }" :src="image.link" @click="enterImageViewer()" loop
                                 class="w-full rounded-lg feed-image-short" v-else autoplay muted preload="metadata"></video>
                         </div>
@@ -68,7 +68,7 @@
                                 :class="{ 'hidden': !image.imageLoaded }" class=" h-full w-full rounded-md feed-image-short"
                                 v-if="image.link && image.link.toString().includes('.mp4') == false"
                                 @click="enterImageViewer()" :alt="product.title">
-                            <video :alt="product.title" @loadedmetadata="image.imageLoaded = true"
+                            <video :poster="image.thumbnail" :alt="product.title" @loadedmetadata="image.imageLoaded = true"
                                 :class="{ 'hidden': !image.imageLoaded }" :src="image.link" @click="enterImageViewer()" loop
                                 class="w-full rounded-md feed-image-short" v-else autoplay muted preload="metadata"></video>
                         </div>
@@ -108,7 +108,7 @@
                     @load="carouselImg.imageLoaded = true" :class="{ 'hidden': !carouselImg.imageLoaded }"
                     v-if="carouselImg.link && carouselImg.link.toString().includes('.mp4') == false"
                     @click="enterImageViewer()">
-                <video :alt="product.title" :src="carouselImg.link" loop class="w-full feed-image"
+                <video :poster="carouselImg.thumbnail" :alt="product.title" :src="carouselImg.link" loop class="w-full feed-image"
                     @load="carouselImg.imageLoaded = true" :class="{ 'hidden': !carouselImg.imageLoaded }"
                     @click="enterImageViewer()" v-else autoplay muted preload="metadata"></video>
                 <!-- <img :src="images[activeCarouselImg - 1].link" class="h-full w-full new-img" :class="{'hidden': changeCarouselImg}"> -->
@@ -247,9 +247,9 @@
 
                     <article class="text-sub-webapp text-lg text-left mt-1 xl:mt-3">
                         <pre class="w-full whitespace-pre-wrap"
-                            v-if="!openFullDesc">{{ product.description.slice(0, 250) }}<span class="text-primary cursor-pointer" v-if="product.description.length > 250" @click="openFullDesc = true">... Read more</span></pre>
+                            v-if="!openFullDesc"><article>{{ product.description.slice(0, 250) }}<span class="text-primary cursor-pointer" v-if="product.description.length > 250" @click="openFullDesc = true">... Read more</span></article></pre>
                         <pre class="w-full whitespace-pre-wrap"
-                            v-else>{{ product.description }} <span class="text-primary cursor-pointer" v-if="product.description.length > 250" @click="openFullDesc = false">..Hide</span></pre>
+                            v-else> <article>{{ product.description }} </article> <span class="text-primary cursor-pointer" v-if="product.description.length > 250" @click="openFullDesc = false">..Hide</span></pre>
                     </article>
 
                     <hr class="my-3">
@@ -394,7 +394,7 @@
             <div class="image-container h-fit flex flex-col items-center justify-center w-full">
                 <img :src="carouselImg.link" v-if="carouselImg && carouselImg.link.includes('mp4') == false"
                     class="w-full h-full feed-image" alt="">
-                <video :src="carouselImg.link" loop class="md:w-4/5 w-full rounded-lg feed-image"
+                <video :poster="carouselImg.thumbnail" :src="carouselImg.link" loop class="md:w-4/5 w-full rounded-lg feed-image"
                     @click="enterImageViewer()" v-else controls autoplay></video>
             </div>
             <img src="../../assets/icons/next-circle.svg" @click="changeCarouselImg(activeCarouselImg + 1)"
@@ -411,7 +411,7 @@ import { useRoute, useRouter } from 'vue-router'
 import formatNumber from "number_formatter"
 import saveAd from '../../composables/saveAd'
 import { useStore } from 'vuex';
-import axiosDefault from 'axios'
+import axiosDefault from 'axios' 
 import clm from 'country-locale-map'
 
 
@@ -423,7 +423,8 @@ const store = useStore()
 const title = ref('Habeep | ' + route.params.id + ' Product')
 const content = ref('Property ID is' + route.params.id)
 
-const img = ref('https://logos.flamingtext.com/Word-Logos/property-design-sketch-name.png')
+const img = ref('')
+// https://logos.flamingtext.com/Word-Logos/property-design-sketch-name.png
 
 import { useHead } from '@vueuse/head'
 
@@ -448,7 +449,7 @@ useHead({
 const url = '/listings/ads/get/';
 const url2 = '/profile/get-agent/';
 
-const carouselImg = ref({ imageLoaded: false })
+const carouselImg = ref({ imageLoaded: false, link:'', thumbnail: '' })
 
 
 const processingProduct = ref(false)

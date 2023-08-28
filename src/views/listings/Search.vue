@@ -175,11 +175,11 @@
                     <div
                         class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 h-fit feed">
                         <Skeleton v-if="!product.imageLoaded" class=" w-full h-36 rounded-t-md" style="width: 100%" />
-                        <img @click="$router.push('/listings/products/' + product._id)" @load="product.imageLoaded = true"
+                        <img :alt="product.title" @click="$router.push('/listings/products/' + product._id)" @load="product.imageLoaded = true"
                             :class="{ 'hidden': !product.imageLoaded }" :src="product.images[0].link"
                             class="w-full h-full feed-image rounded-t-md"
                             v-if="product.images[0].link.includes('mp4') == false" alt="">
-                        <video @click="$router.push('/listings/products/' + product._id)"
+                        <video :alt="product.title" :poster="product.images[0].thumbnail" @click="$router.push('/listings/products/' + product._id)"
                             @loadedmetadata="product.imageLoaded = true" :class="{ 'hidden': !product.imageLoaded }"
                             :src="product.images[0].link" class="w-full rounded-t-md feed-image" v-else autoplay muted
                             preload="auto"></video>
