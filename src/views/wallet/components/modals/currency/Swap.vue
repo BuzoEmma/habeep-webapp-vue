@@ -61,8 +61,8 @@ const router = useRouter()
 const emit = defineEmits(['close'])
 
 const data = reactive({
-    currency: null,
-    hbp: null
+    currency: 0,
+    hbp: 0
 })
 
 const nairaValueOfCurrency = ref(0)
@@ -158,7 +158,7 @@ onMounted(async () => {
     let nairaValue = ref(87)
     try {
         const nairaValueOfHBP = await axios.get('/wallet/naira-value')
-        nairaValue.value = nairaValueOfHBP.data
+        nairaValue.value = nairaValueOfHBP.data.data
     } catch (error) {
         nairaValue.value = 87
     }
