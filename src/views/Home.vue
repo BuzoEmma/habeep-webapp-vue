@@ -12,7 +12,7 @@
         Quick way to Find your dream Property</h1>
 
       <!-- Quick search -->
-      <div class="flex flex-col quick-search no-wrap" :class="{ 'static': mainNavOpen, 'relative': !mainNavOpen }">
+      <div class="flex flex-col quick-search no-wrap relative">
         <!-- Search bar -->
         <!-- desktop -->
         <div class="search-bar w-full hidden md:flex flex-row items-center bg-white pl-3 pr-1 h-12 py-1 gap-x-4">
@@ -22,8 +22,8 @@
               d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
           </svg>
 
-          <input type="text" v-model="data.input" @keydown=checkForEnter class=" rounded-sm w-full h-full outline-none"
-            placeholder="Search by property type, location, price">
+          <input type="text" v-model="data.input" @keydown="checkForEnter" @input="randomiseLocationsSugg"
+            class=" rounded-sm w-full h-full outline-none" placeholder="Search by property type, location, price">
         </div>
 
         <!-- mobile -->
@@ -35,13 +35,13 @@
               d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
           </svg>
 
-          <input type="text" v-model="data.input" disabled class=" rounded-sm w-full h-full outline-none"
-            placeholder="Search by property type, location, price">
+          <input type="text" @touchstart="onSearch = true" @click="onSearch = true" disabled
+            class=" rounded-sm w-full h-full outline-none" placeholder="Search by property type, location, price">
         </div>
 
 
         <!-- search results -->
-        <div class="flex flex-col gap-y-4 search-results sm:absolute bg-white z-10 w-full py-5 px-3 top-12 md:top-20"
+        <div class="flex flex-col gap-y-4 search-results sm:absolute bg-white z-20 w-full py-5 px-3 top-12 md:top-20"
           v-if="(data.input.length > 0)">
           <div class="flex flex-row items-center result justify-between w-full cursor-pointer"
             @click="$router.push('/listings/search?name=' + data.input)">
@@ -54,7 +54,7 @@
 
           <!-- Based on Search bar Input results -->
           <div class="flex flex-row items-center result justify-between w-full cursor-pointer"
-            v-for="location in locations.slice(0, 5)" :key="location"
+            v-for="location in locations.slice(locationKeys.start, locationKeys.end)" :key="location"
             @click="$router.push('/listings/search?name=' + data.input + '&location=' + location.toLowerCase())">
             <p class="text-webapp text-lg font-medium gap-x-1 flex flex-row items-center">{{ data.input }} <span
                 class="text-lg font-extralight text-sub-webapp">in</span> <span class="text-lg font-medium text-webapp">{{
@@ -79,16 +79,9 @@
       <img src="../assets/illustrations/home-right.svg" v-lazy class="xl:flex hidden" alt="">
     </div>
 
-    <MobileSearch :location="locations" v-if="onSearch" @leaveSearch="onSearch = false" :delay="100" v-motion
+    <MobileSearch @updateKeys="randomiseLocationsSugg" :locationKeys="locationKeys" :location="locations" v-if="onSearch" @leaveSearch="onSearch = false" :delay="100" v-motion
       :initial="{ opacity: 0.5, y: 100 }" :enter="{ opacity: 1, y: 0 }" />
 
-    <!-- seo snippets link -->
-    <footer class="hidden">
-      <a href="https://habeep.org/blog" class="hidden">Blogs</a>
-      <a href="https://habeep.org/help" class="hidden">Help</a>
-      <a href="https://habeep.org/terms-of-service" class="hidden">Terms of Service</a>
-      <a href="https://habeep.org/blog/64a1f4f6c8b14fa0a1e5d238" class="hidden">Habeep Reward System</a>
-    </footer>
   </div>
 </template>
 
@@ -98,17 +91,18 @@ import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 import axios from '../composables/axios'
 import axiosDefault from 'axios'
+import clm from 'country-locale-map'
+import randomise from 'random-num'
 
 import { useHead } from '@vueuse/head'
 useHead({
-  title: 'Habeep',
-  titleTemplate: '%s | Quick way to Find your dream Property',
+  title: 'Habeep | Find your dream property',
   meta: [
     { charset: 'utf-8' },
     { name: 'description', content: 'Search for your new dream house at Habeep. You can also search for lands and other properties only at Habeep!!' },
 
     { name: 'og:title', content: 'Search Ads' },
-    { name: 'og:image', content: 'https://logos.flamingtext.com/Word-Logos/property-design-sketch-name.png' },
+    { name: 'og:image', content: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
     { name: 'og:url', content: 'https://habeep.org/home' },
     { name: 'og:website', content: 'website' },
     { name: 'og:description', content: 'Search for Ads in the home page' },
@@ -152,6 +146,22 @@ const checkForEnter = (e) => {
 // search variables
 
 const locations = ref([])
+const locationKeys = ref({
+  start: 0,
+  end: 5
+})
+const randomiseLocationsSugg = async () => {
+  if (locations.value.length > 0) {
+    const numbers = {
+      start: randomise(0, locations.value.length - 6),
+      get end() {
+        return this.start + 5
+      }
+    }
+
+    locationKeys.value = numbers
+  }
+}
 
 async function getStates() {
   try {
@@ -168,8 +178,10 @@ async function getStates() {
         cc: store.state.user.countryShortName
       }
     } else {
-      const getCountry = await axiosDefault.get('https://api.myip.com')
-      country.value = getCountry.data
+      const getCountry = await axiosDefault.get('https://jsonip.com')
+      country.value.country = clm.getCountryNameByAlpha2(getCountry.data.country)
+      country.value.cc = getCountry.data.country
+      country.value.currency = clm.getCountryByAlpha2(getCountry.data.country)
     }
 
     const getState = await axios.get('/countries-api/states/' + country.value.cc)

@@ -108,9 +108,10 @@
                     @load="carouselImg.imageLoaded = true" :class="{ 'hidden': !carouselImg.imageLoaded }"
                     v-if="carouselImg.link && carouselImg.link.toString().includes('.mp4') == false"
                     @click="enterImageViewer()">
-                <video :poster="carouselImg.thumbnail" :alt="product.title" :src="carouselImg.link" loop class="w-full feed-image"
-                    @load="carouselImg.imageLoaded = true" :class="{ 'hidden': !carouselImg.imageLoaded }"
-                    @click="enterImageViewer()" v-else autoplay muted preload="metadata"></video>
+                <video :poster="carouselImg.thumbnail" :alt="product.title" :src="carouselImg.link" loop
+                    class="w-full feed-image" @load="carouselImg.imageLoaded = true"
+                    :class="{ 'hidden': !carouselImg.imageLoaded }" @click="enterImageViewer()" v-else autoplay muted
+                    preload="metadata"></video>
                 <!-- <img :src="images[activeCarouselImg - 1].link" class="h-full w-full new-img" :class="{'hidden': changeCarouselImg}"> -->
 
                 <div class="flex flex-row items-center w-full absolute bottom-5 justify-between md:px-8 px-2">
@@ -394,8 +395,9 @@
             <div class="image-container h-fit flex flex-col items-center justify-center w-full">
                 <img :src="carouselImg.link" v-if="carouselImg && carouselImg.link.includes('mp4') == false"
                     class="w-full h-full feed-image" alt="">
-                <video :poster="carouselImg.thumbnail" :src="carouselImg.link" loop class="md:w-4/5 w-full rounded-lg feed-image"
-                    @click="enterImageViewer()" v-else controls autoplay></video>
+                <video :poster="carouselImg.thumbnail" :src="carouselImg.link" loop
+                    class="md:w-4/5 w-full rounded-lg feed-image" @click="enterImageViewer()" v-else controls
+                    autoplay></video>
             </div>
             <img src="../../assets/icons/next-circle.svg" @click="changeCarouselImg(activeCarouselImg + 1)"
                 v-if="activeCarouselImg < images.length" class="cursor-pointer lg:block absolute right-3 z-10" alt="">
@@ -411,7 +413,7 @@ import { useRoute, useRouter } from 'vue-router'
 import formatNumber from "number_formatter"
 import saveAd from '../../composables/saveAd'
 import { useStore } from 'vuex';
-import axiosDefault from 'axios' 
+import axiosDefault from 'axios'
 import clm from 'country-locale-map'
 
 
@@ -449,7 +451,7 @@ useHead({
 const url = '/listings/ads/get/';
 const url2 = '/profile/get-agent/';
 
-const carouselImg = ref({ imageLoaded: false, link:'', thumbnail: '' })
+const carouselImg = ref({ imageLoaded: false, link: '', thumbnail: '' })
 
 
 const processingProduct = ref(false)
@@ -476,9 +478,10 @@ async function getResidence() {
             currency: store.state.user.currency
         }
     } else {
-        const getCountry = await axiosDefault.get('https://api.myip.com/')
-        country.value = getCountry.data
-        country.value.currency = clm.getCurrencyByAlpha2(country.value.cc)
+        const getCountry = await axiosDefault.get('https://jsonip.com')
+        country.value.country = clm.getCountryNameByAlpha2(getCountry.data.country)
+        country.value.cc = getCountry.data.country
+        country.value.currency = clm.getCountryByAlpha2(getCountry.data.country)
     }
 }
 
@@ -530,7 +533,7 @@ async function getAgent(agentId) {
 
         const images = []
         product.value.images.forEach(img => {
-            if(!img.link.includes('.mp4')) {
+            if (!img.link.includes('.mp4')) {
                 images.push(img.link)
             } else {
                 images.push(img.thumbnail)

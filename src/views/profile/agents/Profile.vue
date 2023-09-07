@@ -146,7 +146,7 @@
                                         @click="$router.push('/listings/products/' + ad._id)"
                                         :src="ad.images && ad.images[0] && ad.images[0].link"
                                         class="w-full rounded-t-md feed-image" v-else autoplay muted></video>
-                                    <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
+                                    <p class="text-webapp text-lg font-medium w-full px-3 cursor-pointer"
                                         @click="$router.push('/listings/products/' + ad._id)">
                                         {{ ad.title }}
                                         <span class="text-sm ">@</span>
@@ -207,7 +207,7 @@
                                     <video :poster="ad.images[0].thumbnail" :alt="ad.title"
                                         @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
                                         class="w-full rounded-t-md feed-image" v-else autoplay muted></video>
-                                    <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
+                                    <p class="text-webapp text-lg font-medium w-full px-3 cursor-pointer"
                                         @click="$router.push('/listings/products/' + ad._id)">
                                         {{ ad.title }}
                                         <span class="text-sm ">@</span>
@@ -315,9 +315,10 @@ async function getResidence() {
             currency: store.state.user.currency
         }
     } else {
-        const getCountry = await axiosDefault.get('https://api.myip.com/')
-        country.value = getCountry.data
-        country.value.currency = clm.getCurrencyByAlpha2(country.value.cc)
+        const getCountry = await axiosDefault.get('https://jsonip.com')
+        country.value.country = clm.getCountryNameByAlpha2(getCountry.data.country)
+        country.value.cc = getCountry.data.country
+        country.value.currency = clm.getCountryByAlpha2(getCountry.data.country)
     }
 }
 

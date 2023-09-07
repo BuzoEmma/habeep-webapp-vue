@@ -176,7 +176,7 @@
                                     :src="ad.images[0] && ad.images[0].link" class="w-full rounded-t-md feed-image" v-else
                                     autoplay muted loop></video>
 
-                                <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
+                                <p class="text-webapp text-lg font-medium w-full px-3 cursor-pointer"
                                     @click="$router.push('/listings/products/' + ad._id)">
                                     {{ ad.title }}
                                 </p>
@@ -237,7 +237,7 @@
                                     @click="$router.push('/listings/products/' + ad._id)" preload="metadata"
                                     :src="ad.images[0] && ad.images[0].link" class="w-full rounded-t-md feed-image" v-else
                                     autoplay muted loop></video>
-                                <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
+                                <p class="text-webapp text-lg font-medium w-full px-3 cursor-pointer"
                                     @click="$router.push('/listings/products/' + ad._id)">
                                     {{ ad.title }}
                                 </p>

@@ -196,7 +196,7 @@
                                 :src="item.images[0].link" class="w-full rounded-md feed-image"
                                 v-if="item.images[0] && item.images[0].link && item.images[0].link.includes('.mp4') == true"
                                 autoplay muted preload="auto"></video>
-                            <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
+                            <p class="text-webapp text-lg font-medium w-full px-3 cursor-pointer"
                                 @click="$router.push('/listings/agent/view/products/' + item._id)">
                                 {{ item.title }}
                             </p>

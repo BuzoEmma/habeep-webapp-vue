@@ -14,7 +14,7 @@
         <img src="../../assets/images/habeep-show.png" class="w-1/3 xl:block hidden h-full" alt="">
 
         <div :class="{ 'relative': screenWidth < 768 }"
-            class="form-container flex flex-col items-center bg-white gap-y-3 w-full xl:w-2/3 h-full pb-6 md:py-10 overflow-y-auto overflow-x-hidden">
+            class="form-container flex flex-col items-center bg-white gap-y-3 w-full xl:w-2/3 h-full pb-6 md:py-10 overflow-y-auto no-scroll-btn overflow-x-hidden">
 
             <form class="flex flex-col items-center w-full md:w-2/3 px-4">
                 <!-- logo -->

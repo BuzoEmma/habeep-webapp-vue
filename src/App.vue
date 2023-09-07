@@ -142,7 +142,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-screen h-screen relative">
+  <div class="w-screen h-full relative">
     <router-view class="wrapper" v-slot="{ Component }">
       <transition name="scale-slide">
         <component :is="Component" />

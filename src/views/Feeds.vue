@@ -346,7 +346,7 @@ import saveAd from "../composables/saveAd";
 import sort from 'smart-deep-sort'
 
 const title = ref('Habeep | Feeds(0)')
-import { useHead } from '@vueuse/head'
+import { useHead, useHeadSafe } from '@vueuse/head'
 
 useHead({
     title: () => title.value,
