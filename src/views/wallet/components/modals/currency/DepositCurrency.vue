@@ -133,7 +133,7 @@ const flwRef = ref('')
 function getLogo() {
     if (store.state.user.userProfileImage !== 'https://i.ibb.co/gtpxMJz/21.png') {
         return store.state.user.userProfileImage
-    } else return 'https://i.ibb.co/BnG8VLy/logo-white.png'
+    } else return 'https://i.ibb.co/NCdCb4r/habeep-logo-dark.png'
 }
 
 function channels() {

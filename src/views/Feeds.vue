@@ -363,7 +363,8 @@ useHead({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }
     ],
     link: [
-        { rel: 'icon', href: 'https://i.ibb.co/BnG8VLy/logo-white.png' }
+        { rel: 'icon', href: 'https://i.ibb.co/j8817QB/habeep-logo-light.png', media: '(prefers-color-scheme: light)' },
+        { rel: 'icon', href: 'https://i.ibb.co/NCdCb4r/habeep-logo-dark.png', media: '(prefers-color-scheme: dark)' },
     ]
 })
 
