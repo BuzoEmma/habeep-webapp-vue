@@ -13,7 +13,8 @@
         <div class="flex flex-col items-center w-full h-full overflow-y-auto px-2 pb-8 relative">
             <div class="agents-to-follow flex w-full flex-col overflow-y-auto no-scroll-btn items-center h-5/6 my-1"
                 :class="{ 'justify-center': discoveredAgents.length === 0 }">
-                <img src="../../../assets/images/rhombus-preloader.gif" class="m-auto" v-if="discoveredAgents.length === 0">
+                <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" class="m-auto" v-if="discoveredAgents.length === 0"
+                    size="200px" color="#0A1045"></loader>
                 <div class="following flex flex-row items-center justify-between w-full py-4 px-4" v-else
                     v-for="agent in discoveredAgents" :key="agent">
                     <div class="flex flex-row gap-x-2 items-center">
@@ -44,7 +45,7 @@
                 </div>
             </div>
 
-            <div class="bottom-0 absolute px-2 w-full" :class="{'md:static': discoveredAgents.length > 10}">
+            <div class="bottom-0 absolute px-2 w-full" :class="{ 'md:static': discoveredAgents.length > 10 }">
                 <button class="bg-primary rounded-lg w-full grid place-items-center h-14 text-white"
                     @click="$emit('finish')">Continue</button>
             </div>

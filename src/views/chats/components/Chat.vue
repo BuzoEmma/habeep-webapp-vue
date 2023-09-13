@@ -8,8 +8,8 @@
 
         <div class="flex flex-col w-full h-full justify-between items-center overflow-hidden no-scroll-btn"
             v-else-if="onMainPage && viewFullImage.length === 0">
-            <div
-                class="flex flex-row items-center justify-between w-full border-b h-fit border-b-gray-200 px-2 lg:px-5 py-1">
+            <div class="flex flex-row items-center justify-between w-full border-b h-fit border-b-gray-200 px-2 lg:px-5 py-1"
+                :class="{ 'relative': onPhone }">
                 <div class="rounded-full w-13 h-13 grid place-items-center">
                     <img :src="props.chat.user.profilePicture" style="width: 40px; height: 40px;"
                         class="w-13 h-13 rounded-full" alt=""
@@ -38,28 +38,24 @@
                     </span>
 
                     <div class="w-fit h-fit flex-row-center gap-x-1" v-if="otherUserOnline">
-                        <span 
-                        v-motion 
-                        :initial="{ scale: 0.5, opacity: 0.2 }"  :delay="20"
-                        :enter="{scale: 1.2, opacity: 1, transition: {repeat: Infinity, delay: 50, type: 'spring', mass: 2}}" 
-                        class="w-1 h-1 bg-green-400 rounded-full text-webapp"></span>
+                        <span v-motion :initial="{ scale: 0.5, opacity: 0.2 }" :delay="20"
+                            :enter="{ scale: 1.2, opacity: 1, transition: { repeat: Infinity, delay: 50, type: 'spring', mass: 2 } }"
+                            class="w-1 h-1 bg-green-400 rounded-full text-webapp"></span>
 
                         <p class="text-sm text-sub-webapp font-medium">Online</p>
                     </div>
                     <div class="w-fit h-fit flex-row-center gap-x-1" v-else>
-                        <span 
-                        v-motion 
-                        :initial="{ scale: 0.5, opacity: 0.2 }"  :delay="20"
-                        :enter="{scale: 1.2, opacity: 1, transition: {repeat: Infinity, delay: 50, type: 'spring', mass: 2}}" 
-                        class="w-1 h-1 bg-red-400 rounded-full text-webapp"></span>
+                        <span v-motion :initial="{ scale: 0.5, opacity: 0.2 }" :delay="20"
+                            :enter="{ scale: 1.2, opacity: 1, transition: { repeat: Infinity, delay: 50, type: 'spring', mass: 2 } }"
+                            class="w-1 h-1 bg-red-400 rounded-full text-webapp"></span>
 
                         <p class="text-sm text-sub-webapp font-medium">Offline</p>
                     </div>
-                
+
                 </div>
                 <img src="../../../assets/icons/phone.svg" class="cursor-pointer" @click="togglePhone" alt="">
 
-                <a v-if="onPhone && screenWidth > 1023"
+                <a v-if="onPhone && screenWidth > 1023" v-motion-slide-top :delay="50"
                     class="z-20 bg-white flex flex-row items-center absolute right-0 -bottom-10  rounded-xl border border-gray-200 gap-x-2 py-2 px-3 cursor-pointer"
                     :href="'tel:' + props.chat.user.phoneNumber">
                     <img src="../../../assets/icons/phone.svg" alt="">
@@ -201,7 +197,7 @@
 </template>
   
 <script setup>
- 
+
 import Message from './Message.vue'
 import { ref, reactive, computed, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'

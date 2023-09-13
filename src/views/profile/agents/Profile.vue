@@ -1,12 +1,12 @@
 <template>
-    <div class="fixed w-screen h-screen top-0 opacity-50 overflow-hidden max-h-screen" v-if="onModal"
-        style="background: #161622"></div>
+    <div class="fixed w-screen h-full mx-auto top-0 opacity-50 overflow-hidden" v-if="onModal" style="background: #161622">
+    </div>
 
     <!-- <div class="w-screen h-screen flex-col flex items-center justify-center">
         </div> -->
 
     <div class="w-full min-h-screen flex-col h-screen flex items-center justify-center">
-        <img src="../../../assets/images/rhombus-preloader.gif" v-if="!agentDetails.userId" alt="">
+        <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" v-if="!agentDetails.userId" size="200px" color="#0A1045"></loader>
         <div class="w-screen min-w-full flex flex-col items-center bg-white h-full min-h-screen overflow-y-auto" v-else
             :class="{ 'max-h-screen overflow-y-hidden': onModal }" resize="changeWidth">
             <MainNavbar v-if="(screenWidth > 767)" />
@@ -32,7 +32,7 @@
                 <!-- agent basic info -->
                 <div
                     class="agent-info flex p-4 bg-white flex-col border border-gray-300 rounded w-full lg:w-2/6 2xl:w-1/4 items-start lg:ml-3 h-fit">
-                    <div class="flex flex-row gap-x-3 items-start">
+                    <div class="flex flex-row gap-x-3 items-center">
                         <div class="rounded-full w-24 h-24 grid place-items-center border border-gray-100">
                             <img :src="agentDetails.profileImg"
                                 class="w-24 h-24 min-h-full min-w-full rounded-full cursor-pointer"
@@ -41,8 +41,8 @@
                             <Avatar size="100%" v-else :fname="agentDetails.name.fname"
                                 :lname="agentDetails.name.surname" />
                         </div>
-                        <div class="flex flex-col ">
-                            <h1 class="text-xl md:text-center text-left agent-name text-webapp font-medium">{{
+                        <div class="flex flex-col">
+                            <h1 class="text-xl text-left agent-name w-full text-webapp font-medium">{{
                                 agentDetails.name.fname + ' ' + agentDetails.name.surname
                             }}</h1>
                             <p class="text-lg agent-ads-count text-sub-webapp flex flex-row gap-x-2 items-center"><img
@@ -56,11 +56,11 @@
                     <div class="flex flex-row items-center w-full gap-x-4 mt-3">
                         <p class="text-xl font-webapp font-medium flex flex-row gap-x-1">{{ agentDetails.ads.length }}<span
                                 class="text-sub-webapp text-lg">Ads</span></p>
-                        <p class="text-xl font-webapp font-medium flex flex-row gap-x-1">{{
+                        <p class="text-xl font-webapp font-medium flex flex-row gap-x-1" @click="openModal('followers')">{{
                             agentDetails.followers.length
                         }}<span class="text-sub-webapp text-lg">Followers</span></p>
                         <p class="text-xl font-webapp font-medium flex flex-row gap-x-1 cursor-pointer"
-                            v-if="$store.state.isAuthenticated" @click="openModal">
+                            v-if="$store.state.isAuthenticated" @click="openModal('following')">
                             {{ agentDetails.following.length }}<span class="text-sub-webapp text-lg">Following </span></p>
                         <p class="text-xl font-webapp font-medium flex flex-row gap-x-1 cursor-pointer" v-else>
                             {{ agentDetails.following.length }}<span class="text-sub-webapp text-lg">Following </span></p>
@@ -249,7 +249,8 @@
                 </div>
 
             </div>
-            <Following @close="closeModal" v-if="onModal" :users="agentDetails.following" />
+            <Following @close="closeModal" v-if="onModal && followingModal" :users="agentDetails.following" />
+            <Followers @close="closeModal" v-if="onModal && followersModal" :users="agentDetails.followers" />
         </div>
     </div>
 </template>
@@ -259,6 +260,7 @@ import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import MainNavbar from '../../../components/MainNavbar.vue'
 import Following from './components/modal/Following.vue'
+import Followers from './components/modal/Followers.vue'
 import axios from "../../../composables/axios";
 import formatNumber from "number_formatter"
 import saveAd from '../../../composables/saveAd'
@@ -274,7 +276,7 @@ const store = useStore()
 const title = ref('Habeep | ' + route.params.username + ' Profile')
 const content = ref('View more information about @' + route.params.username)
 
-const img = ref('https://i.ibb.co/DtbR0BW/user.png')
+const img = ref('')
 import { useHead } from '@vueuse/head'
 
 useHead({
@@ -285,9 +287,13 @@ useHead({
         { name: 'og:title', content: () => title.value },
         { name: 'og:url', content: 'https://habeep.org/' + route.params.username },
         { name: 'og:website', content: 'website' },
+        { name: 'og:image', content: () => img.value },
         { name: 'og:description', content: () => content.value },
 
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+    ],
+    link: [
+        { rel: 'icon', href: () => img.value },
     ]
 })
 
@@ -360,10 +366,12 @@ async function getAgent() {
             ]
         })
 
-        agentDetails.value.ads.forEach(async product => {
-            const distance = await calculateDistance(product.location.city || product.location.address + ', Nigeria')
-            product.distance = distance
-        })
+        for (const product of agentDetails.value.ads) {
+            const distance = await calculateDistance(product.location.city || product.location.address + ', ' + country.country)
+            if (distance) {
+                product.distance = distance
+            }
+        }
     } catch (error) {
         router.replace({ name: 'not-found-route' })
     }
@@ -373,11 +381,22 @@ function changeTab(tab) {
     openTab.value = tab
 }
 
-function openModal() {
+const followersModal = ref(false)
+const followingModal = ref(false)
+
+function openModal(type) {
     onModal.value = true
+    if (type === 'followers') {
+        followersModal.value = true
+    } else[
+        followingModal.value = true
+    ]
+
 }
 function closeModal() {
     onModal.value = false
+    followingModal.value = false
+    followersModal.value = false
 }
 
 

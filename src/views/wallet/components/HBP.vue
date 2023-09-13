@@ -106,7 +106,7 @@
         </div>
     </div>
     <div class="flex flex-col items-center justify-center w-full mt-24" v-else>
-        <img src="../../../assets/images/rhombus-preloader.gif" alt="">
+        <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" size="200px" color="#0A1045"></loader>
     </div>
 </template>
 

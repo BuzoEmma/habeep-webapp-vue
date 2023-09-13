@@ -1,6 +1,6 @@
 <template>
     <div
-        class="following-modal flex flex-col drop-shadow-lg shadow-xl bg-white rounded-xl gap-y-3 border top-1/4 md:left-1/4 lg:left-1/3 2xl:left-1/2   border-gray-300 absolute z-20">
+        class="following-modal flex flex-col drop-shadow-lg shadow-xl bg-white rounded-xl gap-y-3 border top-1/3  border-gray-300 absolute z-20">
 
         <div class="flex flex-row items-center justify-between w-full px-4 py-3">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0A1045"
@@ -19,18 +19,28 @@
         <hr class="w-full mb-1">
 
         <div class="w-full h-full grid place-items-center py-2" v-if="agents.length === 0">
-            <Preloader />
+            <Preloader v-if="fetchedUsers === false" />
+            <div class="flex-col-center justify-center h-full w-full gap-y-2" v-else>
+                <img src="../../../../../assets/illustrations/no-followers.svg" class="w-3/5" style="max-width: 200px;"
+                    alt="">
+                <p class="text-sub-webapp text-lg ubuntu">No Followers yet</p>
+            </div>
         </div>
 
         <div v-else class="following flex flex-row items-center justify-between w-full py-2 px-4" v-for="agent in agents"
             :key="agent">
             <div class="flex flex-row gap-x-3 items-center">
-                <img :src="agent.profileImg" class="w-12 rounded-full h-12 border border-gray-200" alt="">
+                <div class="rounded-full w-12 h-12 grid place-items-center">
+                    <img :src="agent.profileImg" v-if="agent.profileImg !== 'https://i.ibb.co/gtpxMJz/21.png'"
+                        class="w-12 h-12 rounded-full" alt="">
+                    <Avatar size="100%" v-else :fname="agent.name.fname" :lname="agent.name.surname" />
+                </div>
                 <div class="flex flex-col">
                     <span class="text-sm xl:text-lg md:text-center text-left following-name text-webapp font-medium">{{
-                                agent.name.fname + ' ' + agent.name.surname
-                            }}</span>
-                    <span class="text-sm w-full following-ads-count md:text-left text-left text-sub-webapp">{{ agent.ads.length }} Ads</span>
+                        agent.name.fname + ' ' + agent.name.surname
+                    }}</span>
+                    <span class="text-sm w-full following-ads-count md:text-left text-left text-sub-webapp">{{
+                        agent.ads.length }} Ads</span>
                 </div>
             </div>
 
@@ -56,17 +66,24 @@ const url2 = '/profile/get-agent/';
 
 const agents = ref([])
 
+const fetchedUsers = ref(false)
+
 async function getAgents() {
-    if (props.users.length > 0) {
-        props.users.forEach(async agent => {
-            const getAgent = await axios.get(url2 + agent)
-            agents.value.push(getAgent.data.agent)
-        })
+    try {
+        if (props.users.length > 0) {
+            for (const agent of props.users) {
+                const getAgent = await axios.get(url2 + agent)
+                agents.value.push(getAgent.data.agent)
+            }
+        }
+
+        fetchedUsers.value = true
+    } catch (error) {
+        fetchedUsers.value = true
     }
 }
 
 async function manageAgentFollow(agent) {
-    console.log(agent, agents.value[agents.value.indexOf(agent)])
     if (!agents.value[agents.value.indexOf(agent)].followers.includes(store.state.user._id)) {
         let data = {
             userId: agent.userId,
@@ -94,6 +111,7 @@ getAgents()
 <style scoped>
 .following-modal {
     width: 450px;
+    min-height: 500px;
 }
 
 @media screen and (max-width: 639px) {

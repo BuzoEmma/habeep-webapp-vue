@@ -273,7 +273,8 @@
             <div class="flex flex-row flex-auto h-full md:mt-10 w-full flex-wrap px-4"
                 :class="{ 'justify-center items-center': filteredFeeds.length < 1 }">
 
-                <img src="../assets/images/rhombus-preloader.gif" class="m-auto" v-if="fetchingFeeds === true" alt="">
+                <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" class="m-auto" v-if="fetchingFeeds === true" size="200px"
+                    color="#0A1045"></loader>
 
                 <div class="flex flex-col items-center gap-y-3 md:justify-center"
                     v-if="filteredFeeds.length < 1 && !started && !fetchingFeeds">
@@ -283,7 +284,7 @@
                 <!-- listing template -->
                 <div class="basis-full md:basis-1/2 xl:basis-1/4 md:px-3 md:py-3 py-5 gap-y-4 px-0" v-else
                     v-for="feed in filteredFeeds" :key="feed">
-                    <div class="flex flex-col items-start gap-y-2 border rounded-md border-gray-200 pb-2 feed">
+                    <div class="flex flex-col items-start gap-y-2 border rounded-md border-gray-200 pb-2 feed relative">
                         <Skeleton v-if="!feed.imageLoaded" class=" w-full h-44 rounded-t-md" style="width: 100%" />
                         <img fetchpriority="high" :src="feed.images[0].link" @load="feed.imageLoaded = true"
                             @click="$router.push('/listings/products/' + feed._id)" alt=""
@@ -426,10 +427,25 @@ async function getFeeds() {
         fetchingFeeds.value = true
         started.value = true
         const getFeeds = await axios.get(url)
-        fetchingFeeds.value = false
 
         if (getFeeds.data) {
-            feeds.value = getFeeds.data.feed
+            for (const feed of getFeeds.data.feed) {
+                if (feed) {
+                    const distance = await calculateDistance(feed.location.city || feed.location.address + ', ' + store.state.user.nationality)
+                    if (distance) {
+                        feed.distance = distance
+                    }
+                }
+                feeds.value.push(feed)
+                useFilters(filterData)
+                if (filteredFeeds.value.length > 0) {
+                    fetchingFeeds.value = false
+                }
+            }
+
+            fetchingFeeds.value = false
+
+
             if (feeds.value.length === 0) {
                 title.value = `Habeep | No Feeds`
             } else {
@@ -437,17 +453,10 @@ async function getFeeds() {
             }
         }
 
-        feeds.value.forEach(async feed => {
-            const distance = await calculateDistance(feed.location.address + ', ' + feed.location.city || store.state.user.nationality)
-            if (distance) {
-                feed.distance = distance
-            }
-        })
-
         started.value = false
-        useFilters(filterData)
 
     } catch (error) {
+        console.log(error)
         errorMsg.value = 'Error getting feeds'
     }
 }

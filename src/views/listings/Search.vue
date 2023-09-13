@@ -172,7 +172,7 @@
                         <span class="text-gray-300 text-lg">No match for search yet</span>
                     </div>
                     <div class="flex flex-col items-center gap-y-3 justify-center" v-if="searchingData === true">
-                        <img src="../../assets/images/rhombus-preloader.gif" alt="">
+                        <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" size="200px" color="#0A1045"></loader>
                     </div>
                     <!-- listing template -->
                     <div class="basis-full md:basis-1/2 xl:basis-1/4 md:px-3 md:py-3 py-5 gap-y-4 px-0" v-else
@@ -398,12 +398,12 @@ async function getSearch(location, query) {
             country.value.cc = getCountry.data.country
             country.value.currency = clm.getCountryByAlpha2(getCountry.data.country)
         }
-        products.value.forEach(async product => {
+        for (const product of products.value) {
             const distance = await calculateDistance(product.location.city || product.location.address + ', ' + country.country)
             if (distance) {
                 product.distance = distance
             }
-        })
+        }
 
         const uniqueIds = [];
         const uniqueProducts = products.value.filter(element => {

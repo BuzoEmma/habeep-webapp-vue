@@ -10,7 +10,8 @@
                     <img src="../../../../assets/icons/coin.png" class="w-8 h-6" alt="">
                     <p class="text-gray-200 text-sm font-medium">Rewards</p>
                 </div>
-                <span class="font-black text-sm text-white">{{ agentDetails.rewards.toFixed(2) }} <strike>HBP</strike></span>
+                <span class="font-black text-sm text-white">{{ agentDetails.rewards.toFixed(2) }}
+                    <strike>HBP</strike></span>
             </div>
 
             <h3 class="text-white font-medium md:text-4xl text-2xl w-full text-left mt-8 md:mt-0">Welcome {{
@@ -105,11 +106,12 @@
             <!-- tab for active ads -->
             <div class="ads-tab w-full h-fit mt-6 flex flex-row"
                 :class="{ 'justify-center items-center': activeProducts.length < 1 }" v-if="adsTab === 1">
-                <img src="../../../../assets/images/rhombus-preloader.gif" class="m-auto" v-if="fetchingProducts === true" alt="">
+                <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" size="200px" color="#0A1045" class="m-auto"
+                    v-if="fetchingProducts === true"></loader>
                 <div class="flex flex-col items-center gap-y-3 md:justify-center" v-else-if="activeProducts.length < 1">
                     <img src="../../../../assets/icons/no-ad.svg" alt="">
                     <span class="text-gray-300 text-lg">No active property yet</span>
-                    
+
                 </div>
                 <div class="flex flex-row w-full h-full flex-wrap" v-else>
 
@@ -119,9 +121,9 @@
                         <div class="flex flex-col items-start gap-y-2 ad relative rounded-t-md">
                             <Skeleton v-if="!item.imageLoaded || !item.images[0]"
                                 class="w-full h-full rounded-md feed-image" style="width: 100%" />
-                            <img @click="$router.push('/listings/agent/view/products/' + item._id)" :src="item.images[0].link"
-                                class="w-full h-full rounded-md feed-image" :class="{ 'hidden': !item.imageLoaded }"
-                                @load="item.imageLoaded = true"
+                            <img @click="$router.push('/listings/agent/view/products/' + item._id)"
+                                :src="item.images[0].link" class="w-full h-full rounded-md feed-image"
+                                :class="{ 'hidden': !item.imageLoaded }" @load="item.imageLoaded = true"
                                 v-if="item.images[0] && item.images[0].link && item.images[0].link.includes('.mp4') == false"
                                 alt="">
                             <video @click="$router.push('/listings/agent/view/products/' + item._id)"
@@ -186,9 +188,9 @@
                         <div class="flex flex-col items-start gap-y-2 relative ad  rounded-t-md">
                             <Skeleton v-if="!item.imageLoaded || !item.images[0]"
                                 class="w-full h-full rounded-md feed-image" style="width: 100%" />
-                            <img @click="$router.push('/listings/agent/view/products/' + item._id)" :src="item.images[0].link"
-                                class="w-full h-full rounded-md feed-image" :class="{ 'hidden': !item.imageLoaded }"
-                                @load="item.imageLoaded = true"
+                            <img @click="$router.push('/listings/agent/view/products/' + item._id)"
+                                :src="item.images[0].link" class="w-full h-full rounded-md feed-image"
+                                :class="{ 'hidden': !item.imageLoaded }" @load="item.imageLoaded = true"
                                 v-if="item.images[0] && item.images[0].link && item.images[0].link.includes('.mp4') == false"
                                 alt="">
                             <video @click="$router.push('/listings/agent/view/products/' + item._id)"

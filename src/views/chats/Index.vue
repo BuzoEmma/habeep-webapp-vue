@@ -3,8 +3,8 @@
         style="background: #161622"></div>
     <div class="w-screen max-w-full flex flex-col items-center bg-white h-screen max-h-full overflow-x-hidden">
         <!-- Header / Navbar -->
-        <HomeNavbar v-if="screenWidth > 425" />
-        <HomeNavbar v-if="screenWidth < 767 && !selectedChat" />
+        <HomeNavbar v-if="screenWidth > 768" />
+        <HomeNavbar v-if="screenWidth < 768 && !selectedChat" />
 
         <div class="main flex flex-row h-full items-center justify-center lg:mt-10 gap-x-5 w-full 2xl:px-44 md:px-20"
             :class="{ 'justify-between': processing === false && allRooms.length > 0 }">
@@ -16,12 +16,12 @@
 
             <NoChat v-if="!processing && !selectedChat"
                 :class="{ 'hidden': allRooms.length > 0 && screenWidth < 1023 || selectedChat }" />
-            <Chat @showPhone="togglePhone" v-if="!processing && selectedChat" @leaveChat="leaveChat"
-                :chat="selectedChat" :class="{ 'hidden': !selectedChat && screenWidth < 1023 }" />
+            <Chat @showPhone="togglePhone" v-if="!processing && selectedChat" @leaveChat="leaveChat" :chat="selectedChat"
+                :class="{ 'hidden': !selectedChat && screenWidth < 1023 }" />
         </div>
 
-        <div v-if="onPhone && screenWidth < 1024"
-            class="absolute bottom-10 w-screen flex flex-col items-center justify-center z-20 gap-y-2 bg-transparent">
+        <div v-if="onPhone && screenWidth < 1024" v-motion-slide-bottom :delay="50"
+            class="absolute bottom-10 w-screen flex flex-col items-center justify-center z-30 gap-y-2 bg-transparent">
 
             <a class="flex flex-row items-center justify-center bg-white  rounded-xl border border-gray-100 gap-x-2 py-5 w-11/12 cursor-pointer"
                 :href="'tel:' + selectedChat.user.phoneNumber" v-if="selectedChat.user">
@@ -81,8 +81,6 @@ const leaveChat = (data) => {
         return chatroom.room._id == data.room._id
     })
     allRooms.value[getRooms[0]] = data
-    
-    console.log(getRoom[0].room, data.room)
 }
 
 const screenWidth = ref(window.innerWidth)
@@ -105,7 +103,6 @@ async function getRooms() {
         }
         return true
     } catch (error) {
-        console.log(error)
         router.go(-1)
         return false
     }

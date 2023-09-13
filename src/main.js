@@ -7,6 +7,7 @@ import { router, routes } from './router/index.js'
 import store from './store'
 import Toast from './components/reusables/Toast.vue'
 import Preloader from './components/reusables/Preloader.vue'
+import Loader from './components/reusables/Loader.vue'
 import { MotionPlugin } from '@vueuse/motion'
 import VueSocialSharing from 'vue-social-sharing'
 
@@ -37,6 +38,7 @@ myApp.component('Toast', Toast)
 myApp.component('Preloader', Preloader)
 myApp.component('Skeleton', SkeletonLoader)
 myApp.component('Avatar', AvatarInitials)
+myApp.component('Loader', Loader)
 myApp.component('PriceFormatter', PriceFormatter)
 
 myApp.use(MotionPlugin)
