@@ -44,7 +44,27 @@
 <script setup>
 import { ref } from 'vue'
 
+const title = ref('Habeep | Choose Plan')
+import { useHead } from '@vueuse/head'
 
+useHead({
+    title: () => title.value,
+    meta: [
+        { charset: 'utf-8' },
+        { name: 'description', content: '' },
+
+        { name: 'og:title', content: () => title.value },
+        { name: 'og:image', content: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
+        { name: 'og:url', content: 'https://habeep.org/account/IBO/category' },
+        { name: 'og:website', content: 'website' },
+        { name: 'og:description', content: 'Choose from our catalogue. The plan that fits you' },
+
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+    ],
+    link: [
+      { rel: 'icon', href: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
+    ]
+})
 </script>
 
 <style scoped>

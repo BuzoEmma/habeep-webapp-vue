@@ -1,6 +1,5 @@
 <template>
-    <div
-    v-motion :initial="{ opacity: 0.2, x: -100 }" :enter="{ opacity: 1, x: 0 }" :leave="{ x: 100, opacity: 0, }"
+    <div v-motion :initial="{ opacity: 0.2, x: -100 }" :enter="{ opacity: 1, x: 0 }" :leave="{ x: 100, opacity: 0, }"
         class="w-screen min-w-full flex flex-col lg:flex-row items-center bg-white h-full md:h-screen min-h-full overflow-y-auto md:overflow-hidden">
         <div class="flex flex-col items-start gap-y-6 h-2/6 lg:h-full bg-webapp justify-between w-full lg:w-2/5 px-10">
             <div class="logo md:flex hidden flex-row items-center justify-start pt-10 w-full gap-x-2 cursor-pointer"
@@ -82,7 +81,7 @@
                                 <img src="../../../../../assets/icons/listings/city-icon.svg" alt="">
                                 <div class="flex flex-col  items-start">
                                     <span class="text-lg text-webapp">{{ match.city }}</span>
-                                    <span class="text-sm text-gray-400">{{ match.state }} State</span>
+                                    <span class="text-sm text-gray-400">{{ match.state }}</span>
                                 </div>
                             </div>
                         </div>
@@ -99,7 +98,7 @@
                 </div>
                 <div class="flex flex-row p-6 w-full items-center justify-between">
                     <span class="text-xl font-medium text-webapp underline cursor-pointer"
-                        @click="$emit('goBack')">Back</span>
+                        @click="$emit('goBack', { to: 'HouseTypePage', from: 'Location' })">Back</span>
                     <button @click="$emit('passData', data)" :disabled="data.data.address.length < 1"
                         :class="{ 'bg-slate-400 text-white': data.data.address.length < 1 }"
                         class="h-10 w-24 rounded-lg bg-primary text-white text-sm text-medium">Next</button>
@@ -112,8 +111,7 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useStore } from 'vuex'
-import MainNavbarVue from "../../../../../components/MainNavbar.vue";
-import axiosDefault from 'axios'
+import axios from '../../../../../composables/axios'
 
 const store = useStore()
 
@@ -154,7 +152,7 @@ function toggleCityModal(state) {
 // select city
 function selectCity(match) {
     toggleCityModal('close')
-    data.data.city = match.city + ', ' + match.state + ' State'
+    data.data.city = match.city + ', ' + match.state
     changeMapAddress('city')
 }
 
@@ -173,7 +171,7 @@ function checkForCity() {
 
     for (const state of states.value) {
         for (const city of state.cities) {
-            if (city.name.toLowerCase().includes(addrData.city) === true) {
+            if (city.name.toLowerCase().includes(addrData.city.toLowerCase()) === true) {
                 let formatted = {
                     city: city.name,
                     state: state.state.name
@@ -184,21 +182,50 @@ function checkForCity() {
     }
 }
 
+
+
 async function getStates() {
-    const getState = await axiosDefault.get('https://locus.fkkas.com/api/states');
+    try {
+        const getState = await axios.get('/countries-api/states/' + store.state.user.countryShortName)
 
-    getState.data.data.forEach(async state => {
-        const getCities = await axiosDefault.get('https://locus.fkkas.com/api/regions/' + state.alias);
+        getState.data.results.forEach(async state => {
+            const getCities = await axios.get(`/countries-api/cities/${store.state.user.countryShortName}/${state.stateid}`)
 
-        let formatted = {
-            state: state,
-            cities: getCities.data.data
-        }
+            let formatted = {
+                state: state,
+                cities: getCities.data.results
+            }
 
-        states.value.push(formatted)
+            for (const city of formatted.cities) {
+                let format = {
+                    city: city.name,
+                    state: formatted.state.name
+                }
+                possibleMatches.value.push(format)
+            }
 
-    })
-    store.dispatch('saveStates', states.value)
+            states.value.push(formatted)
+
+        })
+
+        states.value = states.value.sort(function (a, b) {
+            const nameA = a.state.name.toUpperCase(); // ignore upper and lowercase
+            const nameB = b.state.name.toUpperCase(); // ignore upper and lowercase
+            if (nameA > nameB) {
+                return 1;
+            }
+            if (nameA < nameB) {
+                return -1;
+            }
+
+            // names must be equal
+            return 0;
+        });
+
+
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 if (store.state.listingProcess.location.address) {
@@ -206,11 +233,7 @@ if (store.state.listingProcess.location.address) {
 }
 
 onMounted(() => {
-    if (store.state.allStates.length !== 0) {
-        states.value = store.state.allStates
-    } else {
-        getStates()
-    }
+    getStates()
 })
 
 </script>

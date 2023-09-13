@@ -1,13 +1,15 @@
 <template>
-  <div class="main flex flex-col md:h-64 fixed md:absolute z-10 overflow-hidden md:right-1/4 md:top-1/6 bg-white h-full">
+  <div class="main flex flex-col md:h-64 z-10 overflow-y-hidden no-scroll-btn  bg-white h-full relative">
     <div class="flex flex-row items-center justify-between w-full px-4 py-4 border-b border-b-gray-100">
       <span class="text-lg font-medium text-webapp">Edit profile</span>
       <img src="../../../../assets/icons/x.svg" class="cursor-pointer" @click="$emit('close')" alt="">
     </div>
 
-    <div class="profile relative flex flex-col w-full items-center gap-y-6 px-4">
+    <div class="profile relative flex flex-col w-full items-center gap-y-6 px-4 h-full">
       <div class="relative flex flex-row items-center justify-center w-24 h-24 rounded-full border border-gray-200">
-        <img :src="imageData" class="rounded-full w-full h-full" alt="">
+        <img :src="imageData" class="w-24 h-24 min-h-full min-w-full  object-cover rounded-full cursor-pointer"
+          v-if="imageData !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
+        <Avatar size="100%" v-else :fname="$store.state.user.fname" :lname="$store.state.user.surname" />
 
         <!-- upload images -->
         <form enctype="multipart/form-data" class="hidden">
@@ -26,27 +28,53 @@
 
       <div class="flex flex-col items-start w-full gap-y-1 relative">
         <label for="" class="text-sm text-webapp">Phone number</label>
-        <input type="number" v-model="data.phoneNumber" maxlength="12"
+        <input type="number" v-model="data.phoneNumber" maxlength="14"
           @input="validateFormField('phone', data.phoneNumber.toString())" placeholder="Phone number"
           class="w-full h-14 rounded-lg bg-transaparent"
           :class="{ 'bg-bg': onModal, 'invalidField': errorMsg.field === 'phone' }" style="padding-left: 115px">
 
 
-        <div
-          class="flex flex-col items-center  drop-shadow-sm bg-white rounded-b-xl rounded-t-md gap-y-2 p-1 absolute h-48 overflow-auto py-2 top-24 left-1 z-10 w-32"
+        <div :class="{ 'justify-center': loadingLocationInfo }"
+          class="flex flex-col items-center  drop-shadow-sm bg-white rounded-b-xl rounded-t-md gap-y-2 p-1 absolute h-48 overflow-auto py-2 top-24 left-1 z-10 w-32 min-w-fit"
           v-if="onContainer">
-          <p class="w-full flex flex-row justify-center gap-x-4 border-b items-center border-gray-100"
-            @click="pickCountryCode(index)" v-for="(country, index) in countriesInfo" :key="(country, index)">
-            <img :src="country.flag" class="w-9 h-8" alt="">
-            <span class="text-webapp text-sm font-medium">(+{{ country.callingCode }})</span>
-          </p>
+          <Preloader v-if="loadingLocationInfo" />
+          <div class="flex-col flex items-start" v-else>
+            <div @click="cleanSelections" v-if="selectedContinent.name"
+              class="w-full flex text-primary cursor-pointer flex-row items-start gap-x-4 border-b pb-4 py-2 pl-3 border-gray-100">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5">
+                <path fill-rule="evenodd"
+                  d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z"
+                  clip-rule="evenodd" />
+              </svg>
+
+              <span class="text-sm capitalize">{{ selectedContinent.name }}</span>
+            </div>
+            <div class="w-full h-fit" v-if="allContinents.length > 0 && !selectedContinent.name">
+              <p class="w-full flex cursor-pointer flex-row items-start gap-x-4 border-b py-2 pl-3 border-gray-100"
+                @click="pickContinent(continent)" :class="{ 'border-none': index === allContinents.length - 1 }"
+                v-for="(continent, index) in allContinents" :key="(continent, index)">
+                <span class="text-webapp text-sm font-medium cursor-pointer capitalize text-left">{{
+                  continent.name }}</span>
+              </p>
+            </div>
+            <div class="w-full h-fit" v-if="selectedContinent.name">
+              <p class="w-full flex flex-row cursor-pointer items-start gap-x-4 border-b py-2 pl-3 border-gray-100"
+                @click="pickCountry(country)" :class="{ 'border-none': index === selectedContinentCountries.length - 1 }"
+                v-for="(country, index) in selectedContinentCountries" :key="(country, index)">
+                <span>{{ country.flag }}</span>
+                <span class="text-webapp text-sm font-medium cursor-pointer capitalize text-left">{{
+                  country.name }}</span>
+              </p>
+            </div>
+          </div>
         </div>
 
-        <div class="absolute top-8 left-1 flex flex-row items-center justify-center h-10 w-24 rounded-md"
-          @click="openCountryCode" style="background: #F4F4F4" :class="{ 'bg-bg': onModal }">
+        <div class="absolute top-8 left-1 flex flex-row items-center justify-center h-10 w-24 rounded-md cursor-pointer"
+          @click="toggleCountryCodeContainer" style="background: #F4F4F4" :class="{ 'bg-bg': onModal }">
           <p class="flex flex-row items-center w-full justify-center gap-x-3">
-            <img :src="selectedCountry.flag" class="w-9 h-8" alt="">
-            <span>+{{ selectedCountry.callingCode }}</span>
+            <span v-if="!selectedCountry.flag.includes('https')">{{ selectedCountry.flag }}</span>
+            <img v-else :src="selectedCountry.flag" :alt="selectedCountry.name + 'country flag'" class="w-9 h-8">
+            <span>+{{ selectedCountry.phoneCode }}</span>
           </p>
         </div>
 
@@ -59,34 +87,34 @@
           class="absolute right-5 top-10 cursor-pointer" alt="">
       </div>
 
+      <button class="bg-primary w-full rounded-lg grid place-items-center h-14 my-6 text-white" @click="updateProfile">
+        <span v-if="!processing">Continue</span>
+        <Preloader v-else />
+      </button>
+
       <!-- components -->
       <Toast :msg="errorMsg.msg" type="danger" v-if="onError" />
       <Toast :msg="newMsg" type="success" v-if="newMsg.length > 0" />
     </div>
 
-
-    <button class="bg-primary mx-4 rounded-lg grid place-items-center h-14 my-6 text-white" @click="updateProfile">
-      <span v-if="!processing">Continue</span>
-      <Preloader v-else />
-    </button>
   </div>
 </template>
 
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-import { useRouter, useRoute } from "vue-router";
 import axios from "../../../../composables/axios";
-import axiosDefault from 'axios'
 import { useStore } from "vuex";
+import { useRouter } from 'vue-router'
+
+import sort from 'smart-deep-sort'
+import clm from 'country-locale-map'
 
 import { formValidator } from '../../../../composables/2-validator'
 
 const emit = defineEmits(['close'])
 
-const route = useRoute();
-const router = useRouter();
-
 const store = useStore();
+const router = useRouter()
 
 
 const formData = new FormData();
@@ -108,11 +136,7 @@ const previewImg = async (event, value) => {
     pic.value = input.files[0]
     // create a new FileReader to read this image and convert to base64 format
     var reader = new FileReader();
-    // Define a callback function to run, when FileReader finishes its job
-    // reader.readAsDataURL(eval(`pic${value}`).value)
     reader.onload = (e) => {
-      // Note: arrow function used here, so that "this.imageData" refers to the imageData of Vue component
-      // Read image as base64 and set to imageData
       imageData.value = e.target.result;
     }
 
@@ -135,59 +159,74 @@ async function savePhoto() {
 
     return saveImage.data.data[0].link
   } catch (error) {
-    console.log(error)
     return 'https://i.ibb.co/gtpxMJz/21.png'
   }
 }
 
+
 // get country codes
 let onContainer = ref(false)
-let countriesInfo = ref([])
+const allContinents = ref([])
+const loadingLocationInfo = ref(false)
+const selectedContinent = ref({})
+const selectedContinentCountries = ref([])
+
+function getEmoji(country) {
+  const emoji = clm.getCountryByName(country)
+  if(emoji) {
+    return emoji.emoji
+  } else return '↺'
+}
+
+
 let selectedCountry = ref({
-  name: 'Nigeria',
-  callingCode: '234',
-  flag: 'https://flagcdn.com/ng.svg'
+  name: store.state.user.nationality,
+  phoneCode: store.state.user.countryCode,
+  flag: getEmoji(store.state.user.nationality),
+  currency: store.state.user.currency,
+  shortName: store.state.user.countryShortName
 });
 
 
-
-function openCountryCode() {
+function toggleCountryCodeContainer() {
   onContainer.value = !onContainer.value
 }
 
-function pickCountryCode(index) {
-  let countryInfo = countriesInfo.value[index]
-  selectedCountry.value = countryInfo
-  onContainer.value = false
+function pickContinent(continent) {
+  selectedContinent.value = continent
+  selectedContinentCountries.value = []
+  getContinentCountries(continent.id)
 }
 
-async function getCountries() {
+function cleanSelections() {
+  selectedContinent.value = {}
+  selectedContinentCountries.value = []
+}
+
+function pickCountry(country) {
+  selectedCountry.value = country
+  toggleCountryCodeContainer()
+}
+
+async function getContinents() {
   try {
-    const countries = await axiosDefault.get('https://restcountries.com/v3.1/subregion/western africa')
-    // console.log(countries)
-    let unformattedData = []
-
-
-    for (const country of countries.data) {
-      try {
-        const countryMain = await axiosDefault.get('https://restcountries.com/v2/name/' + country.name.common)
-        unformattedData.push({
-          name: country.name.common,
-          callingCode: countryMain.data[0].callingCodes[0],
-          flag: countryMain.data[0].flag
-        })
-      } catch (error) {
-        // consle.log(error)
-      }
-
-
-    }
-    let sortedArray = unformattedData.sort((country1, country2) => {
-      return Number(country2.callingCode) - Number(country1.callingCode)
-    })
-    countriesInfo.value = sortedArray
+    loadingLocationInfo.value = true
+    const continents = await axios.get('/countries-api/continents')
+    allContinents.value = sort(continents.data.results)
+    loadingLocationInfo.value = false
   } catch (error) {
-    // console.log('Err occured', error)
+    loadingLocationInfo.value = false
+  }
+}
+
+async function getContinentCountries(id) {
+  try {
+    loadingLocationInfo.value = true
+    const countries = await axios.get('countries-api/countries/' + id)
+    selectedContinentCountries.value = sort(countries.data.results)
+    loadingLocationInfo.value = false
+  } catch (error) {
+    loadingLocationInfo.value = false
   }
 }
 
@@ -213,6 +252,8 @@ const data = reactive({
   fname: '',
   surname: '',
   countryCode: '',
+  countryShortName: '',
+  currency: null,
   nationality: '',
   phoneNumber: store.state.user.phoneNumber,
   fullName: store.state.user.fname + ' ' + store.state.user.surname
@@ -224,7 +265,6 @@ let errorMsg = ref({
   field: null
 })
 let newMsg = ref('')
-let warningMsg = ref('')
 const processing = ref(false)
 
 function validateFormField(field, data) {
@@ -246,34 +286,30 @@ async function updateProfile() {
   try {
     if (data.phoneNumber.toString().length >= 10) {
       processing.value = true
-      data.countryCode = selectedCountry.value.callingCode
+      data.countryCode = selectedCountry.value.phoneCode
+      data.countryShortName = selectedCountry.value.shortName
+      data.currency = selectedCountry.value.currency.split(',')[0]
       data.nationality = selectedCountry.value.name
-      data.profilePicture = await savePhoto()
+
+      if (store.state.user.userProfileImage !== imageData.value) {
+        data.profilePicture = await savePhoto()
+      }
+
       if (data.fullName.length > 5) {
         let name = formatNames(data.fullName)
         data.fname = name.fname
         data.surname = name.surname ? name.surname : store.state.user.surname
 
         const update = await axios.put(url, data)
-        if (!update.data.success) {
-          onError.value = true
-          errorMsg.value.msg = update.data.message
 
-          setTimeout(() => {
-            processing.value = false
-            onError.value = false
-            errorMsg.value.msg = ''
-          }, 2000);
-        } else {
-          newMsg.value = update.data.message + '. Changes will take effect in a few minutes'
+        newMsg.value = update.data.message + '. Changes will take effect in a few seconds'
 
-          setTimeout(() => {
-            processing.value = false
-            newMsg.value = ''
-            emit('close')
-          }, 2000);
-
-        }
+        setTimeout(() => {
+          processing.value = false
+          newMsg.value = ''
+          router.go()
+          emit('close')
+        }, 2000);
       } else {
         onError.value = true
         errorMsg.value.msg = 'Input your Full Name'
@@ -285,7 +321,7 @@ async function updateProfile() {
   } catch (error) {
     processing.value = false
     onError.value = true
-    errorMsg.value.msg = error.response.data.error 
+    errorMsg.value.msg = error.response.data.message
 
     setTimeout(() => {
       onError.value = false
@@ -294,7 +330,7 @@ async function updateProfile() {
 }
 
 onMounted(() => {
-  getCountries()
+  getContinents()
 })
 </script>
 
@@ -308,6 +344,7 @@ onMounted(() => {
 @media screen and (max-width: 767px) {
   .main {
     height: 100vh;
+    border-radius: 0px;
     width: 100vw;
   }
 }

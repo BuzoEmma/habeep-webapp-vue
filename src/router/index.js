@@ -7,7 +7,7 @@ function guardMyroute(to, from, next) {
     if (createStore.state.isAuthenticated) { isAuthenticated = true } else { isAuthenticated = false }
     if (isAuthenticated) {
         if (!createStore.state.user.verified) {
-            next({ name: 'Verify', query: { reason: 'user_verification', email: createStore.state.user.email}}) // go to '/verify';
+            next({ name: 'OTP', query: { reason: 'user_verification', email: createStore.state.user.email } }) // go to '/verify';
         } else next() // allow to enter route
     } else {
         // console.log(to)
@@ -22,25 +22,9 @@ function guardMyrouteForAgent(to, from, next) {
     if (createStore.state.isAuthenticated) { isAuthenticated = true } else { isAuthenticated = false }
     if (isAuthenticated) {
         if (!createStore.state.user.verified) {
-            next({ name: 'Verify' }) // go to '/verify';
+            next({ name: 'OTP', query: { reason: 'user_verification', email: createStore.state.user.email } }) // go to '/verify'; // go to '/verify';
         } else {
             if (createStore.state.user.role === 'AGENT') {
-                next()
-            } else next({ name: 'IBO_Category_Agent' })
-        } // allow to enter route
-    } else {
-        next("/login?redirect=" + to.path + "?reloadApp=true") // go to '/login';
-    }
-}
-
-function guardMyrouteForIBO(to, from, next) {
-    var isAuthenticated = false
-    if (createStore.state.isAuthenticated) { isAuthenticated = true } else { isAuthenticated = false }
-    if (isAuthenticated) {
-        if (!createStore.state.user.verified) {
-            next({ name: 'Verify' }) // go to '/verify';
-        } else {
-            if (createStore.state.user.role.includes('IBO')) {
                 next()
             } else next({ name: 'IBO_Category_Agent' })
         } // allow to enter route
@@ -54,7 +38,7 @@ function guardMyrouteForUSERIBO(to, from, next) {
     if (createStore.state.isAuthenticated) { isAuthenticated = true } else { isAuthenticated = false }
     if (isAuthenticated) {
         if (!createStore.state.user.verified) {
-            next({ name: 'Verify' }) // go to '/verify';
+            next({ name: 'OTP', query: { reason: 'user_verification', email: createStore.state.user.email } }) // go to '/verify'; // go to '/verify';
         } else {
             if (createStore.state.user.role !== "TENANT") {
                 next()
@@ -75,41 +59,8 @@ function changeHomeRoute() {
     } else return '/home'
 }
 
-function changeHomeName() {
-    if (createStore.state.isAuthenticated) {
-        return 'Feeds'
-    } else return 'Main'
-}
-
-// listings
-import ListingSearch from '../views/listings/Search.vue'
-import ListingProduct from '../views/listings/Product.vue'
-import ListingAgent from '../views/listings/AgentAd.vue'
-
-// posts
-import AgentAds from '../views/profile/agents/post/Ads.vue'
-import PostAd from '../views/profile/agents/post/Post.vue'
-
-
-// profile
-// user
-import UserProfile from '../views/profile/user/Profile.vue'
-
-// agents
-import AgentProfile from '../views/profile/agents/Profile.vue'
-
-// IBO
-import IBO_ChooseCategory from '../views/profile/IBO/register/ChooseCategory.vue'
-import IBO_Agent from '../views/profile/IBO/register/AgentForm.vue'
-import IBO_User from '../views/profile/IBO/register/UserForm.vue'
-
-
-
-// chats
-import ChatIndex from '../views/chats/Index.vue'
-
 // extras
-import Blog from '../views/extras/BlogRoom.vue'
+import Blogs from '../views/extras/BlogRoom.vue'
 import TOS from '../views/extras/TermsOfService.vue'
 
 // auth
@@ -119,42 +70,49 @@ import Logout from '../views/Auth/Logout.vue'
 import ForgotPin from '../views/Auth/ForgotPin.vue'
 import OTP from '../views/Auth/OTP_Validation.vue'
 
-// fallbacks
-import Error404 from '../views/fallbacks/404.vue'
-
-// wallet
-import WalletIndex from '../views/wallet/Index.vue'
-
 const routes = [
     {
         path: '/',
         redirect: changeHomeRoute()
-        
+
     },
     {
         path: '/home',
         name: 'Home',
         component: Home,
-        meta: {
-            title: "Search"
-        }
+        // meta: {
+        //     title: "Search"
+        // }
     },
     {
         path: '/feeds',
         component: Feeds,
         beforeEnter: guardMyroute,
         name: 'Feeds',
-        meta: {
-            title: 'Feeds'
-        }
+        // meta: {
+        //     title: 'Feeds'
+        // }
     },
     // extras
     {
         path: '/blog',
-        name: 'Blog',
-        component: Blog,
+        name: 'Blogs',
+        component: Blogs,
         meta: {
-            title: "Blog"
+            title: "Blogs"
+        }
+    },
+    {
+        path: '/blog/:id',
+        name: 'BlogPage',
+        component: () => import('../views/extras/BlogPage.vue'),
+    },
+    {
+        path: '/help',
+        name: 'FAQ',
+        component: () => import('../views/extras/FAQ.vue'),
+        meta: {
+            title: "Help"
         }
     },
     {
@@ -169,42 +127,44 @@ const routes = [
     {
         path: '/listings/search',
         name: 'Listings-search',
-        component: ListingSearch,
-        meta: {
-            title: "Search ads"
-        }
+        component: () => import('../views/listings/Search.vue'),
+        // meta: {
+        //     title: "Search ads"
+        // }
     },
     {
         path: '/listings/products/:id',
         name: 'Listings-product',
-        component: ListingProduct,
+        component: () => import('../views/listings/Product.vue'),
+    },
+    {
+        path: '/listings/agent/view/products/:id',
+        name: 'Listings-product-view',
+        component: () => import('../views/listings/AgentAd.vue'),
         meta: {
-            title: "Product"
+            title: "View your Listing"
         }
     },
     {
         path: '/listings/agent/products/:id',
         name: 'Listings-product-Agent',
         beforeEnter: guardMyrouteForAgent,
-        component: ListingAgent,
+        component: () => import('../views/profile/agents/post/EditAd.vue'),
         meta: {
-            title: "Agent Listing"
+            title: "Edit your listing"
         }
-    },
+      },
     // profile
     {
-        path: '/agents/profile/:id',
-        name: 'Agent-profile',
-        component: AgentProfile,
-        meta: {
-            title: "Agent Profile"
-        }
+        path: '/:username',
+        name: 'UserProfiles',
+        component: () => import('../views/profile/agents/Profile.vue'),
     },
     {
         path: '/agent/ads',
         beforeEnter: guardMyrouteForAgent,
         name: 'Agent-ads',
-        component: AgentAds,
+        component: () => import('../views/profile/agents/post/Ads.vue'),
         meta: {
             title: "Agent Listings"
         }
@@ -213,7 +173,7 @@ const routes = [
         path: '/agent/ads/create',
         beforeEnter: guardMyrouteForAgent,
         name: 'Agent-ads-create',
-        component: PostAd,
+        component: () => import('../views/profile/agents/post/Post.vue'),
         meta: {
             title: "Create Ad"
         }
@@ -222,10 +182,10 @@ const routes = [
         path: '/user/profile/:id',
         name: 'User-profile',
         beforeEnter: guardMyroute,
-        component: UserProfile,
-        meta: {
-            title: "Profile"
-        }
+        component: () => import('../views/profile/user/Profile.vue'),
+        // meta: {
+        //     title: "Profile"
+        // }
     },
 
     // IBO
@@ -233,16 +193,16 @@ const routes = [
         path: '/account/IBO/category',
         name: 'IBO_ChooseCategory',
         beforeEnter: guardMyrouteForUSERIBO,
-        component: IBO_ChooseCategory,
+        component: () => import('../views/profile/IBO/register/ChooseCategory.vue'),
         meta: {
-            title: "Become an IBO"
+            title: "Become an Affiliated User"
         }
     },
     {
         path: '/account/IBO/category/agent',
         name: 'IBO_Category_Agent',
         beforeEnter: guardMyroute,
-        component: IBO_Agent,
+        component: () => import('../views/profile/IBO/register/AgentForm.vue'),
         meta: {
             title: "Become an Agent"
         }
@@ -251,10 +211,10 @@ const routes = [
         path: '/account/IBO/category/user',
         name: 'IBO_Category_User',
         beforeEnter: guardMyroute,
-        component: IBO_User,
-        meta: {
-            title: "Become an IBO User"
-        }
+        component: () => import('../views/profile/IBO/register/UserForm.vue'),
+        // meta: {
+        //     title: "Become an IBO User"
+        // }
     },
 
     // chats
@@ -262,10 +222,10 @@ const routes = [
         path: '/chats',
         name: 'Chat',
         beforeEnter: guardMyroute,
-        component: () =>  import('../views/chats/Index.vue'),
-        meta: {
-            title: "Messages"
-        }
+        component: () => import('../views/chats/Index.vue'),
+        // meta: {
+        //     title: "Messages"
+        // }
     },
     // authentication
     {
@@ -281,7 +241,8 @@ const routes = [
         name: 'Login',
         component: Login,
         meta: {
-            title: "Login"
+            title: "Login",
+            description: "Login with your email address and pin. Note that all your information are enncrypted and safe."
         }
     },
     {
@@ -317,14 +278,20 @@ const routes = [
     {
         path: '/wallet',
         name: 'Wallet',
-        component: WalletIndex,
+        component: () => import('../views/wallet/Index.vue'),
         beforeEnter: guardMyroute,
         meta: {
             title: "Wallet"
         }
     },
 
-    { path: '/:pathMatch(.*)*', name: 'not-found', component: Error404, meta: { title: 'Page not Found' } },
+    {
+        path: '/not-found',
+        name: 'not-found-route',
+        component: () => import('../views/fallbacks/404.vue')
+    },
+
+    { path: '/:pathMatch(.*)*', name: 'not-found', component: () => import('../views/fallbacks/404.vue'), meta: { title: 'Page not Found' } },
 ]
 
 
@@ -335,7 +302,9 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    document.title = `Habeep - ${to.meta.title}`;
+    if (to.meta && to.meta.title) {
+        document.title = `Habeep | ${to.meta.title}`;
+    }
     if (to.query.reload) {
         next({
             query: null,
@@ -349,5 +318,10 @@ router.resolve({
     name: 'not-found',
     params: { pathMatch: ['not', 'found'] },
 }).href
+
+export {
+    router,
+    routes
+}
 
 export default router

@@ -24,10 +24,10 @@ export function loginValidate(email, pin) {
         }
     } else {
         const noWhitespace = pin.toString().replace(/\s/g, '');
-        if (noWhitespace.length < 4 ) {
+        if (noWhitespace.length < 4) {
             return {
                 success: false,
-                message: 'Password length must be at least 6 characters',
+                message: 'Pin must be 4 characters',
                 field: 'pin',
             }
         } else {
@@ -53,8 +53,8 @@ export function formValidator(field, data) {
         }
     }
 
-    if(field === 'phone') {
-        if(data.length >= 10) {
+    if (field === 'phone') {
+        if (data.length >= 1) {
             return {
                 success: true,
                 message: 'Please enter a valid phone number',
@@ -71,8 +71,8 @@ export function formValidator(field, data) {
     }
 
 
-    if(field === 'pin' || field.includes('Pin') === true) {
-        if(data.length === 4) {
+    if (field === 'pin' || field.includes('Pin') === true) {
+        if (data.length === 4) {
             return {
                 success: true,
                 message: 'Please enter a valid pin',
@@ -97,18 +97,12 @@ export function registerValidate(data) {
             message: 'Please enter a valid email address',
             field: 'email',
         }
-    } else if (data.phoneNumber.length < 10) {
-        return {
-            success: false,
-            message: 'Invalid phone number',
-            field: 'phone',
-        }
     } else {
         const noWhitespace = data.pin.toString().replace(/\s/g, '');
         if (noWhitespace.length < 4) {
             return {
                 success: false,
-                message: 'Pin length must be 4 characters',
+                message: 'Pin must be 4 characters',
                 field: 'pin',
             }
         } else {

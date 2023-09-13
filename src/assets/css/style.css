@@ -1,11 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Bacasime+Antique&family=Montserrat:wght@100&family=Ubuntu&display=swap');
+
 @font-face {
   font-family: Aeonik;
+  font-style: normal;
+  font-weight: 400;
   src: url(../fonts/AeonikTRIAL-Regular.otf);
+  font-display: swap;
 }
 
 :root {
   font-family: 'Aeonik', sans-serif;
+  --maz-color-primary: hsl(228, 100%, 60%) !important;
 }
+
 
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -50,6 +57,21 @@ input[type=number] {
   color: #0A1045;
 }
 
+.grid-center {
+  display:grid;
+  place-items: center;
+}
+
 .ubuntu {
   font-family: 'Ubuntu', sans-serif;
+}
+.bacasime {
+  font-family: 'Bacasime Antique', serif;
+}
+.montserrat {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.no-scroll-btn::-webkit-scrollbar {
+  display: none !important;
 }

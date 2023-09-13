@@ -9,7 +9,7 @@
             </div>
             <img src="../../../../../assets/icons/chevron-left.svg" @click="$emit('goBack')" class="md:hidden block pt-10"
                 alt="">
-            <h1 class="text-white font-medium text-2xl md:text-4xl xl:text-5xl   w-full text-left">What kind of house do you
+            <h1 class="text-white font-medium text-2xl md:text-4xl xl:text-5xl   w-full text-left">What kind of property do you
                 want to
                 list?</h1>
             <p></p>
@@ -18,7 +18,8 @@
         <div
             class="form-container flex flex-col items-center justify-between relative bg-white gap-y-3 w-full lg:w-3/5 min-h-fit h-full lg:h-full overflow-y-auto">
 
-            <div class="flex flex-col gap-y-4 w-full justify-center p-5 md:p-16 2xl:p-24">
+            <div class="flex flex-col gap-y-4 w-full justify-center p-5 md:p-16 2xl:p-24 overflow-y-auto no-scroll-btn">
+
                 <div class="border-2 border-gray-200 w-full flex flex-row items-center justify-between p-3 rounded-lg cursor-pointer"
                     @click="selectHouseType({ type: 1, data: 'apartment' })"
                     :class="{ 'border-blue-600': activeType === 1 }">
@@ -69,6 +70,15 @@
                     <img src="../../../../../assets/icons/listings/room_parlor.svg" alt="" class="h-12 w-28 rounded-lg">
                 </div>
 
+                <div class="border-2 border-gray-200 w-full flex flex-row items-center justify-between p-3 rounded-lg cursor-pointer"
+                    @click="selectHouseType({ type: 7, data: 'land' })"
+                    :class="{ 'border-blue-600': activeType === 7 }">
+
+                    <span class="text-webapp font-xl font-medium"
+                        :class="{ 'text-blue-600': activeType === 7 }">Land</span>
+                    <img src="../../../../../assets/icons/listings/land.jpeg" alt="" class="h-12 w-28 rounded-lg">
+                </div>
+
             </div>
 
             <div class="bottom flex flex-col items-center w-full justify-between static">
@@ -77,7 +87,7 @@
                 </div>
                 <div class="flex flex-row p-6 w-full items-center justify-between">
                     <span class="text-xl font-medium text-webapp underline cursor-pointer"
-                        @click="$emit('goBack')">Back</span>
+                        @click="$emit('goBack', { to: 'ForPage', from: 'HouseTypePage'})">Back</span>
                     <button @click="$emit('passData', data)" :disabled="data.data.length < 1"
                         :class="{ 'bg-slate-400 text-white': data.data.length < 1 }"
                         class="h-10 w-24 rounded-lg bg-primary text-white text-sm text-medium">Next</button>
@@ -105,8 +115,14 @@ const selectHouseType = (type) => {
     data.data = type.data
 }
 
+const typesArray = ['apartment', 'bungalow', 'duplex', 'flat', 'office', 'room_parlor', 'land']
 if (store.state.listingProcess.type.length > 0) {
     data.data = store.state.listingProcess.type
+    for (let i = 0; i < typesArray.length; i++) {
+        if(data.data === typesArray[i]) {
+            activeType.value = i + 1
+        } 
+    }
 }
 </script>
 

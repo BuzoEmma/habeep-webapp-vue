@@ -1,5 +1,5 @@
 <template>
-  <div class="main flex flex-col md:h-64  z-10 overflow-hidden bg-white">
+  <div class="main flex flex-col md:h-64  z-10 overflow-hidden bg-white relative pb-10">
     <div class="flex flex-row items-center justify-between w-full px-4 py-4 border-b border-b-gray-100">
       <div class="flex flex-row items-center gap-x-2" @click="($emit('enterAgents'))">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0A1045"
@@ -20,8 +20,10 @@
       </div>
     </div>
 
-    <button class="bg-primary m-4 rounded-lg grid place-items-center h-14 text-white"
-      @click="save()">Continue</button>
+    <div class="bottom-5 absolute px-4 w-full">
+      <button class="bg-primary w-full rounded-lg grid place-items-center h-14 text-white"
+        @click="save()">Continue</button>
+    </div>
   </div>
 </template>
 

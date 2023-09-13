@@ -1,6 +1,5 @@
 <template>
-    <div
-        class="main flex flex-col md:h-64 fixed md:absolute z-10 overflow-hidden md:right-1/4 md:top-1/4 bg-white h-full">
+    <div class="main flex flex-col md:h-64 z-10 overflow-hidden  bg-white h-full">
         <div class="flex flex-row items-center justify-between w-full px-4 py-4 border-b border-b-gray-100">
             <span class="text-lg font-medium text-webapp">Change pincode</span>
             <div class="flex flex-row items-center gap-x-2">
@@ -11,9 +10,11 @@
         </div>
 
         <div class="profile relative flex flex-col w-full items-center gap-y-6 px-4">
-            <div
-                class="relative flex flex-row items-center justify-center w-24 h-24 rounded-full border border-gray-200">
-                <img src="../../../../assets/icons/memoji.svg" alt="">
+            <div class="relative flex flex-row items-center justify-center w-24 h-24 rounded-full border border-gray-200">
+                <img :src="$store.state.user.userProfileImage"
+                    class="w-24 h-24 min-h-full min-w-full rounded-full cursor-pointer object-cover"
+                    v-if="$store.state.user.userProfileImage !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
+                <Avatar size="100%" v-else :fname="$store.state.user.fname" :lname="$store.state.user.surname" />
 
                 <img src="../../../../assets/icons/edit-icon.svg" class="-right-2 bottom-1 absolute" alt="">
             </div>

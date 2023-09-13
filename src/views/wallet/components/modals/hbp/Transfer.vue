@@ -60,6 +60,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import axios from '../../../../../composables/axios'
+import moment from 'moment'
 
 const props = defineProps(['wallet'])
 
@@ -69,7 +70,13 @@ const router = useRouter()
 
 const data = reactive({
     amount: '',
-    receiver: ''
+    receiver: '',
+    dates: {
+        createdAt: moment().format('LLL'),
+        time: moment().format('LTS'),
+        date: moment().format('LL')
+    },
+    userId: ''
 })
 
 
@@ -92,6 +99,7 @@ async function verifyAccountDetails() {
 
             checkingForAccount.value = false
             verifiedAccount.value = verify.data.user
+            data.userId = verifiedAccount.value.userId
         }
     } catch (error) {
         checkingForAccount.value = false

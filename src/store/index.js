@@ -1,16 +1,12 @@
 import { createStore } from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
-import { useCookies } from "vue3-cookies";
-
-const { cookies } = useCookies();
-
 export default createStore({
     state: {
-        allStates: [],
         feedLocation: {
             city: '',
             state: ''
         },
+        navOpen: false,
         isAuthenticated: false,
         user: [],
         sessionId: '',
@@ -25,6 +21,7 @@ export default createStore({
             bedrooms: 0,
             description: '',
             bathrooms: 0,
+            plots: 0,
             size: 0,
             images: new FormData()
         }
@@ -42,11 +39,6 @@ export default createStore({
             state.isAuthenticated = false;
             state.sessionId = '';
             state.user = []
-
-            cookies.set('loggedIn', false)
-        },
-        saveStates(state, data) {
-            state.allStates = data
         },
         changeFeedLocation(state, data) {
             state.feedLocation = data
@@ -88,6 +80,9 @@ export default createStore({
                 size: 0,
                 images: new FormData()
             }
+        },
+        changeNavState(state, data) {
+            state.navOpen = data
         }
     },
     actions: {
@@ -100,11 +95,13 @@ export default createStore({
         unsetAuth({ commit }) {
             commit('unsetUserAuth')
         },
-        saveStates({ commit }, data) {
-            commit('saveStates', data)
-        },
     },
     modules: {
+    },
+    getters: {
+        sessionId(state) {
+            return state.sessionId
+        }
     },
 
     plugins: [createPersistedState()]

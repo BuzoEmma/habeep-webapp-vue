@@ -14,9 +14,9 @@
         <img src="../../assets/images/habeep-show.png" class="w-1/3 xl:block hidden h-full" alt="">
 
         <div :class="{ 'relative': screenWidth < 768 }"
-            class="form-container flex flex-col items-center bg-white gap-y-3 w-full xl:w-2/3 h-full pb-6 md:py-10 overflow-y-auto overflow-x-hidden">
+            class="form-container flex flex-col items-center bg-white gap-y-3 w-full xl:w-2/3 h-full pb-6 md:py-10 overflow-y-auto no-scroll-btn overflow-x-hidden">
 
-            <div class="flex flex-col items-center w-full md:w-2/3 px-4">
+            <form class="flex flex-col items-center w-full md:w-2/3 px-4">
                 <!-- logo -->
                 <div class="logo md:flex hidden flex-row items-center justify-end w-full gap-x-2 cursor-pointer"
                     @click="$router.push('/')">
@@ -34,65 +34,59 @@
 
                 <!-- input fields -->
                 <div class="flex flex-col items-start w-full gap-y-1 mt-10">
+                    <label for="username" class="text-sm text-webapp">Username(Handle)</label>
+                    <input type="text" name="username" v-model="data.username" placeholder="@"
+                        class="w-full h-14 rounded-lg"
+                        :class="{ 'bg-bg': onModal, 'invalidField': data.username.length < 6 && data.username.length > 0 }">
+                </div>
+                <div class="flex flex-col items-start w-full gap-y-1 mt-10">
                     <label for="" class="text-sm text-webapp">First name</label>
-                    <input type="text" v-model="data.fname" placeholder="Enter your first name"
-                        class="w-full h-14 rounded-lg">
+                    <input type="text" name="firstname" v-model="data.fname" placeholder="Enter your first name"
+                        class="w-full h-14 rounded-lg"
+                        :class="{ 'bg-bg': onModal, 'invalidField': data.fname.length < 2 && data.fname.length > 0 }">
                 </div>
 
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8">
                     <label for="" class="text-sm text-webapp">Surname</label>
-                    <input type="text" v-model="data.surname" placeholder="Enter your Surname"
-                        class="w-full h-14 rounded-lg">
+                    <input type="text" name="surname" v-model="data.surname" placeholder="Enter your Surname"
+                        class="w-full h-14 rounded-lg"
+                        :class="{ 'bg-bg': onModal, 'invalidField': data.surname.length < 2 && data.surname.length > 0 }">
                 </div>
 
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8">
-                    <label for="" class="text-sm text-webapp">Email address</label>
-                    <input type="email" v-model="data.email" @input="validateFormField('email', data.email)"
+                    <label for="email" class="text-sm text-webapp">Email address</label>
+                    <input type="email" name="email" v-model="data.email" @input="validateFormField('email', data.email)"
                         placeholder="Enter Email address" :class="{ 'invalidField': errorMsg.field === 'email' }"
                         class="w-full h-14 rounded-lg">
                 </div>
 
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8 relative">
                     <label for="" class="text-sm text-webapp">Phone number</label>
-                    <input type="number" v-model="data.phoneNumber" maxlength="12"
-                        @input="validateFormField('phone', data.phoneNumber.toString())" placeholder="Phone number"
-                        class="w-full h-14 rounded-lg bg-transaparent"
-                        :class="{ 'bg-bg': onModal, 'invalidField': errorMsg.field === 'phone' }"
-                        style="padding-left: 115px">
-
-
-                    <div class="flex flex-col items-center  drop-shadow-sm bg-white rounded-b-xl rounded-t-md gap-y-2 p-1 absolute h-48 overflow-auto py-2 top-24 left-1 z-10 w-32"
-                        v-if="onContainer">
-                        <p class="w-full flex flex-row justify-center gap-x-4 border-b items-center border-gray-100"
-                            @click="pickCountryCode(index)" v-for="(country, index) in countriesInfo"
-                            :key="(country, index)">
-                            <img :src="country.flag" class="w-9 h-8" alt="">
-                            <span class="text-webapp text-sm font-medium">(+{{ country.callingCode }})</span>
-                        </p>
-                    </div>
-
-                    <div class="absolute top-8 left-1 flex flex-row items-center justify-center h-10 w-24 rounded-md"
-                        @click="openCountryCode" style="background: #F4F4F4" :class="{ 'bg-bg': onModal }">
-                        <p class="flex flex-row items-center w-full justify-center gap-x-3">
-                            <img :src="selectedCountry.flag" class="w-9 h-8" alt="">
-                            <span>+{{ selectedCountry.callingCode }}</span>
-                        </p>
-                    </div>
-
+                    <MazPhoneNumberInput class="w-full" v-model="data.phoneNumber" show-code-on-list color="primary"
+                        :preferred-countries="['NG']" :translations="{
+                            countrySelector: {
+                                placeholder: 'Country Prefix',
+                                error: 'Choose country',
+                            },
+                            phoneInput: {
+                                placeholder: 'Phone number',
+                                example: 'E.g:',
+                            }
+                        }" @update="logPhone" />
                 </div>
 
                 <div class="flex flex-col sm:flex-row items-center relative w-full gap-x-3 justify-between">
                     <div class="flex flex-col items-start w-full sm:w-6/12 gap-y-1 mt-8">
-                        <label for="" class="text-sm text-webapp">Create a secure pin</label>
-                        <input type="number" maxlength="4" v-model="data.pin"
+                        <label for="password" class="text-sm text-webapp">Create a secure pin</label>
+                        <input type="number" name="pin" maxlength="4" v-model="data.pin"
                             @input="validateFormField('pin', data.pin.toString())" placeholder="Enter a 4 digit pin"
                             class="w-full h-14 rounded-lg bg-transaparent"
                             :class="{ 'bg-bg': onModal, 'invalidField': errorMsg.field === 'pin' }">
                     </div>
                     <div class="flex flex-col items-start w-full sm:w-6/12 gap-y-1 mt-8">
-                        <label for="" class="text-sm text-webapp">Refferal code(optional)</label>
-                        <input type="text" v-model="data.referralCode" placeholder="Enter a refferal code"
-                            class="w-full  h-14 rounded-lg bg-transparent">
+                        <label for="referralcode" class="text-sm text-webapp">Refferal code(optional)</label>
+                        <input type="text" name="referralcode" v-model="data.referralCode"
+                            placeholder="Enter a refferal code" class="w-full  h-14 rounded-lg bg-transparent">
                     </div>
                 </div>
 
@@ -103,17 +97,18 @@
                 </p>
 
                 <!-- submit btn -->
-                <button class="bg-primary w-full rounded-lg grid place-items-center h-14 text-white" @click="createUser">
-                    <span v-if="!processing">Next</span>
+                <button @click.prevent="createUser" class="w-full rounded-lg grid place-items-center h-14 text-white"
+                    :disabled="errorMsg.field === 'email'"
+                    :class="{ 'bg-blue-600': data.pin.toString().length === 4 && data.username.length > 5 && selectedCountry && selectedCountry.isValid, 'bg-gray-300': data.pin.toString().length < 4 || data.username.length < 5 || !selectedCountry }">
+                    <span v-if="!processing">Continue</span>
                     <Preloader v-else />
                 </button>
 
-            </div>
+            </form>
 
             <!-- components -->
             <Toast :msg="errorMsg.msg" type="danger" v-if="onError" />
             <Toast :msg="newMsg" type="success" v-if="newMsg.length > 0" />
-            <!-- <Toast :msg="warningMsg" type="warning" /> -->
         </div>
     </div>
 </template>
@@ -122,8 +117,8 @@
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter, useRoute } from "vue-router";
 import axios from "../../composables/axios";
-import axiosDefault from 'axios'
-import { useStore } from "vuex";
+import MazPhoneNumberInput from 'maz-ui/components/MazPhoneNumberInput'
+import clm from 'country-locale-map'
 
 import { registerValidate, formValidator } from '../../composables/2-validator'
 
@@ -135,11 +130,13 @@ const screenWidth = ref(window.innerWidth)
 const route = useRoute();
 const router = useRouter();
 
-const store = useStore();
-
 const onModal = ref(false)
 const onSuggestedListingsModal = ref(false)
 const onSuggestedFollowersModal = ref(false)
+
+function logPhone(e) {
+    selectedCountry.value = e
+}
 
 
 function gotoModal(modal) {
@@ -165,71 +162,26 @@ function closeModal() {
     onSuggestedFollowersModal.value = false
 }
 
-// get country codes
-let onContainer = ref(false)
-let countriesInfo = ref([])
-let selectedCountry = ref({
-    name: 'Nigeria',
-    callingCode: '234',
-    flag: 'https://flagcdn.com/ng.svg'
-});
 
-
-function openCountryCode() {
-    onContainer.value = !onContainer.value
-}
-
-function pickCountryCode(index) {
-    let countryInfo = countriesInfo.value[index]
-    selectedCountry.value = countryInfo
-    onContainer.value = false
-}
-
-async function getCountries() {
-    try {
-        const countries = await axiosDefault.get('https://restcountries.com/v3.1/subregion/western africa')
-        // console.log(countries)
-        let unformattedData = []
-
-
-        for (const country of countries.data) {
-            try {
-                const countryMain = await axiosDefault.get('https://restcountries.com/v2/name/' + country.name.common)
-                unformattedData.push({
-                    name: country.name.common,
-                    callingCode: countryMain.data[0].callingCodes[0],
-                    flag: countryMain.data[0].flag
-                })
-            } catch (error) {
-                // consle.log(error)
-            }
-
-
-        }
-        let sortedArray = unformattedData.sort((country1, country2) => {
-            return Number(country2.callingCode) - Number(country1.callingCode)
-        })
-        countriesInfo.value = sortedArray
-    } catch (error) {
-        // console.log('Err occured', error)
-    }
-}
+let selectedCountry = ref(null);
 
 
 // manage registration
-
 const url = '/auth/register';
 
 
 const data = reactive({
+    username: '',
     fname: '',
     surname: '',
     email: '',
+    currency: '',
     countryCode: '',
     nationality: '',
     pin: '',
     phoneNumber: '',
-    referralCode: ''
+    referralCode: '',
+    shortName: ''
 })
 
 
@@ -243,7 +195,6 @@ let errorMsg = ref({
     field: null
 })
 let newMsg = ref('')
-let warningMsg = ref('')
 const processing = ref(false)
 
 function validateFormField(field, data) {
@@ -262,54 +213,74 @@ function validateFormField(field, data) {
 }
 
 async function createUser() {
-    data.countryCode = selectedCountry.value.callingCode
-    data.nationality = selectedCountry.value.name
-    // console.log(data)
-    const validator = registerValidate(data);
+    if (selectedCountry.value && selectedCountry.value.isValid) {
+        const country = clm.getCountryByAlpha2(selectedCountry.value.countryCode)
+        if (country) {
+            data.countryCode = selectedCountry.value.countryCallingCode
+            data.currency = country.currency
+            data.phoneNumber = selectedCountry.value.nationalNumber
+            data.shortName = selectedCountry.value.countryCode
+            data.nationality = country.name
+            const validator = registerValidate(data);
 
-    if (validator.success === false) {
+            if (validator.success === false) {
+                onError.value = true
+                errorMsg.value.msg = validator.message
+                errorMsg.value.field = validator.field
+
+                setTimeout(() => {
+                    onError.value = false
+                }, 3000);
+            } else {
+
+                try {
+                    processing.value = true
+                    const create = await axios.post(url, data)
+                    if (!create.data.success) {
+                        onError.value = true
+                        errorMsg.value.msg = create.data.message
+
+                        setTimeout(() => {
+                            processing.value = false
+                            onError.value = false
+                            errorMsg.value.msg = ''
+                        }, 3000);
+                    } else {
+                        newMsg.value = create.data.message
+
+                        setTimeout(() => {
+                            processing.value = false
+                            newMsg.value = ''
+
+                            gotoModal('listings')
+                        }, 1000);
+
+                    }
+                } catch (error) {
+                    processing.value = false
+                    onError.value = true
+                    errorMsg.value.msg = error.response.data.message;
+
+                    setTimeout(() => {
+                        onError.value = false
+                    }, 5000);
+                }
+            }
+        } else {
+            onError.value = true
+            errorMsg.value.msg = 'Country is not supported or is invalid. Try again later'
+
+            setTimeout(() => {
+                onError.value = false
+            }, 3000);
+        }
+    } else {
         onError.value = true
-        errorMsg.value.msg = validator.message
-        errorMsg.value.field = validator.field
+        errorMsg.value.msg = 'Invalid Phone Number'
 
         setTimeout(() => {
             onError.value = false
         }, 3000);
-    } else {
-
-        try {
-            processing.value = true
-            const create = await axios.post(url, data)
-            if (!create.data.success) {
-                onError.value = true
-                errorMsg.value.msg = create.data.message
-
-                setTimeout(() => {
-                    processing.value = false
-                    onError.value = false
-                    errorMsg.value.msg = ''
-                }, 3000);
-            } else {
-                newMsg.value = create.data.message
-
-                setTimeout(() => {
-                    processing.value = false
-                    newMsg.value = ''
-
-                    gotoModal('listings')
-                }, 2000);
-
-            }
-        } catch (error) {
-            processing.value = false
-            onError.value = true
-            errorMsg.value.msg = error.response.data.message;
-
-            setTimeout(() => {
-                onError.value = false
-            }, 5000);
-        }
-
     }
 }
 
@@ -322,7 +293,7 @@ const addHouseSuggestions = async (e) => {
         types: e.types
     })
 
-    const save = await axios.post('/profile/add-suggestedhousetype', fields)
+    await axios.post('/profile/add-suggestedhousetype', fields)
 }
 
 const nextPage = () => {
@@ -332,10 +303,6 @@ const nextPage = () => {
         router.push('/verify-otp?email=' + data.email + '&reason=user_verification')
     }, 1000);
 }
-
-onMounted(() => {
-    getCountries()
-})
 
 </script>
 
@@ -362,17 +329,17 @@ input:focus {
 
 .form-container::-webkit-scrollbar {
     height: .1rem;
-    width: 7px;
+    width: 5px;
 }
 
 .form-container::-webkit-scrollbar-track {
     background: rgb(241, 241, 241);
-    border-radius: 8px;
+    border-radius: 5ex;
 }
 
 .form-container::-webkit-scrollbar-thumb {
     background: #0f154d;
-    border-radius: 8px;
+    border-radius: 5px;
 }
 
 .bg-bg {

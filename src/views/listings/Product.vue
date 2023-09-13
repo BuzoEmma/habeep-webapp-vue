@@ -7,22 +7,26 @@
         <img src="../../assets/images/rhombus-preloader.gif" class="m-auto" v-if="!processingProduct || !product.price"
             alt="">
         <div v-else
-            class="body px-0 2xl:px-44 xl:px-20 mb-16 w-full flex flex-col h-fit items-center pb-10 md:items-start gap-y-8 mt-0 relative">
+            class="body px-0 2xl:px-44 xl:px-20 mb-16 w-full flex flex-col h-fit items-center pb-10 md:items-start gap-y-8 mt-0">
 
             <!-- product display images for desktop view -->
             <div class="product-img-grid desktop-view xl:flex flex-row items-center w-full mt-10 hidden">
-                <div class="relative h-full display-img w-1/2">
+                <div class="relative h-full display-img w-1/2" v-if="carouselImg.link">
+                    <Skeleton v-if="!carouselImg.imageLoaded" class=" w-full h-full rounded-lg" style="width: 100%" />
                     <img :src="carouselImg.link" class=" h-full rounded-lg feed-image w-full"
-                        v-if="carouselImg.link.toString().includes('mp4') == false" @click="enterImageViewer()" alt="">
-                    <video :src="carouselImg.link" @click="enterImageViewer()" loop
-                        class="w-full h-full rounded-lg feed-image" v-else autoplay muted></video>
+                        @load="carouselImg.imageLoaded = true" :class="{ 'hidden': !carouselImg.imageLoaded }"
+                        v-if="carouselImg.link.toString().includes('.mp4') == false" @click="enterImageViewer()"
+                        :alt="product.title">
+                    <video :poster="carouselImg.thumbnail" :src="carouselImg.link" @click="enterImageViewer()" loop
+                        @loadedmetadata="carouselImg.imageLoaded = true" :class="{ 'hidden': !carouselImg.imageLoaded }"
+                        class="w-full h-full rounded-lg feed-image" :alt="product.title" v-else autoplay muted></video>
 
                     <div class="w-full absolute flex flex-row top-5 items-center justify-between px-2">
                         <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
-                        <div class="flex flex-row gap-x-3">
+                        <div class="flex flex-row gap-x-3 items-center">
                             <ShareNetwork network="whatsapp" popup.width="500px" popup.height="500px"
-                                :url="'https://habeep.org/' + $route.fullPath"
-                                :title="'Purchase this awesome house at ₦' + formatNumber(product.price)"
+                                :url="'https://habeep.org' + $route.fullPath"
+                                :title="'Purchase this awesome house now at an affordable rate'"
                                 :description="product.description" :media="product.images[0].link">
                                 <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
                             </ShareNetwork>
@@ -45,21 +49,28 @@
                     <div class="flex flex-row h-1/2 w-full items-center gap-2">
                         <div class="h-full w-1/2  cursor-pointer gap-2 overflow-hidden rounded-lg"
                             v-for="image in images.slice(1, 3)" :key="image">
-                            <img :src="image.link" class=" h-full w-full rounded-lg feed-image-short"
-                                v-if="image.link && image.link.toString().includes('mp4') === false"
-                                @click="enterImageViewer()" :key="image" alt="">
-                            <video :src="image.link" @click="enterImageViewer()" loop class="w-full rounded-lg feed-image-short"
-                                v-else autoplay muted></video>
+                            <Skeleton v-if="!image.imageLoaded" class=" w-full h-full rounded-md" style="width: 100%" />
+                            <img :alt="product.title" @load="image.imageLoaded = true"
+                                :class="{ 'hidden': !image.imageLoaded }" :src="image.link"
+                                class=" h-full w-full rounded-lg feed-image-short"
+                                v-if="image.link && image.link.toString().includes('.mp4') === false"
+                                @click="enterImageViewer()" :key="image">
+                            <video :poster="image.thumbnail" :alt="product.title" @loadedmetadata="image.imageLoaded = true"
+                                :class="{ 'hidden': !image.imageLoaded }" :src="image.link" @click="enterImageViewer()" loop
+                                class="w-full rounded-lg feed-image-short" v-else autoplay muted preload="metadata"></video>
                         </div>
                     </div>
                     <div class=" flex flex-row h-1/2 w-full items-center gap-2">
                         <div class="w-1/2 cursor-pointer h-full overflow-hidden rounded-lg"
                             v-for="image in images.slice(3, 5)" :key="image">
-                            <img :src="image.link" class=" h-full w-full rounded-md feed-image-short"
-                                v-if="image.link && image.link.toString().includes('mp4') == false"
-                                @click="enterImageViewer()" alt="">
-                            <video :src="image.link" @click="enterImageViewer()" loop class="w-full rounded-md feed-image-short"
-                                v-else autoplay muted></video>
+                            <Skeleton v-if="!image.imageLoaded" class=" w-full h-full rounded-md" style="width: 100%" />
+                            <img :src="image.link" @load="image.imageLoaded = true"
+                                :class="{ 'hidden': !image.imageLoaded }" class=" h-full w-full rounded-md feed-image-short"
+                                v-if="image.link && image.link.toString().includes('.mp4') == false"
+                                @click="enterImageViewer()" :alt="product.title">
+                            <video :poster="image.thumbnail" :alt="product.title" @loadedmetadata="image.imageLoaded = true"
+                                :class="{ 'hidden': !image.imageLoaded }" :src="image.link" @click="enterImageViewer()" loop
+                                class="w-full rounded-md feed-image-short" v-else autoplay muted preload="metadata"></video>
                         </div>
                     </div>
                 </div>
@@ -71,9 +82,9 @@
 
                 <div class="w-full absolute flex flex-row top-5 items-center justify-between md:px-8 px-2 z-10">
                     <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
-                    <div class="flex flex-row gap-x-3">
-                        <ShareNetwork :popup="{width: 400, height: 200}" network="twitter" :url="'https://habeep.org' + $route.fullPath"
-                            :title="product.title +  ' at ₦' + formatNumber(product.price)"
+                    <div class="flex flex-row gap-x-3 items-center">
+                        <ShareNetwork :popup="{ width: 400, height: 200 }" network="whatsapp"
+                            :url="'https://habeep.org' + $route.fullPath" :title="product.title"
                             :description="product.description" :media="product.images[0].link">
                             <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
                         </ShareNetwork>
@@ -81,8 +92,8 @@
                         <div class="grid place-items-center relative" v-if="$store.state.isAuthenticated">
                             <img src="../../assets/icons/heart.svg" class="cursor-pointer" alt="">
                             <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
-                                v-if="$store.state.isAuthenticated" :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none"
-                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                v-if="$store.state.isAuthenticated" :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }"
+                                fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                 class="w-6 h-6 absolute top-2 text-white cursor-pointer" @click="saveAd(product._id)"
                                 :class="{ 'text-orange-400': $store.state.user.savedAds.includes(product._id) }">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -92,11 +103,15 @@
                     </div>
                 </div>
 
-                <img :src="carouselImg.link" class=" h-full w-full feed-image"
-                    v-if="carouselImg.link && carouselImg.link.toString().includes('mp4') == false"
-                    @click="enterImageViewer()" alt="">
-                <video :src="carouselImg.link" loop class="w-full feed-image" @click="enterImageViewer()" v-else autoplay
-                    muted></video>
+                <Skeleton v-if="!carouselImg.imageLoaded" class=" w-full h-full" style="width: 100%" />
+                <img :alt="product.title" :src="carouselImg.link" class=" h-full w-full feed-image"
+                    @load="carouselImg.imageLoaded = true" :class="{ 'hidden': !carouselImg.imageLoaded }"
+                    v-if="carouselImg.link && carouselImg.link.toString().includes('.mp4') == false"
+                    @click="enterImageViewer()">
+                <video :poster="carouselImg.thumbnail" :alt="product.title" :src="carouselImg.link" loop
+                    class="w-full feed-image" @load="carouselImg.imageLoaded = true"
+                    :class="{ 'hidden': !carouselImg.imageLoaded }" @click="enterImageViewer()" v-else autoplay muted
+                    preload="metadata"></video>
                 <!-- <img :src="images[activeCarouselImg - 1].link" class="h-full w-full new-img" :class="{'hidden': changeCarouselImg}"> -->
 
                 <div class="flex flex-row items-center w-full absolute bottom-5 justify-between md:px-8 px-2">
@@ -140,27 +155,32 @@
                             </p>
                         </div>
                         <div class="md:flex hidden flex-col ">
-                            <p class="text-webapp text-2xl md:text-xl xl:text-2xl font-medium product-price">₦{{
-                                formatNumber(product.price)
-                            }}
-                            </p>
+                            <h2 class="text-webapp text-2xl md:text-xl xl:text-2xl font-medium product-price">
+                                <PriceFormatter :from="product.priceCurrency" :to="country.currency"
+                                    :amount="product.price" />
+                            </h2>
                             <p v-if="product.for === 'rent'"
-                                class="text-sm  xl:text-lg font-medium product-price text-webapp">Yearly
+                                class="text-sm  xl:text-lg font-medium product-price text-webapp">Rent
                             </p>
                             <p v-else
                                 class="text-sub-webapp text-sm xl:text-lg product-duration flex flex-row justify-start ">
-                            One time Payment</p>
+                                Sale</p>
                         </div>
                     </div>
 
                     <div class="flex flex-row py-2 border-y mt-8 border-y-gray-200 w-full divide-x">
-                        <div class="flex flex-col gap-y-2 items-center w-64 md:w-auto md:pr-20">
+                        <div class="flex flex-col gap-y-2 items-center w-64 md:w-auto md:pr-20"
+                            v-if="product.type !== 'land'">
                             <span class="text-2xl font-medium text-webapp">{{ product.bedrooms }}</span>
                             <span class="text-sm text-sub-webapp">Bedroom</span>
                         </div>
-                        <div class="flex flex-col gap-y-2 items-center w-64">
+                        <div class="flex flex-col gap-y-2 items-center w-64" v-if="product.type !== 'land'">
                             <span class="text-2xl font-medium text-webapp">{{ product.bedrooms }}</span>
                             <span class="text-sm text-sub-webapp">Bathroom</span>
+                        </div>
+                        <div class="flex flex-col gap-y-2 items-center w-64" v-if="product.type === 'land'">
+                            <span class="text-2xl font-medium text-webapp">{{ product.plots }}</span>
+                            <span class="text-sm text-sub-webapp">Plots</span>
                         </div>
                         <div class="flex flex-col gap-y-2 items-center w-64">
                             <span class="text-2xl font-medium text-webapp">{{ formatNumber(product.size) }}</span>
@@ -169,8 +189,8 @@
                     </div>
 
                     <p class="text-xl font-medium mt-8 text-webapp">Features</p>
-                    <div
-                        class="flex flex-row py-3 border-y mt-2 border-y-gray-200 w-full gap-x-3 overflow-x-auto flex-no-wrap">
+                    <div class="flex flex-row py-3 border-y mt-2 border-y-gray-200 w-full gap-x-3 overflow-x-auto flex-no-wrap"
+                        v-if="product.type !== 'land'">
                         <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
                             v-if="product.features.includes('electricity')">
                             <img src="../../assets/icons/light.svg" alt="">
@@ -192,6 +212,33 @@
                             <span class="text-sm text-sub-webapp">Pool</span>
                         </div>
                     </div>
+                    <div class="flex flex-row py-3 border-y mt-2 border-y-gray-200 w-full gap-x-3 overflow-x-auto flex-no-wrap"
+                        v-else>
+                        <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
+                            v-if="product.features.includes('access_road')">
+                            <img src="../../assets/icons/listings/road.svg" class="w-5 h-5" alt="">
+                            <span class="text-sm text-sub-webapp text-center">Access road</span>
+                        </div>
+                        <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
+                            v-if="product.features.includes('security')">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6 text-webapp">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                            </svg>
+                            <span class="text-sm text-sub-webapp">Security</span>
+                        </div>
+                        <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
+                            v-if="product.features.includes('surveyed')">
+                            <img src="../../assets/icons/listings/surveyed.svg" class="w-6 h-6" alt="">
+                            <span class="text-sm text-sub-webapp">Surveyed</span>
+                        </div>
+                        <div class="flex flex-col gap-y-2 items-center border border-gray-200 rounded-md w-28 h-20 justify-center"
+                            v-if="product.features.includes('c-of-o')">
+                            <img src="../../assets/icons/listings/certificate.svg" class="w-6 h-6" alt="">
+                            <span class="text-sm text-sub-webapp">C of O</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- agent info desktop -->
@@ -199,10 +246,12 @@
                     class="agent-info md:flex hidden p-4 bg-white flex-col w-2/3 xl:w-2/6 2xl:w-1/4 items-start ml-3 h-fit">
                     <h3 class="text-lg xl:text-xl font-medium  text-webapp">Description</h3>
 
-                    <div class="text-sub-webapp text-lg text-left mt-1 xl:mt-3">
-                        <pre class="w-full whitespace-pre-wrap" v-if="!openFullDesc">{{ product.description.slice(0, 250) }}<span class="text-primary cursor-pointer" v-if="product.description.length > 250" @click="openFullDesc = true">... Read more</span></pre>
-                        <pre class="w-full whitespace-pre-wrap" v-else>{{ product.description }} <span class="text-primary cursor-pointer" v-if="product.description.length > 250" @click="openFullDesc = false">..Hide</span></pre>
-                    </div>
+                    <article class="text-sub-webapp text-lg text-left mt-1 xl:mt-3">
+                        <pre class="w-full whitespace-pre-wrap"
+                            v-if="!openFullDesc"><article>{{ product.description.slice(0, 250) }}<span class="text-primary cursor-pointer" v-if="product.description.length > 250" @click="openFullDesc = true">... Read more</span></article></pre>
+                        <pre class="w-full whitespace-pre-wrap"
+                            v-else> <article>{{ product.description }} </article> <span class="text-primary cursor-pointer" v-if="product.description.length > 250" @click="openFullDesc = false">..Hide</span></pre>
+                    </article>
 
                     <hr class="my-3">
 
@@ -210,13 +259,18 @@
                         class="agent-desktop flex flex-row items-center  md:justify-between w-full border-t pt-2 mt-2 border-t-gray-300">
                         <div class="flex flex-row gap-x-2 items-center">
                             <div class="rounded-full w-12 h-12 xl:w-16 xl:h-16 grid place-items-center">
-                                <img :src="agentDetails.profileImg" class="w-12 h-12 xl:w-16 xl:h-16 rounded-full" alt="">
+                                <img :src="agentDetails.profileImg" class="w-12 h-12 xl:w-16 xl:h-16 rounded-full"
+                                    v-if="agentDetails.profileImg !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
+                                <Avatar size="100%" v-else :fname="agentDetails.name.fname"
+                                    :lname="agentDetails.name.surname" />
                             </div>
                             <div class="flex flex-col ">
-                                <span
-                                    class="text-sm xl:text-lg md:text-center text-left agent-name text-webapp font-medium">{{
+                                <span class="text-sm xl:text-lg md:text-center text-left agent-name text-webapp font-medium"
+                                    v-if="agentDetails.name">
+                                    {{
                                         agentDetails.name.fname + ' ' + agentDetails.name.surname
-                                    }}</span>
+                                    }}
+                                </span>
                                 <span
                                     class="text-sm agent-ads-count md:text-center xl:text-left text-left text-sub-webapp">{{
                                         agentDetails.ads.length
@@ -229,10 +283,11 @@
                     </div>
 
                     <div class="flex flex-col xl:flex-row items-center w-full gap-y-1 xl:justify-between mt-1 xl:mt-3">
-                        <button @click="$router.push('/agents/profile/' + product.agentId)"
+                        <button @click="$router.push('/' + product.agentId)"
                             class="agent-btn hidden xl:flex flex-row items-center justify-center text-sm font-medium text-primary w-1/2  bg-white">Visit
                             Profile</button>
-                        <button @click="$router.push('/login?redirect=' + $route.fullPath)" v-if="!$store.state.isAuthenticated"
+                        <button @click="$router.push('/login?redirect=' + $route.fullPath)"
+                            v-if="!$store.state.isAuthenticated"
                             class="agent-btn cursor-pointer flex flex-row items-center justify-center text-sm font-medium w-full  text-white ml-2 bg-primary xl:w-1/2">
                             <span>Chat with agent</span>
                         </button>
@@ -256,12 +311,16 @@
                         class="agent flex flex-row items-center justify-between w-full border-b py-3 my-3 border-b-gray-300">
                         <div class="flex flex-row gap-x-2 items-center">
                             <div class="rounded-full w-12 h-12  grid place-items-center">
-                                <img :src="agentDetails.profileImg" class="w-12 h-12 rounded-full" alt="">
+                                <img :src="agentDetails.profileImg" class="w-12 h-12 rounded-full"
+                                    v-if="agentDetails.profileImg !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
+                                <Avatar size="100%" v-else :fname="agentDetails.name.fname"
+                                    :lname="agentDetails.name.surname" />
                             </div>
                             <div class="flex flex-col">
-                                <span class="text-sm xl:text-lg text-left agent-name text-webapp font-medium">{{
-                                    agentDetails.name.fname + ' ' + agentDetails.name.surname
-                                }}</span>
+                                <span class="text-sm xl:text-lg text-left agent-name text-webapp font-medium"
+                                    v-if="agentDetails.name && agentDetails.name.fname">{{
+                                        agentDetails.name.fname + ' ' + agentDetails.name.surname
+                                    }}</span>
                                 <span class="text-sm agent-ads-count text-left text-sub-webapp">{{
                                     agentDetails.ads.length
                                 }} ads</span>
@@ -271,26 +330,28 @@
                                 src="../../assets/icons/call-btn.svg" alt=""></a>
                         <button
                             class="w-24 flex ml-2 flex-row border border-blue-700 h-8 rounded-sm items-center justify-center text-sm font-medium text-primary bg-white"
-                            @click="$router.push('/agents/profile/' + product.agentId)">Visit
+                            @click="$router.push('/' + product.agentId)">Visit
                             Profile</button>
                     </div>
 
                     <h3 class="text-lg font-medium text-webapp">Description</h3>
 
-                    <div class="text-sub-webapp text-sm text-left mt-1 xl:mt-3">
-                        <pre class="w-full whitespace-pre-wrap" v-if="!openFullDesc">{{ product.description.slice(0, 250) }}<span class="text-primary" v-if="product.description.length > 250" @click="openFullDesc = true">... Read more</span></pre>
-                        <pre class="w-full whitespace-pre-wrap" v-else>{{ product.description }} <span class="text-primary" v-if="product.description.length > 250" @click="openFullDesc = false">..Hide</span></pre>
-                    </div>
+                    <article class="text-sub-webapp text-sm text-left mt-1 xl:mt-3">
+                        <pre class="w-full whitespace-pre-wrap"
+                            v-if="!openFullDesc">{{ product.description.slice(0, 250) }}<span class="text-primary" v-if="product.description.length > 250" @click="openFullDesc = true">... Read more</span></pre>
+                        <pre class="w-full whitespace-pre-wrap"
+                            v-else>{{ product.description }} <span class="text-primary" v-if="product.description.length > 250" @click="openFullDesc = false">..Hide</span></pre>
+                    </article>
 
 
 
                     <div
                         class="flex md:hidden py-5  flex-row items-center fixed bottom-0 px-4 z-10 left-0 bg-white w-screen justify-between mt-4 border-t pt-2 border-t-gray-300">
                         <div class="flex flex-col">
-                            <p class="text-webapp text-xl xl:text-2xl font-medium product-price">₦{{
-                                formatNumber(product.price)
-                            }}
-                            </p>
+                            <h2 class="text-webapp text-xl xl:text-2xl font-medium product-price">
+                                <PriceFormatter :from="product.priceCurrency" :to="country.currency"
+                                    :amount="product.price" />
+                            </h2>
                             <p v-if="product.for === 'rent'"
                                 class="text-sm md:text-xl xl:text-2xl font-medium product-price text-webapp">Yearly
                             </p>
@@ -298,7 +359,8 @@
                                 class="text-sub-webapp text-sm md:text-sm xl:text-lg product-duration flex flex-row justify-start ">
                                 Forever</p>
                         </div>
-                        <button @click="$router.push('/login?redirect=' + $route.fullPath)" v-if="!$store.state.isAuthenticated"
+                        <button @click="$router.push('/login?redirect=' + $route.fullPath)"
+                            v-if="!$store.state.isAuthenticated"
                             class="agent-btn cursor-pointer flex flex-row items-center justify-center text-sm font-medium w-3/5 mr-2 text-white ml-2 bg-primary xl:w-1/2">
                             <span>Chat with agent</span>
                         </button>
@@ -331,10 +393,11 @@
                 @click="changeCarouselImg(activeCarouselImg - 1)" class="cursor-pointer lg:block absolute left-3 z-10"
                 alt="">
             <div class="image-container h-fit flex flex-col items-center justify-center w-full">
-                <img :src="carouselImg.link"
-                    v-if="carouselImg && carouselImg.link.includes('mp4') == false" class="w-full h-full feed-image" alt="">
-                <video :src="carouselImg.link" loop class="md:w-4/5 w-full rounded-lg feed-image"
-                    @click="enterImageViewer()" v-else controls autoplay></video>
+                <img :src="carouselImg.link" v-if="carouselImg && carouselImg.link.includes('mp4') == false"
+                    class="w-full h-full feed-image" alt="">
+                <video :poster="carouselImg.thumbnail" :src="carouselImg.link" loop
+                    class="md:w-4/5 w-full rounded-lg feed-image" @click="enterImageViewer()" v-else controls
+                    autoplay></video>
             </div>
             <img src="../../assets/icons/next-circle.svg" @click="changeCarouselImg(activeCarouselImg + 1)"
                 v-if="activeCarouselImg < images.length" class="cursor-pointer lg:block absolute right-3 z-10" alt="">
@@ -345,48 +408,187 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import MainNavbar from '../../components/MainNavbar.vue'
-import gsap from 'gsap'
 import axios from "../../composables/axios";
 import { useRoute, useRouter } from 'vue-router'
 import formatNumber from "number_formatter"
 import saveAd from '../../composables/saveAd'
 import { useStore } from 'vuex';
+import axiosDefault from 'axios'
+import clm from 'country-locale-map'
+
+
+const route = useRoute()
+const router = useRouter()
+const store = useStore()
+
+
+const title = ref('Habeep | ' + route.params.id + ' Product')
+const content = ref('Property ID is' + route.params.id)
+
+const img = ref('')
+// https://logos.flamingtext.com/Word-Logos/property-design-sketch-name.png
+
+import { useHead } from '@vueuse/head'
+
+useHead({
+    title: () => title.value,
+    meta: [
+        { charset: 'utf-8' },
+        { name: 'description', content: () => content.value },
+        { name: 'og:title', content: () => title.value },
+        { name: 'og:image', content: () => img.value },
+        { name: 'og:url', content: 'https://habeep.org/listings/product/' + route.params.id },
+        { name: 'og:website', content: 'website' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+    ],
+    link: [
+        { rel: 'icon', href: () => img.value },
+        { rel: 'shortcut icon', href: () => img.value },
+    ],
+})
 
 
 const url = '/listings/ads/get/';
 const url2 = '/profile/get-agent/';
 
-const carouselImg = ref(null)
+const carouselImg = ref({ imageLoaded: false, link: '', thumbnail: '' })
 
-const route = useRoute()
-const router = useRouter()
-const store = useStore()
+
 const processingProduct = ref(false)
 const product = ref({})
-const agentDetails = ref({})
+const agentDetails = ref({ ads: [] })
 
-const changingCarousel = ref(false)
-const inNewCarousel = ref(false)
 const activeCarouselImg = ref(1)
 const onImageViewer = ref(false)
 const openFullDesc = ref(false)
 
 const images = ref(null)
 
+let country = ref({
+    country: 'Nigeria',
+    cc: 'NG',
+    currency: 'NGN'
+})
+
+async function getResidence() {
+    if (store.state.isAuthenticated) {
+        country.value = {
+            country: store.state.user.nationality,
+            cc: store.state.user.countryShortName,
+            currency: store.state.user.currency
+        }
+    } else {
+        const getCountry = await axiosDefault.get('https://jsonip.com')
+        country.value.country = clm.getCountryNameByAlpha2(getCountry.data.country)
+        country.value.cc = getCountry.data.country
+        country.value.currency = clm.getCountryByAlpha2(getCountry.data.country)
+    }
+}
+
 const getProduct = async () => {
-    processingProduct.value = true
-    const getProduct = await axios.get(url + route.params.id)
-    processingProduct.value = true
+    try {
+        processingProduct.value = true
+        const getProduct = await axios.get(url + route.params.id)
+        title.value = `Habeep | ${getProduct.data.product.title}`
+        content.value = getProduct.data.product.description
 
-    product.value = getProduct.data.product
-    images.value = getProduct.data.product.images
-    carouselImg.value = getProduct.data.product.images[0]
+        processingProduct.value = true
 
-    getAgent(product.value.agentId)
+        product.value = getProduct.data.product
+        if (product.value.status === 'CLOSED') {
+            router.replace({ name: 'not-found' })
+        }
+        images.value = getProduct.data.product.images
+
+        if (getProduct.data.product.images.length > 0) {
+            getProduct.data.product.images.forEach(image => {
+                if (image.link && image.link.length > 0 && image.link.toString().includes('mp4') === false) {
+                    img.value = image.link
+                    return;
+                }
+            })
+        }
+        useHead({
+            link: [
+                { rel: 'icon', href: () => img.value },
+                { rel: 'shortcut icon', href: () => img.value },
+            ],
+            meta: [
+                { name: 'og:image', content: () => img.value },
+                { name: 'og:description', content: () => content.value },
+
+            ]
+        })
+        carouselImg.value = getProduct.data.product.images[0]
+
+        getAgent(product.value.agentId)
+    } catch (error) {
+        router.replace({ name: 'not-found-route' })
+    }
 }
 async function getAgent(agentId) {
-    const getAgent = await axios.get(url2 + agentId)
-    agentDetails.value = getAgent.data.agent
+    try {
+        const getAgent = await axios.get(url2 + agentId)
+        agentDetails.value = getAgent.data.agent
+
+        const images = []
+        product.value.images.forEach(img => {
+            if (!img.link.includes('.mp4')) {
+                images.push(img.link)
+            } else {
+                images.push(img.thumbnail)
+            }
+        })
+        // set google seo
+        const structuredData = {
+            "@context": "https://schema.org/",
+            "@type": "Product",
+            name: product.value.title,
+            image: images,
+            description: product.value.description,
+            sku: product.value._id,
+            mpn: product.value._id,
+            brand: {
+                "@type": "Brand",
+                name: 'Habeep LLC'
+            },
+            "review": {
+                "@type": "Review",
+                "reviewRating": {
+                    "@type": "Rating",
+                    "ratingValue": 5,
+                    "bestRating": 5
+                },
+                "author": {
+                    "@type": "Person",
+                    "name": agentDetails.value.name.fname + ' ' + agentDetails.value.name.surname
+                }
+            },
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": 5,
+                "reviewCount": 1
+            },
+            "offers": {
+                "@type": "Offer",
+                url: `https://habeep.org/listings/products/${product.value._id}`,
+                "priceCurrency": "NGN",
+                price: product.value.price,
+                "itemCondition": "https://schema.org/NewCondition",
+                "availability": "https://schema.org/InStock"
+            }
+        }
+
+        useHead({
+            script: [
+                { type: 'application/ld+json', textContent: JSON.stringify(structuredData) }
+            ]
+        })
+
+
+    } catch (error) {
+        router.replace({ name: 'not-found-route' })
+    }
 }
 
 const creatingRoom = ref(false)
@@ -412,42 +614,40 @@ async function createChatRoom() {
 
 function changeCarouselImg(value) {
     // changingCarousel.value = true
-    let image = images.value[value - 1]
-    activeCarouselImg.value = value
+    if (images.value) {
+        let image = images.value[value - 1]
+        activeCarouselImg.value = value
 
-    animateImgCarousel()
-    carouselImg.value = image
-}
-
-function animateImgCarousel() {
-    // changingCarousel.value = false
-    gsap.from('.main-img', {
-        scale: 1.2,
-    })
-
+        carouselImg.value = image
+    }
 }
 
 // manage images viewer
 function exitImageViewer() {
     onImageViewer.value = false
 
-    const carouselInt = setInterval(() => {
+    carouselInt = setInterval(() => {
         let value = activeCarouselImg.value + 1
-        if (activeCarouselImg.value == images.value.length) {
-            value = 1
+        if (images.value) {
+            if (activeCarouselImg.value == images.value.length) {
+                value = 1
+            }
         }
         changeCarouselImg(value)
     }, 5000);
 }
+
 function enterImageViewer() {
-    onImageViewer.value = true
     clearInterval(carouselInt)
+    onImageViewer.value = true
 }
 
-const carouselInt = setInterval(() => {
+let carouselInt = setInterval(() => {
     let value = activeCarouselImg.value + 1
-    if (activeCarouselImg.value == images.value.length) {
-        value = 1
+    if (images.value) {
+        if (activeCarouselImg.value == images.value.length) {
+            value = 1
+        }
     }
     changeCarouselImg(value)
 }, 5000);
@@ -459,6 +659,7 @@ function changeWidth() {
 }
 
 onMounted(() => {
+    getResidence()
     getProduct()
 })
 </script>
@@ -501,6 +702,7 @@ onMounted(() => {
 .feed-image-short {
     width: 100% !important;
     object-fit: cover;
+    height: 100% !important;
 }
 
 .feed-image {

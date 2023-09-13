@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col gap-y-5 h-full items-center w-full" v-if="walletData !== null">
-        <div class="flex flex-col border border-gray-200 w-full divide-y rounded-lg h-full gap-y-6">
+        <div class="flex flex-col border border-gray-200 w-full divide-y rounded-lg h-fit gap-y-6">
             <div class="top justify-center items-center h-1/2 w-full flex flex-col py-7">
                 <p class="text-6xl font-bold text-webapp flex flex-row items-end">{{ formatNumber(walletData.accountValue)
                 }}
@@ -48,7 +48,7 @@
                                     <td class="">{{ txn.date + ' @ ' + txn.time }}</td>
                                     <td class="capitalize">Wallet {{ txn.txnType }}</td>
                                     <td class="">{{ txn.reference }}</td>
-                                    <td class="amount">{{ txn.amount }} HBP</td>
+                                    <td class="amount">{{ txn.amount.toFixed(2) }} HBP</td>
                                     <td>
                                         <div class="w-32 py-2 rounded-md text-center"
                                             style="background: rgb(28,170,67, 0.1)">
@@ -150,19 +150,19 @@ function paginateTxns(array, newArray, pageType) {
     let perPage = array.length >= 10 ? 10 : array.length
     let from = (pageType * perPage) - perPage;
     let to = (pageType * perPage);
-    if (array.length < 10) {
+
+
+    let sortedArray = array.sort((a, c) => {
+        return c.createdAt - a.createdAt
+    })
+
+    if (sortedArray.length < 11) {
         newArray.value = []
-        array.forEach(txn => {
-            newArray.value.push(txn)
-        })
+        newArray.value = sortedArray
     } else {
-        let reference = array
         newArray.value = []
-        reference.slice(from, to).forEach(txn => {
-            if (newArray.value.length < 11) {
-                newArray.value.push(txn)
-            }
-        })
+        const filtered = sortedArray.slice(from, to)
+        newArray.value = filtered
     }
 }
 
@@ -188,7 +188,7 @@ async function getWallet() {
             getTransactions(hbpWallet.data.data.recentActivities)
         }
     } catch (error) {
-
+        console.log(error)
     }
 }
 
@@ -202,7 +202,7 @@ async function getTransactions(txns) {
             }
         }
     } catch (error) {
-
+        console.log(error)
     }
 }
 

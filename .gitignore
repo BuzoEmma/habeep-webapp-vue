@@ -1,7 +1,16 @@
 node_modules
 .DS_Store
-dist
 dist-ssr
+dist
 *.local
+<<<<<<< HEAD
 .env
 .env.production
+=======
+yarn.lock
+yarn-error.log
+.vscode
+.env.production
+.env.staging
+.env
+>>>>>>> origin/production

@@ -1,10 +1,15 @@
 <template>
-    <div class="absolute w-screen h-screen flex flex-row items-center justify-center" v-if="onModal"
+    <div class="absolute w-screen h-screen flex flex-row items-center justify-center  margin-auto" v-if="onModal"
         style="background: rgb(22, 22, 34, 0.5)">
 
-        <EditUserProfile @close="closeModal" @changePin="openModal('changePincode')" v-if="onModal && editProfileModal" />
+        <EditUserProfile @close="closeModal" @changePin="closeAndOpen('changePincode')"
+            v-if="onModal && editProfileModal" />
         <pincodeModal @close="closeModal" @back="goBack" v-if="onModal && changePincode" />
-        <Following @close="closeModal" v-if="onModal && FollowingModal" />
+        <FollowingPage transition="bounceUp" @close="closeModal" v-if="onModal && FollowingModal"
+            :users="$store.state.user.following" v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }"
+            :enter="{ opacity: 1, y: 0, x: 0 }" />
+        <FollowersPage @close="closeModal" v-if="onModal && FollowersModal" :users="$store.state.user.followers" v-motion
+            :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }" />
         <Affiliate @close="closeModal" v-if="onModal && affiliateModal" @openReferral="closeAndOpen('referralModal')" />
         <Referrals @close="closeAndOpen('affiliateModal')" @closeModals="closeModal" v-if="onModal && referralModal" />
     </div>
@@ -37,34 +42,50 @@
                 <div class="user-info flex p-4 bg-white flex-col border items-start border-gray-200 rounded w-full h-full">
                     <div class="flex flex-row gap-x-3 items-start">
                         <div class="rounded-full w-24 h-24 grid place-items-center border">
-                            <img :src="$store.state.user.userProfileImage" class="w-24 h-24 rounded-full" alt="">
+                            <img :src="$store.state.user.userProfileImage"
+                                class="w-24 h-24 min-h-full min-w-full rounded-full cursor-pointer"
+                                v-if="$store.state.user.userProfileImage !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
+                            <Avatar size="100%" v-else :fname="$store.state.user.fname"
+                                :lname="$store.state.user.surname" />
                         </div>
-                        <div class="flex flex-col ">
-                            <span class="text-xl md:text-center text-left agent-name text-webapp font-medium">{{
+                        <div class="flex flex-col w-fit mt-2">
+                            <span class="text-xl w-full whitespace-nowrap text-left agent-name text-webapp font-medium">{{
                                 $store.state.user.surname + ' ' + $store.state.user.fname
                             }}</span>
+
                             <p class="text-lg agent-ads-count text-sub-webapp flex flex-row gap-x-2 items-center"><img
                                     src="../../../assets/images/map-pin.png" alt="">{{ $store.state.user.nationality }}</p>
+
+                            <div
+                                class="flex flex-row items-center w-full gap-x-2 mt-3 justify-between overflow-x-auto no-scroll-btn">
+                                <p class="text-lg font-webapp flex flex-col items-center"
+                                    v-if="$store.state.user.role === 'AGENT' && agentDetails.ads">
+                                    {{ agentDetails.ads.length }}
+                                    <span class="text-sub-webapp text-sm">Ads
+                                    </span>
+                                </p>
+                                <p class="text-lg font-webapp flex flex-col items-center">
+                                    {{ $store.state.user.savedAds.length }}
+                                    <span class="text-sub-webapp text-sm">Saved
+                                    </span>
+                                </p>
+                                <p class="text-lg font-webapp flex flex-col items-center cursor-pointer"
+                                    @click="openModal('FollowingModal')">
+                                    {{
+                                        $store.state.user.following.length
+                                    }}<span class="text-sub-webapp text-sm">Following </span>
+                                </p>
+                                <p class="text-lg font-webapp flex flex-col items-center cursor-pointer"
+                                    @click="openModal('FollowersModal')">
+                                    {{
+                                        $store.state.user.followers.length
+                                    }}<span class="text-sub-webapp text-sm">Followers </span>
+                                </p>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="flex flex-row items-center w-full gap-x-4 mt-3">
-                        <p class="text-xl font-webapp font-medium flex flex-row gap-x-1"
-                            v-if="$store.state.user.role === 'AGENT' && agentDetails.ads">
-                            {{ agentDetails.ads.length }}
-                            <span class="text-sub-webapp text-lg">Ads
-                            </span>
-                        </p>
-                        <p class="text-xl font-webapp font-medium flex flex-row gap-x-1">
-                            {{ $store.state.user.savedAds.length }}
-                            <span class="text-sub-webapp text-lg">Saved Ads
-                            </span>
-                        </p>
-                        <p class="text-xl font-webapp font-medium flex flex-row gap-x-1 cursor-pointer">{{
-                            $store.state.user.following.length
-                        }}<span class="text-sub-webapp text-lg">Following </span>
-                        </p>
-                    </div>
+
 
 
                     <div class="flex flex-col md:flex-row items-center w-full gap-y-1 xl:justify-between mt-4 xl:mt-3">
@@ -73,9 +94,17 @@
                             class="user-btn flex-row items-center justify-center text-sm font-medium text-webapp w-full bg-white">Affiliate
                             profile</button>
                         <button @click="openModal('editProfileModal')"
-                            class="user-btn flex flex-row items-center justify-center text-sm font-medium  text-webapp md:ml-2 bg-white w-full"
-                            :class="{ 'w-full': $store.state.user.role === 'AGENT' }">Edit
+                            class="user-btn flex flex-row items-center justify-center text-sm font-medium text-webapp bg-white w-full"
+                            :class="{ 'w-full md:ml-2': $store.state.user.role === 'AGENT' }">Edit
                             profile</button>
+                    </div>
+                    <div class="flex flex-row items-center w-full mt-2">
+                        <ShareNetwork :popup="{ width: 400, height: 200 }" network="whatsapp" class="w-full"
+                            :url="'https://habeep.org/' + $store.state.user.username" title="Share this profile">
+                            <button
+                                class="agent-btn flex flex-row items-center justify-center text-sm font-medium text-primary bg-white w-full">Share
+                                Profile</button>
+                        </ShareNetwork>
                     </div>
                 </div>
 
@@ -89,7 +118,7 @@
                         <div class="cursor-pointer flex flex-row items-center justify-center w-24 pb-1 py-2"
                             @click="changeWalletTab(1)"
                             :class="{ 'text-blue-600 border-b-blue-700 border-b-2': walletTab === 1 }">
-                            Naira
+                            {{ $store.state.user.currency }}
                         </div>
                         <div class="cursor-pointer flex flex-row items-center justify-center w-24 pb-1 py-2"
                             @click="changeWalletTab(2)"
@@ -99,7 +128,7 @@
                     </div>
 
                     <div class="px-20 py-10 w-full">
-                        <Naira v-if="walletTab === 1" />
+                        <Currency v-if="walletTab === 1" />
                         <HBP v-if="walletTab === 2" />
                     </div>
                 </div>
@@ -135,14 +164,19 @@
                         <!-- listing template -->
                         <div class="basis-full md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0"
                             v-for="ad in agentDetails.ads" :key="ad">
-                            <div
-                                class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 ad feed">
-                                <img @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
-                                    class="w-full rounded-t-md feed-image" v-if="ad.images[0].link.includes('mp4') == false"
+                            <div class="flex flex-col items-start gap-y-2  border rounded-md border-gray-200 pb-2 ad feed">
+                                <Skeleton v-if="!ad.imageLoaded" class=" w-full h-full rounded-t-md feed-image" style="width: 100%" />
+                                <img @click="$router.push('/listings/products/' + ad._id)"
+                                    :class="{ 'hidden': !ad.imageLoaded }" :src="ad.images[0].link"
+                                    @load="ad.imageLoaded = true" class="w-full rounded-t-md feed-image"
+                                    v-if="ad.images[0] && ad.images[0].link && ad.images[0].link.includes('mp4') == false"
                                     alt="">
-                                <video @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
-                                    class="w-full rounded-t-md feed-image" v-else autoplay muted loop></video>
-                                <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
+                                <video @loadedmetadata="ad.imageLoaded = true" :class="{ 'hidden': !ad.imageLoaded }"
+                                    @click="$router.push('/listings/products/' + ad._id)" preload="metadata"
+                                    :src="ad.images[0] && ad.images[0].link" class="w-full rounded-t-md feed-image" v-else
+                                    autoplay muted loop></video>
+
+                                <p class="text-webapp text-lg font-medium w-full px-3 cursor-pointer"
                                     @click="$router.push('/listings/products/' + ad._id)">
                                     {{ ad.title }}
                                 </p>
@@ -154,9 +188,10 @@
                                 </div>
 
                                 <div class="flex flex-row items-center w-full justify-between px-3">
-                                    <p class="text-sm text-webapp font-medium">N{{ formatNumber(ad.price) }} /
-                                        <span v-if="ad.for === 'rent'">Year</span>
-                                        <span v-if="ad.for === 'sale'">Forever</span>
+                                    <p class="text-sm text-webapp font-medium">
+                                        <PriceFormatter :from="ad.priceCurrency" :to="$store.state.user.currency" :amount="ad.price" /> /
+                                        <span v-if="ad.for === 'rent'">Rent</span>
+                                        <span v-if="ad.for === 'sale'">Sale</span>
                                     </p>
                                     <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
                                         :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none" viewBox="0 0 24 24"
@@ -169,8 +204,10 @@
 
                                 </div>
 
-                                <div class="rounded border border-white px-2 py-1 absolute top-5 right-5">
-                                    <span class="text-white text-sm text-center">{{ Math.round(ad.distance) }} KM Away</span>
+                                <div class="rounded border border-white px-2 py-1 absolute top-5 right-5"
+                                    v-if="ad.distance">
+                                    <span class="text-white text-sm text-center">{{ Math.round(ad.distance) }} KM
+                                        Away</span>
                                 </div>
                             </div>
                         </div>
@@ -190,12 +227,17 @@
                             :key="ad">
                             <div
                                 class="flex flex-col items-start gap-y-2 relative ad feed w-full border rounded-md border-gray-200 pb-2">
-                                <img @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
-                                    class="w-full h-full rounded-t-md feed-image"
-                                    v-if="ad.images[0].link.includes('mp4') == false" alt="">
-                                <video @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
-                                    class="w-full rounded-t-md feed-image" v-else autoplay muted></video>
-                                <p class="text-webapp text-lg font-medium w-full mx-3 cursor-pointer"
+                                <Skeleton v-if="!ad.imageLoaded" class=" w-full h-full rounded-t-md feed-image" style="width: 100%" />
+                                <img @click="$router.push('/listings/products/' + ad._id)"
+                                    :class="{ 'hidden': !ad.imageLoaded }" :src="ad.images[0].link"
+                                    @load="ad.imageLoaded = true" class="w-full rounded-t-md feed-image"
+                                    v-if="ad.images[0] && ad.images[0].link && ad.images[0].link.includes('mp4') == false"
+                                    alt="">
+                                <video @loadedmetadata="ad.imageLoaded = true" :class="{ 'hidden': !ad.imageLoaded }"
+                                    @click="$router.push('/listings/products/' + ad._id)" preload="metadata"
+                                    :src="ad.images[0] && ad.images[0].link" class="w-full rounded-t-md feed-image" v-else
+                                    autoplay muted loop></video>
+                                <p class="text-webapp text-lg font-medium w-full px-3 cursor-pointer"
                                     @click="$router.push('/listings/products/' + ad._id)">
                                     {{ ad.title }}
                                 </p>
@@ -207,9 +249,10 @@
                                 </div>
 
                                 <div class="flex flex-row items-center w-full justify-between px-3">
-                                    <p class="text-sm text-webapp font-medium">N{{ formatNumber(ad.price) }} /
-                                        <span v-if="ad.for === 'rent'">Year</span>
-                                        <span v-if="ad.for === 'sale'">Forever</span>
+                                    <p class="text-sm text-webapp font-medium">
+                                        <PriceFormatter :from="ad.priceCurrency" :to="$store.state.user.currency" :amount="ad.price" /> /
+                                        <span v-if="ad.for === 'rent'">Rent</span>
+                                        <span v-if="ad.for === 'sale'">Sale</span>
                                     </p>
                                     <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
                                         :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none" viewBox="0 0 24 24"
@@ -223,7 +266,8 @@
                                 </div>
 
                                 <div class="rounded border border-white px-2 py-1 absolute top-5 right-5">
-                                    <span class="text-white text-sm text-center">{{ Math.round(ad.distance) }} KM Away</span>
+                                    <span class="text-white text-sm text-center">{{ Math.round(ad.distance) }} KM
+                                        Away</span>
                                 </div>
                             </div>
                         </div>
@@ -236,17 +280,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import ProfileNavbar from '../../../components/ProfileNavbar.vue'
-import Following from './components/modal/Following.vue'
+import FollowingPage from './components/modal/FollowingModal.vue'
+import FollowersPage from './components/modal/FollowersModal.vue'
 import Affiliate from './components/modal/Affiliate.vue'
 import EditUserProfile from './components/EditUserProfile.vue'
 import pincodeModal from './components/pincodeModal.vue'
-import Naira from './components/wallet/Naira.vue'
+import Currency from './components/wallet/Currency.vue'
 import HBP from './components/wallet/HBP.vue'
 import saveAd from "../../../composables/saveAd";
 import axios from "../../../composables/axios"
-import formatNumber from "number_formatter"
 import Referrals from './components/modal/Referrals.vue'
 import calculateDistance from '../../../composables/getAdDistance.js'
 
@@ -260,6 +304,33 @@ const url = '/listings/ads/get/';
 const store = useStore()
 const route = useRoute()
 const router = useRouter()
+
+const title = ref('Habeep | ' + store.state.user.fname + ' Profile')
+const content = ref('Visit ' + store.state.user.fname + ' Profile')
+
+import { useHead } from '@vueuse/head'
+
+useHead({
+    title: () => title.value,
+    meta: [
+        { charset: 'utf-8' },
+        { name: 'description', content: () => content.value },
+
+        { name: 'og:title', content: () => title.value },
+        { name: 'og:image', content: store.state.user.userProfileImage },
+        { name: 'og:url', content: 'https://habeep.org/user/profile/' + route.params.id },
+        { name: 'og:website', content: 'website' },
+        { name: 'og:description', content: () => content.value },
+
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+    ],
+    link: [
+        { rel: 'icon', href: store.state.user.userProfileImage },
+        { rel: 'shortcut icon', href: store.state.user.userProfileImage },
+        { rel: 'apple-touch-icon', href: store.state.user.userProfileImage }
+    ]
+})
+
 
 if (route.query.reloadApp) {
     router.replace({ query: null });
@@ -275,6 +346,7 @@ let modalState = ref(null)
 const editProfileModal = ref(false)
 const changePincode = ref(false)
 const FollowingModal = ref(false)
+const FollowersModal = ref(false)
 const affiliateModal = ref(false)
 const referralModal = ref(false)
 
@@ -353,6 +425,7 @@ function closeModal() {
     editProfileModal.value = false
     changePincode.value = false
     FollowingModal.value = false
+    FollowersModal.value = false
     affiliateModal.value = false
     referralModal.value = false
 }
@@ -369,11 +442,20 @@ function changeWidth() {
     screenWidth.value = window.innerWidth
 }
 
+if (store.state.isAuthenticated && store.state.user.role === "AGENT") {
+    openTab.value = 1
+}
 </script>
 
 <style scoped>
 .user-btn {
     border: 1px solid #D9DDEE;
+    border-radius: 5px;
+    height: 50px;
+}
+
+.agent-btn {
+    border: 1px solid #3E64F9;
     border-radius: 5px;
     height: 50px;
 }

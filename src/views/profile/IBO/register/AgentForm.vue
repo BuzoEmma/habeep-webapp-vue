@@ -22,15 +22,6 @@
 
                 <!-- input fields -->
 
-
-                <div class="flex flex-col items-start w-full gap-y-1 mt-8">
-                    <label for="" class="text-sm text-webapp">Agent category</label>
-                    <select name="" v-model="data.category" class="w-full h-14 rounded-lg px-2" id="">
-                        <option value="Individual" selected >Individual agent</option>
-                        <option value="Company">Company agent</option>
-                    </select>
-                </div>
-
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8">
                     <label for="" class="text-sm text-webapp">Street address</label>
                     <input type="text" name="" v-model="data.address" class="w-full h-14 rounded-lg"
@@ -38,21 +29,25 @@
                 </div>
 
                 <div class="flex flex-col sm:flex-row items-center gap-x-3 w-full justify-between">
-                    <div class="flex flex-col items-start w-full sm:w-6/12 gap-y-1 mt-8">
-                        <label for="" class="text-sm text-webapp">City</label>
-                        <select name="" v-model="data.city" class="w-full h-14 rounded-lg px-2" id="">
-                            <option value="" v-if="!data.state.cities">Choose a state</option>
-                            <option v-else :value="city.name" v-for="city in data.state.cities.sort()" :key="city">
-                                {{ city.name }}
+                    <div class="flex flex-col items-start  w-full sm:w-6/12 gap-y-1 mt-8">
+                        <label for="" class="text-sm text-webapp">State</label>
+                        <select name="" v-model="data.state" class="w-full h-14 rounded-lg px-2" id=""
+                            placeholder="Select state">
+                            <option value="Choose a state" selected>Choose a state</option>
+                            <option :value="state" v-for="state in states" :key="state">
+                            <span v-if="state.state.name == 'Cross'">Cross River</span>
+                            <span v-else>{{ state.state.name }}</span>
                             </option>
                         </select>
                     </div>
-                    <div class="flex flex-col items-start  w-full sm:w-6/12 gap-y-1 mt-8">
-                        <label for="" class="text-sm text-webapp">State</label>
-                        <select name="" v-model="data.state" class="w-full h-14 rounded-lg px-2" id="" placeholder="Select state">
-                            <option :value="state" v-for="state in states" :key="state">
-                                <span v-if="state.state.name == 'Cross'">Cross River</span>
-                                <span v-else >{{ state.state.name }}</span>
+                    <div class="flex flex-col items-start w-full sm:w-6/12 gap-y-1 mt-8">
+                        <label for="" class="text-sm text-webapp">City</label>
+                        <select name="" v-model="data.city" class="w-full h-14 rounded-lg px-2" id="">
+                            <option value="Choose a city" v-if="data.city === 'Choose a city'" selected>Choose a city</option>
+                            <option value="" v-else selected>Choose a city</option>
+                            <option value="" v-if="!data.state && !data.state[0]">Choose a state</option>
+                            <option v-else :value="city.name" v-for="city in data.state.cities" :key="city">
+                                {{ city.name }}
                             </option>
                         </select>
                     </div>
@@ -65,7 +60,7 @@
                 </div>
 
                 <p class="w-full text-left text-webapp  text-sm mt-10">
-                    By clicking on “Next” you agree to Agent IBO <span @click="$router.push('')"
+                    By clicking on “Next” you agree to Agent IBO <span @click="$router.push('/terms-of-service')"
                         class="cursor-pointer text-primary underline">Terms and conditions</span>
                 </p>
                 <!-- submit btn -->
@@ -97,22 +92,21 @@ import axiosDefault from 'axios'
 import { useStore } from "vuex";
 import AffiliateFee from './AffiliateFee.vue';
 
-import { formValidator } from '../../../../composables/2-validator'
-
-const route = useRoute();
-const router = useRouter();
-
 const store = useStore();
 
 const inputCompleted = ref(false)
+const states = ref([]);
 
-const currentState = ref('')
+onMounted(async () => {
+    getStates()
+})
+
 const data = reactive({
     role: 'AGENT',
     bio: '',
-    state: '',
-    city: '',
-    category: '',
+    state: 'Choose a state',
+    city: 'Choose a city',
+    category: 'Individual',
     address: ''
 })
 
@@ -122,11 +116,9 @@ let errorMsg = ref({
     field: null
 })
 
-let states = store.state.allStates.reverse()
 
 
 let newMsg = ref('')
-let warningMsg = ref('')
 const processing = ref(false)
 
 function allFields() {
@@ -138,19 +130,37 @@ function allFields() {
     return true
 }
 
-function validateFormField(field, data) {
-    data.state = data.state.state.name
-    const validator = formValidator(field, data)
+async function getStates() {
+    try {
+        const getState = await axios.get('/countries-api/states/' + store.state.user.countryShortName)
 
+        getState.data.results.forEach(async state => {
+            const getCities = await axios.get(`/countries-api/cities/${store.state.user.countryShortName}/${state.stateid}`)
 
-    if (!validator.success) {
-        onError.value = true
-        errorMsg.value.msg = validator.message
-        errorMsg.value.field = field
-    } else {
-        onError.value = false
-        errorMsg.value.msg = ''
-        errorMsg.value.field = null
+            let formatted = {
+                state: state,
+                cities: getCities.data.results
+            }
+
+            states.value.push(formatted)
+
+        })
+
+        states.value = states.value.sort(function (a, b) {
+            const nameA = a.state.name.toUpperCase(); // ignore upper and lowercase
+            const nameB = b.state.name.toUpperCase(); // ignore upper and lowercase
+            if (nameA > nameB) {
+                return 1;
+            }
+            if (nameA < nameB) {
+                return -1;
+            }
+
+            // names must be equal
+            return 0;
+        });
+    } catch (error) {
+        console.log(error)
     }
 }
 

@@ -16,7 +16,7 @@
 
             <NoChat v-if="!processing && !selectedChat"
                 :class="{ 'hidden': allRooms.length > 0 && screenWidth < 1023 || selectedChat }" />
-            <Chat @showPhone="togglePhone" v-if="!processing && selectedChat" @leaveChat="selectedChat = null"
+            <Chat @showPhone="togglePhone" v-if="!processing && selectedChat" @leaveChat="leaveChat"
                 :chat="selectedChat" :class="{ 'hidden': !selectedChat && screenWidth < 1023 }" />
         </div>
 
@@ -75,6 +75,16 @@ const enterChatBox = (data) => {
 
 }
 
+const leaveChat = (data) => {
+    selectedChat.value = null
+    const getRoom = allRooms.value.filter(chatroom => {
+        return chatroom.room._id == data.room._id
+    })
+    allRooms.value[getRooms[0]] = data
+    
+    console.log(getRoom[0].room, data.room)
+}
+
 const screenWidth = ref(window.innerWidth)
 
 const processing = ref(false)
@@ -89,11 +99,15 @@ async function getRooms() {
             let filterId = allRooms.value.filter((room) => {
                 return room.room._id === route.query.roomId
             })
+            // // route.query.roomId = null
+            // router.replace({ query: { roomId: null } })
             enterChatBox(filterId[0])
-            router.replace({ query: null });
         }
+        return true
     } catch (error) {
         console.log(error)
+        router.go(-1)
+        return false
     }
 }
 

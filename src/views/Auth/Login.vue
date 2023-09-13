@@ -66,10 +66,7 @@ import { ref, reactive, onMounted } from 'vue'
 import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { loginValidate, formValidator } from '../../composables/2-validator'
-import { useCookies } from "vue3-cookies";
 import SuggestedCategory from './components/SuggestedCategory.vue'
-
-const { cookies } = useCookies();
 
 
 const onModal = ref(false)
@@ -154,7 +151,6 @@ async function loginUser() {
                 }
                 store.dispatch('setAuth', mutate)
 
-                cookies.set('loggedIn', true)
                 newMsg.value = login.data.data.message
 
                 setTimeout(() => {
@@ -163,12 +159,12 @@ async function loginUser() {
                         if (route.query.redirect) {
                             router.push(route.query.redirect)
                         } else {
-                            router.replace('/feeds?reloadApp=true')
+                            router.replace('/feeds')
                         }
                     } else {
-                        router.push('/verify-otp?email=' + login.data.data.user.email)
+                        router.push('/verify-otp?email=' + login.data.data.user.email + '&reason=user_verification')
                     }
-                }, 5000);
+                }, 2000);
             } else {
                 processing.value = false
                 onError.value = true
@@ -177,7 +173,7 @@ async function loginUser() {
                 setTimeout(() => {
                     onError.value = false
                     errorMsg.value.msg = ''
-                }, 5000);
+                }, 4000);
             }
         } catch (error) {
             onError.value = true

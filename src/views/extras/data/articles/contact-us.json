@@ -1,0 +1,12 @@
+{
+  "title": "Learn how to contact us!",
+  "subtitle": "Something wrong! Learn how to reach us",
+  "articles": [
+    {
+      "title": "How can I get customer support on Habeep?",
+      "subtitle": "Something wrong? Learn how to reach us",
+      "content": "<p class='w-full text-left'>Habeep provides dedicated customer support to assist users with any inquiries or issues they may encounter. Users can reach out to customer support through the app or website help centre, and a team of experts will promptly assist them.</p> <br> <p class='w-full text-left'>If you have any other questions or need further assistance, feel free to contact our customer support team.</p><p class='w-full text-left'>Send us an email at habeepsystems@gmail.com</p> <br> <p class='w-full text-left'>Or call our Helpline</p> <br> <a href='tel:+234 708 818 8807'><span class='font-black text-black text-lg'>+234 708 818 8807<span></a>"
+    }
+  ],
+  "writer": "Elisha Agbama, CEO"
+}

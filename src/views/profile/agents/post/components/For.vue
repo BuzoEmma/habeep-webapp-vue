@@ -83,7 +83,7 @@ const selectSaleType = (type) => {
 if (store.state.listingProcess.for.length > 0) {
     data.data = store.state.listingProcess.for
 
-    if (data.data = 'rent') {
+    if (data.data == 'rent') {
         activeType.value = 1
     } else activeType.value = 2
 

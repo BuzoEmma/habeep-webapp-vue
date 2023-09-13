@@ -5,7 +5,7 @@
         <div
             class="form-container flex flex-col items-center relative bg-white gap-y-3 w-full xl:w-2/3 h-full pb-6 md:py-10 overflow-y-auto overflow-x-hidden">
 
-            <div class="flex flex-col items-center w-full md:w-2/3 px-4">
+            <div class="flex flex-col items-center h-full w-full md:w-2/3 px-4 relative">
                 <!-- logo -->
                 <div class="logo md:flex hidden flex-row items-center justify-end w-full gap-x-2 cursor-pointer">
                     <img src="../../assets/icons/logo.svg" alt="Logo">
@@ -41,11 +41,22 @@
                             @keyup="back" />
                     </div>
                 </div>
+
+                <p class="flex-row-center w-full gap-x-1 text-sm px-2">
+                    <span class="text-webapp font-medium">Resend OTP in:</span>
+                    <span class="underline text-blue-600 cursor-pointer" v-if="timer.isExpired.value"
+                        @click="getOTP()">Send</span>
+                    <span class="text-orange-400 pl-1" v-else>{{ timer.seconds }}</span>
+                </p>
+
                 <!-- submit btn -->
-                <button class="bg-primary w-full rounded-lg grid place-items-center h-14 text-white" @click="verifyOTP">
-                    <span v-if="!processing">Continue</span>
-                    <Preloader v-else />
-                </button>
+                <div class="bottom-0 absolute px-4 w-full">
+                    <button class="bg-primary w-full rounded-lg grid place-items-center h-14 mt-5 text-white"
+                        @click="verifyOTP">
+                        <span v-if="!processing">Continue</span>
+                        <Preloader v-else />
+                    </button>
+                </div>
 
             </div>
 
@@ -60,6 +71,7 @@ import { useRouter, useRoute } from "vue-router";
 import axios from '../../composables/axios'
 import { ref, reactive, onMounted } from 'vue'
 import { useStore } from "vuex";
+import { useTimer } from 'vue-timer-hook';
 
 const store = useStore();
 const router = useRouter()
@@ -73,6 +85,16 @@ const val2 = ref()
 const val3 = ref()
 const val4 = ref()
 const val5 = ref()
+
+const time = new Date();
+time.setSeconds(time.getSeconds() + 40); // 40 sec timer
+const timer = useTimer(time);
+
+const restartTimer = () => {
+    const time = new Date();
+    time.setSeconds(time.getSeconds() + 40);
+    timer.restart(time);
+}
 
 const next = (e) => {
     if (!e.target.value < 1) {
@@ -144,6 +166,11 @@ const getOTP = async () => {
             msg.value.type = 'success'
             msg.value.text = result.data.message;
 
+            if (timer.isExpired.value) {
+                restartTimer()
+            } else {
+                timer.start()
+            }
 
             setTimeout(() => {
                 msg.value.type = ''
