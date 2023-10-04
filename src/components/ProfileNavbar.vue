@@ -5,7 +5,7 @@
 
     <div class="flex flex-row items-center relative py-4 justify-between w-full px-6 2xl:px-44 md:px-20 border-b border-b-textfieldbg"
         v-motion-slide-top :delay="200">
-        <div class="logo flex flex-row items-center gap-x-2 cursor-pointer" @click="$router.push('/feeds')">
+        <div class="logo flex flex-row items-center gap-x-2 " @click="$router.push('/feeds')">
             <img src="../assets/icons/logo.svg" alt="Logo">
             <span class="text-primary text-2xl">Habeep</span>
         </div>
@@ -26,15 +26,17 @@
             <div class="flex flex-row items-center gap-x-4">
                 <span class="text-sub-webapp text-lg font-normal">Download our app at</span>
                 <!-- <img src="../assets/icons/apple.svg" alt=""> -->
-                <a href="https://play.google.com/store/apps/details?id=org.habeep" class="no-underline cursor-pointer"><img
+                <a href="https://play.google.com/store/apps/details?id=org.habeep" class="no-underline "><img
                         src="../assets/icons/playstore.svg" alt="Habeep Google playstore link"></a>
             </div>
 
             <div class="flex flex-row gap-x-10 items-start md:items-center pl-6">
-                <span class="uppercase text-lg text-webapp" :class="{ 'text-blue-700': $route.fullPath.includes('blog') === true }" @click="$router.push('/blog')">BLOG</span>
-                <div class="flex flex-row items-center cursor-pointer gap-x-2" @click="toggleNav">
+                <span class="uppercase text-lg text-webapp"
+                    :class="{ 'text-blue-700': $route.fullPath.includes('blog') === true }"
+                    @click="$router.push('/blog')">BLOG</span>
+                <div class="flex flex-row items-center  gap-x-2" @click="toggleNav">
                     <img src="../assets/icons/user.svg" alt="" v-if="!$store.state.isAuthenticated">
-                    <img :src="$store.state.user.userProfileImage" class="w-10 h-10 rounded-full cursor-pointer"
+                    <img :src="$store.state.user.userProfileImage" class="w-10 h-10 rounded-full "
                         v-else-if="$store.state.user.userProfileImage !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
                     <Avatar size="100%" class="w-10 h-10"
                         v-if="$store.state.user.userProfileImage === 'https://i.ibb.co/gtpxMJz/21.png' && $store.state.isAuthenticated"
@@ -64,33 +66,33 @@
             class="flex flex-col drop-shadow-lg shadow-xl bg-white rounded-xl gap-y-3 border p-6 border-gray-300 absolute top-16 right-20 z-30"
             style="width: 250px">
 
-            <p @click="$router.push('/')" class="text-sm text-webapp mt-1 cursor-pointer"
+            <p @click="$router.push('/')" class="text-sm text-webapp mt-1 "
                 :class="{ 'text-blue-700': $route.name === 'Home' }">Home</p>
-            <p @click="$router.push('/listings/search')" class="text-sm text-webapp mt-1 cursor-pointer"
+            <p @click="$router.push('/listings/search')" class="text-sm text-webapp mt-1 "
                 :class="{ 'text-blue-700': $route.name === 'Listings-search' }">Search</p>
-            <p @click="$router.push('/chats')" class="text-sm text-webapp mt-1 cursor-pointer"
+            <p @click="$router.push('/chats')" class="text-sm text-webapp mt-1 "
                 :class="{ 'text-blue-700': $route.name === 'Chat' }" v-if="$store.state.isAuthenticated">Message</p>
-            <p @click="$router.push('/user/profile/' + $store.state.user._id)"
-                class="text-sm text-webapp mt-1 cursor-pointer" :class="{ 'text-blue-700': $route.name === 'User-profile' }"
-                v-if="$store.state.isAuthenticated">Account</p>
+            <p @click="$router.push('/user/profile/' + $store.state.user._id)" class="text-sm text-webapp mt-1 "
+                :class="{ 'text-blue-700': $route.name === 'User-profile' }" v-if="$store.state.isAuthenticated">Account</p>
             <hr class="my-1">
-            <p @click="$router.push('/agent/ads')" class="text-sm text-webapp mt-1 cursor-pointer"
+            <p @click="$router.push('/agent/ads')" class="text-sm text-webapp mt-1 "
                 :class="{ 'text-blue-700': $route.name === 'Agent-ads' || $route.name === 'Agent-ads-create' }"
                 v-if="$store.state.isAuthenticated && $store.state.user.role === 'AGENT'">Post an Ad</p>
-            <p @click="$router.push('/account/IBO/category')" class="text-sm text-webapp mt-1 cursor-pointer"
+            <p @click="$router.push('/account/IBO/category')" class="text-sm text-webapp mt-1 "
                 :class="{ 'text-blue-700': $route.name.includes('IBO') === true }"
                 v-if="$store.state.isAuthenticated && $store.state.user.role === 'USER'">Become an Agent/Tenant</p>
-            <p @click="$router.push('/account/IBO/category/agent')" class="text-sm text-webapp mt-1 cursor-pointer"
+            <p @click="$router.push('/account/IBO/category/agent')" class="text-sm text-webapp mt-1 "
                 :class="{ 'text-blue-700': $route.name.includes('IBO') === true }"
-                v-if="$store.state.isAuthenticated && $store.state.user.role === 'TENANT'">Become an Agent</p>
-            <p @click="$router.push('/wallet')" class="text-sm text-webapp mt-1 cursor-pointer"
+                v-if="$store.state.isAuthenticated && ($store.state.user.role === 'TENANT' || $store.state.user.isTenant)">
+                Become an Agent</p>
+            <p @click="$router.push('/wallet')" class="text-sm text-webapp mt-1 "
                 :class="{ 'text-blue-700': $route.name === 'Wallet' }" v-if="$store.state.isAuthenticated">Wallet</p>
 
-            <span class="text-sm text-webapp mt-1 md:hidden mobile-nav-item cursor-pointer"
+            <span class="text-sm text-webapp mt-1 md:hidden mobile-nav-item "
                 :class="{ 'text-blue-700': $route.fullPath.includes('blog') === true }"
                 @click="$router.push('/blog')">BLOG</span>
 
-            <div class="flex flex-row items-center justify-between w-full rounded-full p-2 mt-8 border border-gray-300 cursor-pointer"
+            <div class="flex flex-row items-center justify-between w-full rounded-full p-2 mt-8 border border-gray-300 "
                 @click="$router.push('/logout')">
                 <img src="../assets/icons/logo-mini.svg" alt="">
                 <span class="text-lg text-webapp">Logout</span>
