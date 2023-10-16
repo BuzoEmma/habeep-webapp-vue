@@ -8,7 +8,7 @@ name: Publish Docker image to Contabo
 on:
   push:
     branches:
-      - production
+      - staging
 
 jobs:
   push_to_registry:

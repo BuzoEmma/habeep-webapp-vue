@@ -1,0 +1,17 @@
+User-agent: *
+Disallow: /verify-otp
+Disallow: /reset-pin
+Disallow: /logout
+Disallow: /login
+Disallow: /forgot-pin
+Disallow: /home
+Disallow: /feeds
+
+User-agent: googlebot
+Disallow: /verify-otp
+Disallow: /reset-pin
+Disallow: /logout
+Disallow: /login
+Disallow: /forgot-pin
+
+Sitemap: https://habeep.org/sitemap.xml
