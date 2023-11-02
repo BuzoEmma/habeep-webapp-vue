@@ -16,6 +16,7 @@
             <div class="flex flex-col items-start gap-y-1 w-full mt-5 relative">
                 <span class="text-webapp text-sm">Amount to top-up</span>
                 <input type="number" v-model="depositData.amount" placeholder="0.00"
+                    @input="calculatePaystackFee(depositData.amount)"
                     class="w-full outline-none h-14 rounded-lg border border-gray p-2">
 
                 <div class="absolute top-8 h-10 w-9 right-2 rounded grid place-items-center" style="background: #EBEBEB;">
@@ -28,9 +29,11 @@
                 <input type="text" disabled value="0.00" class="w-full outline-none h-14 rounded-lg border border-gray p-2">
 
                 <div class="absolute top-8 h-10 px-2 right-2 rounded grid place-items-center" style="background: #EBEBEB;">
-                    <p class="flex flex-row items-center gap-x-4"><span
-                            v-if="depositData.paymentMethod !== 'bank-transfer'">Free</span> {{
-                                getSymbolFromCurrency($store.state.user.currency) }}</p>
+                    <p class="flex flex-row items-center gap-x-4">
+                        <span v-if="depositData.paymentMethod !== 'bank-transfer' && depositData.fee < 1">Free</span>
+                        <span v-else>{{ depositData.fee.toFixed(2) }}</span>
+                        {{ getSymbolFromCurrency($store.state.user.currency) }}
+                    </p>
                 </div>
             </div>
 
@@ -105,15 +108,19 @@ import axios from '../../../../../composables/axios'
 import moment from 'moment'
 import Paystack from './deposits/Paystack.vue'
 import Flutterwave from './deposits/Flutterwave.vue'
+import { convert } from 'currency-exchanger-js';
 
 import getSymbolFromCurrency from 'currency-symbol-map'
+
+const habeepDepositFee = ref(50)
+const mainDepositFee = ref(0)
 
 const store = useStore()
 const router = useRouter()
 
 const depositData = reactive({
     amount: '',
-    fee: 0,
+    fee: mainDepositFee.value + habeepDepositFee.value,
     paymentMethod: ''
 })
 
@@ -144,6 +151,11 @@ function channels() {
 const choosePaymentMethod = (method) => {
     depositData.paymentMethod = method
     onSelectMethod.value = false
+    if (depositData.paymentMethod === 'paystack') {
+        calculatePaystackFee(Number(depositData.amount))
+    } else {
+        depositData.fee = habeepDepositFee.value
+    }
 }
 
 function proceedToPayment() {
@@ -165,7 +177,7 @@ function getPaystackDetails() {
     return {
         key: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY,
         email: store.state.user.email,
-        amount: depositData.amount * 100,
+        amount: (depositData.amount + depositData.fee) * 100,
         currency: store.state.user.currency,
         ref: genRef(),
         channels: channels(),
@@ -180,7 +192,7 @@ function getFlwDetails() {
     flwRef.value = genFlwRef()
     return {
         public_key: import.meta.env.VITE_FLW_PUBLIC_KEY,
-        amount: depositData.amount,
+        amount: depositData.amount + depositData.fee,
         country: store.state.user.countryShortName,
         currency: store.state.user.currency,
         customer: { email: store.state.user.email, name: store.state.user.fname + ' ' + store.state.user.surname, phone_number: '+' + store.state.user.countryCode + store.state.user.phoneNumber.toString() },
@@ -192,10 +204,60 @@ function getFlwDetails() {
 }
 
 function handleFlwClose(data) {
-    console.log(data)
     if (data !== true) {
         processPayment({ tx_ref: flwRef.value })
     } else cancelPayment()
+}
+
+
+function calculatePercentage(number, perc) {
+    return (number / 100) * perc
+}
+
+function calculatePaystackFee(amount) {
+    const country = store.state.user.countryShortName
+    const finalAmount = ref(0)
+    if (country === 'NG') {
+        if (amount < 2500) {
+            finalAmount.value = calculatePercentage(amount, 1.5)
+        } else {
+            finalAmount.value = calculatePercentage(amount, 1.5) + 100
+        }
+
+        if (finalAmount.value > 2000) {
+            finalAmount.value = 2000
+        }
+        mainDepositFee.value = finalAmount.value
+        depositData.fee = mainDepositFee.value + habeepDepositFee.value
+    }
+
+    if (country === 'GH') {
+        finalAmount.value = calculatePercentage(amount, 1.95)
+        mainDepositFee.value = finalAmount.value
+        depositData.fee = mainDepositFee.value + habeepDepositFee.value
+    }
+
+    if (country === 'SA') {
+        if (amount < 10) {
+            finalAmount.value = calculatePercentage(amount, 2.9)
+        } else {
+            finalAmount.value = calculatePercentage(amount, 2.9) + 1
+        }
+        mainDepositFee.value = finalAmount.value
+        depositData.fee = mainDepositFee.value + habeepDepositFee.value
+    }
+
+    if (country === 'KE') {
+        finalAmount.value = calculatePercentage(amount, 2.9)
+        mainDepositFee.value = finalAmount.value
+        depositData.fee = mainDepositFee.value + habeepDepositFee.value
+    }
+
+    finalAmount.value = calculatePercentage(amount, 3.9) + 100
+    mainDepositFee.value = finalAmount.value
+    depositData.fee = mainDepositFee.value + habeepDepositFee.value
+
+
 }
 
 
@@ -257,6 +319,11 @@ function genRef() {
 function genFlwRef() {
     return uniqid("dep-flw-");
 }
+
+onMounted(async () => {
+    habeepDepositFee.value = await convert(50, 'NGN', store.state.user.currency)
+})
+
 
 
 </script>

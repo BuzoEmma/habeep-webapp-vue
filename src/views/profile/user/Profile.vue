@@ -38,7 +38,7 @@
             </div>
 
             <!-- user basic info -->
-            <div class="w-full lg:w-2/6 2xl:w-1/4 lg:ml-3 h-fit flex flex-col items-center gap-y-8 left">
+            <div class="w-full lg:w-2/6 max-w-fit lg:ml-3 h-fit flex flex-col items-center gap-y-8 left">
                 <div class="user-info flex p-4 bg-white flex-col border items-start border-gray-200 rounded w-full h-full">
                     <div class="flex flex-row gap-x-3 items-start">
                         <div class="rounded-full w-24 h-24 grid place-items-center border">
@@ -137,7 +137,7 @@
 
             <!-- ads tab  -->
 
-            <div class="flex flex-col min-h-full items-start w-full h-full lg:w-4/5">
+            <div class="flex flex-col min-h-full items-start w-full h-full">
                 <div class="flex flex-row gap-x-3 border-b border-b-gray-200 w-full">
                     <div class="cursor-pointer flex flex-row items-center justify-center w-24  pb-1"
                         v-if="$store.state.user.role === 'AGENT'" @click="changeTab(1)"

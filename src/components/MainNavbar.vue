@@ -3,8 +3,8 @@
     <div class="absolute w-screen h-screen top-0 opacity-50" @click="toggleMobileNav" v-if="onMobileNav"
         style="background: #161622"></div>
 
-    <div class="flex flex-row items-center relative md:sticky z-20 bg-white top-0 py-4  justify-between w-full px-6 2xl:px-44 md:px-20 border-b border-b-textfieldbg"
-        v-motion-slide-top :delay="200">
+    <div
+        class="flex flex-row items-center relative md:sticky z-20 bg-white top-0 py-4  justify-between w-full px-6 2xl:px-44 md:px-20 border-b border-b-textfieldbg">
         <div class="logo flex flex-row items-center gap-x-2 " @click="$router.push('/feeds')">
             <img src="../assets/icons/logo.svg" alt="Logo">
             <span class="text-primary text-2xl">Habeep</span>
@@ -26,14 +26,15 @@
             <!-- download app on stores -->
             <div class="flex flex-row items-center gap-x-4">
                 <span class="text-sub-webapp text-lg font-normal">Download our app at</span>
-                <!-- <img src="../assets/icons/apple.svg" alt=""> -->
-                <a href="https://play.google.com/store/apps/details?id=org.habeep" class="no-underline "><img
-                        src="../assets/icons/playstore.svg" alt="Habeep Google playstore link"></a>
+                <a href="https://apps.apple.com/us/app/habeep/id6450388013" target="_blank" class="no-underline "><img
+                        src="../assets/icons/apple.svg" alt="Habeep appstore link"></a>
+                <a href="https://play.google.com/store/apps/details?id=org.habeep" target="_blank"
+                    class="no-underline "><img src="../assets/icons/playstore.svg" alt="Habeep Google playstore link"></a>
 
             </div>
 
             <div class="flex flex-row gap-x-10 items-start md:items-center pl-6">
-                <span class="uppercase text-lg text-webapp"
+                <span class="uppercase text-lg text-webapp cursor-pointer"
                     :class="{ 'text-blue-700': $route.fullPath.includes('blog') === true }"
                     @click="$router.push('/blog')">BLOG</span>
                 <div class="flex flex-row items-center  gap-x-2" @click="toggleNav">
@@ -57,7 +58,7 @@
         <!-- Navigation Menu -->
 
         <div v-if="(onNavDropdown || onMobileNav)" :class="{ 'right-2 top-20': onMobileNav }" v-motion-slide-top
-            :delay="200"
+            :delay="200" id="navbar"
             class="flex flex-col mobile-nav drop-shadow-lg shadow-xl bg-white rounded-xl gap-y-3 border p-6 border-gray-300 absolute top-16 right-20 z-50"
             style="width: 250px">
 
@@ -85,22 +86,22 @@
             <p @click="$router.push('/wallet')" class="mobile-nav-item text-sm text-webapp mt-1 "
                 :class="{ 'text-blue-700': $route.name === 'Wallet' }" v-if="$store.state.isAuthenticated">Wallet</p>
 
-            <span class="text-sm text-webapp mt-1 md:hidden mobile-nav-item "
+            <span class="text-sm text-webapp mt-1 md:hidden mobile-nav-item cursor-pointer"
                 :class="{ 'text-blue-700': $route.fullPath.includes('blog') === true }"
                 @click="$router.push('/blog')">BLOG</span>
 
             <div v-if="!$store.state.isAuthenticated"
-                class="flex flex-row items-center mobile-nav-item justify-between w-full rounded-full p-2 mt-8 border border-gray-300 "
+                class="flex flex-row items-center mobile-nav-item justify-between w-full rounded-full p-2 mt-8 border border-gray-300 cursor-pointer"
                 @click="$router.push('/login')">
                 <img src="../assets/icons/logo-mini.svg" alt="">
-                <span class="text-lg text-webapp">Login</span>
+                <span class="text-lg text-webapp cursor-pointer">Login</span>
                 <span></span>
             </div>
             <div v-else
-                class="flex flex-row items-center mobile-nav-item justify-between w-full rounded-full p-2 mt-8 border border-gray-300 "
+                class="flex flex-row items-center mobile-nav-item justify-between w-full rounded-full p-2 mt-8 border border-gray-300 cursor-pointer"
                 @click="$router.push('/logout')">
                 <img src="../assets/icons/logo-mini.svg" alt="">
-                <span class="text-lg text-webapp">Logout</span>
+                <span class="text-lg text-webapp cursor-pointer">Logout</span>
                 <span></span>
             </div>
 
@@ -152,6 +153,10 @@ const checkForEnter = (e) => {
 input::placeholder {
     color: #B1B4CD;
     font-size: 16px;
+}
+
+#navbar p {
+    cursor: pointer;
 }
 
 input {
