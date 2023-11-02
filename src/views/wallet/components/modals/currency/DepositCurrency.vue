@@ -275,10 +275,10 @@ const processPayment = async (response) => {
 
         let data = {
             accountId: store.state.user.wallet[store.state.user.currency],
-            amount: depositData.amount,
+            amount: depositData.amount - depositData.fee,
             referenceId: reference,
-            status: 'COMPLETED',
-            fee: 0,
+            status: 'PENDING',
+            fee: depositData.fee,
             userId: store.state.user._id,
             paymentMethod: depositData.paymentMethod,
             dates: {
