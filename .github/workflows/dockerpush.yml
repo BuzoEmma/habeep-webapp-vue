@@ -38,7 +38,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
   update_ssh_contabo:
-    name: Telling Contabo Server to Update
+    name: Telling Digital ocean to Update
     needs: "push_to_registry"
     runs-on: ubuntu-latest
     steps:
@@ -47,6 +47,7 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-        port: ${{ secrets.PORT }}
-        script: cd habeep && bash update-web.sh
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        passphrase: ${{ secrets.PASSPHRASE }}
+        port: 22
+        script: cd habeep-staging && echo ${{ secrets.PASSPHRASE }} | sudo -S bash update-web.sh
