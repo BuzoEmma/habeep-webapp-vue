@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Publish Docker image to Contabo
+name: Publish Docker image to Digital Ocean
 
 on:
   push:
