@@ -59,50 +59,85 @@
 
         <div v-if="(onNavDropdown || onMobileNav)" :class="{ 'right-2 top-20': onMobileNav }" v-motion-slide-top
             :delay="200" id="navbar"
-            class="flex flex-col mobile-nav drop-shadow-lg shadow-xl bg-white rounded-xl gap-y-3 border p-6 border-gray-300 absolute top-16 right-20 z-50"
+            class="flex flex-col mobile-nav drop-shadow-lg nav  shadow-xl bg-white rounded-xl border py-6 border-gray-300 absolute top-16 right-20 z-50"
             style="width: 250px">
 
-            <p @click="$router.push('/')" class="text-sm text-webapp mt-1  mobile-nav-item"
-                :class="{ 'text-blue-500': $route.name === 'Home' }">Home</p>
-            <p @click="$router.push('/feeds')" class="text-sm text-webapp mt-1 "
-                :class="{ 'text-blue-700': $route.name === 'Feeds' }" v-if="$store.state.isAuthenticated">Feeds</p>
-            <p @click="$router.push('/listings/search')" class="mobile-nav-item text-sm text-webapp mt-1 "
-                :class="{ 'text-blue-700': $route.name === 'Listings-search' }">Search</p>
-            <p @click="$router.push('/chats')" class="mobile-nav-item text-sm text-webapp mt-1 "
-                :class="{ 'text-blue-700': $route.name === 'Chat' }" v-if="$store.state.isAuthenticated">Message</p>
-            <p @click="$router.push('/user/profile/' + $store.state.user._id)" class="text-sm text-webapp mt-1 "
-                :class="{ 'text-blue-700': $route.name === 'User-profile' }" v-if="$store.state.isAuthenticated">Account</p>
-            <hr class="my-1">
-            <p @click="$router.push('/agent/ads')" class="mobile-nav-item text-sm text-webapp mt-1 "
-                :class="{ 'text-blue-700': $route.name === 'Agent-ads' || $route.name === 'Agent-ads-create' }"
-                v-if="$store.state.isAuthenticated && $store.state.user.role === 'AGENT'">Post an Ad</p>
-            <p @click="$router.push('/account/IBO/category')" class="text-sm text-webapp mt-1 "
-                :class="{ 'text-blue-700': $route.name.includes('IBO') === true }"
-                v-if="$store.state.isAuthenticated && $store.state.user.role === 'USER'">Become an Agent/Tenant</p>
-            <p @click="$router.push('/account/IBO/category/agent')" class="text-sm text-webapp mt-1 "
-                :class="{ 'text-blue-700': $route.name.includes('IBO') === true }"
-                v-if="$store.state.isAuthenticated && ($store.state.user.role === 'TENANT' || $store.state.user.isTenant)">
-                Become an Agent</p>
-            <p @click="$router.push('/wallet')" class="mobile-nav-item text-sm text-webapp mt-1 "
-                :class="{ 'text-blue-700': $route.name === 'Wallet' }" v-if="$store.state.isAuthenticated">Wallet</p>
-
-            <span class="text-sm text-webapp mt-1 md:hidden mobile-nav-item cursor-pointer"
-                :class="{ 'text-blue-700': $route.fullPath.includes('blog') === true }"
-                @click="$router.push('/blog')">BLOG</span>
-
-            <div v-if="!$store.state.isAuthenticated"
-                class="flex flex-row items-center mobile-nav-item justify-between w-full rounded-full p-2 mt-8 border border-gray-300 cursor-pointer"
-                @click="$router.push('/login')">
-                <img src="../assets/icons/logo-mini.svg" alt="">
-                <span class="text-lg text-webapp cursor-pointer">Login</span>
-                <span></span>
+            <div class="w-full pl-[13px] py-[11px] nav-item">
+                <p @click="$router.push('/home')" class="text-sm text-webapp"
+                    :class="{ 'text-blue-600': $route.name === 'Home' }">Home</p>
             </div>
-            <div v-else
-                class="flex flex-row items-center mobile-nav-item justify-between w-full rounded-full p-2 mt-8 border border-gray-300 cursor-pointer"
-                @click="$router.push('/logout')">
-                <img src="../assets/icons/logo-mini.svg" alt="">
-                <span class="text-lg text-webapp cursor-pointer">Logout</span>
-                <span></span>
+
+            <div class="w-full pl-[13px] py-[11px] nav-item" v-if="$store.state.isAuthenticated">
+                <p @click="$router.push('/feeds')" class="text-sm text-webapp "
+                    :class="{ 'text-blue-600': $route.name === 'Feeds' }">Feeds</p>
+            </div>
+
+            <div class="w-full pl-[13px] py-[11px] nav-item">
+                <p @click="$router.push('/listings/search')" class="text-sm text-webapp"
+                    :class="{ 'text-primary': $route.name === 'Listings-search' }">Search</p>
+
+            </div>
+            <div class="w-full pl-[13px] py-[11px] nav-item">
+                <p @click="$router.push('/chats')" class="text-sm text-webapp"
+                    :class="{ 'text-blue-700': $route.name === 'Chat' }" v-if="$store.state.isAuthenticated">Message</p>
+
+            </div>
+            <div class="w-full pl-[13px] py-[11px] nav-item">
+                <p @click="$router.push('/user/profile/' + $store.state.user._id)" class="text-sm text-webapp"
+                    :class="{ 'text-blue-700': $route.name === 'User-profile' }" v-if="$store.state.isAuthenticated">Account
+                </p>
+            </div>
+
+            <hr class="my-1">
+            <div class="w-full pl-[13px] py-[11px] nav-item"
+                v-if="$store.state.isAuthenticated && $store.state.user.role === 'AGENT'">
+                <p @click="$router.push('/agent/ads')" class="text-sm text-webapp "
+                    :class="{ 'text-blue-700': $route.name.includes === 'Agent-ads' || $route.name === 'Agent-ads-create' }">
+                    Post an Ad</p>
+            </div>
+
+            <div class="w-full pl-[13px] py-[11px] nav-item"
+                v-if="$store.state.isAuthenticated && $store.state.user.role === 'USER'">
+                <p @click="$router.push('/account/IBO/category')" class="text-sm text-webapp"
+                    :class="{ 'text-blue-700': $route.name.includes('IBO') === true }">Become an Agent/Tenant</p>
+
+            </div>
+
+            <div class="w-full pl-[13px] py-[11px] nav-item"
+                v-if="$store.state.isAuthenticated && ($store.state.user.role === 'TENANT' || $store.state.user.isTenant)">
+                <p @click="$router.push('/account/IBO/category/agent')" class="text-sm text-webapp"
+                    :class="{ 'text-blue-700': $route.name.includes('IBO') === true }">
+                    Become an Agent</p>
+            </div>
+
+            <div class="w-full pl-[13px] py-[11px] nav-item md:hidden">
+                <span class="text-sm text-webapp mobile-nav-item cursor-pointer"
+                    :class="{ 'text-blue-700': $route.fullPath.includes('blog') === true }"
+                    @click="$router.push('/blog')">BLOG</span>
+            </div>
+
+
+            <div class="w-full pl-[13px] py-[11px] nav-item" v-if="$store.state.isAuthenticated">
+                <p @click="$router.push('/wallet')" class="text-sm text-webapp cursor-pointer"
+                    :class="{ 'text-blue-700': $route.name === 'Wallet' }">Wallet</p>
+            </div>
+
+
+            <div class="px-[11px]" v-if="!$store.state.isAuthenticated">
+                <div class="flex flex-row items-center justify-between w-full rounded-full p-2 mt-8 border border-gray-300 cursor-pointer"
+                    @click="$router.push('/login')">
+                    <img src="../assets/icons/logo-mini.svg" alt="">
+                    <span class="text-lg text-webapp cursor-pointer">Login</span>
+                    <span></span>
+                </div>
+            </div>
+            <div class="px-[11px]" v-else>
+                <div class="flex flex-row items-center justify-between w-full rounded-full p-2 mt-8 border border-gray-300 cursor-pointer"
+                    @click="$router.push('/logout')">
+                    <img src="../assets/icons/logo-mini.svg" alt="">
+                    <span class="text-lg text-webapp cursor-pointer">Logout</span>
+                    <span></span>
+                </div>
             </div>
 
 
@@ -161,5 +196,9 @@ input::placeholder {
 
 input {
     outline: none;
+}
+
+div.nav div.nav-item:hover {
+    background: #EAEEFA;
 }
 </style>

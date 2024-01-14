@@ -120,8 +120,13 @@ const router = useRouter()
 
 const depositData = reactive({
     amount: '',
-    fee: mainDepositFee.value + habeepDepositFee.value,
+    fee: habeepDepositFee.value,
     paymentMethod: ''
+})
+
+const references = ref({
+    paystack: [],
+    flutterwave: []
 })
 
 const emit = defineEmits(['close'])
@@ -215,48 +220,51 @@ function calculatePercentage(number, perc) {
 }
 
 function calculatePaystackFee(amount) {
-    const country = store.state.user.countryShortName
-    const finalAmount = ref(0)
-    if (country === 'NG') {
-        if (amount < 2500) {
-            finalAmount.value = calculatePercentage(amount, 1.5)
-        } else {
-            finalAmount.value = calculatePercentage(amount, 1.5) + 100
-        }
+    if (amount > 0 && depositData.paymentMethod === 'paystack') {
+        const country = store.state.user.countryShortName
+        const finalAmount = ref(0)
+        if (country === 'NG') {
+            if (amount < 2500) {
+                finalAmount.value = calculatePercentage(amount, 1.5)
+            } else {
+                finalAmount.value = calculatePercentage(amount, 1.5) + 100
+            }
 
-        if (finalAmount.value > 2000) {
-            finalAmount.value = 2000
-        }
-        mainDepositFee.value = finalAmount.value
-        depositData.fee = mainDepositFee.value + habeepDepositFee.value
+            if (finalAmount.value > 2000) {
+                finalAmount.value = 2000
+            }
+            mainDepositFee.value = finalAmount.value
+            depositData.fee = mainDepositFee.value + habeepDepositFee.value
+        } else
+
+            if (country === 'GH') {
+                finalAmount.value = calculatePercentage(amount, 1.95)
+                mainDepositFee.value = finalAmount.value
+                depositData.fee = mainDepositFee.value + habeepDepositFee.value
+            } else
+
+                if (country === 'SA') {
+                    if (amount < 10) {
+                        finalAmount.value = calculatePercentage(amount, 2.9)
+                    } else {
+                        finalAmount.value = calculatePercentage(amount, 2.9) + 1
+                    }
+                    mainDepositFee.value = finalAmount.value
+                    depositData.fee = mainDepositFee.value + habeepDepositFee.value
+                } else
+
+                    if (country === 'KE') {
+                        finalAmount.value = calculatePercentage(amount, 2.9)
+                        mainDepositFee.value = finalAmount.value
+                        depositData.fee = mainDepositFee.value + habeepDepositFee.value
+                    } else {
+                        finalAmount.value = calculatePercentage(amount, 3.9) + 100
+                        mainDepositFee.value = finalAmount.value
+                        depositData.fee = mainDepositFee.value + habeepDepositFee.value
+                    }
+    } else {
+        depositData.fee = habeepDepositFee.value
     }
-
-    if (country === 'GH') {
-        finalAmount.value = calculatePercentage(amount, 1.95)
-        mainDepositFee.value = finalAmount.value
-        depositData.fee = mainDepositFee.value + habeepDepositFee.value
-    }
-
-    if (country === 'SA') {
-        if (amount < 10) {
-            finalAmount.value = calculatePercentage(amount, 2.9)
-        } else {
-            finalAmount.value = calculatePercentage(amount, 2.9) + 1
-        }
-        mainDepositFee.value = finalAmount.value
-        depositData.fee = mainDepositFee.value + habeepDepositFee.value
-    }
-
-    if (country === 'KE') {
-        finalAmount.value = calculatePercentage(amount, 2.9)
-        mainDepositFee.value = finalAmount.value
-        depositData.fee = mainDepositFee.value + habeepDepositFee.value
-    }
-
-    finalAmount.value = calculatePercentage(amount, 3.9) + 100
-    mainDepositFee.value = finalAmount.value
-    depositData.fee = mainDepositFee.value + habeepDepositFee.value
-
 
 }
 
@@ -312,13 +320,49 @@ const processPayment = async (response) => {
 
 }
 
+async function getReferences() {
+    try {
+        const fetch = await axios.post('/wallet/reference-codes', { platform: 'mixed' })
+
+        if (fetch.data.data) {
+            references.value = fetch.data.data
+        }
+    } catch (error) {
+        return;
+    }
+}
+
+getReferences()
+
+
 
 function genRef() {
-    return uniqid("dep-pstk-");
+    let reference = uniqid("dep-pstk-")
+
+    let checkForReference = references.value.flutterwave.includes(reference)
+
+    while (checkForReference) {
+        reference = uniqid("dep-pstk-")
+        checkForReference = references.value.flutterwave.includes(reference)
+    }
+
+    return reference
 }
+
+
 function genFlwRef() {
-    return uniqid("dep-flw-");
+    let reference = uniqid("dep-flw-")
+
+    let checkForReference = references.value.flutterwave.includes(reference)
+
+    while (checkForReference) {
+        reference = uniqid("dep-flw-")
+        checkForReference = references.value.flutterwave.includes(reference)
+    }
+
+    return reference
 }
+
 
 onMounted(async () => {
     habeepDepositFee.value = await convert(50, 'NGN', store.state.user.currency)
