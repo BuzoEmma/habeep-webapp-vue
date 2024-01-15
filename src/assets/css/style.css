@@ -58,20 +58,51 @@ input[type=number] {
 }
 
 .grid-center {
-  display:grid;
+  display: grid;
   place-items: center;
 }
 
 .ubuntu {
   font-family: 'Ubuntu', sans-serif;
 }
+
 .bacasime {
   font-family: 'Bacasime Antique', serif;
 }
+
 .montserrat {
   font-family: 'Montserrat', sans-serif;
 }
 
 .no-scroll-btn::-webkit-scrollbar {
   display: none !important;
+}
+
+
+video::-webkit-media-controls-play-button {
+  display: block !important;
+}
+
+video::-webkit-media-controls-mute-button {
+  display: block !important;
+}
+
+video::-webkit-media-controls-pause-button {
+  display: block !important;
+}
+
+
+audio::-webkit-media-controls-time-remaining-display {
+  display: none !important;
+}
+
+audio::-webkit-media-controls-current-time-display {
+  display: none !important;
+}
+
+
+video::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+  -webkit-appearance: none;
+  opacity: 0 !important
 }

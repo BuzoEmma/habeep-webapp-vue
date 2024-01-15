@@ -1,13 +1,13 @@
 <template>
     <div
-        class="flex flex-col items-center justify-center md:border no-scroll-btn rounded-lg md:border-gray-200 w-full lg:w-2/3 h-screen md:h-full overflow-hidden">
+        class="flex flex-col items-center justify-center md:border no-scroll-btn relative rounded-lg md:border-gray-200 w-full lg:w-2/3 h-screen md:h-full overflow-hidden">
         <div class="flex flex-col gap-y-2 h-fit" v-if="!props.chat">
             <img src="../../../assets/illustrations/no-conversation.svg" alt="">
             <p class="text-lg text-webapp">No conversation yet</p>
         </div>
 
-        <div class="flex flex-col w-full h-full justify-between items-center overflow-hidden no-scroll-btn"
-            v-else-if="onMainPage && viewFullImage.length === 0">
+        <div class="flex flex-col w-full h-full justify-between items-center overflow-hidden no-scroll-btn" v-else
+            :class="{ 'hidden': viewFullImage.length > 0 || !onMainPage }">
             <div class="flex flex-row items-center justify-between w-full border-b h-fit border-b-gray-200 px-2 lg:px-5 py-1"
                 :class="{ 'relative': onPhone }">
                 <div class="rounded-full w-13 h-13 grid place-items-center">
@@ -37,30 +37,25 @@
                         props.chat.user.surname }}
                     </span>
 
-                    <div class="w-fit h-fit flex-row-center gap-x-1" v-if="otherUserOnline">
+                    <div class="w-fit h-fit flex-row-center gap-x-1" v-if="otherUserOnline && !userTyping">
                         <span v-motion :initial="{ scale: 0.5, opacity: 0.2 }" :delay="20"
                             :enter="{ scale: 1.2, opacity: 1, transition: { repeat: Infinity, delay: 50, type: 'spring', mass: 2 } }"
                             class="w-1 h-1 bg-green-400 rounded-full text-webapp"></span>
 
                         <p class="text-sm text-sub-webapp font-medium">Online</p>
                     </div>
-                    <div class="w-fit h-fit flex-row-center gap-x-1" v-else>
+                    <div class="w-fit h-fit flex-row-center gap-x-1" v-if="!otherUserOnline && !userTyping">
                         <span v-motion :initial="{ scale: 0.5, opacity: 0.2 }" :delay="20"
                             :enter="{ scale: 1.2, opacity: 1, transition: { repeat: Infinity, delay: 50, type: 'spring', mass: 2 } }"
                             class="w-1 h-1 bg-red-400 rounded-full text-webapp"></span>
 
                         <p class="text-sm text-sub-webapp font-medium">Offline</p>
                     </div>
+                    <p class="text-sm text-primary font-medium" v-if="userTyping">typing...</p>
+                    <p class="text-sm text-primary font-medium" v-if="userRecordingAudio">recording audio...</p>
 
                 </div>
-                <img src="../../../assets/icons/phone.svg" class="cursor-pointer" @click="togglePhone" alt="">
-
-                <a v-if="onPhone && screenWidth > 1023" v-motion-slide-top :delay="50"
-                    class="z-20 bg-white flex flex-row items-center absolute right-0 -bottom-10  rounded-xl border border-gray-200 gap-x-2 py-2 px-3 cursor-pointer"
-                    :href="'tel:' + props.chat.user.phoneNumber">
-                    <img src="../../../assets/icons/phone.svg" alt="">
-                    <span class="text-sm text-primary font-medium">{{ props.chat.user.phoneNumber }}</span>
-                </a>
+                <img src="../../../assets/icons/phone.svg" class="cursor-pointer" @click="toggleMobilePhone" alt="">
             </div>
 
             <!-- messages -->
@@ -119,7 +114,8 @@
 
                 </div>
 
-                <input type="text" v-model="inputMsg" @keydown="checkForEnter" enterkeyhint="send"
+                <input type="text" v-model="inputMsg" @keydown="checkForEnter" @focusin="emitTypingEvent('in')"
+                    @focusout="emitTypingEvent('out')" enterkeyhint="send"
                     class="message-input w-10/12 rounded-md h-11 border pl-3 border-gray-200 text-black"
                     :class="{ 'border-red-500 text-red-500 ': inputMsgErr }" placeholder="Type something..."
                     style="background: #F4F6FF;">
@@ -193,6 +189,54 @@
                 </svg>
             </div>
         </div>
+
+        <div v-if="onMobilePhone"
+            class="absolute top-0 left-0 w-full h-full flex justify-end flex-col pb-10 items-center z-20 gap-y-2 bg-neutral-700 opacity-95">
+
+            <div class="w-full flex-col-center h-fit" v-if="chat.user">
+
+                <div v-motion-slide-top :delay="50"
+                    class="flex flex-row items-center cursor-pointer justify-center bg-white  rounded-xl border border-gray-100 gap-x-2 py-5 w-11/12 "
+                    @click="dialPhone()" v-if="mainNavigator && mainNavigator.mediaDevices">
+                    <img src="../../../assets/icons/phone.svg" alt="">
+                    <span class="text-sm text-primary font-medium">Call {{ chat.user.fname }}</span>
+                </div>
+
+                <a v-else v-motion-slide-top :delay="50"
+                    class="flex flex-row items-center cursor-pointer justify-center bg-white  rounded-xl border border-gray-100 gap-x-2 py-5 w-11/12"
+                    :href="'tel:' + chat.user.phoneNumber">
+                    <img src="../../../assets/icons/phone.svg" alt="">
+                    <span class="text-sm text-primary font-medium">Call {{ chat.user.fname }}</span>
+                </a>
+            </div>
+            <div v-motion-slide-top :delay="100"
+                class="flex flex-row items-center cursor-pointer justify-center bg-white  rounded-xl border border-gray-100 gap-x-2 py-5 w-11/12 "
+                @click="writeToClipboard('+' + chat.user.phoneNumber)" v-if="chat.user">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                    class="w-6 h-6 text-primary">
+                    <path fill-rule="evenodd"
+                        d="M17.663 3.118c.225.015.45.032.673.05C19.876 3.298 21 4.604 21 6.109v9.642a3 3 0 01-3 3V16.5c0-5.922-4.576-10.775-10.384-11.217.324-1.132 1.3-2.01 2.548-2.114.224-.019.448-.036.673-.051A3 3 0 0113.5 1.5H15a3 3 0 012.663 1.618zM12 4.5A1.5 1.5 0 0113.5 3H15a1.5 1.5 0 011.5 1.5H12z"
+                        clip-rule="evenodd" />
+                    <path
+                        d="M3 8.625c0-1.036.84-1.875 1.875-1.875h.375A3.75 3.75 0 019 10.5v1.875c0 1.036.84 1.875 1.875 1.875h1.875A3.75 3.75 0 0116.5 18v2.625c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 013 20.625v-12z" />
+                    <path
+                        d="M10.5 10.5a5.23 5.23 0 00-1.279-3.434 9.768 9.768 0 016.963 6.963 5.23 5.23 0 00-3.434-1.279h-1.875a.375.375 0 01-.375-.375V10.5z" />
+                </svg>
+
+
+                <span class="text-sm text-primary font-medium">Copy "{{ '+' + chat.user.phoneNumber }}"</span>
+            </div>
+            <div @click="toggleMobilePhone" v-motion-slide-bottom :delay="150"
+                class="flex flex-row items-center cursor-pointer justify-center bg-white  rounded-xl border border-gray-100 gap-x-2 py-3 w-11/12 ">
+                <span class="text-xl text-black font-medium">Cancel</span>
+            </div>
+        </div>
+
+
+
+        <VoiceCall @endCall="endCall" @clean="cleanCallState" :shouldEndCall="shouldEndVoiceCall"
+            :userOnline="otherUserOnline" v-motion-slide-right :details="callDetails" class="absolute top-0 left-0  z-20"
+            v-if="onVoiceCall" />
     </div>
 </template>
   
@@ -207,6 +251,53 @@ import moment from 'moment'
 import ChatMedia from './modules/ChatMedia.vue'
 import axios from '../../../composables/axios';
 import { VoiceRecorder } from 'capacitor-voice-recorder';
+import VoiceCall from "./modules/VoiceCall.vue"
+
+// show phone modal
+const onMobilePhone = ref(false)
+const onVoiceCall = ref(false)
+
+function toggleMobilePhone() {
+    onMobilePhone.value = !onMobilePhone.value
+}
+function toggleVoiceCall() {
+    onVoiceCall.value = !onVoiceCall.value
+}
+
+const mainNavigator = navigator
+
+async function dialPhone() {
+    if (navigator.mediaDevices) {
+        toggleMobilePhone()
+        onPhone.value = false
+        shouldEndVoiceCall.value = false
+        socket.emit('call', { handle: chat.user.handle })
+
+
+        callDetails.event = 'calling'
+        callDetails.handle = chat.user.handle
+        callDetails.user = chat.user
+        toggleVoiceCall()
+    } else {
+        toggleMobilePhone()
+    }
+
+}
+
+function endCall() {
+    shouldEndVoiceCall.value = true
+    socket.emit('endCall')
+}
+
+function cleanCallState() {
+    onVoiceCall.value = false
+    shouldEndVoiceCall.value = false
+    callDetails = reactive({
+        event: '',
+        handle: '',
+        user: {}
+    })
+}
 
 
 const openAttachments = ref(false)
@@ -215,12 +306,12 @@ const openAttachments = ref(false)
 const route = useRoute()
 const router = useRouter()
 const store = useStore()
-const props = defineProps(['chat'])
-const emit = defineEmits(['showPhone', 'updateMsg', 'leaveChat'])
-const chat = props.chat
+const props = defineProps(['chat', 'connectedUsers'])
+const emit = defineEmits(['showPhone', 'updateMsg', 'leaveChat', 'updateOnlineUsers'])
+const chat = Object.create(props.chat)
 
 import { useHead } from '@vueuse/head'
-const title = ref(`Habeep | ${props.chat.user.fname} Chatroom`)
+const title = ref(`Habeep | ${props.chat.user.fname} Chat`)
 
 useHead({
     title: () => title.value
@@ -260,6 +351,7 @@ async function record() {
 
             if (requestPermission.value) {
                 const start = await VoiceRecorder.startRecording()
+                emitRecordingAudioEvent('on')
                 if (start.value === true) {
                     hasRecorded.value = true
                     recorderIntTimer.value = null
@@ -276,6 +368,7 @@ async function record() {
             if (error.message === 'ALREADY_RECORDING') {
                 await VoiceRecorder.stopRecording()
                 const start = await VoiceRecorder.startRecording()
+                emitRecordingAudioEvent('on')
                 if (start.value === true) {
                     hasRecorded.value = true
                     recorderIntTimer.value = null
@@ -310,6 +403,7 @@ async function pauseOrResumeRecording() {
     } else {
         await VoiceRecorder.startRecording()
         recorderIntTimer.value = null
+        emitRecordingAudioEvent('on')
         recorderIntTimer.value = setInterval(() => {
             if (Number(recordingTime.value.toString().substring(2, 4)) === 58) {
                 recordingTime.value = Number((recordingTime.value + 1).toString().substring(0, 1) + '.00')
@@ -322,6 +416,7 @@ async function pauseOrResumeRecording() {
 
 async function stopAndSendRecording() {
     const stop = await VoiceRecorder.stopRecording()
+    emitRecordingAudioEvent('off')
     newAudio.value = stop.value
     const base64Sound = stop.value.recordDataBase64
     const mimeType = stop.value.mimeType
@@ -380,13 +475,13 @@ async function uploadVoiceNote(newAudioURL) {
 
         return saveAudio.data.data[0].link
     } catch (error) {
-        console.log(error)
         return error.message
     }
 }
 
 async function deleteRecording() {
     await VoiceRecorder.stopRecording();
+    emitRecordingAudioEvent('off')
     recordingTime.value = 0.00
     newAudio.value = null
 }
@@ -433,33 +528,134 @@ const socket = io("https://habeep.org", {
 
 
 socket.on("connect", () => {
-    if (props.chat) {
-        socket.emit('joinRoom', { roomId: props.chat.room._id, users: props.chat.room.users })
+    socket.emit('user_connected', store.state.user._id)
+    if (chat) {
+        socket.emit('joinRoom', { roomId: chat.room._id, users: chat.room.users })
     }
 });
 
-socket.on("online", (user) => {
-    otherUserOnline.value = true
-})
-socket.on("offline", (user) => {
-    otherUserOnline.value = false
+socket.on('updateConnectedUsers', (data) => {
+    emit('updateOnlineUsers', data)
+    let otherUserId = chat.room.users.filter(user => {
+        return user !== store.state.user._id
+    })
+    otherUserId = otherUserId[0]
+    if (data.includes(otherUserId)) {
+        otherUserOnline.value = true
+    } else {
+        otherUserOnline.value = false
+    }
 })
 
+
 socket.on("message", (msg) => {
-    chatsArray.value.forEach(chat => {
-        chat.read = true
-    })
-    otherUserOnline.value = true
-    if (datedChats.value[0].hasOwnProperty(msg.dateCreated)) {
-        datedChats.value[0][msg.dateCreated].push(msg)
-        datedChats.value[0][msg.dateCreated].forEach(chat => {
+    if (msg.userId !== store.state.user._id) {
+        chatsArray.value.forEach(chat => {
             chat.read = true
         })
-    } else {
-        datedChats.value[0][msg.dateCreated] = [msg]
+        props.chat.room.chats.forEach(chat => {
+            chat.read = true
+        })
+        chatsArray.value.forEach(chat => {
+            chat.read = true
+        })
+
+        otherUserOnline.value = true
+        if (datedChats.value[0].hasOwnProperty(msg.dateCreated)) {
+            datedChats.value[0][msg.dateCreated].push(msg)
+            if (msg.userId !== store.state.user._id) {
+                datedChats.value[0][msg.dateCreated].forEach(chat => {
+                    chat.read = true
+                })
+            }
+        } else {
+            datedChats.value[0][msg.dateCreated] = [msg]
+        }
+        chatsArray.value.push(msg)
+        scrollToView()
     }
-    chatsArray.value.push(msg)
-    scrollToView()
+})
+
+
+// typing events
+const userTyping = ref(false)
+const userRecordingAudio = ref(false)
+function emitTypingEvent(state) {
+    if (state === 'in') {
+        socket.emit('typing')
+    } else {
+        socket.emit('not-typing')
+    }
+}
+function emitRecordingAudioEvent(state) {
+    if (state === 'on') {
+        socket.emit('recordingAudio')
+    } else {
+        socket.emit('notRecordingAudio')
+    }
+}
+
+let callDetails = reactive({
+    event: '',
+    handle: '',
+    user: {}
+})
+
+socket.on('typing', () => {
+    userTyping.value = true
+})
+socket.on('not-typing', () => {
+    userTyping.value = false
+})
+socket.on('recordingAudio', () => {
+    userRecordingAudio.value = true
+})
+socket.on('notRecordingAudio', () => {
+    userRecordingAudio.value = false
+})
+
+const shouldEndVoiceCall = ref(false)
+
+socket.on('userCalling', (data) => {
+    otherUserOnline.value = true
+    if (!onVoiceCall.value) {
+        shouldEndVoiceCall.value = false
+        callDetails.event = 'receiving'
+        callDetails.handle = data.caller
+        callDetails.user = chat.user
+        toggleVoiceCall()
+    }
+})
+
+socket.on('endCall', () => {
+    shouldEndVoiceCall.value = true
+})
+
+
+socket.on('savedMsg', payload => {
+    try {
+        if (payload.senderId === store.state.user._id) {
+            const filterChat = chatsArray.value.filter(chat => {
+                return chat.tempId === payload.tempId
+            })
+            if (filterChat.length > 0) {
+                if (props.chat.room.chats[props.chat.room.chats.indexOf(filterChat[0])]) {
+                    props.chat.room.chats[props.chat.room.chats.indexOf(filterChat[0])]._id = payload.newId
+                }
+                if (chatsArray.value[chatsArray.value.indexOf(filterChat[0])]) {
+                    chatsArray.value[chatsArray.value.indexOf(filterChat[0])]._id = payload.newId
+                }
+
+                if (filterChat[0].dateCreated) {
+                    if (datedChats.value[0].hasOwnProperty(filterChat[0].dateCreated)) {
+                        datedChats.value[0][filterChat[0].dateCreated][datedChats.value[0][filterChat[0].dateCreated].indexOf(filterChat[0])]._id = payload.newId
+                    }
+                }
+            }
+        }
+    } catch (error) {
+        return false
+    }
 })
 
 socket.on('deleteMsg', (id) => {
@@ -468,10 +664,10 @@ socket.on('deleteMsg', (id) => {
             return chat._id === id
         })
         if (filterChat.length > 0) {
-            if (props.chat.room.chats[props.chat.room.chats.indexOf(filterChat[0])] > -1) {
+            if (props.chat.room.chats[props.chat.room.chats.indexOf(filterChat[0])]) {
                 props.chat.room.chats[props.chat.room.chats.indexOf(filterChat[0])]['deleted'] = true
             }
-            if (chatsArray.value[chatsArray.value.indexOf(filterChat[0])] > -1) {
+            if (chatsArray.value[chatsArray.value.indexOf(filterChat[0])]) {
                 chatsArray.value[chatsArray.value.indexOf(filterChat[0])]['deleted'] = true
             }
 
@@ -482,10 +678,9 @@ socket.on('deleteMsg', (id) => {
             }
         }
     } catch (error) {
-        console.log(error)
+        return false
     }
 })
-
 
 
 const otherUserOnline = ref(false)
@@ -517,7 +712,6 @@ function sendMessage(options) {
         inputMsgErr.value = true
         return false
     }
-    console.log(options)
     if ((options.media && options.media.length > 0) || inputMsg.value === null || inputMsg.value.length > 0) {
         inputMsgErr.value = false
 
@@ -542,18 +736,12 @@ function sendMessage(options) {
         }
 
         inputMsg.value = ''
+        socket.emit('not-typing')
         socket.emit("chatMessage", { roomId: chat.room._id, message: newMessage })
     }
 
 }
 
-function togglePhone() {
-    onPhone.value = !onPhone.value
-
-    if (screenWidth.value < 1024) {
-        emit('showPhone')
-    }
-}
 
 const checkForEnter = (e) => {
     var key = e.keyCode
@@ -696,10 +884,6 @@ if (route.query.template) {
     router.replace({ query: null });
 }
 
-
-// onMounted(async () => {
-//     console.log(await VoiceRecorder.canDeviceVoiceRecord())
-// })
 </script>
   
 <style scoped>
