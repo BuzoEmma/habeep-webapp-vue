@@ -26,15 +26,16 @@
 
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8">
                     <label for="" class="text-sm text-webapp">Email address</label>
-                    <input type="email" @focusout="validateFormField('email', data.email)" @input="checkEmail"
+                    <input type="email" @focusout="validateFormField('email', data.email)" @input="checkForField('email')"
                         v-model="data.email" :class="{ 'invalidField': errorMsg.field === 'email' }"
                         placeholder="Enter Email address" class="w-full h-14 rounded-lg">
                 </div>
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8">
                     <label for="" class="text-sm text-webapp">Enter your secure pin</label>
-                    <input type="password" @input="validateFormField('pin', data.pin.toString())" v-model="data.pin"
-                        maxlength="4" :class="{ 'invalidField': errorMsg.field === 'pin' }"
-                        placeholder="Enter your 4 digit pin" class="w-full h-14 rounded-lg">
+                    <input type="password" @focusout="validateFormField('pin', data.pin.toString())"
+                        @input="checkForField('pin')" v-model="data.pin" maxlength="4"
+                        :class="{ 'invalidField': errorMsg.field === 'pin' }" placeholder="Enter your 4 digit pin"
+                        class="w-full h-14 rounded-lg">
                 </div>
 
                 <p class="w-full text-primary flex flex-row justify-end underline cursor-pointer my-10 text-sm"
@@ -127,13 +128,23 @@ function validateFormField(field, data) {
 }
 
 
-async function checkEmail() {
+async function checkForField(field) {
     if (errorMsg.value.field !== null) {
-        const validator = formValidator('email', data.email)
-        if (validator.success) {
-            onError.value = false
-            errorMsg.value.msg = ''
-            errorMsg.value.field = null
+        if (field === 'email') {
+            const validator = formValidator('email', data.email)
+            if (validator.success) {
+                onError.value = false
+                errorMsg.value.msg = ''
+                errorMsg.value.field = null
+            }
+        }
+        if (field === 'pin') {
+            const validator = formValidator('pin', data.pin.toString())
+            if (validator.success) {
+                onError.value = false
+                errorMsg.value.msg = ''
+                errorMsg.value.field = null
+            }
         }
     }
 }
