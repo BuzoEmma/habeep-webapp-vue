@@ -180,10 +180,22 @@ async function getStates() {
         cc: store.state.user.countryShortName
       }
     } else {
-      const getCountry = await axiosDefault.get('https://jsonip.com')
-      country.value.country = clm.getCountryNameByAlpha2(getCountry.data.country)
-      country.value.cc = getCountry.data.country
-      country.value.currency = clm.getCountryByAlpha2(getCountry.data.country)
+      try {
+        const getCountry = await axiosDefault.get('https://jsonip.com')
+        if (getCountry.data.country) {
+          country.value.country = clm.getCountryNameByAlpha2(getCountry.data.country)
+          country.value.cc = getCountry.data.country
+          country.value.currency = clm.getCountryByAlpha2(getCountry.data.country)
+        }
+      } catch (error) {
+        console.log('Location not found! Falling back to default;')
+      }
+    }
+
+    if (country.value.country.length === 0) {
+      country.value.country = clm.getCountryNameByAlpha2('NG')
+      country.value.cc = 'NG'
+      country.value.currency = clm.getCountryByAlpha2('NG')
     }
 
     const getState = await axios.get('/countries-api/states/' + country.value.cc)

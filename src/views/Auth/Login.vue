@@ -26,9 +26,9 @@
 
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8">
                     <label for="" class="text-sm text-webapp">Email address</label>
-                    <input type="email" @input="validateFormField('email', data.email)" v-model="data.email"
-                        :class="{ 'invalidField': errorMsg.field === 'email' }" placeholder="Enter Email address"
-                        class="w-full h-14 rounded-lg">
+                    <input type="email" @focusout="validateFormField('email', data.email)" @input="checkEmail"
+                        v-model="data.email" :class="{ 'invalidField': errorMsg.field === 'email' }"
+                        placeholder="Enter Email address" class="w-full h-14 rounded-lg">
                 </div>
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8">
                     <label for="" class="text-sm text-webapp">Enter your secure pin</label>
@@ -123,6 +123,18 @@ function validateFormField(field, data) {
         onError.value = false
         errorMsg.value.msg = ''
         errorMsg.value.field = null
+    }
+}
+
+
+async function checkEmail() {
+    if (errorMsg.value.field !== null) {
+        const validator = formValidator('email', data.email)
+        if (validator.success) {
+            onError.value = false
+            errorMsg.value.msg = ''
+            errorMsg.value.field = null
+        }
     }
 }
 

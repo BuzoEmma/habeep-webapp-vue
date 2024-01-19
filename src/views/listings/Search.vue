@@ -184,10 +184,12 @@
                                 @load="product.imageLoaded = true" :class="{ 'hidden': !product.imageLoaded }"
                                 :src="product.images[0].link" class="w-full h-full feed-image rounded-t-md"
                                 v-if="product.images[0].link.includes('mp4') == false" alt="">
-                            <video :alt="product.title" :poster="product.images[0].thumbnail"
+                            <video fetchpriority="high" @touchstart="playVideo" @touchend="pauseVideo"
+                                @mouseenter="playVideo" @mouseout="pauseVideo" :alt="product.title"
+                                :poster="product.images[0].thumbnail"
                                 @click="$router.push('/listings/products/' + product._id)"
                                 @loadedmetadata="product.imageLoaded = true" :class="{ 'hidden': !product.imageLoaded }"
-                                :src="product.images[0].link" class="w-full rounded-t-md feed-image" v-else autoplay muted
+                                :src="product.images[0].link" class="w-full rounded-t-md feed-image" v-else muted
                                 preload="auto"></video>
                             <p class="text-webapp text-lg font-medium w-full px-2 cursor-pointer feed-image"
                                 @click="$router.push('/listings/products/' + product._id)">
@@ -398,12 +400,7 @@ async function getSearch(location, query) {
             country.value.cc = getCountry.data.country
             country.value.currency = clm.getCountryByAlpha2(getCountry.data.country)
         }
-        for (const product of products.value) {
-            const distance = await calculateDistance(product.location.city || product.location.address + ', ' + country.country)
-            if (distance) {
-                product.distance = distance
-            }
-        }
+
 
         const uniqueIds = [];
         const uniqueProducts = products.value.filter(element => {
@@ -420,6 +417,19 @@ async function getSearch(location, query) {
 
         searchingData.value = false
         useFilters(filterData)
+
+        for (const product of filteredProducts.value) {
+            const distance = await calculateDistance(product.location.city || product.location.address + ', ' + country.country)
+            if (distance) {
+                product.distance = distance
+            }
+        }
+        for (const product of products.value) {
+            const distance = await calculateDistance(product.location.city || product.location.address + ', ' + country.country)
+            if (distance) {
+                product.distance = distance
+            }
+        }
     } catch (error) {
         if (products.value.length > 0) {
             console.log('error getting location')
@@ -592,6 +602,20 @@ function useFilters(filters) {
 
         filteredProducts.value = uniqueProducts
         title.value = `Habeep | Results(${filteredProducts.value.length})`
+    }
+}
+
+
+// manage video
+
+async function playVideo(e) {
+    if (e.target) {
+        await e.target.play()
+    }
+}
+async function pauseVideo(e) {
+    if (e.target) {
+        await e.target.pause()
     }
 }
 </script>

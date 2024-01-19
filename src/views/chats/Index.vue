@@ -1,22 +1,24 @@
 <template>
     <div class="absolute w-screen h-screen top-0 opacity-50" v-if="onPhone && screenWidth < 1024"
         style="background: #161622"></div>
-    <div class="w-screen max-w-full flex flex-col items-center bg-white h-screen max-h-full overflow-x-hidden">
+    <div class="w-screen max-w-full flex flex-col items-center bg-white h-screen max-h-full overflow-x-hidden ">
         <!-- Header / Navbar -->
         <HomeNavbar v-if="screenWidth > 768" />
         <HomeNavbar v-if="screenWidth < 768 && !selectedChat" />
 
-        <div class="main flex flex-row h-full items-center justify-center lg:mt-10 gap-x-5 w-full 2xl:px-44 md:px-20"
+        <div class="main flex flex-row h-full items-center justify-center lg:mt-10 gap-x-5 w-full 2xl:px-44 md:px-20 py-5"
             :class="{ 'justify-between': processing === false && allRooms.length > 0 }">
             <Preloader v-if="allRooms.length < 1 && processing === true" />
 
             <ChatBar @selectChat="enterChatBox" :class="{ 'hidden': selectedChat && screenWidth < 1023 }" :rooms="allRooms"
-                v-if="!processing && allRooms.length > 0" />
+                v-if="!processing && allRooms.length > 0" :connectedUsers="allConnectedUsers" />
 
 
             <NoChat v-if="!processing && !selectedChat"
                 :class="{ 'hidden': allRooms.length > 0 && screenWidth < 1023 || selectedChat }" />
-            <Chat @showPhone="togglePhone" v-if="!processing && selectedChat" @leaveChat="leaveChat" :chat="selectedChat"
+
+            <Chat @updateOnlineUsers="updateUsers" @showPhone="togglePhone" v-if="!processing && selectedChat"
+                @leaveChat="leaveChat" :connectedUsers="allConnectedUsers" :chat="selectedChat"
                 :class="{ 'hidden': !selectedChat && screenWidth < 1023 }" />
         </div>
 
@@ -63,6 +65,11 @@ function togglePhone() {
 }
 
 const selectedChat = ref(null)
+
+const allConnectedUsers = ref([])
+function updateUsers(data) {
+    allConnectedUsers.value = data
+}
 
 const enterChatBox = (data) => {
     if (selectedChat.value !== null) {

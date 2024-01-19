@@ -270,7 +270,7 @@
 
 
             <!-- feeds sections -->
-            <div class="flex flex-row flex-auto h-full md:mt-10 w-full flex-wrap px-4"
+            <div class="flex flex-row flex-auto h-full md:mt-10 w-full flex-wrap px-4" id="observer-root"
                 :class="{ 'justify-center items-center': filteredFeeds.length < 1 }">
 
                 <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" class="m-auto" v-if="fetchingFeeds === true" size="200px"
@@ -290,9 +290,11 @@
                             @click="$router.push('/listings/products/' + feed._id)" alt=""
                             :class="{ 'hidden': !feed.imageLoaded }" class="w-full feed-image rounded-t-md"
                             v-if="feed.images[0].link && feed.images[0].link.includes('mp4') == false">
-                        <video fetchpriority="high" :src="feed.images[0].link" @loadedmetadata="feed.imageLoaded = true"
-                            :class="{ 'hidden': !feed.imageLoaded }" @click="$router.push('/listings/products/' + feed._id)"
-                            class="w-full rounded-t-md feed-image" v-else autoplay muted loop preload="metadata"></video>
+                        <video @touchstart="playVideo" @touchend="pauseVideo" @mouseenter="playVideo" @mouseout="pauseVideo"
+                            playsinline fetchpriority="high" :src="feed.images[0].link"
+                            @loadedmetadata="feed.imageLoaded = true" :class="{ 'hidden': !feed.imageLoaded }"
+                            @click="$router.push('/listings/products/' + feed._id)"
+                            class="w-full rounded-t-md feed-image feed-video" v-else muted loop preload="metadata"></video>
                         <p class="text-webapp text-lg font-medium w-full px-2 cursor-pointer"
                             @click="$router.push('/listings/products/' + feed._id)">{{ feed.title }}</p>
 
@@ -429,6 +431,7 @@ async function getFeeds() {
         const getFeeds = await axios.get(url)
 
         if (getFeeds.data) {
+            // let hasVideo = false
             for (const feed of getFeeds.data.feed) {
                 if (feed) {
                     const distance = await calculateDistance(feed.location.city || feed.location.address + ', ' + store.state.user.nationality)
@@ -437,11 +440,34 @@ async function getFeeds() {
                     }
                 }
                 feeds.value.push(feed)
-                useFilters(filterData)
+
+                // if (feed.images[0].link.includes('.mp4')) {
+                //     hasVideo = true
+                // }
+
+                filteredFeeds.value.push(feed)
+                const uniqueIds = [];
+                const uniqueFeeds = filteredFeeds.value.filter(element => {
+                    const isDuplicate = uniqueIds.includes(element._id);
+                    if (!isDuplicate) {
+                        uniqueIds.push(element._id);
+                        return true;
+                    }
+                    return false;
+                });
+
+                filteredFeeds.value = uniqueFeeds
+
                 if (filteredFeeds.value.length > 0) {
                     fetchingFeeds.value = false
                 }
+
             }
+
+            useFilters(filterData)
+
+
+
 
             fetchingFeeds.value = false
 
@@ -451,12 +477,13 @@ async function getFeeds() {
             } else {
                 title.value = `Habeep | Feeds(${feeds.value.length})`
             }
+
+
         }
 
         started.value = false
 
     } catch (error) {
-        console.log(error)
         errorMsg.value = 'Error getting feeds'
     }
 }
@@ -574,7 +601,7 @@ async function getStates() {
             return 0;
         });
     } catch (error) {
-        console.log(error)
+        return error
     }
 }
 
@@ -645,6 +672,19 @@ function useFilters(filters) {
             title.value = `Habeep | Feeds(${filteredFeeds.value.length})`
         }
 
+    }
+}
+
+// manage video
+
+async function playVideo(e) {
+    if (e.target) {
+        await e.target.play()
+    }
+}
+async function pauseVideo(e) {
+    if (e.target) {
+        await e.target.pause()
     }
 }
 
