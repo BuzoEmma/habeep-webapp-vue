@@ -38,6 +38,7 @@
                         class="w-full h-14 rounded-lg">
                 </div>
 
+
                 <p class="w-full text-primary flex flex-row justify-end underline cursor-pointer my-10 text-sm"
                     @click="$router.push('/forgot-pin')">Forgot Pin?</p>
 
