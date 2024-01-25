@@ -1,5 +1,4 @@
 <template>
-
     <div class="w-screen min-w-full flex flex-row items-center bg-white h-screen min-h-full overflow-hidden">
         <img src="../../assets/images/habeep-show.png" class="w-1/3 xl:block hidden h-full" alt="">
 
@@ -31,16 +30,16 @@
 
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8">
                     <label for="" class="text-sm text-webapp">Email address</label>
-                    <input type="email" v-model="data.email" @input="validateFormField('email', data.email)"
-                        placeholder="Enter your email address" :class="{ 'invalidField': errorMsg.field === 'email' }"
-                        class="w-full h-14 rounded-lg">
+                    <input type="email" v-model="data.email" @focusout="validateFormField('email', data.email)"
+                        @input="checkForField('email')" placeholder="Enter your email address"
+                        :class="{ 'invalidField': errorMsg.field === 'email' }" class="w-full h-14 rounded-lg">
                 </div>
                 <!-- submit btn -->
                 <button class="bg-primary w-full rounded-lg grid place-items-center h-14 text-white mt-5"
                     @click="$router.push('/verify-otp?email=' + data.email + '&reason=reset_pin')">
                     <span v-if="!processing">Send OTP code</span>
                     <Preloader v-else />
-                </button>   
+                </button>
 
             </div>
 
@@ -89,6 +88,26 @@ function validateFormField(field, data) {
     }
 }
 
+async function checkForField(field) {
+    if (errorMsg.value.field !== null) {
+        if (field === 'email') {
+            const validator = formValidator('email', data.email)
+            if (validator.success) {
+                onError.value = false
+                errorMsg.value.msg = ''
+                errorMsg.value.field = null
+            }
+        }
+        if (field === 'pin') {
+            const validator = formValidator('pin', data.pin.toString())
+            if (validator.success) {
+                onError.value = false
+                errorMsg.value.msg = ''
+                errorMsg.value.field = null
+            }
+        }
+    }
+}
 </script>
 
 <style scoped>
