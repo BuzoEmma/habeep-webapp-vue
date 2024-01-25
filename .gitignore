@@ -6,4 +6,5 @@ yarn-error.log
 .vscode
 .env.production
 .env.staging
+.env.development
 .env
