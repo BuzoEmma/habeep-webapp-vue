@@ -48,7 +48,7 @@
         </component>
     </div>
     <div class="h-screen w-screen div-center-col" v-else>
-        <img src="../../../../assets/icons/loaders/rhombus-preloader.gif" alt="">
+        <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" size="200px" color="#0A1045"></loader>
     </div>
 </template>
   

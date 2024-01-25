@@ -49,7 +49,8 @@
                                     <td class="capitalize">Wallet {{ txn.txnType }}</td>
                                     <td class="">{{ txn.reference }}</td>
                                     <td class="font amount">
-                                        <PriceFormatter :from="$store.state.user.currency" :to="$store.state.user.currency" :amount="txn.amount" />
+                                        <PriceFormatter :from="$store.state.user.currency" :to="$store.state.user.currency"
+                                            :amount="txn.amount" />
                                     </td>
                                     <td>
                                         <div class="w-32 py-2 rounded-md text-center"
@@ -108,7 +109,7 @@
         </div>
     </div>
     <div class="flex flex-col items-center justify-center w-full mt-24" v-else>
-        <img src="../../../assets/images/rhombus-preloader.gif" alt="">
+        <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" size="200px" color="#0A1045"></loader>
     </div>
 </template>
 

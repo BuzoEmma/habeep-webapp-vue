@@ -102,6 +102,9 @@ const props = defineProps(['amount'])
 const store = useStore()
 const router = useRouter()
 
+const paystackBalance = ref(0)
+
+const references = ref([])
 
 const withdrawalDetails = reactive({
     amount: props.amount,
@@ -181,8 +184,36 @@ async function verifyAccountDetails() {
 
 let paystackReference = ref(genRef())
 
+async function getPaystackBalance() {
+    try {
+        const fetchBalance = await axiosDefault.get('https://api.paystack.co/balance')
+        paystackBalance.value = await converter.convert(fetchBalance.data.data[0].balance / 100, fetchBalance.data.data[0].currency, store.state.user.currency)
+    } catch (error) {
+        paystackBalance.value = 0
+    }
+}
+
+getPaystackBalance()
+
 async function withdrawMoney() {
     try {
+        if (paystackBalance.value === 0) {
+            onError.value = true
+            errorMsg.value = 'Withdrawal is currently disabled!'
+            setTimeout(() => {
+                onError.value = false
+            }, 3000);
+            return;
+        } else if (paystackBalance.value > 0 && parseFloat(withdrawalDetails.amount.replaceAll(',', '')) > paystackBalance.value) {
+            onError.value = true
+            errorMsg.value = `Withdrawals more than ${formatNumber(store.state.user.currency, Math.floor(paystackBalance.value))} currently disabled!`
+            setTimeout(() => {
+                onError.value = false
+            }, 3000);
+
+            return;
+        }
+
         processingWithdrawal.value = true
 
         const recipientParams = reactive({
@@ -273,10 +304,33 @@ const processWithdrawal = async (response) => {
 }
 
 
-function genRef() {
-    return uniqid("wdl-pstk-");
+async function getReferences() {
+    try {
+        const fetch = await axios.post('/wallet/reference-codes', { platform: 'paystack', action: 'get' })
+
+        if (fetch.data.data) {
+            references.value = fetch.data.data
+        }
+    } catch (error) {
+        return;
+    }
 }
 
+getReferences()
+
+
+function genRef() {
+    let reference = uniqid("wdl-pstk-")
+
+    let checkForReference = references.value.includes(reference)
+
+    while (checkForReference) {
+        reference = uniqid("wdl-pstk-")
+        checkForReference = references.value.includes(reference)
+    }
+
+    return reference
+}
 
 
 </script>

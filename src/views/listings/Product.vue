@@ -4,8 +4,8 @@
         @resize="changeWidth">
         <MainNavbar v-if="(screenWidth > 767)" />
 
-        <img src="../../assets/images/rhombus-preloader.gif" class="m-auto" v-if="!processingProduct || !product.price"
-            alt="">
+        <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" v-if="!processingProduct || !product.price" class="m-auto"
+            size="200px" color="#0A1045"></loader>
         <div v-else
             class="body px-0 2xl:px-44 xl:px-20 mb-16 w-full flex flex-col h-fit items-center pb-10 md:items-start gap-y-8 mt-0">
 

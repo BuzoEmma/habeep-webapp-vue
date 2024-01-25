@@ -38,7 +38,7 @@
             </div>
 
             <!-- user basic info -->
-            <div class="w-full lg:w-2/6 2xl:w-1/4 lg:ml-3 h-fit flex flex-col items-center gap-y-8 left">
+            <div class="w-full lg:w-2/6 max-w-fit lg:ml-3 h-fit flex flex-col items-center gap-y-8 left">
                 <div class="user-info flex p-4 bg-white flex-col border items-start border-gray-200 rounded w-full h-full">
                     <div class="flex flex-row gap-x-3 items-start">
                         <div class="rounded-full w-24 h-24 grid place-items-center border">
@@ -137,7 +137,7 @@
 
             <!-- ads tab  -->
 
-            <div class="flex flex-col min-h-full items-start w-full h-full lg:w-4/5">
+            <div class="flex flex-col min-h-full items-start w-full h-full">
                 <div class="flex flex-row gap-x-3 border-b border-b-gray-200 w-full">
                     <div class="cursor-pointer flex flex-row items-center justify-center w-24  pb-1"
                         v-if="$store.state.user.role === 'AGENT'" @click="changeTab(1)"
@@ -165,7 +165,8 @@
                         <div class="basis-full md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0"
                             v-for="ad in agentDetails.ads" :key="ad">
                             <div class="flex flex-col items-start gap-y-2  border rounded-md border-gray-200 pb-2 ad feed">
-                                <Skeleton v-if="!ad.imageLoaded" class=" w-full h-full rounded-t-md feed-image" style="width: 100%" />
+                                <Skeleton v-if="!ad.imageLoaded" class=" w-full h-full rounded-t-md feed-image"
+                                    style="width: 100%" />
                                 <img @click="$router.push('/listings/products/' + ad._id)"
                                     :class="{ 'hidden': !ad.imageLoaded }" :src="ad.images[0].link"
                                     @load="ad.imageLoaded = true" class="w-full rounded-t-md feed-image"
@@ -189,7 +190,8 @@
 
                                 <div class="flex flex-row items-center w-full justify-between px-3">
                                     <p class="text-sm text-webapp font-medium">
-                                        <PriceFormatter :from="ad.priceCurrency" :to="$store.state.user.currency" :amount="ad.price" /> /
+                                        <PriceFormatter :from="ad.priceCurrency" :to="$store.state.user.currency"
+                                            :amount="ad.price" /> /
                                         <span v-if="ad.for === 'rent'">Rent</span>
                                         <span v-if="ad.for === 'sale'">Sale</span>
                                     </p>
@@ -227,7 +229,8 @@
                             :key="ad">
                             <div
                                 class="flex flex-col items-start gap-y-2 relative ad feed w-full border rounded-md border-gray-200 pb-2">
-                                <Skeleton v-if="!ad.imageLoaded" class=" w-full h-full rounded-t-md feed-image" style="width: 100%" />
+                                <Skeleton v-if="!ad.imageLoaded" class=" w-full h-full rounded-t-md feed-image"
+                                    style="width: 100%" />
                                 <img @click="$router.push('/listings/products/' + ad._id)"
                                     :class="{ 'hidden': !ad.imageLoaded }" :src="ad.images[0].link"
                                     @load="ad.imageLoaded = true" class="w-full rounded-t-md feed-image"
@@ -250,7 +253,8 @@
 
                                 <div class="flex flex-row items-center w-full justify-between px-3">
                                     <p class="text-sm text-webapp font-medium">
-                                        <PriceFormatter :from="ad.priceCurrency" :to="$store.state.user.currency" :amount="ad.price" /> /
+                                        <PriceFormatter :from="ad.priceCurrency" :to="$store.state.user.currency"
+                                            :amount="ad.price" /> /
                                         <span v-if="ad.for === 'rent'">Rent</span>
                                         <span v-if="ad.for === 'sale'">Sale</span>
                                     </p>
@@ -358,7 +362,7 @@ async function getAgent() {
     agentDetails.value = getAgent.data.agent
 
     agentDetails.value.ads.forEach(async product => {
-        const distance = await calculateDistance(product.location.city || product.location.address + ', Nigeria')
+        const distance = await calculateDistance(product.location.city || product.location.address + ', ' + store.state.user.nationality)
         product.distance = distance
     })
 }
@@ -380,7 +384,7 @@ async function getSavedAds() {
                         savedAds.value.push(getAd.data.product)
 
                         savedAds.value.forEach(async product => {
-                            const distance = await calculateDistance(product.location.city || product.location.address + ', Nigeria')
+                            const distance = await calculateDistance(product.location.city || product.location.address + ', ' + store.state.user.nationality)
                             product.distance = distance
                         })
                     }

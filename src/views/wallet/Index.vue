@@ -13,7 +13,7 @@
             @gotoWithdrawal="openWithdrawalModal" />
 
         <DepositHBP v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }"
-            :wallet="tokenWallet" v-if="depositHBPModal" @close="closeModal" @gotoDeposit="openNewModal('depositModal')"/>
+            :wallet="tokenWallet" v-if="depositHBPModal" @close="closeModal" @gotoDeposit="openNewModal('depositModal')" />
         <SwapHBP v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }"
             :wallet="tokenWallet" v-if="swapHBPModal" @close="closeModal" />
         <TransferHBP v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }"
@@ -60,13 +60,14 @@ import MainNavbar from '../../components/MainNavbar.vue';
 import { useHead } from '@vueuse/head'
 
 useHead({
-  meta: [
-    { charset: 'utf-8' },
-    { name: 'og:image', content: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
-  ],
-  link: [
-    { rel: 'icon', href: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
-  ]
+    meta: [
+        { charset: 'utf-8' },
+        { name: 'og:image', content: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
+    ],
+    link: [
+        { rel: 'icon', href: 'https://i.ibb.co/j8817QB/habeep-logo-light.png', media: '(prefers-color-scheme: light)' },
+        { rel: 'icon', href: 'https://i.ibb.co/NCdCb4r/habeep-logo-dark.png', media: '(prefers-color-scheme: dark)' },
+    ]
 })
 
 // currency components

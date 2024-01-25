@@ -40,7 +40,7 @@ function guardMyrouteForUSERIBO(to, from, next) {
         if (!createStore.state.user.verified) {
             next({ name: 'OTP', query: { reason: 'user_verification', email: createStore.state.user.email } }) // go to '/verify'; // go to '/verify';
         } else {
-            if (createStore.state.user.role !== "TENANT") {
+            if (createStore.state.user.role !== "TENANT" || !createStore.state.user.isTenant) {
                 next()
             } else next({ name: 'IBO_Category_Agent' })
         } // allow to enter route
@@ -153,7 +153,7 @@ const routes = [
         meta: {
             title: "Edit your listing"
         }
-      },
+    },
     // profile
     {
         path: '/:username',

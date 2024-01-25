@@ -79,8 +79,9 @@
       <img src="../assets/illustrations/home-right.svg" v-lazy class="xl:flex hidden" alt="">
     </div>
 
-    <MobileSearch @updateKeys="randomiseLocationsSugg" :locationKeys="locationKeys" :location="locations" v-if="onSearch" @leaveSearch="onSearch = false" :delay="100" v-motion
-      :initial="{ opacity: 0.5, y: 100 }" :enter="{ opacity: 1, y: 0 }" />
+    <MobileSearch @updateKeys="randomiseLocationsSugg" :locationKeys="locationKeys" :location="locations" v-if="onSearch"
+      @leaveSearch="onSearch = false" :delay="100" v-motion :initial="{ opacity: 0.5, y: 100 }"
+      :enter="{ opacity: 1, y: 0 }" />
 
   </div>
 </template>
@@ -110,7 +111,8 @@ useHead({
     { name: 'viewport', content: 'width=device-width, initial-scale=1' }
   ],
   link: [
-    { rel: 'icon', href: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
+    { rel: 'icon', href: 'https://i.ibb.co/j8817QB/habeep-logo-light.png', media: '(prefers-color-scheme: light)' },
+    { rel: 'icon', href: 'https://i.ibb.co/NCdCb4r/habeep-logo-dark.png', media: '(prefers-color-scheme: dark)' },
   ]
 })
 
@@ -178,10 +180,22 @@ async function getStates() {
         cc: store.state.user.countryShortName
       }
     } else {
-      const getCountry = await axiosDefault.get('https://jsonip.com')
-      country.value.country = clm.getCountryNameByAlpha2(getCountry.data.country)
-      country.value.cc = getCountry.data.country
-      country.value.currency = clm.getCountryByAlpha2(getCountry.data.country)
+      try {
+        const getCountry = await axiosDefault.get('https://jsonip.com')
+        if (getCountry.data.country) {
+          country.value.country = clm.getCountryNameByAlpha2(getCountry.data.country)
+          country.value.cc = getCountry.data.country
+          country.value.currency = clm.getCountryByAlpha2(getCountry.data.country)
+        }
+      } catch (error) {
+        console.log('Location not found! Falling back to default;')
+      }
+    }
+
+    if (country.value.country.length === 0) {
+      country.value.country = clm.getCountryNameByAlpha2('NG')
+      country.value.cc = 'NG'
+      country.value.currency = clm.getCountryByAlpha2('NG')
     }
 
     const getState = await axios.get('/countries-api/states/' + country.value.cc)

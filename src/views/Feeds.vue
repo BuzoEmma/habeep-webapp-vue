@@ -270,10 +270,11 @@
 
 
             <!-- feeds sections -->
-            <div class="flex flex-row flex-auto h-full md:mt-10 w-full flex-wrap px-4"
+            <div class="flex flex-row flex-auto h-full md:mt-10 w-full flex-wrap px-4" id="observer-root"
                 :class="{ 'justify-center items-center': filteredFeeds.length < 1 }">
 
-                <img src="../assets/images/rhombus-preloader.gif" class="m-auto" v-if="fetchingFeeds === true" alt="">
+                <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" class="m-auto" v-if="fetchingFeeds === true" size="200px"
+                    color="#0A1045"></loader>
 
                 <div class="flex flex-col items-center gap-y-3 md:justify-center"
                     v-if="filteredFeeds.length < 1 && !started && !fetchingFeeds">
@@ -283,15 +284,17 @@
                 <!-- listing template -->
                 <div class="basis-full md:basis-1/2 xl:basis-1/4 md:px-3 md:py-3 py-5 gap-y-4 px-0" v-else
                     v-for="feed in filteredFeeds" :key="feed">
-                    <div class="flex flex-col items-start gap-y-2 border rounded-md border-gray-200 pb-2 feed">
+                    <div class="flex flex-col items-start gap-y-2 border rounded-md border-gray-200 pb-2 feed relative">
                         <Skeleton v-if="!feed.imageLoaded" class=" w-full h-44 rounded-t-md" style="width: 100%" />
                         <img fetchpriority="high" :src="feed.images[0].link" @load="feed.imageLoaded = true"
                             @click="$router.push('/listings/products/' + feed._id)" alt=""
                             :class="{ 'hidden': !feed.imageLoaded }" class="w-full feed-image rounded-t-md"
                             v-if="feed.images[0].link && feed.images[0].link.includes('mp4') == false">
-                        <video fetchpriority="high" :src="feed.images[0].link" @loadedmetadata="feed.imageLoaded = true"
-                            :class="{ 'hidden': !feed.imageLoaded }" @click="$router.push('/listings/products/' + feed._id)"
-                            class="w-full rounded-t-md feed-image" v-else autoplay muted loop preload="metadata"></video>
+                        <video @touchstart="playVideo" @touchend="pauseVideo" @mouseenter="playVideo" @mouseout="pauseVideo"
+                            playsinline fetchpriority="high" :src="feed.images[0].link"
+                            @loadedmetadata="feed.imageLoaded = true" :class="{ 'hidden': !feed.imageLoaded }"
+                            @click="$router.push('/listings/products/' + feed._id)"
+                            class="w-full rounded-t-md feed-image feed-video" v-else muted loop preload="metadata"></video>
                         <p class="text-webapp text-lg font-medium w-full px-2 cursor-pointer"
                             @click="$router.push('/listings/products/' + feed._id)">{{ feed.title }}</p>
 
@@ -363,7 +366,8 @@ useHead({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }
     ],
     link: [
-        { rel: 'icon', href: 'https://i.ibb.co/BnG8VLy/logo-white.png' }
+        { rel: 'icon', href: 'https://i.ibb.co/j8817QB/habeep-logo-light.png', media: '(prefers-color-scheme: light)' },
+        { rel: 'icon', href: 'https://i.ibb.co/NCdCb4r/habeep-logo-dark.png', media: '(prefers-color-scheme: dark)' },
     ]
 })
 
@@ -425,26 +429,59 @@ async function getFeeds() {
         fetchingFeeds.value = true
         started.value = true
         const getFeeds = await axios.get(url)
-        fetchingFeeds.value = false
 
         if (getFeeds.data) {
-            feeds.value = getFeeds.data.feed
+            // let hasVideo = false
+            for (const feed of getFeeds.data.feed) {
+                if (feed) {
+                    const distance = await calculateDistance(feed.location.city || feed.location.address + ', ' + store.state.user.nationality)
+                    if (distance) {
+                        feed.distance = distance
+                    }
+                }
+                feeds.value.push(feed)
+
+                // if (feed.images[0].link.includes('.mp4')) {
+                //     hasVideo = true
+                // }
+
+                filteredFeeds.value.push(feed)
+                const uniqueIds = [];
+                const uniqueFeeds = filteredFeeds.value.filter(element => {
+                    const isDuplicate = uniqueIds.includes(element._id);
+                    if (!isDuplicate) {
+                        uniqueIds.push(element._id);
+                        return true;
+                    }
+                    return false;
+                });
+
+                filteredFeeds.value = uniqueFeeds
+
+                if (filteredFeeds.value.length > 0) {
+                    fetchingFeeds.value = false
+                }
+
+            }
+
+            useFilters(filterData)
+
+
+
+
+            fetchingFeeds.value = false
+
+
             if (feeds.value.length === 0) {
                 title.value = `Habeep | No Feeds`
             } else {
                 title.value = `Habeep | Feeds(${feeds.value.length})`
             }
+
+
         }
 
-        feeds.value.forEach(async feed => {
-            const distance = await calculateDistance(feed.location.address + ', ' + feed.location.city || store.state.user.nationality)
-            if (distance) {
-                feed.distance = distance
-            }
-        })
-
         started.value = false
-        useFilters(filterData)
 
     } catch (error) {
         errorMsg.value = 'Error getting feeds'
@@ -564,7 +601,7 @@ async function getStates() {
             return 0;
         });
     } catch (error) {
-        console.log(error)
+        return error
     }
 }
 
@@ -635,6 +672,19 @@ function useFilters(filters) {
             title.value = `Habeep | Feeds(${filteredFeeds.value.length})`
         }
 
+    }
+}
+
+// manage video
+
+async function playVideo(e) {
+    if (e.target) {
+        await e.target.play()
+    }
+}
+async function pauseVideo(e) {
+    if (e.target) {
+        await e.target.pause()
     }
 }
 
