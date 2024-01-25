@@ -3,14 +3,10 @@ node_modules
 dist-ssr
 dist
 *.local
-<<<<<<< HEAD
-.env
-.env.production
-=======
 yarn.lock
 yarn-error.log
 .vscode
 .env.production
+.env.development
 .env.staging
 .env
->>>>>>> origin/production
