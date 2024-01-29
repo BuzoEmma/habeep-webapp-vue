@@ -27,27 +27,23 @@
 
                 <!-- input fields -->
 
-
-                <div class="flex flex-col items-start w-full gap-y-1 mt-8">
-                    <label for="" class="text-sm text-webapp">Current Pincode</label>
-                    <input type="password" :class="{ 'invalidField': data.oldPin.length < 4 }" v-model="data.oldPin" maxlength="4" placeholder="Enter Current Pincode"
-                        class="w-full h-14 rounded-lg">
-                </div>
-                <div class="flex flex-col items-start w-full gap-y-1 mt-5">
+                <div class="flex flex-col items-start w-full gap-y-1 mt-5 px-4">
                     <label for="" class="text-sm text-webapp">New pincode</label>
-                    <input type="number" @input="validatePin()" :class="{ 'invalidField': errorMsg.field === 'pin' || errorMsg.field === 'all' }" v-model="data.newPin" maxlength="4" placeholder="Enter your New pincode"
-                        class="w-full h-14 rounded-lg">
+                    <input inputmode="numeric" type="text" @input="checkForField('pin')" @focusout="validatePin('newPin')"
+                        :class="{ 'invalidField': errorMsg.field === 'newPin' }" v-model="data.newPin" maxlength="4"
+                        placeholder="Enter your New pincode" class="w-full h-14 rounded-lg bg-transparent">
                 </div>
-                <div class="flex flex-col items-start w-full gap-y-1 mt-5">
+                <div class="flex flex-col items-start w-full gap-y-1 mt-5 px-4">
                     <label for="" class="text-sm text-webapp">Re-enter pincode</label>
-                    <input type="number" @input="validatePin()" :class="{ 'invalidField': errorMsg.field === 'pin' || errorMsg.field === 'all' }" v-model="data.confirmPin" maxlength="4" placeholder="Re-enter New pincode"
-                        class="w-full h-14 rounded-lg">
+                    <input inputmode="numeric" type="text" @input="checkForField('pin')" @focusout="validatePin('oldPin')"
+                        :class="{ 'invalidField': errorMsg.field === 'oldPin' }" v-model="data.confirmPin" maxlength="4"
+                        placeholder="Re-enter New pincode" class="w-full h-14 rounded-lg bg-transparent">
                 </div>
 
 
                 <!-- submit btn -->
                 <button class="bg-primary w-full rounded-lg grid place-items-center h-14 text-white mt-10"
-                    @click="loginUser">
+                    @click="resetUserPin">
                     <span v-if="!processing">Continue</span>
                     <Preloader v-else />
                 </button>
@@ -75,7 +71,6 @@ const url = '/auth/user/reset/password';
 const data = reactive({
     email: '',
     newPin: '',
-    oldPin: '',
     confirmPin: '',
     otp: '',
     pin: ''
@@ -92,117 +87,88 @@ let errorMsg = ref({
 let newMsg = ref('')
 const processing = ref(false)
 
-function validatePin() {
-    if (data.newPin.toString().length > 3 && data.confirmPin.toString().length > 3) {
+function validatePin(input) {
+    if (data.newPin.toString().length > 0 && data.confirmPin.toString().length > 0) {
         if (data.newPin.toString() === data.confirmPin.toString()) {
             return true
         } else {
             onError.value = true
             errorMsg.value.msg = 'New pin doesnt match'
-            errorMsg.value.field = 'pin'
+            errorMsg.value.field = input
 
             return false
         }
-    } else {
-        onError.value = true
-        errorMsg.value.msg = 'Fill all fields'
-        errorMsg.value.field = 'all'
-
-        return false
     }
 }
 
-if (route.query.otp || route.query.email) {
-    data.otp = route.query.otp
-    data.email = route.query.email
 
-    resetUserPin()
+function formValidator() {
+    if (data.newPin.toString().length > 0 && data.confirmPin.toString().length > 0) {
+        if (data.newPin.toString() === data.confirmPin.toString()) {
+            return true
+        } else {
+            return false
+        }
+    }
+}
+
+async function checkForField(field) {
+    if (errorMsg.value.field !== null) {
+        if (field === 'pin') {
+            const validator = formValidator()
+            if (validator) {
+                onError.value = false
+                errorMsg.value.msg = ''
+                errorMsg.value.field = null
+            }
+        }
+    }
 }
 
 async function resetUserPin() {
     try {
-        const reset = await axios.patch(url, data)
-        if (!reset.data.success) {
-            onError.value = true
-            errorMsg.value.msg = reset.data.message
+        if (route.query.otp || route.query.email) {
+            data.otp = route.query.otp
+            data.email = route.query.email
 
-            setTimeout(() => {
-                onError.value = false
-                errorMsg.value.msg = ''
-            }, 3000);
-        } else {
-            newMsg.value = reset.data.message
+            processing.value = true
+            const reset = await axios.patch(url, data)
+            if (!reset.data.success) {
+                processing.value = false
+                onError.value = true
+                errorMsg.value.msg = reset.data.message
 
-            setTimeout(() => {
-                newMsg.value = ''
-            }, 5000);
+                setTimeout(() => {
+                    onError.value = false
+                    errorMsg.value.msg = ''
+                }, 3000);
+            } else {
+                newMsg.value = reset.data.message
+                setTimeout(() => {
+                    processing.value = false
+                    newMsg.value = ''
 
+                    router.replace('/login')
+                }, 1500);
+
+            }
         }
+
     } catch (error) {
+        processing.value = false
+
         onError.value = true
         if (error.response.data) {
             errorMsg.value.msg = error.response.data.message;
         } else errorMsg.value.msg = error.message;
 
-        if(error.response.data.error === 'Unauthorized') {
+        if (error.response.data.error === 'Unauthorized') {
             router.push('/forgot-pin')
         }
 
         setTimeout(() => {
             onError.value = false
-        }, 5000);
-    }
-}
-
-async function loginUser() {
-    try {
-        processing.value = true
-        data.pin = data.oldPin
-        const login = await axios.post('/auth/login', data)
-
-        let token = login.data.data.token
-        changeUserPin(token)
-
-    } catch (error) {
-        console.log(error)
-        onError.value = true
-        processing.value = false
-        if (error.response) {
-            errorMsg.value.msg = error.response.data.message;
-        } else errorMsg.value.msg = error.message;
-
-        data.pin = ''
-        data.oldPin = ''
-
-        setTimeout(() => {
-            onError.value = false;
-        }, 5000);
-    }
-}
-
-async function changeUserPin(token) {
-    try {
-        axios.defaults.headers.common = {
-            Authorization: `bearer ${token}`,
-        };
-        const change = await axios.patch('/auth/user/update/password', data)
-
-        newMsg.value = change.data.message
-        setTimeout(() => {
-            processing.value = false
-            router.push('/login')
-            newMsg.value = ''
-        }, 5000);
-    } catch (error) {
-        onError.value = true
-        if (error.response) {
-            errorMsg.value.msg = error.response.data.message;
-        } else errorMsg.value.msg = error.message;
-        processing.value = false
-
-        setTimeout(() => {
-            onError.value = false;
-        }, 5000);
+        }, 3000);
     }
 }
 

@@ -55,15 +55,15 @@
 
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8">
                     <label for="email" class="text-sm text-webapp">Email address</label>
-                    <input type="email" name="email" v-model="data.email" @input="validateFormField('email', data.email)"
-                        placeholder="Enter Email address" :class="{ 'invalidField': errorMsg.field === 'email' }"
-                        class="w-full h-14 rounded-lg">
+                    <input type="email" name="email" v-model="data.email" @focusout="validateFormField('email', data.email)"
+                        @input="checkForField('email')" placeholder="Enter Email address"
+                        :class="{ 'invalidField': errorMsg.field === 'email' }" class="w-full h-14 rounded-lg">
                 </div>
 
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8 relative">
                     <label for="" class="text-sm text-webapp">Phone number</label>
                     <MazPhoneNumberInput class="w-full" v-model="data.phoneNumber" show-code-on-list color="primary"
-                        :preferred-countries="['NG']" :translations="{
+                        :preferred-countries="['NG']" :default-country-code="'NG'" :translations="{
                             countrySelector: {
                                 placeholder: 'Country Prefix',
                                 error: 'Choose country',
@@ -79,8 +79,8 @@
                     <div class="flex flex-col items-start w-full sm:w-6/12 gap-y-1 mt-8">
                         <label for="password" class="text-sm text-webapp">Create a secure pin</label>
                         <input type="number" name="pin" maxlength="4" v-model="data.pin"
-                            @input="validateFormField('pin', data.pin.toString())" placeholder="Enter a 4 digit pin"
-                            class="w-full h-14 rounded-lg bg-transaparent"
+                            @focusout="validateFormField('pin', data.pin.toString())" @input="checkForField('pin')"
+                            placeholder="Enter a 4 digit pin" class="w-full h-14 rounded-lg bg-transaparent"
                             :class="{ 'bg-bg': onModal, 'invalidField': errorMsg.field === 'pin' }">
                     </div>
                     <div class="flex flex-col items-start w-full sm:w-6/12 gap-y-1 mt-8">
@@ -209,6 +209,27 @@ function validateFormField(field, data) {
         onError.value = false
         errorMsg.value.msg = ''
         errorMsg.value.field = null
+    }
+}
+
+async function checkForField(field) {
+    if (errorMsg.value.field !== null) {
+        if (field === 'email') {
+            const validator = formValidator('email', data.email)
+            if (validator.success) {
+                onError.value = false
+                errorMsg.value.msg = ''
+                errorMsg.value.field = null
+            }
+        }
+        if (field === 'pin') {
+            const validator = formValidator('pin', data.pin.toString())
+            if (validator.success) {
+                onError.value = false
+                errorMsg.value.msg = ''
+                errorMsg.value.field = null
+            }
+        }
     }
 }
 
