@@ -23,12 +23,16 @@
 
         <div class=" flex-row items-center w-fit gap-x-6 divide-x md:flex hidden">
             <!-- download app on stores -->
-            <div class="flex flex-row items-center gap-x-4">
-                <span class="text-sub-webapp text-lg font-normal">Download our app at</span>
-                <a href="https://apps.apple.com/us/app/habeep/id6450388013" target="_blank" class="no-underline "><img
-                        src="../assets/icons/apple.svg" alt="Habeep appstore link"></a>
-                <a href="https://play.google.com/store/apps/details?id=org.habeep" target="_blank"
-                    class="no-underline "><img src="../assets/icons/playstore.svg" alt="Habeep Google playstore link"></a>
+            <div class="flex flex-row items-center gap-x-5">
+
+                <a href="https://apps.apple.com/us/app/habeep/id6450388013" target="_blank" class="no-underline ">
+                    <img src="../assets/icons/download-app-apple.svg" alt="">
+                </a>
+
+                <a href="https://play.google.com/store/apps/details?id=org.habeep" target="_blank" class="no-underline ">
+                    <img src="../assets/icons/download-app-google.svg" alt="">
+
+                </a>
 
             </div>
 
