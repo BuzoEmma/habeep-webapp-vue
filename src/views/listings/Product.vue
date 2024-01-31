@@ -1,7 +1,14 @@
 <template>
+    <div class="product-share w-full h-full absolute flex flex-col items-center md:justify-center justify-end z-50 overflow-hidden backdrop-blur-md bg-black bg-opacity-10"
+        v-if="onProductShare === true">
+        <ShareModal class="md:flex hidden" v-motion-fade :product="product" @end-share="onProductShare = false" />
+        <ShareModal class="flex md:hidden" v-motion-slide-bottom :product="product" @end-share="onProductShare = false" />
+    </div>
+
+
     <div v-if="!onImageViewer"
         class="w-screen min-w-full flex flex-col items-center bg-white h-full min-h-screen overflow-y-auto scroll-smooth"
-        @resize="changeWidth">
+        @resize="changeWidth" :class="{ 'overflow-y-hidden h-screen': onProductShare }">
         <MainNavbar v-if="(screenWidth > 767)" />
 
         <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" v-if="!processingProduct || !product.price" class="m-auto"
@@ -24,12 +31,8 @@
                     <div class="w-full absolute flex flex-row top-5 items-center justify-between px-2">
                         <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
                         <div class="flex flex-row gap-x-3 items-center">
-                            <ShareNetwork network="whatsapp" popup.width="500px" popup.height="500px"
-                                :url="'https://habeep.org' + $route.fullPath"
-                                :title="'Purchase this awesome house now at an affordable rate'"
-                                :description="product.description" :media="product.images[0].link">
-                                <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
-                            </ShareNetwork>
+                            <img @click="startProductShare" src="../../assets/icons/share.svg" class="cursor-pointer"
+                                alt="">
                             <div class="grid place-items-center relative p-1" v-if="$store.state.isAuthenticated">
                                 <img src="../../assets/icons/heart.svg" class="cursor-pointer" alt="">
                                 <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
@@ -83,11 +86,12 @@
                 <div class="w-full absolute flex flex-row top-5 items-center justify-between md:px-8 px-2 z-10">
                     <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
                     <div class="flex flex-row gap-x-3 items-center">
-                        <ShareNetwork :popup="{ width: 400, height: 200 }" network="whatsapp"
+                        <!-- <ShareNetwork :popup="{ width: 400, height: 200 }" network="whatsapp"
                             :url="'https://habeep.org' + $route.fullPath" :title="product.title"
                             :description="product.description" :media="product.images[0].link">
                             <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
-                        </ShareNetwork>
+                        </ShareNetwork> -->
+                        <img @click="startProductShare" src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
 
                         <div class="grid place-items-center relative" v-if="$store.state.isAuthenticated">
                             <img src="../../assets/icons/heart.svg" class="cursor-pointer" alt="">
@@ -429,6 +433,7 @@ const img = ref('')
 // https://logos.flamingtext.com/Word-Logos/property-design-sketch-name.png
 
 import { useHead } from '@vueuse/head'
+import ShareModal from './components/ShareModal.vue';
 
 useHead({
     title: () => title.value,
@@ -656,6 +661,15 @@ const screenWidth = ref(window.innerWidth)
 
 function changeWidth() {
     screenWidth.value = window.innerWidth
+}
+
+
+// product share
+const onProductShare = ref(false)
+
+function startProductShare() {
+    exitImageViewer()
+    onProductShare.value = true
 }
 
 onMounted(() => {

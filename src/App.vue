@@ -100,6 +100,12 @@ async function getNotifications() {
       const allnotifs = await axios.get('/notification/get/all')
       allNotifications.value = allnotifs.data.data
     }
+
+    if (allNotifications.value.length > 0) {
+      setInterval(() => {
+        allNotifications.value.pop()
+      }, 5000);
+    }
   } catch (error) {
     return;
   }
@@ -125,7 +131,7 @@ async function deleteNotification(notif, limit) {
     if (limit !== 'all') {
       allNotifications.value.splice(allNotifications.value.indexOf(notif))
     }
-    if (notif.users !== ['all']) {
+    if (notif.users[0] !== 'all') {
       await axios.delete('/notification/delete/' + notif._id)
     }
 
@@ -156,8 +162,6 @@ onMounted(() => {
       <div class="flex-row-center w-full p-4 notif justify-between " @click="takeNotificationAction(notif)" v-motion
         :initial="{ y: -100 }" :enter="{ y: 0 }" :tapped="{ opacity: 0, transition: { delay: 100 } }"
         v-for="notif of allNotifications.slice(0, 2)" :key="notif">
-        <!-- transition: { type: 'spring', damping: 10, stiffness: 5, mass: 0.1} -->
-        <!-- :tapped="{x: 100, opacity: 0.3, transition: { delay: 10}}" -->
         <div class="flex-row-center h-full w-full gap-x-4">
           <img :src="notif.img" alt="" class="rounded-2xl w-12 h-12"
             v-if="notif.img && notif.img.toString().includes('mp4') == false">
