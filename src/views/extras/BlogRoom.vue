@@ -31,7 +31,8 @@
                 </div>
             </div>
 
-            <div data-nosnippet="" class="flex flex-row mt-6  md:mt-10 w-full h-fit flex-wrap" v-if="blogs.length === 0 && fetchingBlogs">
+            <div data-nosnippet="" class="flex flex-row mt-6  md:mt-10 w-full h-fit flex-wrap"
+                v-if="blogs.length === 0 && fetchingBlogs">
                 <!-- blog article skeleton -->
                 <div class="flex flex-col w-full items-start gap-y-3 md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0"
                     v-for="item in 4" :key="item">
@@ -67,7 +68,8 @@
 
                 <!-- phone anime -->
                 <img src="../../assets/images/phone-blog-anime.svg" data-nosnippet=""
-                    class="hidden lg:block absolute -top-2/4 2xl:-bottom-full right-10" alt="screenshot of habeep app">
+                    class="hidden lg:block absolute -top-[27%] -rotate-6 2xl:-bottom-full right-10"
+                    alt="screenshot of habeep app">
 
             </div>
         </div>

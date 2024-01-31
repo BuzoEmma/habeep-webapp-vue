@@ -126,11 +126,12 @@
                                 :class="{ 'hidden': !item.imageLoaded }" @load="item.imageLoaded = true"
                                 v-if="item.images[0] && item.images[0].link && item.images[0].link.includes('.mp4') == false"
                                 alt="">
-                            <video @click="$router.push('/listings/agent/view/products/' + item._id)"
+                            <video @touchstart="playVideo" @touchend="pauseVideo" @mouseenter="playVideo"
+                                @mouseout="pauseVideo" @click="$router.push('/listings/agent/view/products/' + item._id)"
                                 :class="{ 'hidden': !item.imageLoaded }" @loadedmetadata="item.imageLoaded = true"
                                 :src="item.images[0].link" class="w-full rounded-md feed-image"
                                 v-if="item.images[0] && item.images[0].link && item.images[0].link.includes('.mp4') == true"
-                                autoplay muted preload="auto"></video>
+                                muted preload="auto"></video>
                             <p class="text-webapp text-lg font-medium w-full  cursor-pointer"
                                 @click="$router.push('/listings/agent/view/products/' + item._id)">
                                 {{ item.title }}
@@ -193,11 +194,12 @@
                                 :class="{ 'hidden': !item.imageLoaded }" @load="item.imageLoaded = true"
                                 v-if="item.images[0] && item.images[0].link && item.images[0].link.includes('.mp4') == false"
                                 alt="">
-                            <video @click="$router.push('/listings/agent/view/products/' + item._id)"
+                            <video @touchstart="playVideo" @touchend="pauseVideo" @mouseenter="playVideo"
+                                @mouseout="pauseVideo" @click="$router.push('/listings/agent/view/products/' + item._id)"
                                 :class="{ 'hidden': !item.imageLoaded }" @loadedmetadata="item.imageLoaded = true"
                                 :src="item.images[0].link" class="w-full rounded-md feed-image"
                                 v-if="item.images[0] && item.images[0].link && item.images[0].link.includes('.mp4') == true"
-                                autoplay muted preload="auto"></video>
+                                muted preload="auto"></video>
                             <p class="text-webapp text-lg font-medium w-full px-3 cursor-pointer"
                                 @click="$router.push('/listings/agent/view/products/' + item._id)">
                                 {{ item.title }}
@@ -411,6 +413,21 @@ async function changeAdStatus(status, ad) {
         }
     }
 }
+
+
+// manage video
+
+async function playVideo(e) {
+    if (e.target) {
+        await e.target.play()
+    }
+}
+async function pauseVideo(e) {
+    if (e.target) {
+        await e.target.pause()
+    }
+}
+
 
 onMounted(() => {
     getAllAds()
