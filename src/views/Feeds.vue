@@ -120,7 +120,7 @@
             </div>
             <div class="flex flex-row w-full mt-2 items-center justify-between">
                 <div
-                    class="flex flex-row items-center tabs gap-x-4 border-b flex-nowrap border-gray-200 lg:overflow-x-hidden overflow-x-scroll">
+                    class="flex flex-row items-center tabs gap-x-4 border-b flex-nowrap border-gray-200 lg:overflow-x-hidden overflow-x-scroll px-6 md:px-0">
                     <img src="../assets/icons/Filter.svg" alt="" class="cursor-pointer lg:hidden"
                         @click="toggleDropdown('sort')">
                     <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg" @click="changeHouseType('all')"
@@ -282,7 +282,7 @@
                     <span class="text-gray-300 text-lg">No feeds for {{ filterData.propertyType }} yet</span>
                 </div>
                 <!-- listing template -->
-                <div class="basis-full md:basis-1/2 md:px-2 xl:basis-1/4 md:py-3 py-5 gap-y-4 px-0" v-else
+                <div class="basis-full md:basis-1/2 md:px-2 xl:basis-1/4 md:py-3 py-5 gap-y-4 px-5" v-else
                     v-for="feed in filteredFeeds" :key="feed">
                     <div class="flex flex-col items-start gap-y-2 border rounded-md border-gray-200 pb-2 feed relative">
                         <Skeleton v-if="!feed.imageLoaded" class=" w-full h-44 rounded-t-md" style="width: 100%" />

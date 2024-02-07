@@ -14,10 +14,11 @@
         <Referrals @close="closeAndOpen('affiliateModal')" @closeModals="closeModal" v-if="onModal && referralModal" />
     </div>
 
-    <div class="product-share w-full h-full absolute flex flex-col items-center md:justify-center justify-end z-50 overflow-hidden backdrop-blur-md bg-black bg-opacity-10"
+    <div class="product-share w-full h-full absolute flex flex-col items-center md:justify-center justify-end z-40 overflow-hidden backdrop-blur-md bg-black bg-opacity-10"
         v-if="onProductShare === true">
-        <ShareModal class="md:flex hidden" v-motion-fade :user="$store.state.user" @end-share="onProductShare = false" />
-        <ShareModal class="flex md:hidden" v-motion-slide-bottom :user="$store.state.user"
+        <ShareModal class="md:flex hidden z-50" v-motion-fade :user="$store.state.user"
+            @end-share="onProductShare = false" />
+        <ShareModal class="flex md:hidden z-50" v-motion-slide-bottom :user="$store.state.user"
             @end-share="onProductShare = false" />
     </div>
 
@@ -28,7 +29,7 @@
 
 
         <div
-            class="body px-6 2xl:px-44 md:px-20 mb-10 w-full flex flex-col gap-y-8 lg:flex-row h-full gap-x-3 items-center md:items-start  mt-10">
+            class="body px-6 2xl:px-44 mb-10 w-full flex flex-col gap-y-8 lg:flex-row h-full space-x-4 items-center md:items-start  mt-10">
 
             <!-- mobile search bar -->
             <div class="flex flex-row items-center w-full px-2 relative" v-if="onSearchBar" v-motion
@@ -46,8 +47,10 @@
             </div>
 
             <!-- user basic info -->
-            <div class="w-full lg:w-2/6 max-w-fit lg:ml-3 h-fit flex flex-col items-center gap-y-8 left">
-                <div class="user-info flex p-4 bg-white flex-col border items-start border-gray-200 rounded w-full h-full">
+            <div
+                class="w-full lg:max-w-fit lg:w-2/6 md:w-full md:space-x-4 space-x-0 lg:ml-3 h-fit flex flex-col md:flex-row lg:flex-col md:justify-between justify-start md:items-start lg:items-center items-center gap-y-8 left">
+                <div
+                    class="user-info flex p-4 bg-white flex-col border items-start border-gray-200 rounded w-full h-full ml-3">
                     <div class="flex flex-row gap-x-3 items-start">
                         <div class="rounded-full w-24 h-24 grid place-items-center border">
                             <img :src="$store.state.user.userProfileImage"
@@ -114,7 +117,7 @@
                 </div>
 
                 <div v-if="screenWidth > 767"
-                    class="wallet-info flex py-2 bg-white flex-col border items-start border-gray-300 rounded w-full h-full">
+                    class="wallet-info flex py-2  flex-col border items-start border-gray-300 rounded w-full h-full">
                     <div class="flex flex-row items-center p-2 justify-center w-full border-b border-b-gray-200"><span
                             class="text-webapp text-xl font-medium">Wallet</span></div>
 
@@ -142,7 +145,7 @@
 
             <!-- ads tab  -->
 
-            <div class="flex flex-col min-h-full items-start w-full h-full">
+            <div class="flex flex-col min-h-full items-start w-full h-full ">
                 <div class="flex flex-row gap-x-3 border-b border-b-gray-200 w-full">
                     <div class="cursor-pointer flex flex-row items-center justify-center w-24  pb-1"
                         v-if="$store.state.user.role === 'AGENT'" @click="changeTab(1)"

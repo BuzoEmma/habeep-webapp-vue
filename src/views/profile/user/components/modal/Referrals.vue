@@ -17,7 +17,7 @@
 
         <div class="flex flex-col items-center justify-center w-full h-full">
             <div v-if="allReferrals.length > 0"
-                class="w-full h-full flex flex-col items-center justify-center overflow-y-scroll px-4 py-4 scroller gap-y-4">
+                class="w-full h-full flex flex-col items-center  overflow-y-scroll px-4 py-4 scroller gap-y-4">
 
                 <div class="flex flex-col items-center w-full gap-y-4" v-for="referral of allReferrals" :key="referral">
 
@@ -53,7 +53,8 @@
                             <div class="flex flex-row items-center gap-x-4">
                                 <div class="w-4 h-4 rounded-full flex flex-row items-center justify-center"
                                     style="border: 1px solid #0A1045"></div>
-                                <span class="text-lg text-webapp">{{ childReferral.fname + ' ' + childReferral.surname }}</span>
+                                <span class="text-lg text-webapp">{{ childReferral.fname + ' ' + childReferral.surname
+                                }}</span>
                             </div>
                         </div>
                     </div>
@@ -135,6 +136,7 @@ getReferrals()
     .main {
         width: 100%;
         height: 100%;
+        border-radius: 0px;
         position: absolute;
     }
 }

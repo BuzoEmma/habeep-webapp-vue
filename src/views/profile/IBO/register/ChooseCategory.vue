@@ -25,19 +25,19 @@
                     @click="$router.push('/account/IBO/category/agent')" style="background: #F9FAFF">
                     <img src="../../../../assets/icons/agent-ibo.svg" alt="">
 
-                    <span class="text-primary font-xl font-medium">Agent</span>
+                    <span class="text-primary font-xl font-medium">Become an Agent</span>
 
                     <p class="text-sm text-webapp text-left w-full">Build your own financial wealth by owning your affiliate
-                        business. Click to join the Agent and start earning</p>
+                        business. Click to join the agent IBO and start earning</p>
                 </div>
                 <div class="border-2 border-gray-200 w-full flex flex-col items-start p-5 gap-y-4 mt-10 rounded-lg cursor-pointer"
                     @click="$router.push('/account/IBO/category/user')" style="background: #F7F7F7;">
                     <img src="../../../../assets/icons/user-ibo.svg" alt="">
 
-                    <span class="text-primary font-xl font-medium">Tenant</span>
+                    <span class="text-primary font-xl font-medium">Become a tenant</span>
 
-                    <p class="text-sm text-webapp text-left w-full">Become a Tenant and earn with us. Join the affiliate
-                        network as an independent user </p>
+                    <p class="text-sm text-webapp text-left w-full">Become a tenant, save your rent, and have access to rent
+                        loans. </p>
                 </div>
             </div>
         </div>
