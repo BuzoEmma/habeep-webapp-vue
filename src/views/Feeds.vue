@@ -438,13 +438,17 @@ async function getFeeds() {
                         feed.distance = distance
                     }
                 }
-                feeds.value.push(feed)
+                // location filter
+                if (filterData.location.state.length > 0 && filterData.location.city.length > 0) {
+                    if (feed.location.city.toLowerCase().includes(filterData.location.city.toLowerCase()) || feed.location.city.toLowerCase().includes(filterData.location.city.split(' ')[0].toString().toLowerCase()) || filterData.location.city.toLowerCase().includes(filterData.location.state.split(' ')[0].toString().toLowerCase())) {
+                        feeds.value.push(feed)
+                        filteredFeeds.value.push(feed)
+                    }
+                } else {
+                    feeds.value.push(feed)
+                    filteredFeeds.value.push(feed)
+                }
 
-                // if (feed.images[0].link.includes('.mp4')) {
-                //     hasVideo = true
-                // }
-
-                filteredFeeds.value.push(feed)
                 const uniqueIds = [];
                 const uniqueFeeds = filteredFeeds.value.filter(element => {
                     const isDuplicate = uniqueIds.includes(element._id);
@@ -507,11 +511,15 @@ function changeStateModal(state, type) {
     } else {
         onDropdown.value = false
         onLocationDropdown.value = false
-        currentState.value = state
-        currentCity.value = state
+        currentState.value = 'All'
+        currentCity.value = 'All'
         onState.value = true
         filterData.location.state = ''
         filterData.location.city = ''
+
+        saveFeedLocation()
+
+
     }
 
     useFilters(filterData)

@@ -5,20 +5,21 @@
 
     <div
         class="flex flex-row items-center relative py-4 justify-between w-full px-6 2xl:px-44 border-b border-b-textfieldbg">
-        <div class="logo flex flex-row items-center gap-x-2 " @click="$router.push('/feeds')">
-            <img src="../assets/icons/logo.svg" alt="Logo">
-            <span class="text-primary text-2xl">Habeep</span>
+        <div class="logo flex flex-row items-center gap-x-2 cursor-pointer">
+            <img @click="$router.go()" src="../assets/icons/logo.svg" alt="Logo">
+            <span @click="$router.push('/')" class="text-primary text-2xl">Habeep</span>
         </div>
 
         <div
             class="search-bar lg:flex hidden w-1/4 flex-row rounded-full border border-gray-300 items-center  pl-3 pr-1 h-9 py-1 gap-x-4">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="#B1B4CD"
-                class="w-4 h-4 mt-1">
+                class="w-6 h-6 mt-1">
                 <path stroke-linecap="round" stroke-linejoin="round"
                     d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
             </svg>
 
-            <input type="text" class="w-full h-full bg-transparent" placeholder="Search">
+            <input type="text" class="w-full h-full bg-transparent" v-model="searchInput"
+                @input="$emit('search', searchInput)" @keydown="checkForEnter" placeholder="Search">
         </div>
 
         <div class=" flex-row items-center w-fit gap-x-6 divide-x md:flex hidden">
@@ -148,6 +149,8 @@ import { useStore } from 'vuex'
 const onNavDropdown = ref(false)
 const onMobileNav = ref(false)
 
+let searchInput = ref('')
+
 const store = useStore()
 
 store.commit('changeNavState', false)
@@ -159,6 +162,16 @@ function toggleNav() {
 function toggleMobileNav() {
     onMobileNav.value = !onMobileNav.value
     store.commit('changeNavState', onMobileNav.value)
+}
+
+
+const checkForEnter = (e) => {
+    var key = e.keyCode || e.charCode || e.key || e.code;
+    if (key == 13 || key == 'Enter') {
+        if (route.path !== '/listings/search') {
+            router.push('/listings/search?name=' + searchInput.value)
+        }
+    }
 }
 </script>
 

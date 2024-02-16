@@ -5,9 +5,9 @@
 
     <div
         class="flex flex-row items-center relative py-4 justify-between w-full px-6 2xl:px-44  border-b border-b-textfieldbg">
-        <div class="logo flex flex-row items-center gap-x-2 " @click="$router.push('/feeds')">
-            <img src="../assets/icons/logo.svg" alt="Logo">
-            <span class="text-primary text-2xl">Habeep</span>
+        <div class="logo flex flex-row items-center gap-x-2 cursor-pointer">
+            <img @click="$router.go()" src="../assets/icons/logo.svg" alt="Logo">
+            <span @click="$router.push('/')" class="text-primary text-2xl">Habeep</span>
         </div>
 
         <div class=" flex-row items-center w-fit gap-x-6 divide-x md:flex hidden">
