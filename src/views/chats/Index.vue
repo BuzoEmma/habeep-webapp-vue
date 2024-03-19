@@ -98,12 +98,12 @@ async function getRooms() {
                     enterChatBox(room)
                     setTimeout(() => {
                         leaveChat()
-                    }, 200);
-                }, 300);
+                    }, 1000);
+                }, 2000);
                 setTimeout(() => {
                     clearInterval(roomInterval)
                     callback()
-                }, allRooms.value.length * 500);
+                }, allRooms.value.length * 1100);
             }, function () {
                 leaveChat()
                 processing.value = false
