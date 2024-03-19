@@ -8,18 +8,18 @@
 
         <div class="main flex flex-row h-full items-center justify-center lg:mt-10 gap-x-5 w-full 2xl:px-44 md:px-20 py-5"
             :class="{ 'justify-between': processing === false && allRooms.length > 0 }">
-            <Preloader v-if="allRooms.length < 1 && processing === true" />
+            <Preloader v-if="processing === true" />
 
-            <ChatBar @selectChat="enterChatBox" :class="{ 'hidden': selectedChat && screenWidth < 1023 }" :rooms="allRooms"
-                v-if="!processing && allRooms.length > 0" :connectedUsers="allConnectedUsers" />
+            <ChatBar @selectChat="enterChatBox" :class="{ 'hidden': selectedChat && screenWidth < 1023 }"
+                :rooms="allRooms" v-if="!processing && allRooms.length > 0" :connectedUsers="allConnectedUsers" />
 
 
             <NoChat v-if="!processing && !selectedChat"
                 :class="{ 'hidden': allRooms.length > 0 && screenWidth < 1023 || selectedChat }" />
 
-            <Chat @updateOnlineUsers="updateUsers" @showPhone="togglePhone" v-if="!processing && selectedChat"
-                @leaveChat="leaveChat" :connectedUsers="allConnectedUsers" :chat="selectedChat"
-                :class="{ 'hidden': !selectedChat && screenWidth < 1023 }" />
+            <Chat @updateOnlineUsers="updateUsers" @showPhone="togglePhone" v-if="selectedChat" @leaveChat="leaveChat"
+                :connectedUsers="allConnectedUsers" :chat="selectedChat"
+                :class="{ 'hidden': !selectedChat && screenWidth < 1023 || processing }" />
         </div>
 
         <div v-if="onPhone && screenWidth < 1024" v-motion-slide-bottom :delay="50"
@@ -29,7 +29,7 @@
                 :href="'tel:' + selectedChat.user.phoneNumber" v-if="selectedChat.user">
                 <img src="../../assets/icons/phone.svg" alt="">
                 <span class="text-sm text-primary font-medium">{{ selectedChat.user.phoneNumber
-                }}</span>
+                    }}</span>
             </a>
             <div @click="togglePhone"
                 class="flex flex-row items-center justify-center bg-white  rounded-xl border border-gray-100 gap-x-2 py-3 w-11/12 cursor-pointer">
@@ -39,10 +39,11 @@
 
     </div>
 </template>
-  
+
 <script setup>
 import { ref, reactive } from "vue"
 import { useRoute, useRouter } from 'vue-router'
+import async from 'async'
 
 
 import HomeNavbar from '../../components/HomeNavbar.vue'
@@ -72,22 +73,13 @@ function updateUsers(data) {
 }
 
 const enterChatBox = (data) => {
-    if (selectedChat.value !== null) {
-        selectedChat.value = null
-
-        setTimeout(() => {
-            selectedChat.value = data
-        }, 5);
-    } else selectedChat.value = data
-
+    selectedChat.value = {}
+    selectedChat.value = Object.assign(selectedChat.value, data)
+    return;
 }
 
-const leaveChat = (data) => {
+const leaveChat = () => {
     selectedChat.value = null
-    const getRoom = allRooms.value.filter(chatroom => {
-        return chatroom.room._id == data.room._id
-    })
-    allRooms.value[getRooms[0]] = data
 }
 
 const screenWidth = ref(window.innerWidth)
@@ -99,7 +91,29 @@ async function getRooms() {
         processing.value = true
         const fetch = await axios.get('/messaging/get-rooms')
         allRooms.value = fetch.data.rooms
-        processing.value = false
+
+        if (allRooms.value.length > 0) {
+            async.eachSeries(allRooms.value, function (room, callback) {
+                const roomInterval = setInterval(() => {
+                    enterChatBox(room)
+                    setTimeout(() => {
+                        leaveChat()
+                    }, 1000);
+                }, 2000);
+                setTimeout(() => {
+                    clearInterval(roomInterval)
+                    callback()
+                }, allRooms.value.length * 1100);
+            }, function () {
+                leaveChat()
+                processing.value = false
+            });
+        } else {
+            processing.value = false
+        }
+
+
+
         if (route.query.roomId) {
             let filterId = allRooms.value.filter((room) => {
                 return room.room._id === route.query.roomId
@@ -118,5 +132,5 @@ async function getRooms() {
 getRooms()
 
 </script>
-  
+
 <style scoped></style>

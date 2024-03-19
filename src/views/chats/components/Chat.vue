@@ -33,8 +33,8 @@
 
 
                     <span class="text-lg text-left  text-webapp font-medium" v-if="screenWidth > 1023">{{
-                        props.chat.user.fname + ' ' +
-                        props.chat.user.surname }}
+            props.chat.user.fname + ' ' +
+            props.chat.user.surname }}
                     </span>
 
                     <div class="w-fit h-fit flex-row-center gap-x-1" v-if="otherUserOnline && !userTyping">
@@ -59,17 +59,19 @@
             </div>
 
             <!-- messages -->
-            <div class="flex flex-col items-center w-full overflow-y-scroll messages-box no-scroll-btn" ref="messagesBox">
+            <div class="flex flex-col items-center w-full overflow-y-scroll messages-box no-scroll-btn"
+                ref="messagesBox">
                 <div class="flex flex-col w-full h-fit py-6 items-center justify-start"
                     v-for="(chatGroup, index) in sortedChats()" :key="(chatGroup, index)" ref="chats">
                     <div class="flex flex-row items-center gap-x-2">
                         <hr class="w-32">
                         <span class="text-xs text-sub-webapp text-center">{{ moment(new Date(index)).format('MMM D, YY')
-                        }}</span>
+                            }}</span>
                         <hr class="w-32">
                     </div>
 
-                    <div class="flex flex-col w-full items-center justify-start px-3" v-for="chat in chatGroup" :key="chat">
+                    <div class="flex flex-col w-full items-center justify-start px-3" v-for="chat in chatGroup"
+                        :key="chat">
                         <div class="w-full items-center my-2" ref="messageBox">
                             <Message :data="chat" :userId="$store.state.user._id" @viewFullImage="viewImage" />
                         </div>
@@ -147,26 +149,28 @@
                 </div>
 
                 <div class="flex-row-center w-full justify-between lg:justify-center lg:gap-x-8">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" @click="deleteRecording"
-                        class="w-5 h-5 text-gray-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                        @click="deleteRecording" class="w-5 h-5 text-gray-100">
                         <path fill-rule="evenodd"
                             d="M16.5 4.478v.227a48.816 48.816 0 013.878.512.75.75 0 11-.256 1.478l-.209-.035-1.005 13.07a3 3 0 01-2.991 2.77H8.084a3 3 0 01-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 01-.256-1.478A48.567 48.567 0 017.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 013.369 0c1.603.051 2.815 1.387 2.815 2.951zm-6.136-1.452a51.196 51.196 0 013.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 00-6 0v-.113c0-.794.609-1.428 1.364-1.452zm-.355 5.945a.75.75 0 10-1.5.058l.347 9a.75.75 0 101.499-.058l-.346-9zm5.48.058a.75.75 0 10-1.498-.058l-.347 9a.75.75 0 001.5.058l.345-9z"
                             clip-rule="evenodd" />
                     </svg>
 
                     <svg @click="pauseOrResumeRecording" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                        fill="currentColor" v-if="recordingState === 'PAUSED'" class="w-5 h-5 text-red-400 cursor-pointer">
+                        fill="currentColor" v-if="recordingState === 'PAUSED'"
+                        class="w-5 h-5 text-red-400 cursor-pointer">
                         <path d="M8.25 4.5a3.75 3.75 0 117.5 0v8.25a3.75 3.75 0 11-7.5 0V4.5z" />
                         <path
                             d="M6 10.5a.75.75 0 01.75.75v1.5a5.25 5.25 0 1010.5 0v-1.5a.75.75 0 011.5 0v1.5a6.751 6.751 0 01-6 6.709v2.291h3a.75.75 0 010 1.5h-7.5a.75.75 0 010-1.5h3v-2.291a6.751 6.751 0 01-6-6.709v-1.5A.75.75 0 016 10.5z" />
                     </svg>
-                    <svg @click="pauseOrResumeRecording" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                        stroke-width="1.5" v-else stroke="currentColor" class="w-6 h-6 text-red-400 cursor-pointer">
+                    <svg @click="pauseOrResumeRecording" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 24 24" stroke-width="1.5" v-else stroke="currentColor"
+                        class="w-6 h-6 text-red-400 cursor-pointer">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M14.25 9v6m-4.5 0V9M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <img src="../../../assets/icons/send-message.svg" class="cursor-pointer" @click="stopAndSendRecording"
-                        alt="">
+                    <img src="../../../assets/icons/send-message.svg" class="cursor-pointer"
+                        @click="stopAndSendRecording" alt="">
                 </div>
             </div>
         </div>
@@ -176,8 +180,8 @@
             :initial="{ opacity: 0.5, y: -100 }" :enter="{ opacity: 1, y: 0 }" :leave="{ opacity: 0.6, y: 100 }"
             @cancelMedia="deleteMedia" v-if="!onMainPage && viewFullImage.length === 0" />
 
-        <div class="w-full h-full bg-black flex flex-col justify-start relative" v-if="viewFullImage.length > 0" v-motion
-            :enter="{ scale: 1.0, opacity: 1 }" :initial="{ scale: 0.1, opacity: 0.3 }">
+        <div class="w-full h-full bg-black flex flex-col justify-start relative" v-if="viewFullImage.length > 0"
+            v-motion :enter="{ scale: 1.0, opacity: 1 }" :initial="{ scale: 0.1, opacity: 0.3 }">
             <img :src="viewFullImage" class="media-full">
 
             <div class="flex flex-row items-center h-14 pl-4 w-full absolute top-0"
@@ -235,11 +239,11 @@
 
 
         <VoiceCall @endCall="endCall" @clean="cleanCallState" :shouldEndCall="shouldEndVoiceCall"
-            :userOnline="otherUserOnline" v-motion-slide-right :details="callDetails" class="absolute top-0 left-0  z-20"
-            v-if="onVoiceCall" />
+            :userOnline="otherUserOnline" v-motion-slide-right :details="callDetails"
+            class="absolute top-0 left-0  z-20" v-if="onVoiceCall" />
     </div>
 </template>
-  
+
 <script setup>
 
 import Message from './Message.vue'
@@ -518,13 +522,14 @@ function sortedChats() {
 
 
 // sockets settings
-const socket = io("https://habeep.org", {
+const socket = io(import.meta.env.VITE_SOCKET_HOME, {
     path: '/backend/sockets/',
     auth: {
         token: store.state.sessionId
     },
     transports: ['websocket', 'polling']
 });
+
 
 
 socket.on("connect", () => {
@@ -885,7 +890,7 @@ if (route.query.template) {
 }
 
 </script>
-  
+
 <style scoped>
 .message-input::placeholder {
     color: #71759D;
