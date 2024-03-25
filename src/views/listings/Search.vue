@@ -22,7 +22,8 @@
             <div
                 class=" px-6 2xl:px-44 md:px-20 mb-10 w-full flex flex-col h-full items-center md:items-start gap-y-8 mt-3">
                 <div class="flex flex-row items-center w-full px-2 relative" v-if="onSearchBar" v-motion
-                    :initial="{ opacity: 0.5, y: -100 }" :enter="{ opacity: 1, y: 0 }" :leave="{ y: 100, opacity: 0.2, }">
+                    :initial="{ opacity: 0.5, y: -100 }" :enter="{ opacity: 1, y: 0 }"
+                    :leave="{ y: 100, opacity: 0.2, }">
                     <input type="text" placeholder="Search products" v-model="searchData" @keydown="checkForEnter"
                         class=" border border-black pl-2 outline-none h-10 w-full">
                     <div class="search-btn w-8 h-8 bg-black absolute right-3 grid place-items-center cursor-pointer"
@@ -37,10 +38,10 @@
                 </div>
                 <div class="flex flex-row w-full items-center justify-between">
                     <p class="text-webapp text-lg w-full md:block hidden"><span class="text-primary font-medium">{{
-                        products.length }}</span>
+                products.length }}</span>
                         ads result found
                         in <span class="font-medium capitalize">{{ $route.query.location ? $route.query.location :
-                            country.country }}</span></p>
+                country.country }}</span></p>
 
                     <!-- filters -->
                     <div class="flex flex-row items-center h-fit gap-x-4 w-full md:w-min  transition-all"
@@ -49,11 +50,11 @@
                             class="border border-gray-300 md:w-56 w-1/2 py-2 justify-center flex flex-row items-center gap-x-2 rounded-full cursor-pointer ">
                             <span class="md:text-lg text-webapp text-sm flex flex-row gap-x-1"> Sort:
                                 <span class="hidden md:flex flex-row items-center w-full flex-nowrap">{{
-                                    filterData.sortValue
-                                }}</span>
+                filterData.sortValue
+            }}</span>
                             </span>
-                            <svg xmlns="http://www.w3.org/2000/svg" :class="{ 'rotate-180': onSortDropdown }" fill="none"
-                                viewBox="0 0 24 24" stroke-width="1.5" stroke="#9A9A9D" class="w-6 h-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" :class="{ 'rotate-180': onSortDropdown }"
+                                fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#9A9A9D" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                             </svg>
                         </div>
@@ -110,7 +111,8 @@
                                     <span v-else>city</span>
                                 </span>
                                 <svg xmlns="http://www.w3.org/2000/svg" @click="toggleDropdown('location')" fill="none"
-                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="#71759D" class="w-5 h-5 cursor-pointer">
+                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="#71759D"
+                                    class="w-5 h-5 cursor-pointer">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </div>
@@ -140,11 +142,13 @@
                             <div v-if="onState" class="gap-y-2">
                                 <div class="py-2" v-for="(state, index) in states" :key="(state, index)"
                                     @click="changeStateModal(state, 'state')">
-                                    <p class="text-sm mb-1 text-webapp cursor-pointer" v-if="state.state.name !== 'Cross'">
+                                    <p class="text-sm mb-1 text-webapp cursor-pointer"
+                                        v-if="state.state.name !== 'Cross'">
                                         {{
-                                            state.state.name }}</p>
-                                    <p class="text-sm mb-1 text-webapp cursor-pointer" v-else>{{ state.state.name + ' River'
-                                    }}
+                state.state.name }}</p>
+                                    <p class="text-sm mb-1 text-webapp cursor-pointer" v-else>{{ state.state.name + '
+                                        River'
+                                        }}
                                     </p>
                                     <hr v-if="index + 1 !== states.length">
                                 </div>
@@ -179,7 +183,8 @@
                         v-for="product in filteredProducts" :key="product">
                         <div
                             class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 h-fit feed">
-                            <Skeleton v-if="!product.imageLoaded" class=" w-full h-36 rounded-t-md" style="width: 100%" />
+                            <Skeleton v-if="!product.imageLoaded" class=" w-full h-36 rounded-t-md"
+                                style="width: 100%" />
                             <img :alt="product.title" @click="$router.push('/listings/products/' + product._id)"
                                 @load="product.imageLoaded = true" :class="{ 'hidden': !product.imageLoaded }"
                                 :src="product.images[0].link" class="w-full h-full feed-image rounded-t-md"
@@ -201,8 +206,8 @@
                                 @click="$router.push('/listings/products/' + product._id)">
                                 <img src="../../assets/images/map-pin.png" alt="">
                                 <span class="text-sm text-webapp">{{ product.location.city ||
-                                    product.location.address.substr(0,
-                                        20) }}</span>
+                product.location.address.substr(0,
+                    20) }}</span>
                             </div>
 
                             <div class="flex flex-row items-center w-full justify-between px-2">
@@ -294,8 +299,8 @@ useHead({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }
     ],
     link: [
-        { rel: 'icon', href: 'https://i.ibb.co/j8817QB/habeep-logo-light.png', media: '(prefers-color-scheme: light)' },
-        { rel: 'icon', href: 'https://i.ibb.co/NCdCb4r/habeep-logo-dark.png', media: '(prefers-color-scheme: dark)' },
+        { rel: 'icon', href: 'https://res.cloudinary.com/dfjud30cb/image/upload/v1711364431/files/logo-white-bg.png', media: '(prefers-color-scheme: light)' },
+        { rel: 'icon', href: 'https://res.cloudinary.com/dfjud30cb/image/upload/v1711364476/files/logo-dark-bg.png', media: '(prefers-color-scheme: dark)' },
     ]
 })
 

@@ -6,8 +6,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
             <span class="text-xl font-medium text-webapp">Deposit</span>
-            <img src="../../../../../assets/icons/x.svg" class="cursor-pointer collapse md:visible" @click="$emit('close')"
-                alt="">
+            <img src="../../../../../assets/icons/x.svg" class="cursor-pointer collapse md:visible"
+                @click="$emit('close')" alt="">
         </div>
         <div class="w-full px-4 py-6 flex flex-col items-start ">
             <span class="text-sub-webapp text-lg w-full text-left">Provide the amount and deposit method you
@@ -19,16 +19,19 @@
                     @input="calculatePaystackFee(depositData.amount)"
                     class="w-full outline-none h-14 rounded-lg border border-gray p-2">
 
-                <div class="absolute top-8 h-10 w-9 right-2 rounded grid place-items-center" style="background: #EBEBEB;">
+                <div class="absolute top-8 h-10 w-9 right-2 rounded grid place-items-center"
+                    style="background: #EBEBEB;">
                     {{ getSymbolFromCurrency($store.state.user.currency) }}
                 </div>
             </div>
 
             <div class="flex flex-col items-start gap-y-1 w-full mt-5 relative">
                 <span class="text-webapp text-sm">Deposit fee</span>
-                <input type="text" disabled value="0.00" class="w-full outline-none h-14 rounded-lg border border-gray p-2">
+                <input type="text" disabled value="0.00"
+                    class="w-full outline-none h-14 rounded-lg border border-gray p-2">
 
-                <div class="absolute top-8 h-10 px-2 right-2 rounded grid place-items-center" style="background: #EBEBEB;">
+                <div class="absolute top-8 h-10 px-2 right-2 rounded grid place-items-center"
+                    style="background: #EBEBEB;">
                     <p class="flex flex-row items-center gap-x-4">
                         <span v-if="depositData.paymentMethod !== 'bank-transfer' && depositData.fee < 1">Free</span>
                         <span v-else>{{ depositData.fee.toFixed(2) }}</span>
@@ -72,7 +75,8 @@
                         <span>Pay with E-naira</span>
                         <span class="text-xs font-extralight text-webapp">#comingsoon</span>
                     </p>
-                    <p class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer" v-else>
+                    <p class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer"
+                        v-else>
                         <span>Pay with Paypal</span>
                         <span class="text-xs font-extralight text-webapp">#comingsoon</span>
                     </p>
@@ -80,12 +84,15 @@
             </div>
 
             <Paystack @success="processPayment" @cancel="cancelPayment" @errorLoading="$router.go()"
-                v-if="depositData.paymentMethod === 'paystack' && proceededPayment" :payment-info="getPaystackDetails()" />
+                v-if="depositData.paymentMethod === 'paystack' && proceededPayment"
+                :payment-info="getPaystackDetails()" />
 
             <Flutterwave @success="processPayment" @cancel="handleFlwClose" @errorLoading="$router.go()"
-                v-if="depositData.paymentMethod === 'flutterwave' && proceededPayment" :payment-info="getFlwDetails()" />
+                v-if="depositData.paymentMethod === 'flutterwave' && proceededPayment"
+                :payment-info="getFlwDetails()" />
 
-            <button @click="proceedToPayment" :disabled="depositData.amount < 10 || depositData.paymentMethod.length < 1"
+            <button @click="proceedToPayment"
+                :disabled="depositData.amount < 10 || depositData.paymentMethod.length < 1"
                 :class="{ 'bg-blue-600 text-white': depositData.amount > 9 && depositData.paymentMethod.length > 1, 'bg-gray-300': depositData.amount < 10 || depositData.paymentMethod.length < 1, }"
                 class="grid rounded-lg place-items-center h-14 my-6 w-full">
                 <span v-if="!processingDeposit">Continue</span>
@@ -98,7 +105,7 @@
         <Toast :msg="newMsg" type="success" v-if="newMsg.length > 0" />
     </div>
 </template>
-  
+
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
@@ -145,7 +152,7 @@ const flwRef = ref('')
 function getLogo() {
     if (store.state.user.userProfileImage !== 'https://i.ibb.co/gtpxMJz/21.png') {
         return store.state.user.userProfileImage
-    } else return 'https://i.ibb.co/NCdCb4r/habeep-logo-dark.png'
+    } else return 'https://res.cloudinary.com/dfjud30cb/image/upload/v1711364476/files/logo-dark-bg.png'
 }
 
 function channels() {
@@ -371,7 +378,7 @@ onMounted(async () => {
 
 
 </script>
-  
+
 <style scoped>
 .main {
     width: 480px;

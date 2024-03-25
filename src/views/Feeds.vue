@@ -7,14 +7,15 @@
             style="width: 220px">
             <div class="flex flex-row items-center justify-between" @click="toggleDropdown('sort')">
                 <span class="text-lg text-webapp font-medium">Sort:</span>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#71759D"
-                    class="w-6 h-6">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="#71759D" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </div>
 
             <p class="text-sm text-webapp mt-2 cursor-pointer"
-                :class="{ 'text-blue-600': filterData.sortValue === 'Recommended' }" @click="changeSortValue(1)">Recommended
+                :class="{ 'text-blue-600': filterData.sortValue === 'Recommended' }" @click="changeSortValue(1)">
+                Recommended
             </p>
             <p class="text-sm text-webapp mt-2 cursor-pointer"
                 :class="{ 'text-blue-600': filterData.sortValue === 'Newest first' }" @click="changeSortValue(2)">Newest
@@ -46,8 +47,8 @@
                     <span v-if="onState">state</span>
                     <span v-else>city</span>
                 </span>
-                <svg xmlns="http://www.w3.org/2000/svg" @click="toggleDropdown('location')" fill="none" viewBox="0 0 24 24"
-                    stroke-width="1.5" stroke="#71759D" class="w-5 h-5 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" @click="toggleDropdown('location')" fill="none"
+                    viewBox="0 0 24 24" stroke-width="1.5" stroke="#71759D" class="w-5 h-5 cursor-pointer">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </div>
@@ -80,7 +81,7 @@
                 <div class="py-2" v-for="(state, index) in states" :key="(state, index)"
                     @click="changeStateModal(state, 'state')">
                     <p class="text-sm mb-1 text-webapp cursor-pointer" v-if="state.state.name !== 'Cross'">{{
-                        state.state.name }}</p>
+        state.state.name }}</p>
                     <p class="text-sm mb-1 text-webapp cursor-pointer" v-else>{{ state.state.name + ' River' }}
                     </p>
                     <hr v-if="index + 1 !== states.length">
@@ -131,11 +132,14 @@
                     <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg"
                         @click="changeHouseType('bungalow')"
                         :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': filterData.propertyType === 'bungalow' }">Bungalow</span>
-                    <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg" @click="changeHouseType('duplex')"
+                    <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg"
+                        @click="changeHouseType('duplex')"
                         :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': filterData.propertyType === 'duplex' }">Duplex</span>
-                    <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg" @click="changeHouseType('flat')"
+                    <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg"
+                        @click="changeHouseType('flat')"
                         :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': filterData.propertyType === 'flat' }">Flat</span>
-                    <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg" @click="changeHouseType('office')"
+                    <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg"
+                        @click="changeHouseType('office')"
                         :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': filterData.propertyType === 'office' }">Office</span>
                     <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg whitespace-nowrap w-full"
                         @click="changeHouseType('room_parlor')"
@@ -152,8 +156,9 @@
                     <div @click="toggleDropdown('sort')"
                         class="border border-gray-300 w-56 py-1 justify-center hidden lg:flex flex-row items-center gap-x-2 rounded-full cursor-pointer ">
                         <span class="md:text-lg text-webapp text-sm flex flex-row gap-x-1"> Sort:
-                            <span class="hidden md:flex flex-row items-center w-full flex-nowrap">{{ filterData.sortValue
-                            }}</span>
+                            <span class="hidden md:flex flex-row items-center w-full flex-nowrap">{{
+        filterData.sortValue
+    }}</span>
                         </span>
                         <svg xmlns="http://www.w3.org/2000/svg" :class="{ 'rotate-180': onSortDropdown }" fill="none"
                             viewBox="0 0 24 24" stroke-width="1.5" stroke="#9A9A9D" class="w-6 h-6">
@@ -164,8 +169,8 @@
                     <div @click="toggleDropdown('location')"
                         class="border border-gray-300 py-1 px-3 hidden lg:flex flex-row items-center gap-x-4 rounded-full cursor-pointer">
                         <span class="md:text-lg text-webapp">{{ currentCity || 'Nigeria' }}</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" :class="{ 'rotate-180': onLocationDropdown }" fill="none"
-                            viewBox="0 0 24 24" stroke-width="1.5" stroke="#9A9A9D" class="w-6 h-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" :class="{ 'rotate-180': onLocationDropdown }"
+                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#9A9A9D" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                         </svg>
                     </div>
@@ -230,9 +235,11 @@
                         </div>
                         <div class="mt-1" v-if="!onState">
                             <p class="text-sm mb-1 text-webapp cursor-pointer gap-x-2 flex flex-row">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                    stroke="currentColor" class="w-4 h-4 cursor-pointer" @click="onState = true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-4 h-4 cursor-pointer"
+                                    @click="onState = true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15.75 19.5L8.25 12l7.5-7.5" />
                                 </svg>
 
                                 <span class="text-primary text-sm">{{ currentState }}</span>
@@ -247,9 +254,11 @@
                             </div>
                             <div class="py-2" v-for="(state, index) in states" :key="(state, index)"
                                 @click="changeStateModal(state, 'state')">
-                                <p class="text-sm mb-1 text-webapp cursor-pointer" v-if="state.state.name !== 'Cross'">{{
-                                    state.state.name }}</p>
-                                <p class="text-sm mb-1 text-webapp cursor-pointer" v-else>{{ state.state.name + ' River' }}
+                                <p class="text-sm mb-1 text-webapp cursor-pointer" v-if="state.state.name !== 'Cross'">
+                                    {{
+        state.state.name }}</p>
+                                <p class="text-sm mb-1 text-webapp cursor-pointer" v-else>{{ state.state.name + ' River'
+                                    }}
                                 </p>
                                 <hr v-if="index + 1 !== states.length">
                             </div>
@@ -273,8 +282,8 @@
             <div class="flex flex-row flex-auto h-full  md:mt-10 w-full flex-wrap" id="observer-root"
                 :class="{ 'justify-center items-center': filteredFeeds.length < 1 }">
 
-                <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" class="m-auto" v-if="fetchingFeeds === true" size="200px"
-                    color="#0A1045"></loader>
+                <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" class="m-auto" v-if="fetchingFeeds === true"
+                    size="200px" color="#0A1045"></loader>
 
                 <div class="flex flex-col items-center gap-y-3 md:justify-center"
                     v-if="filteredFeeds.length < 1 && !started && !fetchingFeeds">
@@ -290,19 +299,21 @@
                             @click="$router.push('/listings/products/' + feed._id)" alt=""
                             :class="{ 'hidden': !feed.imageLoaded }" class="w-full feed-image rounded-t-md"
                             v-if="feed.images[0].link && feed.images[0].link.includes('mp4') == false">
-                        <video @touchstart="playVideo" @touchend="pauseVideo" @mouseenter="playVideo" @mouseout="pauseVideo"
-                            playsinline fetchpriority="high" :src="feed.images[0].link"
+                        <video @touchstart="playVideo" @touchend="pauseVideo" @mouseenter="playVideo"
+                            @mouseout="pauseVideo" playsinline fetchpriority="high" :src="feed.images[0].link"
                             @loadedmetadata="feed.imageLoaded = true" :class="{ 'hidden': !feed.imageLoaded }"
                             @click="$router.push('/listings/products/' + feed._id)"
-                            class="w-full rounded-t-md feed-image feed-video" v-else muted loop preload="metadata"></video>
+                            class="w-full rounded-t-md feed-image feed-video" v-else muted loop
+                            preload="metadata"></video>
                         <p class="text-webapp text-lg font-medium w-full px-2 cursor-pointer"
                             @click="$router.push('/listings/products/' + feed._id)">{{ feed.title }}</p>
 
                         <div class="location flex flex-row items-center gap-x-2 px-2"
                             @click="$router.push('/listings/products/' + feed._id)">
                             <img src="../assets/images/map-pin.png" alt="">
-                            <span class="text-sm text-webapp">{{ feed.location.city || feed.location.address.substr(0, 20)
-                            }}</span>
+                            <span class="text-sm text-webapp">{{ feed.location.city || feed.location.address.substr(0,
+        20)
+                                }}</span>
                         </div>
 
                         <div class="flex flex-row items-center w-full justify-between px-2">
@@ -365,8 +376,8 @@ useHead({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }
     ],
     link: [
-        { rel: 'icon', href: 'https://i.ibb.co/j8817QB/habeep-logo-light.png', media: '(prefers-color-scheme: light)' },
-        { rel: 'icon', href: 'https://i.ibb.co/NCdCb4r/habeep-logo-dark.png', media: '(prefers-color-scheme: dark)' },
+        { rel: 'icon', href: 'https://res.cloudinary.com/dfjud30cb/image/upload/v1711364431/files/logo-white-bg.png', media: '(prefers-color-scheme: light)' },
+        { rel: 'icon', href: 'https://res.cloudinary.com/dfjud30cb/image/upload/v1711364476/files/logo-dark-bg.png', media: '(prefers-color-scheme: dark)' },
     ]
 })
 

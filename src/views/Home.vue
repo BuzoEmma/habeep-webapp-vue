@@ -57,8 +57,9 @@
             v-for="location in locations.slice(locationKeys.start, locationKeys.end)" :key="location"
             @click="$router.push('/listings/search?name=' + data.input + '&location=' + location.toLowerCase())">
             <p class="text-webapp text-lg font-medium gap-x-1 flex flex-row items-center">{{ data.input }} <span
-                class="text-lg font-extralight text-sub-webapp">in</span> <span class="text-lg font-medium text-webapp">{{
-                  location }}</span></p>
+                class="text-lg font-extralight text-sub-webapp">in</span> <span
+                class="text-lg font-medium text-webapp">{{
+      location }}</span></p>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="#71759D"
               class="w-6 h-6 cursor-pointer">
               <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
@@ -79,8 +80,8 @@
       <img src="../assets/illustrations/home-right.svg" v-lazy class="xl:flex hidden" alt="">
     </div>
 
-    <MobileSearch @updateKeys="randomiseLocationsSugg" :locationKeys="locationKeys" :location="locations" v-if="onSearch"
-      @leaveSearch="onSearch = false" :delay="100" v-motion :initial="{ opacity: 0.5, y: 100 }"
+    <MobileSearch @updateKeys="randomiseLocationsSugg" :locationKeys="locationKeys" :location="locations"
+      v-if="onSearch" @leaveSearch="onSearch = false" :delay="100" v-motion :initial="{ opacity: 0.5, y: 100 }"
       :enter="{ opacity: 1, y: 0 }" />
 
   </div>
@@ -111,8 +112,8 @@ useHead({
     { name: 'viewport', content: 'width=device-width, initial-scale=1' }
   ],
   link: [
-    { rel: 'icon', href: 'https://i.ibb.co/j8817QB/habeep-logo-light.png', media: '(prefers-color-scheme: light)' },
-    { rel: 'icon', href: 'https://i.ibb.co/NCdCb4r/habeep-logo-dark.png', media: '(prefers-color-scheme: dark)' },
+    { rel: 'icon', href: 'https://res.cloudinary.com/dfjud30cb/image/upload/v1711364431/files/logo-white-bg.png', media: '(prefers-color-scheme: light)' },
+    { rel: 'icon', href: 'https://res.cloudinary.com/dfjud30cb/image/upload/v1711364476/files/logo-dark-bg.png', media: '(prefers-color-scheme: dark)' },
   ]
 })
 
