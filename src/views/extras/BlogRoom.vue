@@ -16,16 +16,17 @@
             <div class="flex flex-row mt-6 md:mt-10 w-full h-fit flex-wrap flex-auto"
                 v-if="blogs.length > 0 && !fetchingBlogs">
                 <!-- blog article template -->
-                <div class="flex flex-col items-start md:basis-1/2 xl:basis-1/3 w-full cursor-pointer md:px-3 md:py-3 py-5 px-0 shadow-sm"
+                <div class="flex flex-col items-start md:basis-1/2 xl:basis-1/3 w-full cursor-pointer md:px-3 md:py-3 py-5 px-0 shadow-lg"
                     @click="$router.push('/blog/' + blog._id)" v-motion-fade v-for="blog in blogs" :key="blog">
-                    <div class="w-full rounded-lg border border-gray-100">
+                    <div class="w-full rounded-[5px] border border-gray-100">
                         <Skeleton class="w-full blog-image" v-if="!blog.imageLoaded" />
                         <img :src="blog.imageCover" :alt="blog.title" @load="blog.imageLoaded = true"
-                            :class="{ 'hidden': !blog.imageLoaded }" class="w-full rounded-lg blog-image">
+                            :class="{ 'hidden': !blog.imageLoaded }" class="w-full rounded-[5px] blog-image">
                     </div>
                     <h1 class="text-webapp text-lg font-medium ubuntu mt-2 w-full">{{ blog.title }}</h1>
                     <h2 class="text-sub-webapp text-sm w-full mt-1">{{ blog.subtitle }}</h2>
-                    <time class="text-sub-webapp text-sm w-full mt-1">{{ moment(blog.createdAt).format('MMM DD, YYYY') }} .
+                    <time class="text-sub-webapp text-sm w-full mt-1">{{ moment(blog.createdAt).format('MMM DD, YYYY')
+                        }} .
                         <span class="text-webapp font-bold">{{ blog.username }}</span>
                     </time>
                 </div>
@@ -58,7 +59,10 @@
                         store or google playstore</h2>
                     <!-- download stores -->
                     <div class="flex flex-row gap-x-2 items-center w-fit mt-4">
-                        <!-- <img src="../../assets/images/apple-download.svg" alt=""> -->
+
+                        <a href="https://apps.apple.com/us/app/habeep/id6450388013" target="_blank"
+                            class="no-underline cursor-pointer"><img src="../../assets/images/apple-download.svg"
+                                class="cursor-pointer" alt="ios app download button"></a>
 
                         <a href="https://play.google.com/store/apps/details?id=org.habeep" target="_blank"
                             class="no-underline cursor-pointer"><img src="../../assets/images/android-download.svg"

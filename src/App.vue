@@ -114,16 +114,27 @@ async function getNotifications() {
 async function takeNotificationAction(notif) {
   if (notif.additionalInfo) {
     if (notif.additionalInfo.type === 'newProduct') {
-      await deleteNotification(notif, null)
-      router.push('/listings/products/' + notif.additionalInfo.id)
+      deleteNotification(notif, null)
+      router.replace('/listings/products/' + notif.additionalInfo.id)
     }
+    if (notif.additionalInfo.type === 'newMessage') {
+      deleteNotification(notif, null)
+      router.replace(`/chats?roomId=${notif.additionalInfo.id}`)
+    }
+    if (notif.additionalInfo.type === 'newFollower') {
+      let data = {
+        userId: notif.additionalInfo.id,
+        activity: 'follow'
+      }
+      deleteNotification(notif, null)
+      await axios.post('/profile/follows/update', data)
+    }
+
   } else if (notif.msg === 'Verify your account to access all habeep features') {
-    router.push('/verify-otp?reason=user_verification&email=' + store.state.user.email)
+    router.replace('/verify-otp?reason=user_verification&email=' + store.state.user.email)
   } else {
     deleteNotification(notif, null)
   }
-
-  await deleteNotification(notif, null)
 }
 
 async function deleteNotification(notif, limit) {
@@ -159,9 +170,9 @@ onMounted(() => {
     <div
       class="flex-col flex fixed bottom-4 md:bottom-10 h-fit z-50 items-center w-full sm:w-fit justify-end p-2 gap-y-1 right-2 md:right-12"
       v-if="allNotifications.length > 0 && $store.state.isAuthenticated">
-      <div class="flex-row-center w-full p-4 notif justify-between " @click="takeNotificationAction(notif)" v-motion
-        :initial="{ y: -100 }" :enter="{ y: 0 }" :tapped="{ opacity: 0, transition: { delay: 100 } }"
-        v-for="notif of allNotifications.slice(0, 2)" :key="notif">
+      <div class="flex-row-center w-full p-4 notif justify-between cursor-pointer"
+        @click="takeNotificationAction(notif)" v-motion :initial="{ y: -100 }" :enter="{ y: 0 }"
+        :tapped="{ opacity: 0, transition: { delay: 100 } }" v-for="notif of allNotifications.slice(0, 2)" :key="notif">
         <div class="flex-row-center h-full w-full gap-x-4">
           <img :src="notif.img" alt="" class="rounded-2xl w-12 h-12 object-cover object-center"
             v-if="notif.img && notif.img.toString().includes('mp4') == false">

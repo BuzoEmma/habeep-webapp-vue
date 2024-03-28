@@ -1,14 +1,28 @@
 <template>
     <div class="w-screen min-w-full flex flex-col items-center bg-white h-full min-h-screen overflow-y-auto">
+        <div class="product-share w-full h-full absolute flex flex-col items-center md:justify-center justify-end z-50 overflow-hidden backdrop-blur-md bg-black bg-opacity-10"
+            v-if="onProductShare === true">
+            <ShareModal class="md:flex hidden" v-motion-fade :user="{
+                username: blog._id,
+                userProfileImage: blog.imageCover
+            }" @end-share="onProductShare = false" />
+            <ShareModal class="flex md:hidden" v-motion-slide-bottom :user="{
+                username: blog._id,
+                userProfileImage: blog.imageCover
+            }" @end-share="onProductShare = false" />
+        </div>
+
         <HomeNavbar />
 
         <div class="flex-col flex w-full items-center h-fit  gap-y-5 pt-16">
             <Skeleton class="lg:w-3/5 md:w-4/5 w-11/12 md:h-24 h-20" v-if="fetchingBlog || blog.title.length === 0" />
-            <h1 v-else class="md:text-6xl text-4xl lg:w-3/5 md:w-4/5 w-full px-4 text-center text-black bacasime font-bold">
+            <h1 v-else
+                class="md:text-6xl text-4xl lg:w-3/5 md:w-4/5 w-full px-4 text-center text-black bacasime font-bold">
                 {{
-                    blog.title }}</h1>
+                blog.title }}</h1>
 
-            <Skeleton class="lg:w-3/6 md:w-3/5 w-11/12 md:h-24 h-12 " v-if="fetchingBlog || blog.subtitle.length === 0" />
+            <Skeleton class="lg:w-3/6 md:w-3/5 w-11/12 md:h-24 h-12 "
+                v-if="fetchingBlog || blog.subtitle.length === 0" />
             <h2 v-else class="md:text-xl monserrat text-black font-thin lg:w-3/5 md:w-4/5 w-full px-4 text-center">{{
                 blog.subtitle
             }}</h2>
@@ -21,7 +35,8 @@
 
         <div class="flex flex-col w-full sm:w-5/6 md:w-3/5 items-center h-fit mt-5 px-4 pb-16"
             v-if="!fetchingBlog && blog.content.length > 0">
-            <div class="border-t-2 border-t-black w-full gap-4 py-5 justify-between md:flex-row flex-col flex items-center">
+            <div
+                class="border-t-2 border-t-black w-full gap-4 py-5 justify-between md:flex-row flex-col flex items-center">
                 <div class="flex-row-center w-full gap-x-3">
                     <img src="../../assets//icons/logo-mini.svg" alt="" class="h-14 w-14 rounded-full">
                     <div class="flex-col flex items-start text-black">
@@ -31,8 +46,9 @@
                     </div>
                 </div>
 
-                <div class="flex-row-center justify-start md:mt-0 mt-4 md:justify-end w-full">
-                    <a href="https://twitter.com/habeep_re" target="_blank" class="cursor-pointer">
+                <div class="flex-row-center space-x-2 justify-start md:mt-0 mt-4 md:justify-end w-full">
+                    <a href="https://www.facebook.com/people/Habeep/100069897356008/" target="_blank"
+                        class="cursor-pointer">
                         <div class="social-media-box grid place-items-center px-10">
                             <img src="../../assets/icons/fb.svg" alt="Facebook page link">
                         </div>
@@ -42,11 +58,15 @@
                             <img src="../../assets/icons/twitter.svg" alt="twitter page">
                         </div>
                     </a>
-                    <a href="https://twitter.com/habeep_re" target="_blank" class="cursor-pointer">
+                    <a href="https://api.whatsapp.com/send?phone=+2347088188807" target="_blank" class="cursor-pointer">
                         <div class="social-media-box grid place-items-center px-10">
                             <img src="../../assets/icons/whatsapp.svg" alt="whatsapp link">
                         </div>
                     </a>
+                    <div @click="startProductShare"
+                        class="social-media-box grid place-items-center px-10 cursor-pointer">
+                        <img src="../../assets/icons/share-link.png" class="w-6 h-6" alt="whatsapp link">
+                    </div>
                 </div>
             </div>
 
@@ -62,7 +82,8 @@
         </div>
 
         <div class="flex flex-col w-full sm:w-5/6 md:w-3/5 items-center h-fit mt-5 px-4 pb-16" v-else>
-            <div class="border-t-2 border-t-black w-full gap-4 py-5 justify-between md:flex-row flex-col flex items-center">
+            <div
+                class="border-t-2 border-t-black w-full gap-4 py-5 justify-between md:flex-row flex-col flex items-center">
                 <div class="flex-row-center w-full gap-x-3">
                     <Skeleton :type="'circle'" class="w-14 h-14" />
                     <div class="flex-col w-5/6 gap-y-1 flex items-start text-black">
@@ -98,6 +119,7 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 import { useHead } from '@vueuse/head'
+import ShareModal from './components/ShareModal.vue';
 
 
 const fetchingBlog = ref(false)
@@ -108,7 +130,8 @@ const blog = ref({
     createdAt: '',
     imageCover: '',
     username: 'Habeep',
-    imageLoaded: false
+    imageLoaded: false,
+    _id: ''
 })
 
 useHead({
@@ -169,6 +192,14 @@ async function fetchBlog() {
     }
 }
 fetchBlog()
+
+
+// product share
+const onProductShare = ref(false)
+
+function startProductShare() {
+    onProductShare.value = true
+}
 
 </script>
 

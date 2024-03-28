@@ -441,7 +441,6 @@ async function getFeeds() {
         const getFeeds = await axios.get(url)
 
         if (getFeeds.data) {
-            // let hasVideo = false
             for (const feed of getFeeds.data.feed) {
                 if (feed) {
                     const distance = await calculateDistance(feed.location.city || feed.location.address + ', ' + store.state.user.nationality)
@@ -471,9 +470,9 @@ async function getFeeds() {
                     return false;
                 });
 
-                filteredFeeds.value = uniqueFeeds
-
-                console.log(uniqueFeeds[0], feeds.value)
+                if (filteredFeeds.value.length !== uniqueFeeds.length) {
+                    filteredFeeds.value = uniqueFeeds
+                }
 
                 if (filteredFeeds.value.length > 0) {
                     fetchingFeeds.value = false
@@ -636,7 +635,8 @@ function useFilters(filters) {
     if (feeds.value.length > 0) {
         filteredFeeds.value = feeds.value
         // location filter
-        if (filters.location.state.length > 0 && filters.location.city.length > 0) {
+
+        if (filters.location.state !== 'All' && filters.location.state.length > 0 && filters.location.city.length > 0) {
             let locationFilter = filteredFeeds.value.filter(product => {
                 return product.location.city.toLowerCase().includes(filters.location.city.toLowerCase()) || product.location.city.toLowerCase().includes(filters.location.city.split(' ')[0].toString().toLowerCase()) || product.location.city.toLowerCase().includes(filters.location.state.split(' ')[0].toString().toLowerCase())
             })
@@ -675,6 +675,7 @@ function useFilters(filters) {
                 filteredFeeds.value = sortedArray
             }
         }
+
 
         const uniqueIds = [];
         const uniqueFeeds = filteredFeeds.value.filter(element => {
