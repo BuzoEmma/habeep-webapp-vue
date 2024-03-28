@@ -65,7 +65,7 @@ import { useHead } from '@vueuse/head'
 useHead({
     meta: [
         { charset: 'utf-8' },
-        { name: 'og:image', content: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
+        { name: 'og:image', content: 'https://res.cloudinary.com/dfjud30cb/image/upload/v1711364431/files/logo-white-bg.png' },
     ],
     link: [
         { rel: 'icon', href: 'https://res.cloudinary.com/dfjud30cb/image/upload/v1711364431/files/logo-white-bg.png', media: '(prefers-color-scheme: light)' },

@@ -30,7 +30,8 @@
                     <img src="../assets/icons/download-app-apple.svg" alt="">
                 </a>
 
-                <a href="https://play.google.com/store/apps/details?id=org.habeep" target="_blank" class="no-underline ">
+                <a href="https://play.google.com/store/apps/details?id=org.habeep" target="_blank"
+                    class="no-underline ">
                     <img src="../assets/icons/download-app-google.svg" alt="">
 
                 </a>
@@ -41,12 +42,12 @@
                 <span class="uppercase text-lg text-webapp cursor-pointer"
                     :class="{ 'text-blue-700': $route.fullPath.includes('blog') === true }"
                     @click="$router.push('/blog')">BLOG</span>
-                <div class="flex flex-row items-center  gap-x-2" @click="toggleNav">
+                <div class="flex flex-row items-center  gap-x-2 min-w-[40px] min-h-[40px]" @click="toggleNav">
                     <img src="../assets/icons/user.svg" alt="" v-if="!$store.state.isAuthenticated">
 
                     <img :src="$store.state.user.userProfileImage" class="w-10 h-10 rounded-full "
                         v-else-if="$store.state.user.userProfileImage !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
-                    <Avatar size="100%" class="w-10 h-10"
+                    <Avatar size="100%" class="w-10 h-10 min-h-[40px] min-w-[40px]"
                         v-if="$store.state.user.userProfileImage === 'https://i.ibb.co/gtpxMJz/21.png' && $store.state.isAuthenticated"
                         :fname="$store.state.user.fname" :lname="$store.state.user.surname" />
                     <svg xmlns="http://www.w3.org/2000/svg" :class="{ 'rotate-180': onNavDropdown }" fill="none"
@@ -57,7 +58,8 @@
             </div>
         </div>
 
-        <img src="../assets/icons/mobile-nav.svg" @click="toggleMobileNav" class="flex md:hidden" alt="Mobile nav image">
+        <img src="../assets/icons/mobile-nav.svg" @click="toggleMobileNav" class="flex md:hidden"
+            alt="Mobile nav image">
 
         <!-- Navigation Menu -->
 
@@ -78,7 +80,7 @@
 
             <div class="w-full pl-[13px] py-[11px] nav-item">
                 <p @click="$router.push('/listings/search')" class="text-sm text-webapp"
-                    :class="{ 'text-primary': $route.name === 'Listings-search' }">Search</p>
+                    :class="{ 'text-blue-600': $route.name === 'Listings-search' }">Search</p>
 
             </div>
             <div class="w-full pl-[13px] py-[11px] nav-item">
@@ -88,7 +90,8 @@
             </div>
             <div class="w-full pl-[13px] py-[11px] nav-item">
                 <p @click="$router.push('/user/profile/' + $store.state.user._id)" class="text-sm text-webapp"
-                    :class="{ 'text-blue-700': $route.name === 'User-profile' }" v-if="$store.state.isAuthenticated">Account
+                    :class="{ 'text-blue-700': $route.name === 'User-profile' }" v-if="$store.state.isAuthenticated">
+                    Account
                 </p>
             </div>
 
@@ -96,7 +99,7 @@
             <div class="w-full pl-[13px] py-[11px] nav-item"
                 v-if="$store.state.isAuthenticated && $store.state.user.role === 'AGENT'">
                 <p @click="$router.push('/agent/ads')" class="text-sm text-webapp "
-                    :class="{ 'text-blue-700': $route.name.includes === 'Agent-ads' || $route.name === 'Agent-ads-create' }">
+                    :class="{ 'text-blue-700': $route.path.includes('/agent/ads') }">
                     Post an Ad</p>
             </div>
 
@@ -108,7 +111,7 @@
             </div>
 
             <div class="w-full pl-[13px] py-[11px] nav-item"
-                v-if="$store.state.isAuthenticated && ($store.state.user.role === 'TENANT' || $store.state.user.isTenant)">
+                v-if="$store.state.isAuthenticated && ($store.state.user.role === 'TENANT' || $store.state.user.isTenant) && $store.state.user.role !== 'AGENT'">
                 <p @click="$router.push('/account/IBO/category/agent')" class="text-sm text-webapp"
                     :class="{ 'text-blue-700': $route.name.includes('IBO') === true }">
                     Become an Agent</p>

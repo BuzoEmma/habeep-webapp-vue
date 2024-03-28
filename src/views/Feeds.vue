@@ -368,7 +368,7 @@ useHead({
         { name: 'description', content: 'Specific User Feeds' },
 
         { name: 'og:title', content: 'Feeds' },
-        { name: 'og:image', content: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
+        { name: 'og:image', content: 'https://res.cloudinary.com/dfjud30cb/image/upload/v1711364431/files/logo-white-bg.png' },
         { name: 'og:url', content: 'https://habeep.org/feeds' },
         { name: 'og:website', content: 'website' },
         { name: 'og:description', content: 'View your Feeds ' },
@@ -460,6 +460,7 @@ async function getFeeds() {
                     filteredFeeds.value.push(feed)
                 }
 
+
                 const uniqueIds = [];
                 const uniqueFeeds = filteredFeeds.value.filter(element => {
                     const isDuplicate = uniqueIds.includes(element._id);
@@ -471,6 +472,8 @@ async function getFeeds() {
                 });
 
                 filteredFeeds.value = uniqueFeeds
+
+                console.log(uniqueFeeds[0], feeds.value)
 
                 if (filteredFeeds.value.length > 0) {
                     fetchingFeeds.value = false
@@ -642,7 +645,7 @@ function useFilters(filters) {
 
         // propertyType filter
         if (filters.propertyType.length > 0) {
-            if (filters.propertyType !== 'all') {
+            if (filters.propertyType?.toLowerCase() !== 'all') {
                 let propertyTypeFilter = filteredFeeds.value.filter(product => {
                     if (filters.propertyType === 'room and parlor') {
                         return product.type === 'room_parlor'

@@ -163,7 +163,7 @@ onMounted(() => {
         :initial="{ y: -100 }" :enter="{ y: 0 }" :tapped="{ opacity: 0, transition: { delay: 100 } }"
         v-for="notif of allNotifications.slice(0, 2)" :key="notif">
         <div class="flex-row-center h-full w-full gap-x-4">
-          <img :src="notif.img" alt="" class="rounded-2xl w-12 h-12"
+          <img :src="notif.img" alt="" class="rounded-2xl w-12 h-12 object-cover object-center"
             v-if="notif.img && notif.img.toString().includes('mp4') == false">
           <video :src="notif.img" loop preload="auto" class="rounded-2xl w-12 h-12 notif-video" v-else autoplay
             muted></video>

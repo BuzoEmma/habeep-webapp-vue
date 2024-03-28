@@ -18,7 +18,8 @@
                     <img src="../assets/icons/download-app-apple.svg" alt="">
                 </a>
 
-                <a href="https://play.google.com/store/apps/details?id=org.habeep" target="_blank" class="no-underline ">
+                <a href="https://play.google.com/store/apps/details?id=org.habeep" target="_blank"
+                    class="no-underline ">
                     <img src="../assets/icons/download-app-google.svg" alt="">
 
                 </a>
@@ -28,13 +29,13 @@
                 <span class="uppercase text-lg text-webapp cursor-pointer"
                     :class="{ 'text-blue-700': $route.fullPath.includes('blog') === true }"
                     @click="$router.push('/blog')">BLOG</span>
-                <div class="flex flex-row items-center  gap-x-2" @click="toggleNav">
+                <div class="flex flex-row items-center  gap-x-2 min-w-[40px] min-h-[40px]" @click="toggleNav">
 
                     <img src="../assets/icons/user.svg" alt="" v-if="!$store.state.isAuthenticated">
 
                     <img :src="$store.state.user.userProfileImage" class="w-10 h-10 rounded-full "
                         v-else-if="$store.state.user.userProfileImage !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
-                    <Avatar size="100%" class="w-10 h-10"
+                    <Avatar size="100%" class="w-10 h-10 min-h-[40px] min-w-[40px]"
                         v-if="$store.state.user.userProfileImage === 'https://i.ibb.co/gtpxMJz/21.png' && $store.state.isAuthenticated"
                         :fname="$store.state.user.fname" :lname="$store.state.user.surname" />
 
@@ -54,8 +55,8 @@
 
         <!-- Navigation Menu -->
 
-        <div v-if="(onNavDropdown || onMobileNav)" id="navbar" :class="{ 'right-2 top-20': onMobileNav }" v-motion-slide-top
-            :delay="200"
+        <div v-if="(onNavDropdown || onMobileNav)" id="navbar" :class="{ 'right-2 top-20': onMobileNav }"
+            v-motion-slide-top :delay="200"
             class="flex flex-col drop-shadow-lg shadow-xl nav bg-white rounded-xl border py-6 border-gray-300 absolute top-16 right-20 z-50"
             style="width: 250px">
 
@@ -64,14 +65,16 @@
                     :class="{ 'text-blue-600': $route.name === 'Home' }">Home</p>
             </div>
 
-            <div class="w-full pl-[13px] py-[11px] nav-item" v-if="$store.state.isAuthenticated && $route.name !== 'Feeds'">
+            <div class="w-full pl-[13px] py-[11px] nav-item"
+                v-if="$store.state.isAuthenticated && $route.name !== 'Feeds'">
                 <p @click="$router.push('/feeds')" class="text-sm text-webapp "
                     :class="{ 'text-blue-600': $route.name === 'Feeds' }">Feeds</p>
             </div>
 
             <div class="w-full pl-[13px] py-[11px] nav-item"
-                v-if="$route.name === 'Feeds' && $route.path === '/' && $store.state.isAuthenticated">
-                <p @click="$router.go()" class="text-sm text-webapp" :class="{ 'text-blue-600': $route.name === 'Feeds' }">
+                v-if="$route.name === 'Feeds' && $store.state.isAuthenticated">
+                <p @click="$router.go()" class="text-sm text-webapp"
+                    :class="{ 'text-blue-600': $route.name === 'Feeds' }">
                     Feeds</p>
 
             </div>
@@ -87,7 +90,8 @@
             </div>
             <div class="w-full pl-[13px] py-[11px] nav-item">
                 <p @click="$router.push('/user/profile/' + $store.state.user._id)" class="text-sm text-webapp"
-                    :class="{ 'text-blue-700': $route.name === 'User-profile' }" v-if="$store.state.isAuthenticated">Account
+                    :class="{ 'text-blue-700': $route.name === 'User-profile' }" v-if="$store.state.isAuthenticated">
+                    Account
                 </p>
             </div>
 
@@ -109,7 +113,7 @@
             </div>
 
             <div class="w-full pl-[13px] py-[11px] nav-item"
-                v-if="$store.state.isAuthenticated && ($store.state.user.role === 'TENANT' || $store.state.user.isTenant)">
+                v-if="$store.state.isAuthenticated && ($store.state.user.role === 'TENANT' || $store.state.user.isTenant) && $store.state.user.role !== 'AGENT'">
                 <p @click="$router.push('/account/IBO/category/agent')" class="text-sm text-webapp"
                     :class="{ 'text-blue-700': $route.name.includes('IBO') === true }">
                     Become an Agent</p>

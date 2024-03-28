@@ -59,7 +59,7 @@ useHead({
         { name: 'description', content: '' },
 
         { name: 'og:title', content: () => title.value },
-        { name: 'og:image', content: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
+        { name: 'og:image', content: 'https://res.cloudinary.com/dfjud30cb/image/upload/v1711364431/files/logo-white-bg.png' },
         { name: 'og:url', content: 'https://habeep.org/account/IBO/category' },
         { name: 'og:website', content: 'website' },
         { name: 'og:description', content: 'Choose from our catalogue. The plan that fits you' },

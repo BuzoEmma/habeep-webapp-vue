@@ -144,11 +144,9 @@
                                     @click="changeStateModal(state, 'state')">
                                     <p class="text-sm mb-1 text-webapp cursor-pointer"
                                         v-if="state.state.name !== 'Cross'">
-                                        {{
-                state.state.name }}</p>
-                                    <p class="text-sm mb-1 text-webapp cursor-pointer" v-else>{{ state.state.name + '
-                                        River'
-                                        }}
+                                        {{ state.state.name }}</p>
+                                    <p class="text-sm mb-1 text-webapp cursor-pointer" v-else>
+                                        {{ state.state.name + 'River' }}
                                     </p>
                                     <hr v-if="index + 1 !== states.length">
                                 </div>
@@ -281,7 +279,7 @@ if (route.query.name) {
 }
 
 const content = ref('View results for ' + route.query.name || 'All' + 'search')
-const img = ref('https://i.ibb.co/BnG8VLy/logo-white.png')
+const img = ref('https://res.cloudinary.com/dfjud30cb/image/upload/v1711364431/files/logo-white-bg.png')
 import { useHead } from '@vueuse/head'
 
 useHead({
