@@ -58,7 +58,7 @@
                             <img src="../../assets/icons/twitter.svg" alt="twitter page">
                         </div>
                     </a>
-                    <a href="https://api.whatsapp.com/send?phone=+2347088188807" target="_blank" class="cursor-pointer">
+                    <a href="https://api.whatsapp.com/send?phone=2347088188807" target="_blank" class="cursor-pointer">
                         <div class="social-media-box grid place-items-center px-10">
                             <img src="../../assets/icons/whatsapp.svg" alt="whatsapp link">
                         </div>
