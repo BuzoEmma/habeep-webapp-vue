@@ -7,14 +7,15 @@
             style="width: 220px">
             <div class="flex flex-row items-center justify-between" @click="toggleDropdown('sort')">
                 <span class="text-lg text-webapp font-medium">Sort:</span>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#71759D"
-                    class="w-6 h-6">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="#71759D" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </div>
 
             <p class="text-sm text-webapp mt-2 cursor-pointer"
-                :class="{ 'text-blue-600': filterData.sortValue === 'Recommended' }" @click="changeSortValue(1)">Recommended
+                :class="{ 'text-blue-600': filterData.sortValue === 'Recommended' }" @click="changeSortValue(1)">
+                Recommended
             </p>
             <p class="text-sm text-webapp mt-2 cursor-pointer"
                 :class="{ 'text-blue-600': filterData.sortValue === 'Newest first' }" @click="changeSortValue(2)">Newest
@@ -46,8 +47,8 @@
                     <span v-if="onState">state</span>
                     <span v-else>city</span>
                 </span>
-                <svg xmlns="http://www.w3.org/2000/svg" @click="toggleDropdown('location')" fill="none" viewBox="0 0 24 24"
-                    stroke-width="1.5" stroke="#71759D" class="w-5 h-5 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" @click="toggleDropdown('location')" fill="none"
+                    viewBox="0 0 24 24" stroke-width="1.5" stroke="#71759D" class="w-5 h-5 cursor-pointer">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </div>
@@ -80,7 +81,7 @@
                 <div class="py-2" v-for="(state, index) in states" :key="(state, index)"
                     @click="changeStateModal(state, 'state')">
                     <p class="text-sm mb-1 text-webapp cursor-pointer" v-if="state.state.name !== 'Cross'">{{
-                        state.state.name }}</p>
+        state.state.name }}</p>
                     <p class="text-sm mb-1 text-webapp cursor-pointer" v-else>{{ state.state.name + ' River' }}
                     </p>
                     <hr v-if="index + 1 !== states.length">
@@ -120,7 +121,7 @@
             </div>
             <div class="flex flex-row w-full mt-2 items-center justify-between">
                 <div
-                    class="flex flex-row items-center tabs gap-x-4 border-b flex-nowrap border-gray-200 lg:overflow-x-hidden overflow-x-scroll px-6">
+                    class="flex flex-row items-center tabs gap-x-4 border-b flex-nowrap border-gray-200 lg:overflow-x-hidden overflow-x-scroll px-6 md:px-0">
                     <img src="../assets/icons/Filter.svg" alt="" class="cursor-pointer lg:hidden"
                         @click="toggleDropdown('sort')">
                     <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg" @click="changeHouseType('all')"
@@ -131,11 +132,14 @@
                     <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg"
                         @click="changeHouseType('bungalow')"
                         :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': filterData.propertyType === 'bungalow' }">Bungalow</span>
-                    <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg" @click="changeHouseType('duplex')"
+                    <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg"
+                        @click="changeHouseType('duplex')"
                         :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': filterData.propertyType === 'duplex' }">Duplex</span>
-                    <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg" @click="changeHouseType('flat')"
+                    <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg"
+                        @click="changeHouseType('flat')"
                         :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': filterData.propertyType === 'flat' }">Flat</span>
-                    <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg" @click="changeHouseType('office')"
+                    <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg"
+                        @click="changeHouseType('office')"
                         :class="{ 'border-b-2 font-medium text-blue-600 border-b-blue-600 text-primary': filterData.propertyType === 'office' }">Office</span>
                     <span class="text-sub-webapp pb-2 cursor-pointer text-sm md:text-lg whitespace-nowrap w-full"
                         @click="changeHouseType('room_parlor')"
@@ -152,8 +156,9 @@
                     <div @click="toggleDropdown('sort')"
                         class="border border-gray-300 w-56 py-1 justify-center hidden lg:flex flex-row items-center gap-x-2 rounded-full cursor-pointer ">
                         <span class="md:text-lg text-webapp text-sm flex flex-row gap-x-1"> Sort:
-                            <span class="hidden md:flex flex-row items-center w-full flex-nowrap">{{ filterData.sortValue
-                            }}</span>
+                            <span class="hidden md:flex flex-row items-center w-full flex-nowrap">{{
+        filterData.sortValue
+    }}</span>
                         </span>
                         <svg xmlns="http://www.w3.org/2000/svg" :class="{ 'rotate-180': onSortDropdown }" fill="none"
                             viewBox="0 0 24 24" stroke-width="1.5" stroke="#9A9A9D" class="w-6 h-6">
@@ -164,8 +169,8 @@
                     <div @click="toggleDropdown('location')"
                         class="border border-gray-300 py-1 px-3 hidden lg:flex flex-row items-center gap-x-4 rounded-full cursor-pointer">
                         <span class="md:text-lg text-webapp">{{ currentCity || 'Nigeria' }}</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" :class="{ 'rotate-180': onLocationDropdown }" fill="none"
-                            viewBox="0 0 24 24" stroke-width="1.5" stroke="#9A9A9D" class="w-6 h-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" :class="{ 'rotate-180': onLocationDropdown }"
+                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#9A9A9D" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                         </svg>
                     </div>
@@ -230,9 +235,11 @@
                         </div>
                         <div class="mt-1" v-if="!onState">
                             <p class="text-sm mb-1 text-webapp cursor-pointer gap-x-2 flex flex-row">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                    stroke="currentColor" class="w-4 h-4 cursor-pointer" @click="onState = true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-4 h-4 cursor-pointer"
+                                    @click="onState = true">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15.75 19.5L8.25 12l7.5-7.5" />
                                 </svg>
 
                                 <span class="text-primary text-sm">{{ currentState }}</span>
@@ -247,9 +254,11 @@
                             </div>
                             <div class="py-2" v-for="(state, index) in states" :key="(state, index)"
                                 @click="changeStateModal(state, 'state')">
-                                <p class="text-sm mb-1 text-webapp cursor-pointer" v-if="state.state.name !== 'Cross'">{{
-                                    state.state.name }}</p>
-                                <p class="text-sm mb-1 text-webapp cursor-pointer" v-else>{{ state.state.name + ' River' }}
+                                <p class="text-sm mb-1 text-webapp cursor-pointer" v-if="state.state.name !== 'Cross'">
+                                    {{
+        state.state.name }}</p>
+                                <p class="text-sm mb-1 text-webapp cursor-pointer" v-else>{{ state.state.name + ' River'
+                                    }}
                                 </p>
                                 <hr v-if="index + 1 !== states.length">
                             </div>
@@ -270,11 +279,11 @@
 
 
             <!-- feeds sections -->
-            <div class="flex flex-row flex-auto h-full md:mt-10 w-full flex-wrap px-4" id="observer-root"
+            <div class="flex flex-row flex-auto h-full  md:mt-10 w-full flex-wrap" id="observer-root"
                 :class="{ 'justify-center items-center': filteredFeeds.length < 1 }">
 
-                <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" class="m-auto" v-if="fetchingFeeds === true" size="200px"
-                    color="#0A1045"></loader>
+                <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" class="m-auto" v-if="fetchingFeeds === true"
+                    size="200px" color="#0A1045"></loader>
 
                 <div class="flex flex-col items-center gap-y-3 md:justify-center"
                     v-if="filteredFeeds.length < 1 && !started && !fetchingFeeds">
@@ -282,7 +291,7 @@
                     <span class="text-gray-300 text-lg">No feeds for {{ filterData.propertyType }} yet</span>
                 </div>
                 <!-- listing template -->
-                <div class="basis-full md:basis-1/2 xl:basis-1/4 md:px-3 md:py-3 py-5 gap-y-4 px-0" v-else
+                <div class="basis-full md:basis-1/2 md:px-2 xl:basis-1/4 md:py-3 py-5 gap-y-4 px-5" v-else
                     v-for="feed in filteredFeeds" :key="feed">
                     <div class="flex flex-col items-start gap-y-2 border rounded-md border-gray-200 pb-2 feed relative">
                         <Skeleton v-if="!feed.imageLoaded" class=" w-full h-44 rounded-t-md" style="width: 100%" />
@@ -290,19 +299,21 @@
                             @click="$router.push('/listings/products/' + feed._id)" alt=""
                             :class="{ 'hidden': !feed.imageLoaded }" class="w-full feed-image rounded-t-md"
                             v-if="feed.images[0].link && feed.images[0].link.includes('mp4') == false">
-                        <video @touchstart="playVideo" @touchend="pauseVideo" @mouseenter="playVideo" @mouseout="pauseVideo"
-                            playsinline fetchpriority="high" :src="feed.images[0].link"
+                        <video @touchstart="playVideo" @touchend="pauseVideo" @mouseenter="playVideo"
+                            @mouseout="pauseVideo" playsinline fetchpriority="high" :src="feed.images[0].link"
                             @loadedmetadata="feed.imageLoaded = true" :class="{ 'hidden': !feed.imageLoaded }"
                             @click="$router.push('/listings/products/' + feed._id)"
-                            class="w-full rounded-t-md feed-image feed-video" v-else muted loop preload="metadata"></video>
+                            class="w-full rounded-t-md feed-image feed-video" v-else muted loop
+                            preload="metadata"></video>
                         <p class="text-webapp text-lg font-medium w-full px-2 cursor-pointer"
                             @click="$router.push('/listings/products/' + feed._id)">{{ feed.title }}</p>
 
                         <div class="location flex flex-row items-center gap-x-2 px-2"
                             @click="$router.push('/listings/products/' + feed._id)">
                             <img src="../assets/images/map-pin.png" alt="">
-                            <span class="text-sm text-webapp">{{ feed.location.city || feed.location.address.substr(0, 20)
-                            }}</span>
+                            <span class="text-sm text-webapp">{{ feed.location.city || feed.location.address.substr(0,
+        20)
+                                }}</span>
                         </div>
 
                         <div class="flex flex-row items-center w-full justify-between px-2">
@@ -313,11 +324,10 @@
                                 <span v-if="feed.for === 'rent'">Rent</span>
                                 <span v-if="feed.for === 'sale'">Sale</span>
                             </p>
-                            <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }" :delay="200"
-                                v-if="$store.state.isAuthenticated" :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }"
-                                fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                class="w-6 h-6 cursor-pointer" @click="saveAd(feed._id)"
-                                :class="{ 'text-orange-400': $store.state.user.savedAds.includes(feed._id) }">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6 cursor-pointer transition-all"
+                                @click="saveAd(feed._id)"
+                                :class="{ 'text-orange-400 scale-[1] opacity-100': $store.state.user.savedAds.includes(feed._id), 'scale-[0.8] opacity-80': !$store.state.user.savedAds.includes(feed._id) }">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                             </svg>
@@ -358,7 +368,7 @@ useHead({
         { name: 'description', content: 'Specific User Feeds' },
 
         { name: 'og:title', content: 'Feeds' },
-        { name: 'og:image', content: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
+        { name: 'og:image', content: 'https://res.cloudinary.com/dfjud30cb/image/upload/v1711364431/files/logo-white-bg.png' },
         { name: 'og:url', content: 'https://habeep.org/feeds' },
         { name: 'og:website', content: 'website' },
         { name: 'og:description', content: 'View your Feeds ' },
@@ -366,8 +376,8 @@ useHead({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }
     ],
     link: [
-        { rel: 'icon', href: 'https://i.ibb.co/j8817QB/habeep-logo-light.png', media: '(prefers-color-scheme: light)' },
-        { rel: 'icon', href: 'https://i.ibb.co/NCdCb4r/habeep-logo-dark.png', media: '(prefers-color-scheme: dark)' },
+        { rel: 'icon', href: 'https://res.cloudinary.com/dfjud30cb/image/upload/v1711364431/files/logo-white-bg.png', media: '(prefers-color-scheme: light)' },
+        { rel: 'icon', href: 'https://res.cloudinary.com/dfjud30cb/image/upload/v1711364476/files/logo-dark-bg.png', media: '(prefers-color-scheme: dark)' },
     ]
 })
 
@@ -431,7 +441,6 @@ async function getFeeds() {
         const getFeeds = await axios.get(url)
 
         if (getFeeds.data) {
-            // let hasVideo = false
             for (const feed of getFeeds.data.feed) {
                 if (feed) {
                     const distance = await calculateDistance(feed.location.city || feed.location.address + ', ' + store.state.user.nationality)
@@ -439,13 +448,18 @@ async function getFeeds() {
                         feed.distance = distance
                     }
                 }
-                feeds.value.push(feed)
+                // location filter
+                if (filterData.location.state.length > 0 && filterData.location.city.length > 0) {
+                    if (feed.location.city.toLowerCase().includes(filterData.location.city.toLowerCase()) || feed.location.city.toLowerCase().includes(filterData.location.city.split(' ')[0].toString().toLowerCase()) || filterData.location.city.toLowerCase().includes(filterData.location.state.split(' ')[0].toString().toLowerCase())) {
+                        feeds.value.push(feed)
+                        filteredFeeds.value.push(feed)
+                    }
+                } else {
+                    feeds.value.push(feed)
+                    filteredFeeds.value.push(feed)
+                }
 
-                // if (feed.images[0].link.includes('.mp4')) {
-                //     hasVideo = true
-                // }
 
-                filteredFeeds.value.push(feed)
                 const uniqueIds = [];
                 const uniqueFeeds = filteredFeeds.value.filter(element => {
                     const isDuplicate = uniqueIds.includes(element._id);
@@ -456,7 +470,9 @@ async function getFeeds() {
                     return false;
                 });
 
-                filteredFeeds.value = uniqueFeeds
+                if (filteredFeeds.value.length !== uniqueFeeds.length) {
+                    filteredFeeds.value = uniqueFeeds
+                }
 
                 if (filteredFeeds.value.length > 0) {
                     fetchingFeeds.value = false
@@ -508,11 +524,15 @@ function changeStateModal(state, type) {
     } else {
         onDropdown.value = false
         onLocationDropdown.value = false
-        currentState.value = state
-        currentCity.value = state
+        currentState.value = 'All'
+        currentCity.value = 'All'
         onState.value = true
         filterData.location.state = ''
         filterData.location.city = ''
+
+        saveFeedLocation()
+
+
     }
 
     useFilters(filterData)
@@ -615,7 +635,8 @@ function useFilters(filters) {
     if (feeds.value.length > 0) {
         filteredFeeds.value = feeds.value
         // location filter
-        if (filters.location.state.length > 0 && filters.location.city.length > 0) {
+
+        if (filters.location.state !== 'All' && filters.location.state.length > 0 && filters.location.city.length > 0) {
             let locationFilter = filteredFeeds.value.filter(product => {
                 return product.location.city.toLowerCase().includes(filters.location.city.toLowerCase()) || product.location.city.toLowerCase().includes(filters.location.city.split(' ')[0].toString().toLowerCase()) || product.location.city.toLowerCase().includes(filters.location.state.split(' ')[0].toString().toLowerCase())
             })
@@ -624,7 +645,7 @@ function useFilters(filters) {
 
         // propertyType filter
         if (filters.propertyType.length > 0) {
-            if (filters.propertyType !== 'all') {
+            if (filters.propertyType?.toLowerCase() !== 'all') {
                 let propertyTypeFilter = filteredFeeds.value.filter(product => {
                     if (filters.propertyType === 'room and parlor') {
                         return product.type === 'room_parlor'
@@ -654,6 +675,7 @@ function useFilters(filters) {
                 filteredFeeds.value = sortedArray
             }
         }
+
 
         const uniqueIds = [];
         const uniqueFeeds = filteredFeeds.value.filter(element => {

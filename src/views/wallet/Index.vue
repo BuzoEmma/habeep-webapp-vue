@@ -6,14 +6,15 @@
             v-if="depositModal" @close="closeModal" />
         <Withdraw v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }"
             :walletData="walletData" :amount="withdrawAmount" v-if="withdrawalModal" @close="closeModal" />
-        <SwapModal v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }" v-if="swapModal"
-            @close="closeModal" />
+        <SwapModal v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }"
+            v-if="swapModal" @close="closeModal" />
         <ChooseMethod v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }"
             :walletData="walletData" v-if="chooseWithdrawalMethodModal" @close="closeModal"
             @gotoWithdrawal="openWithdrawalModal" />
 
         <DepositHBP v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }"
-            :wallet="tokenWallet" v-if="depositHBPModal" @close="closeModal" @gotoDeposit="openNewModal('depositModal')" />
+            :wallet="tokenWallet" v-if="depositHBPModal" @close="closeModal"
+            @gotoDeposit="openNewModal('depositModal')" />
         <SwapHBP v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }"
             :wallet="tokenWallet" v-if="swapHBPModal" @close="closeModal" />
         <TransferHBP v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }"
@@ -39,11 +40,13 @@
 
             <div class="flex flex-row items-center mt-6 ml-7 ">
                 <div class="cursor-pointer flex flex-row items-center justify-center w-24 py-4 pb-1"
-                    @click="changeWalletTab(1)" :class="{ 'text-blue-600 border-b-blue-700 border-b-2': walletTab === 1 }">
+                    @click="changeWalletTab(1)"
+                    :class="{ 'text-blue-600 border-b-blue-700 border-b-2': walletTab === 1 }">
                     {{ $store.state.user.currency }}
                 </div>
                 <div class="cursor-pointer flex flex-row items-center justify-center w-24 pb-1 py-4"
-                    @click="changeWalletTab(2)" :class="{ 'text-blue-600 border-b-blue-700 border-b-2': walletTab === 2 }">
+                    @click="changeWalletTab(2)"
+                    :class="{ 'text-blue-600 border-b-blue-700 border-b-2': walletTab === 2 }">
                     HBP
                 </div>
             </div>
@@ -62,11 +65,11 @@ import { useHead } from '@vueuse/head'
 useHead({
     meta: [
         { charset: 'utf-8' },
-        { name: 'og:image', content: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
+        { name: 'og:image', content: 'https://res.cloudinary.com/dfjud30cb/image/upload/v1711364431/files/logo-white-bg.png' },
     ],
     link: [
-        { rel: 'icon', href: 'https://i.ibb.co/j8817QB/habeep-logo-light.png', media: '(prefers-color-scheme: light)' },
-        { rel: 'icon', href: 'https://i.ibb.co/NCdCb4r/habeep-logo-dark.png', media: '(prefers-color-scheme: dark)' },
+        { rel: 'icon', href: 'https://res.cloudinary.com/dfjud30cb/image/upload/v1711364431/files/logo-white-bg.png', media: '(prefers-color-scheme: light)' },
+        { rel: 'icon', href: 'https://res.cloudinary.com/dfjud30cb/image/upload/v1711364476/files/logo-dark-bg.png', media: '(prefers-color-scheme: dark)' },
     ]
 })
 

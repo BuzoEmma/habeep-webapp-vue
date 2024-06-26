@@ -1,5 +1,5 @@
 <template>
-    <div class="main flex flex-col items-center z-20 gap-y-5 overflow-hidden my-auto mx-auto bg-white">
+    <div class="main  flex flex-col items-center z-20 gap-y-5 overflow-hidden my-auto mx-auto bg-white">
         <div class="flex flex-row items-center justify-between w-full px-4 py-4 border-b border-b-gray-100">
             <div class="flex flex-row items-center gap-x-3">
                 <svg xmlns="http://www.w3.org/2000/svg" @click="$emit('close')" fill="none" viewBox="0 0 24 24"
@@ -85,6 +85,7 @@ const copyLink = (code) => {
 @media screen and (max-width: 600px) {
     .main {
         width: 100%;
+        border-radius: 0px;
         height: 100%;
         position: absolute;
     }

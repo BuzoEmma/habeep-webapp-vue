@@ -2,13 +2,23 @@
     <div class="fixed w-screen h-full mx-auto top-0 opacity-50 overflow-hidden" v-if="onModal" style="background: #161622">
     </div>
 
-    <!-- <div class="w-screen h-screen flex-col flex items-center justify-center">
-        </div> -->
+    <div class="product-share w-full h-full absolute flex flex-col items-center md:justify-center justify-end z-50 overflow-hidden backdrop-blur-md bg-black bg-opacity-10"
+        v-if="onProductShare === true">
+        <ShareModal class="md:flex hidden" v-motion-fade :user="{
+            username: agentDetails.name.username,
+            userProfileImage: agentDetails.profileImg
+        }" @end-share="onProductShare = false" />
+        <ShareModal class="flex md:hidden" v-motion-slide-bottom :user="{
+            username: agentDetails.name.username,
+            userProfileImage: agentDetails.profileImg
+        }" @end-share="onProductShare = false" />
+    </div>
 
     <div class="w-full min-h-screen flex-col h-screen flex items-center justify-center">
         <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" v-if="!agentDetails.userId" size="200px" color="#0A1045"></loader>
         <div class="w-screen min-w-full flex flex-col items-center bg-white h-full min-h-screen overflow-y-auto" v-else
-            :class="{ 'max-h-screen overflow-y-hidden': onModal }" resize="changeWidth">
+            :class="{ 'max-h-screen overflow-y-hidden': onModal, 'overflow-y-hidden h-screen no-scroll-btn': onProductShare }"
+            resize="changeWidth">
             <MainNavbar v-if="(screenWidth > 767)" />
 
             <div class="flex flex-row items-center justify-between w-full px-6 2xl:px-44 md:px-20 my-4" v-else>
@@ -101,12 +111,10 @@
                             Profile</button>
                     </div>
                     <div class="flex flex-row items-center w-full mt-4 xl:mt-3 ">
-                        <ShareNetwork :popup="{ width: 400, height: 200 }" network="whatsapp" class="w-full"
-                            :url="'https://habeep.org/' + agentDetails.name.username" title="Share this profile">
-                            <button
-                                class="agent-btn flex flex-row items-center justify-center text-sm font-medium text-primary bg-white w-full">Share
-                                Profile</button>
-                        </ShareNetwork>
+
+                        <button @click="startProductShare"
+                            class="agent-btn flex flex-row items-center justify-center text-sm font-medium text-primary bg-white w-full">Share
+                            Profile</button>
                     </div>
                 </div>
 
@@ -142,10 +150,11 @@
                                         :src="ad.images[0].link" class="w-full h-full rounded-t-md feed-image"
                                         v-if="ad.images && ad.images[0] && ad.images[0].link.includes('mp4') == false"
                                         alt="">
-                                    <video :poster="ad.images[0].thumbnail" :alt="ad.title"
+                                    <video :poster="ad.images[0].thumbnail" :alt="ad.title" @touchstart="playVideo"
+                                        @touchend="pauseVideo" @mouseenter="playVideo" @mouseout="pauseVideo"
                                         @click="$router.push('/listings/products/' + ad._id)"
                                         :src="ad.images && ad.images[0] && ad.images[0].link"
-                                        class="w-full rounded-t-md feed-image" v-else autoplay muted></video>
+                                        class="w-full rounded-t-md feed-image" v-else muted></video>
                                     <p class="text-webapp text-lg font-medium w-full px-3 cursor-pointer"
                                         @click="$router.push('/listings/products/' + ad._id)">
                                         {{ ad.title }}
@@ -164,12 +173,10 @@
                                             <PriceFormatter :from="ad.priceCurrency" :to="country.currency"
                                                 :amount="ad.price" />
                                         </span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
-                                            v-if="$store.state.isAuthenticated"
-                                            :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6 cursor-pointer"
-                                            @click="saveAd(ad._id)"
-                                            :class="{ 'text-orange-400': $store.state.user.savedAds.includes(ad._id) }">
+                                        <svg xmlns="http://www.w3.org/2000/svg" v-if="$store.state.isAuthenticated"
+                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                            class="w-6 h-6 cursor-pointer transition-all" @click="saveAd(ad._id)"
+                                            :class="{ 'text-orange-400 scale-[1] opacity-100': $store.state.user.savedAds.includes(ad._id), 'scale-[0.8] opacity-80': !$store.state.user.savedAds.includes(ad._id) }">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                                         </svg>
@@ -204,9 +211,10 @@
                                     <img :alt="ad.title" @click="$router.push('/listings/products/' + ad._id)"
                                         :src="ad.images[0].link" class="w-full h-full rounded-t-md feed-image"
                                         v-if="ad.images[0].link.includes('mp4') == false" alt="">
-                                    <video :poster="ad.images[0].thumbnail" :alt="ad.title"
+                                    <video :poster="ad.images[0].thumbnail" :alt="ad.title" @touchstart="playVideo"
+                                        @touchend="pauseVideo" @mouseenter="playVideo" @mouseout="pauseVideo"
                                         @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
-                                        class="w-full rounded-t-md feed-image" v-else autoplay muted></video>
+                                        class="w-full rounded-t-md feed-image" v-else muted></video>
                                     <p class="text-webapp text-lg font-medium w-full px-3 cursor-pointer"
                                         @click="$router.push('/listings/products/' + ad._id)">
                                         {{ ad.title }}
@@ -225,12 +233,10 @@
                                             <PriceFormatter :from="ad.priceCurrency" :to="country.currency"
                                                 :amount="ad.price" />
                                         </span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
-                                            v-if="$store.state.isAuthenticated"
-                                            :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6 cursor-pointer"
-                                            @click="saveAd(ad._id)"
-                                            :class="{ 'text-orange-400': $store.state.user.savedAds.includes(ad._id) }">
+                                        <svg xmlns="http://www.w3.org/2000/svg" v-if="$store.state.isAuthenticated"
+                                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                            class="w-6 h-6 cursor-pointer transition-all" @click="saveAd(ad._id)"
+                                            :class="{ 'text-orange-400 scale-[1] opacity-100': $store.state.user.savedAds.includes(ad._id), 'scale-[0.8] opacity-80 ': !$store.state.user.savedAds.includes(ad._id) }">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                                         </svg>
@@ -264,6 +270,7 @@ import Followers from './components/modal/Followers.vue'
 import axios from "../../../composables/axios";
 import formatNumber from "number_formatter"
 import saveAd from '../../../composables/saveAd'
+import ShareModal from './components/ShareModal.vue'
 import calculateDistance from '../../../composables/getAdDistance.js'
 import { useStore } from 'vuex';
 import axiosDefault from 'axios'
@@ -446,6 +453,31 @@ async function manageAgentFollow() {
         await axios.post('/profile/follows/update', data)
     }
 }
+
+
+// product share
+const onProductShare = ref(false)
+
+function startProductShare() {
+    closeModal()
+    onProductShare.value = true
+}
+
+
+// manage video
+
+async function playVideo(e) {
+    if (e.target) {
+        await e.target.play()
+    }
+}
+async function pauseVideo(e) {
+    if (e.target) {
+        await e.target.pause()
+    }
+}
+
+
 
 onMounted(() => {
     getResidence()

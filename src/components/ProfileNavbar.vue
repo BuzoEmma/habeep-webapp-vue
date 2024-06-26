@@ -4,21 +4,22 @@
         style="background: #161622"></div>
 
     <div
-        class="flex flex-row items-center relative py-4 justify-between w-full px-6 2xl:px-44 md:px-20 border-b border-b-textfieldbg">
-        <div class="logo flex flex-row items-center gap-x-2 " @click="$router.push('/feeds')">
-            <img src="../assets/icons/logo.svg" alt="Logo">
-            <span class="text-primary text-2xl">Habeep</span>
+        class="flex flex-row items-center relative py-4 justify-between w-full px-6 2xl:px-44 border-b border-b-textfieldbg">
+        <div class="logo flex flex-row items-center gap-x-2 cursor-pointer">
+            <img @click="$router.go()" src="../assets/icons/logo.svg" alt="Logo">
+            <span @click="$router.push('/')" class="text-primary text-2xl">Habeep</span>
         </div>
 
         <div
             class="search-bar lg:flex hidden w-1/4 flex-row rounded-full border border-gray-300 items-center  pl-3 pr-1 h-9 py-1 gap-x-4">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="#B1B4CD"
-                class="w-4 h-4 mt-1">
+                class="w-6 h-6 mt-1">
                 <path stroke-linecap="round" stroke-linejoin="round"
                     d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
             </svg>
 
-            <input type="text" class="w-full h-full bg-transparent" placeholder="Search">
+            <input type="text" class="w-full h-full bg-transparent" v-model="searchInput"
+                @input="$emit('search', searchInput)" @keydown="checkForEnter" placeholder="Search">
         </div>
 
         <div class=" flex-row items-center w-fit gap-x-6 divide-x md:flex hidden">
@@ -29,7 +30,8 @@
                     <img src="../assets/icons/download-app-apple.svg" alt="">
                 </a>
 
-                <a href="https://play.google.com/store/apps/details?id=org.habeep" target="_blank" class="no-underline ">
+                <a href="https://play.google.com/store/apps/details?id=org.habeep" target="_blank"
+                    class="no-underline ">
                     <img src="../assets/icons/download-app-google.svg" alt="">
 
                 </a>
@@ -40,15 +42,15 @@
                 <span class="uppercase text-lg text-webapp cursor-pointer"
                     :class="{ 'text-blue-700': $route.fullPath.includes('blog') === true }"
                     @click="$router.push('/blog')">BLOG</span>
-                <div class="flex flex-row items-center  gap-x-2" @click="toggleNav">
+                <div class="flex flex-row items-center  gap-x-2 min-w-[40px] min-h-[40px]" @click="toggleNav">
                     <img src="../assets/icons/user.svg" alt="" v-if="!$store.state.isAuthenticated">
                     <img :src="$store.state.user.userProfileImage" class="w-10 h-10 rounded-full "
                         v-else-if="$store.state.user.userProfileImage !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
-                    <Avatar size="100%" class="w-10 h-10"
+                    <Avatar size="100%" class="w-10 h-10 min-w-[40px] min-h-[40px]"
                         v-if="$store.state.user.userProfileImage === 'https://i.ibb.co/gtpxMJz/21.png' && $store.state.isAuthenticated"
                         :fname="$store.state.user.fname" :lname="$store.state.user.surname" />
                     <svg xmlns="http://www.w3.org/2000/svg" :class="{ 'rotate-180': onNavDropdown }" fill="none"
-                        viewBox="0 0 24 24" stroke-width="2" stroke="#0A1045" class="w-5 h-5">
+                        viewBox="0 0 24 24" stroke-width="2" stroke="#0A1045" class="w-5 h-5 transition-all">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                     </svg>
                 </div>
@@ -90,7 +92,8 @@
             </div>
             <div class="w-full pl-[13px] py-[11px] nav-item">
                 <p @click="$router.push('/user/profile/' + $store.state.user._id)" class="text-sm text-webapp"
-                    :class="{ 'text-blue-700': $route.name === 'User-profile' }" v-if="$store.state.isAuthenticated">Account
+                    :class="{ 'text-blue-700': $route.name === 'User-profile' }" v-if="$store.state.isAuthenticated">
+                    Account
                 </p>
             </div>
 
@@ -111,7 +114,7 @@
             </div>
 
             <div class="w-full pl-[13px] py-[11px] nav-item"
-                v-if="$store.state.isAuthenticated && ($store.state.user.role === 'TENANT' || $store.state.user.isTenant)">
+                v-if="$store.state.isAuthenticated && ($store.state.user.role === 'TENANT' || $store.state.user.isTenant) && $store.state.user.role !== 'AGENT'">
                 <p @click="$router.push('/account/IBO/category/agent')" class="text-sm text-webapp"
                     :class="{ 'text-blue-700': $route.name.includes('IBO') === true }">
                     Become an Agent</p>
@@ -148,6 +151,8 @@ import { useStore } from 'vuex'
 const onNavDropdown = ref(false)
 const onMobileNav = ref(false)
 
+let searchInput = ref('')
+
 const store = useStore()
 
 store.commit('changeNavState', false)
@@ -159,6 +164,16 @@ function toggleNav() {
 function toggleMobileNav() {
     onMobileNav.value = !onMobileNav.value
     store.commit('changeNavState', onMobileNav.value)
+}
+
+
+const checkForEnter = (e) => {
+    var key = e.keyCode || e.charCode || e.key || e.code;
+    if (key == 13 || key == 'Enter') {
+        if (route.path !== '/listings/search') {
+            router.push('/listings/search?name=' + searchInput.value)
+        }
+    }
 }
 </script>
 

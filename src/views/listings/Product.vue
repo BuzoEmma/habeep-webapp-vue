@@ -1,7 +1,14 @@
 <template>
+    <div class="product-share w-full h-full absolute flex flex-col items-center md:justify-center justify-end z-50 overflow-hidden backdrop-blur-md bg-black bg-opacity-10"
+        v-if="onProductShare === true">
+        <ShareModal class="md:flex hidden" v-motion-fade :product="product" @end-share="onProductShare = false" />
+        <ShareModal class="flex md:hidden" v-motion-slide-bottom :product="product" @end-share="onProductShare = false" />
+    </div>
+
+
     <div v-if="!onImageViewer"
         class="w-screen min-w-full flex flex-col items-center bg-white h-full min-h-screen overflow-y-auto scroll-smooth"
-        @resize="changeWidth">
+        @resize="changeWidth" :class="{ 'overflow-y-hidden h-screen': onProductShare }">
         <MainNavbar v-if="(screenWidth > 767)" />
 
         <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" v-if="!processingProduct || !product.price" class="m-auto"
@@ -24,19 +31,14 @@
                     <div class="w-full absolute flex flex-row top-5 items-center justify-between px-2">
                         <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
                         <div class="flex flex-row gap-x-3 items-center">
-                            <ShareNetwork network="whatsapp" popup.width="500px" popup.height="500px"
-                                :url="'https://habeep.org' + $route.fullPath"
-                                :title="'Purchase this awesome house now at an affordable rate'"
-                                :description="product.description" :media="product.images[0].link">
-                                <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
-                            </ShareNetwork>
+                            <img @click="startProductShare" src="../../assets/icons/share.svg" class="cursor-pointer"
+                                alt="">
                             <div class="grid place-items-center relative p-1" v-if="$store.state.isAuthenticated">
                                 <img src="../../assets/icons/heart.svg" class="cursor-pointer" alt="">
-                                <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
-                                    :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor"
-                                    class="w-6 h-6 absolute top-3 text-white cursor-pointer" @click="saveAd(product._id)"
-                                    :class="{ 'text-orange-400': $store.state.user.savedAds.includes(product._id) }">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor" class="w-6 h-6 absolute top-3 cursor-pointer transition-all"
+                                    @click="saveAd(product._id)"
+                                    :class="{ 'text-orange-400 scale-[1] opacity-100': $store.state.user.savedAds.includes(product._id), 'scale-[0.8] opacity-80 text-white': !$store.state.user.savedAds.includes(product._id) }">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                                 </svg>
@@ -55,9 +57,11 @@
                                 class=" h-full w-full rounded-lg feed-image-short"
                                 v-if="image.link && image.link.toString().includes('.mp4') === false"
                                 @click="enterImageViewer()" :key="image">
-                            <video :poster="image.thumbnail" :alt="product.title" @loadedmetadata="image.imageLoaded = true"
-                                :class="{ 'hidden': !image.imageLoaded }" :src="image.link" @click="enterImageViewer()" loop
-                                class="w-full rounded-lg feed-image-short" v-else autoplay muted preload="metadata"></video>
+                            <video :poster="image.thumbnail" @touchstart="playVideo" @touchend="pauseVideo"
+                                @mouseenter="playVideo" @mouseout="pauseVideo" :alt="product.title"
+                                @loadedmetadata="image.imageLoaded = true" :class="{ 'hidden': !image.imageLoaded }"
+                                :src="image.link" @click="enterImageViewer()" loop
+                                class="w-full rounded-lg feed-image-short" v-else muted preload="metadata"></video>
                         </div>
                     </div>
                     <div class=" flex flex-row h-1/2 w-full items-center gap-2">
@@ -68,9 +72,11 @@
                                 :class="{ 'hidden': !image.imageLoaded }" class=" h-full w-full rounded-md feed-image-short"
                                 v-if="image.link && image.link.toString().includes('.mp4') == false"
                                 @click="enterImageViewer()" :alt="product.title">
-                            <video :poster="image.thumbnail" :alt="product.title" @loadedmetadata="image.imageLoaded = true"
-                                :class="{ 'hidden': !image.imageLoaded }" :src="image.link" @click="enterImageViewer()" loop
-                                class="w-full rounded-md feed-image-short" v-else autoplay muted preload="metadata"></video>
+                            <video :poster="image.thumbnail" @touchstart="playVideo" @touchend="pauseVideo"
+                                @mouseenter="playVideo" @mouseout="pauseVideo" :alt="product.title"
+                                @loadedmetadata="image.imageLoaded = true" :class="{ 'hidden': !image.imageLoaded }"
+                                :src="image.link" @click="enterImageViewer()" loop
+                                class="w-full rounded-md feed-image-short" v-else muted preload="metadata"></video>
                         </div>
                     </div>
                 </div>
@@ -83,19 +89,14 @@
                 <div class="w-full absolute flex flex-row top-5 items-center justify-between md:px-8 px-2 z-10">
                     <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
                     <div class="flex flex-row gap-x-3 items-center">
-                        <ShareNetwork :popup="{ width: 400, height: 200 }" network="whatsapp"
-                            :url="'https://habeep.org' + $route.fullPath" :title="product.title"
-                            :description="product.description" :media="product.images[0].link">
-                            <img src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
-                        </ShareNetwork>
+                        <img @click="startProductShare" src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
 
                         <div class="grid place-items-center relative" v-if="$store.state.isAuthenticated">
                             <img src="../../assets/icons/heart.svg" class="cursor-pointer" alt="">
-                            <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
-                                v-if="$store.state.isAuthenticated" :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }"
-                                fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                class="w-6 h-6 absolute top-2 text-white cursor-pointer" @click="saveAd(product._id)"
-                                :class="{ 'text-orange-400': $store.state.user.savedAds.includes(product._id) }">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6 absolute top-3 cursor-pointer transition-all"
+                                @click="saveAd(product._id)"
+                                :class="{ 'text-orange-400 scale-[1] opacity-100': $store.state.user.savedAds.includes(product._id), 'scale-[0.8] opacity-80 text-white': !$store.state.user.savedAds.includes(product._id) }">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                             </svg>
@@ -337,10 +338,19 @@
                     <h3 class="text-lg font-medium text-webapp">Description</h3>
 
                     <article class="text-sub-webapp text-sm text-left mt-1 xl:mt-3">
-                        <pre class="w-full whitespace-pre-wrap"
-                            v-if="!openFullDesc">{{ product.description.slice(0, 250) }}<span class="text-primary" v-if="product.description.length > 250" @click="openFullDesc = true">... Read more</span></pre>
-                        <pre class="w-full whitespace-pre-wrap"
-                            v-else>{{ product.description }} <span class="text-primary" v-if="product.description.length > 250" @click="openFullDesc = false">..Hide</span></pre>
+                        <div v-if="!openFullDesc">
+                            <pre class="w-full whitespace-pre-wrap">
+                                {{ product.description.slice(0, 250) }}
+                                <!-- <span class="inner-pre" style="font-size: 7px !important">{{ product.description.slice(0, 250) }}</span> -->
+                            </pre>
+                            <span class="text-primary" v-if="product.description.length > 250"
+                                @click="openFullDesc = true">... Read more</span>
+                        </div>
+                        <div v-else>
+                            <pre class="w-full whitespace-pre-wrap">{{ product.description }} </pre>
+                            <span class="text-primary" v-if="product.description.length > 250"
+                                @click="openFullDesc = false">..Hide</span>
+                        </div>
                     </article>
 
 
@@ -429,6 +439,7 @@ const img = ref('')
 // https://logos.flamingtext.com/Word-Logos/property-design-sketch-name.png
 
 import { useHead } from '@vueuse/head'
+import ShareModal from './components/ShareModal.vue';
 
 useHead({
     title: () => title.value,
@@ -608,7 +619,6 @@ async function createChatRoom() {
         }
     } catch (error) {
         creatingRoom.value = false
-        console.log(error)
     }
 }
 
@@ -658,6 +668,28 @@ function changeWidth() {
     screenWidth.value = window.innerWidth
 }
 
+// manage video
+
+async function playVideo(e) {
+    if (e.target) {
+        await e.target.play()
+    }
+}
+async function pauseVideo(e) {
+    if (e.target) {
+        await e.target.pause()
+    }
+}
+
+
+// product share
+const onProductShare = ref(false)
+
+function startProductShare() {
+    exitImageViewer()
+    onProductShare.value = true
+}
+
 onMounted(() => {
     getResidence()
     getProduct()
@@ -665,6 +697,17 @@ onMounted(() => {
 </script>
 
 <style scoped>
+pre {
+    font-family: 'Aeonik', sans-serif;
+    white-space: pre-wrap;
+    display: block;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 26px;
+    letter-spacing: -0.01px;
+}
+
 .product-img-grid {
     max-height: 538px;
     height: 538px;

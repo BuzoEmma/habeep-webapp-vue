@@ -2,12 +2,13 @@
     <div v-bind:style="styles" class="spinner spinner--socker">
         <div v-bind:style="innerStyles" class="spinner-inner">
             <div class="cube panelLoad">
-                <div v-for="{ side, letter } of faces" :key="side" :class="`cube-face cube-face-${side}`">{{ letter }}</div>
+                <div v-for="{ side, letter } of faces" :key="side" :class="`cube-face cube-face-${side}`">{{ letter }}
+                </div>
             </div>
         </div>
     </div>
 </template>
-  
+
 <script>
 export default {
     props: {
@@ -48,7 +49,7 @@ export default {
     }
 }
 </script>
-  
+
 <style scoped>
 .spinner {
     overflow: hidden;
@@ -78,7 +79,7 @@ export default {
 .cube.panelLoad {
     z-index: 11;
     top: 50%;
-    animation: letter-cube-panel 2.2s infinite forwards;
+    animation: letter-cube-panel 5s infinite forwards;
 
 }
 

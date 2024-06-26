@@ -25,19 +25,21 @@
                     @click="$router.push('/account/IBO/category/agent')" style="background: #F9FAFF">
                     <img src="../../../../assets/icons/agent-ibo.svg" alt="">
 
-                    <span class="text-primary font-xl font-medium">Agent</span>
+                    <span class="text-primary font-xl font-medium">Become an Agent</span>
 
-                    <p class="text-sm text-webapp text-left w-full">Build your own financial wealth by owning your affiliate
-                        business. Click to join the Agent and start earning</p>
+                    <p class="text-sm text-webapp text-left w-full">Build your own financial wealth by owning your
+                        affiliate
+                        business. Click to join the agent IBO and start earning</p>
                 </div>
                 <div class="border-2 border-gray-200 w-full flex flex-col items-start p-5 gap-y-4 mt-10 rounded-lg cursor-pointer"
                     @click="$router.push('/account/IBO/category/user')" style="background: #F7F7F7;">
                     <img src="../../../../assets/icons/user-ibo.svg" alt="">
 
-                    <span class="text-primary font-xl font-medium">Tenant</span>
+                    <span class="text-primary font-xl font-medium">Become a tenant</span>
 
-                    <p class="text-sm text-webapp text-left w-full">Become a Tenant and earn with us. Join the affiliate
-                        network as an independent user </p>
+                    <p class="text-sm text-webapp text-left w-full">Become a tenant, save your rent, and have access to
+                        rent
+                        loans. </p>
                 </div>
             </div>
         </div>
@@ -57,7 +59,7 @@ useHead({
         { name: 'description', content: '' },
 
         { name: 'og:title', content: () => title.value },
-        { name: 'og:image', content: 'https://i.ibb.co/BnG8VLy/logo-white.png' },
+        { name: 'og:image', content: 'https://res.cloudinary.com/dfjud30cb/image/upload/v1711364431/files/logo-white-bg.png' },
         { name: 'og:url', content: 'https://habeep.org/account/IBO/category' },
         { name: 'og:website', content: 'website' },
         { name: 'og:description', content: 'Choose from our catalogue. The plan that fits you' },
@@ -65,8 +67,8 @@ useHead({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }
     ],
     link: [
-        { rel: 'icon', href: 'https://i.ibb.co/j8817QB/habeep-logo-light.png', media: '(prefers-color-scheme: light)' },
-        { rel: 'icon', href: 'https://i.ibb.co/NCdCb4r/habeep-logo-dark.png', media: '(prefers-color-scheme: dark)' },
+        { rel: 'icon', href: 'https://res.cloudinary.com/dfjud30cb/image/upload/v1711364431/files/logo-white-bg.png', media: '(prefers-color-scheme: light)' },
+        { rel: 'icon', href: 'https://res.cloudinary.com/dfjud30cb/image/upload/v1711364476/files/logo-dark-bg.png', media: '(prefers-color-scheme: dark)' },
     ]
 })
 </script>
@@ -100,4 +102,5 @@ input:focus {
 .form-container::-webkit-scrollbar-thumb {
     background: #0f154d;
     border-radius: 8px;
-}</style>
+}
+</style>

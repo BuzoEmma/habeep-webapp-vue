@@ -28,11 +28,10 @@
                             </ShareNetwork>
                             <div class="grid place-items-center relative p-1" v-if="$store.state.isAuthenticated">
                                 <img src="../../assets/icons/heart.svg" class="cursor-pointer" alt="">
-                                <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
-                                    :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor"
-                                    class="w-6 h-6 absolute top-3 text-white cursor-pointer" @click="saveAd(product._id)"
-                                    :class="{ 'text-orange-400': $store.state.user.savedAds.includes(product._id) }">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor" class="w-6 h-6 absolute top-3 cursor-pointer transition-all"
+                                    @click="saveAd(product._id)"
+                                    :class="{ 'text-orange-400 scale-[1] opacity-100': $store.state.user.savedAds.includes(product._id), 'scale-[0.8] opacity-80 text-white': !$store.state.user.savedAds.includes(product._id) }">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                                 </svg>
@@ -81,11 +80,10 @@
 
                         <div class="grid place-items-center relative" v-if="$store.state.isAuthenticated">
                             <img src="../../assets/icons/heart.svg" class="cursor-pointer" alt="">
-                            <svg xmlns="http://www.w3.org/2000/svg" v-motion :initial="{ opacity: 0.8 }"
-                                v-if="$store.state.isAuthenticated" :tapped="{ opacity: 1, y: 0, x: 0, scale: 1.2 }"
-                                fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                class="w-6 h-6 absolute top-2 text-white cursor-pointer" @click="saveAd(product._id)"
-                                :class="{ 'text-orange-400': $store.state.user.savedAds.includes(product._id) }">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6 absolute top-3 cursor-pointer transition-all"
+                                @click="saveAd(product._id)"
+                                :class="{ 'text-orange-400 scale-[1] opacity-100': $store.state.user.savedAds.includes(product._id), 'scale-[0.8] opacity-80 text-white': !$store.state.user.savedAds.includes(product._id) }">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                             </svg>
