@@ -72,7 +72,7 @@
     <!-- iLLUSTRATIONS ?  Footer-->
     <div class="flex flex-row items-end xl:justify-between justify-center w-full z-10">
       <img v-lazy src="../assets/illustrations/home-left.svg" class="xl:flex hidden" alt="">
-      <div class="flex flex-row md:mb-10 mb-4 items-center gap-x-4">
+      <div class="flex flex-row md:mb-8 mb-4 items-center gap-x-4">
         <router-link to="/terms-of-service" class="underline text-webapp">Terms of service</router-link>
         <router-link to="/listings/search?name=Houses" class="underline text-webapp">Products</router-link>
         <router-link to="/help" class="underline text-webapp">Help</router-link>
