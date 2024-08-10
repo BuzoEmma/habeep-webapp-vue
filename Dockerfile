@@ -2,12 +2,9 @@ FROM node:lts-alpine
 
 WORKDIR /habeep/habeep-webapp
 
-COPY ./dist ./
+COPY package*.json ./
 
-COPY ./sitemap.xml ./
-COPY ./robots.txt ./
-COPY ./_headers ./
-
+COPY . ./
 
 RUN ls -la
 
