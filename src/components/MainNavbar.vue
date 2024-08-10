@@ -10,6 +10,8 @@
             <span @click="$router.push('/')" class="text-primary text-2xl">Habeep</span>
         </div>
 
+          <div class="absolute w-screen h-screen top-2 opacity-50 -ml-[10rem]" @click="toggleNav" v-if="onNavDropdown"></div>
+
         <div
             class="search-bar lg:flex hidden w-1/4 flex-row rounded-full border border-gray-300 items-center  pl-3 pr-1 h-9 py-1 gap-x-4">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1" stroke="#B1B4CD"
@@ -27,12 +29,21 @@
             <div class="flex flex-row items-center gap-x-5">
 
                 <a href="https://apps.apple.com/us/app/habeep/id6450388013" target="_blank" class="no-underline ">
-                    <img src="../assets/icons/download-app-apple.svg" alt="">
+                    <img src="../assets/icons/download-app-apple2.svg"       style="
+            outline: 2px solid #1b49ff;
+            border-radius: 7px;
+          " alt="">
                 </a>
 
                 <a href="https://play.google.com/store/apps/details?id=org.habeep" target="_blank"
                     class="no-underline ">
-                    <img src="../assets/icons/download-app-google.svg" alt="">
+                    <img src="../assets/icons/download-app-google2.svg"  
+                    
+            style="
+            outline: 2px solid #1b49ff;
+            border-radius: 7px;
+          "
+         alt="">
 
                 </a>
 
@@ -84,13 +95,13 @@
                     :class="{ 'text-blue-600': $route.name === 'Listings-search' }">Search</p>
 
             </div>
-            <div class="w-full pl-[13px] py-[11px] nav-item">
-                <p @click="$router.push('/chats')" class="text-sm text-webapp"
+            <div class="w-full pl-[13px]  nav-item">
+                <p @click="$router.push('/chats')" class="text-sm text-webapp py-[11px]"
                     :class="{ 'text-blue-700': $route.name === 'Chat' }" v-if="$store.state.isAuthenticated">Message</p>
 
             </div>
-            <div class="w-full pl-[13px] py-[11px] nav-item">
-                <p @click="$router.push('/user/profile/' + $store.state.user._id)" class="text-sm text-webapp"
+            <div class="w-full pl-[13px]  nav-item">
+                <p @click="$router.push('/user/profile/' + $store.state.user._id)" class="text-sm text-webapp py-[11px]"
                     :class="{ 'text-blue-700': $route.name === 'User-profile' }" v-if="$store.state.isAuthenticated">
                     Account
                 </p>
