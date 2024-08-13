@@ -1,5 +1,0 @@
-[{
-    "relation": ["delegate_permission/common.handle_all_urls"],
-    "target" : { "namespace": "android_app", "package_name": "org.habeep",
-                 "sha256_cert_fingerprints": ["25:59:96:A0:97:C0:03:CB:5A:8B:5C:E0:ED:53:18:C6:5D:27:BC:96:4C:39:82:F6:19:E6:76:BC:E7:43:7C:62"] }
-  }]
