@@ -11,5 +11,6 @@ yarn-error.log
 .env
 
 dist
+.github/workflows
 
 sitemap.xml
