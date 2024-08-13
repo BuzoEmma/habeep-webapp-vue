@@ -12,3 +12,5 @@ yarn-error.log
 
 dist
 .github/workflows
+
+sitemap.xml
