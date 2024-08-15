@@ -35,7 +35,7 @@
                     <input type="password" @focusout="validateFormField('pin', data.pin.toString())"
                         @input="checkForField('pin')" v-model="data.pin" maxlength="4"
                         :class="{ 'invalidField': errorMsg.field === 'pin' }" placeholder="Enter your 4 digit pin"
-                        class="w-full h-14 rounded-lg">
+                        class="w-full h-14 rounded-lg" pattern="[0-9]*">
                 </div>
 
 

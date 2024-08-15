@@ -17,8 +17,11 @@
       >
     </div>
 
-           <div class="absolute w-screen h-screen top-2 opacity-50 -ml-[10rem]" @click="toggleNav" v-if="onNavDropdown"></div>
-
+    <div
+      class="absolute w-screen h-screen top-2 opacity-50 -ml-[10rem]"
+      @click="toggleNav"
+      v-if="onNavDropdown"
+    ></div>
 
     <div class="flex-row items-center w-fit gap-x-6 divide-x md:flex hidden">
       <!-- download app on stores -->
@@ -193,7 +196,7 @@
         </p>
       </div>
 
-      <div style="background-color: red" class="w-full pl-[13px] nav-item">
+      <div class="w-full pl-[13px] nav-item">
         <p
           @click="$router.push('/user/profile/' + $store.state.user._id)"
           class="text-sm text-webapp py-[11px]"
@@ -314,7 +317,6 @@ const onNavDropdown = ref(false);
 const onMobileNav = ref(false);
 
 store.commit("changeNavState", false);
-
 
 function toggleNav() {
   onNavDropdown.value = !onNavDropdown.value;

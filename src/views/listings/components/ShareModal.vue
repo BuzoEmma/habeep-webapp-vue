@@ -1,5 +1,5 @@
 <template>
-    <div
+    <div style="background-color: red;"
         class="bg-white flex-col flex rounded-[15px] md:max-w-[800px] lg:w-[800px] w-screen md:w-full max-w-screen max-h-[400px] h-[387px]">
         <div class="p-4 w-full flex-row flex justify-end">
             <div class="w-[39px] h-[39px] rounded-full bg-[#F7F7FC] div-center-col cursor-pointer" @click="endProductShare">
