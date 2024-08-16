@@ -1,16 +1,16 @@
 <template>
-    <div class="w-screen min-w-full flex flex-col h-full overflow-auto max-h-screen relative">
+    <div  class="w-screen min-w-full flex flex-col h-full overflow-auto max-h-screen relative">
 
 
-        <div class="w-full h-full  absolute overflow-auto">
+        <div class="w-full h-full  absolute overflow-auto" >
             <MainNavbar v-if="screenWidth > 767" @search="searchDB" />
-            <div class="flex flex-row items-center justify-between w-full px-6 2xl:px-44 md:px-20 my-4 h-fit" v-else>
-                <div class="flex flex-row items-center gap-x-3">
+            <div  class="flex flex-row items-center justify-between w-full px-6 2xl:px-44 md:px-20 my-4 h-fit" v-else>
+                <div class="flex flex-row items-center gap-x-3" >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="#0A1045" class="w-6 h-6 cursor-pointer" @click="$router.go(-1)">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                     </svg>
-                    <span class="text-xl text-webapp font-medium">Search Results</span>
+                    <span class="text-xl text-webapp font-medium" >Search Results</span>
                 </div>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" @click="toggleSearch" viewBox="0 0 24 24"
                     stroke-width="1.5" stroke="#0A1045" class="w-6 h-6">
@@ -19,7 +19,8 @@
                 </svg>
             </div>
 
-            <div
+            <div 
+
                 class=" px-6 2xl:px-44 md:px-20 mb-10 w-full flex flex-col h-full items-center md:items-start gap-y-8 mt-3">
                 <div class="flex flex-row items-center w-full px-2 relative" v-if="onSearchBar" v-motion
                     :initial="{ opacity: 0.5, y: -100 }" :enter="{ opacity: 1, y: 0 }"
@@ -152,7 +153,7 @@
                                 </div>
                             </div>
 
-                            <div v-else>
+                            <div  v-else>
                                 <div class="py-2" v-for="(city, index) in cities" :key="(city, index)"
                                     @click="changeStateModal(city.name, 'city')">
                                     <p class="text-sm mb-1 text-webapp cursor-pointer">{{ city.name }}</p>
@@ -165,10 +166,10 @@
                 </div>
 
                 <!-- listing -->
-                <div class="flex flex-row flex-auto h-fit  md:mt-10 w-full flex-wrap"
+                <div  class="flex flex-row flex-auto h-fit  md:mt-10 w-full flex-wrap"
                     :class="{ 'justify-center items-center': filteredProducts.length < 1 }">
 
-                    <div class="flex flex-col items-center gap-y-3 justify-center"
+                    <div  class="flex flex-col items-center gap-y-3 justify-center"
                         v-if="filteredProducts.length === 0 && !searchingData">
                         <img src="../../assets/icons/no-ad.svg" alt="">
                         <span class="text-gray-300 text-lg">No match for search yet</span>
@@ -177,10 +178,10 @@
                         <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" size="200px" color="#0A1045"></loader>
                     </div>
                     <!-- listing template -->
-                    <div class="basis-full md:basis-1/2 xl:basis-1/4 md:px-3 md:py-3 py-5 gap-y-4 px-0" v-else
+                    <div  class="filterFeeds-container basis-full md:basis-1/2 xl:basis-1/4 md:px-3 md:py-3 py-5 gap-y-4 px-0" v-else
                         v-for="product in filteredProducts" :key="product">
                         <div
-                            class="flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 h-fit feed">
+                            class="filterFeeds flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 h-fit feed">
                             <Skeleton v-if="!product.imageLoaded" class=" w-full h-36 rounded-t-md"
                                 style="width: 100%" />
                             <img :alt="product.title" @click="$router.push('/listings/products/' + product._id)"
@@ -195,17 +196,20 @@
                                 :src="product.images[0].link" class="w-full rounded-t-md feed-image" v-else muted
                                 preload="auto"></video>
                             <p class="text-webapp text-lg font-medium w-full px-2 cursor-pointer feed-image"
-                                @click="$router.push('/listings/products/' + product._id)">
-                                {{ product.title }}
+                                @click="$router.push('/listings/products/' + product._id)"
+                                v-html="shortener(product.title, 24 )"
+                                
+                                >
+                        
 
                             </p>
 
                             <div class="location flex flex-row items-center gap-x-2 px-2"
                                 @click="$router.push('/listings/products/' + product._id)">
                                 <img src="../../assets/images/map-pin.png" alt="">
-                                <span class="text-sm text-webapp">{{ product.location.city ||
+                                <span class="text-sm text-webapp" v-html="shortener( product.location.city ||
                 product.location.address.substr(0,
-                    20) }}</span>
+                    20), 34)"></span>
                             </div>
 
                             <div class="flex flex-row items-center w-full justify-between px-2">
@@ -455,6 +459,17 @@ async function getSearch(location, query) {
 
 }
 
+function shortener(text, length) {
+  if (text.toString().length > length) {
+    return (
+      text.toString().substring(0, length) +
+      '<span style="color: black; cursor: pointer; font-size: 1.5rem;">....</span>'
+    );
+  } else return text;
+}
+
+
+
 function toggleDropdown(type) {
     if (type == 'location') {
         onSortDropdown.value = false
@@ -623,6 +638,8 @@ async function pauseVideo(e) {
 </script>
 
 <style scoped>
+
+
 .feed-image {
     height: 100%;
     width: 100% !important;

@@ -31,13 +31,13 @@
                     <label for="" class="text-sm text-webapp">New pincode</label>
                     <input inputmode="numeric" type="text" @input="checkForField('pin')" @focusout="validatePin('newPin')"
                         :class="{ 'invalidField': errorMsg.field === 'newPin' }" v-model="data.newPin" maxlength="4"
-                        placeholder="Enter your New pincode" class="w-full h-14 rounded-lg bg-transparent">
+                        placeholder="Enter your 4 new pincode" class="w-full h-14 rounded-lg bg-transparent">
                 </div>
                 <div class="flex flex-col items-start w-full gap-y-1 mt-5 px-4">
                     <label for="" class="text-sm text-webapp">Re-enter pincode</label>
                     <input inputmode="numeric" type="text" @input="checkForField('pin')" @focusout="validatePin('oldPin')"
                         :class="{ 'invalidField': errorMsg.field === 'oldPin' }" v-model="data.confirmPin" maxlength="4"
-                        placeholder="Re-enter New pincode" class="w-full h-14 rounded-lg bg-transparent">
+                        placeholder="Re-enter your 4 new pincode" class="w-full h-14 rounded-lg bg-transparent">
                 </div>
 
 

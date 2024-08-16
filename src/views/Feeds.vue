@@ -166,6 +166,7 @@
         </div>
       </div>
 
+      <!-- First V -->
       <div v-else>
         <div
           class="py-2"
@@ -491,12 +492,15 @@
               </p>
               <hr />
             </div>
-
+            <!-- 
+             -->
             <div v-if="onState" class="gap-y-2">
               <div class="py-2" @click="changeStateModal('All', 'state')">
                 <p class="text-sm mb-1 text-webapp cursor-pointer">All</p>
                 <hr />
               </div>
+
+              <!-- Third V -->
               <div
                 class="py-2"
                 v-for="(state, index) in states"
@@ -516,6 +520,7 @@
               </div>
             </div>
 
+            <!-- Fourth  V -->
             <div v-else>
               <div
                 class="py-2"
@@ -557,14 +562,16 @@
           >
         </div>
         <!-- listing template -->
+        <!-- Five V -->
+
         <div
-          class="basis-full md:basis-1/2 md:px-2 xl:basis-1/4 md:py-3 py-5 gap-y-4 px-5"
+          class="filterFeeds-container basis-full md:basis-1/2 md:px-2 xl:basis-1/4 md:py-3 py-5 gap-y-4 px-5"
           v-else
           v-for="feed in filteredFeeds"
           :key="feed"
         >
           <div
-            class="flex flex-col items-start gap-y-2 border rounded-md border-gray-200 pb-2 feed relative"
+            class="filterFeeds flex flex-col items-start gap-y-2 border rounded-md border-gray-200 pb-2 feed relative"
           >
             <Skeleton
               v-if="!feed.imageLoaded"
@@ -604,18 +611,15 @@
             <p
               class="text-webapp text-lg font-medium w-full px-2 cursor-pointer"
               @click="$router.push('/listings/products/' + feed._id)"
-            >
-              {{ feed.title }}
-            </p>
+              v-html="shortener(feed.title, 24)"
+            ></p>
 
             <div
               class="location flex flex-row items-center gap-x-2 px-2"
               @click="$router.push('/listings/products/' + feed._id)"
             >
               <img src="../assets/images/map-pin.png" alt="" />
-              <span class="text-sm text-webapp">{{
-                feed.location.city || feed.location.address.substr(0, 20)
-              }}</span>
+              <span class="text-sm text-webapp" v-html="shortener(feed.location.city || feed.location.address.substr(0, 20), 34 )"></span>
             </div>
 
             <div class="flex flex-row items-center w-full justify-between px-2">
@@ -720,7 +724,6 @@ useHead({
 });
 
 const store = useStore();
-
 const route = useRoute();
 const router = useRouter();
 
@@ -768,6 +771,7 @@ if (store.state.feedLocation.city) {
 // fetch feeds
 
 const url = "/listings/feeds";
+
 async function getFeeds() {
   try {
     fetchingFeeds.value = true;
@@ -847,6 +851,15 @@ async function getFeeds() {
   } catch (error) {
     errorMsg.value = "Error getting feeds";
   }
+}
+
+function shortener(text, length) {
+  if (text.toString().length > length) {
+    return (
+      text.toString().substring(0, length) +
+      '<span style="color: black; cursor: pointer; font-size: 1.5rem;">....</span>'
+    );
+  } else return text;
 }
 
 function changeStateModal(state, type) {
@@ -1073,6 +1086,21 @@ async function pauseVideo(e) {
 </script>
 
 <style scoped>
+/* .filterFeeds-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px; 
+}
+
+.filterFeeds {
+  grid-column: 1 / -1; 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%; 
+} */
+/* background: #000; */
+
 .location::-webkit-scrollbar {
   width: 6px;
 }

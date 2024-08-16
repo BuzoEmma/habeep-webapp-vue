@@ -50,7 +50,7 @@
                 </p>
 
                 <!-- submit btn -->
-                <div class="bottom-0 absolute px-4 w-full">
+                <div class="sm:bottom-0 absolute px-4 w-full bottom-[6rem]">
                     <button class="bg-primary w-full rounded-lg grid place-items-center h-14 mt-5 text-white"
                         @click="verifyOTP">
                         <span v-if="!processing">Continue</span>
