@@ -251,14 +251,18 @@
                                     :src="ad.images[0] && ad.images[0].link" class="w-full rounded-t-md feed-image" v-else
                                     muted loop></video>
                                 <p class="text-webapp text-lg font-medium w-full px-3 cursor-pointer"
-                                    @click="$router.push('/listings/products/' + ad._id)">
-                                    {{ ad.title }}
+                                    @click="$router.push('/listings/products/' + ad._id)"
+                                    v-html="shortener(ad.title, 22)"
+                                    >
                                 </p>
 
                                 <div class="location flex flex-row items-center gap-x-2 px-2">
                                     <img src="../../../assets/images/map-pin.png" alt="">
-                                    <span class="text-sm text-webapp capitalize">{{ ad.location.city ||
-                                        ad.location.address.substr(0, 20) }}</span>
+                                    <span class="text-sm text-webapp capitalize"
+                                    
+                                    v-html="shortener(ad.location.city ||
+                                        ad.location.address.substr(0, 20), 32)"
+                                    ></span>
                                 </div>
 
                                 <div class="flex flex-row items-center w-full justify-between px-3">
@@ -449,6 +453,16 @@ function goBack(component) {
     onModal.value = true
     eval(component).value = true
 }
+
+function shortener(text, length) {
+  if (text.toString().length > length) {
+    return (
+      text.toString().substring(0, length) +
+      '<span style="color: black; cursor: pointer; font-size: 1.5rem;">....</span>'
+    );
+  } else return text;
+}
+
 
 const screenWidth = ref(window.innerWidth)
 
