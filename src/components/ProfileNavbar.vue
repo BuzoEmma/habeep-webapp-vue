@@ -27,12 +27,12 @@
             <div class="flex flex-row items-center gap-x-5">
 
                 <a href="https://apps.apple.com/us/app/habeep/id6450388013" target="_blank" class="no-underline ">
-                    <img src="../assets/icons/download-app-apple.svg" alt="">
+                    <img src="../assets/icons/download-app-apple2.svg" alt="">
                 </a>
 
                 <a href="https://play.google.com/store/apps/details?id=org.habeep" target="_blank"
                     class="no-underline ">
-                    <img src="../assets/icons/download-app-google.svg" alt="">
+                    <img src="../assets/icons/download-app-google2.svg" alt="">
 
                 </a>
 

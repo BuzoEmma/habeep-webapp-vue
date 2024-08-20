@@ -30,11 +30,6 @@
           href="https://apps.apple.com/us/app/habeep/id6450388013"
           target="_blank"
           class="no-underline"
-          style="
-            outline: 2px solid #1b49ff;
-            /* outline-offset: 2px; */
-            border-radius: 7px;
-          "
         >
           <img src="../assets/icons/download-app-apple2.svg" alt="" />
         </a>
@@ -43,11 +38,6 @@
           href="https://play.google.com/store/apps/details?id=org.habeep"
           target="_blank"
           class="no-underline"
-          style="
-            outline: 2px solid #1b49ff;
-            border-radius: 7px;
-            /* outline-offset: 1px; */
-          "
         >
           <img src="../assets/icons/download-app-google2.svg" alt="" />
         </a>
