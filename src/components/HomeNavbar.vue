@@ -220,12 +220,12 @@
 
       <div
         class="w-full pl-[13px] py-[11px] nav-item"
-        v-if="$store.state.isAuthenticated && $store.state.user.role === 'USER'"
+        v-if="$store.state.isAuthenticated || $store.state.user.role === 'USER'"
       >
         <p
           @click="$router.push('/account/IBO/category')"
           class="text-sm text-webapp"
-          :class="{ 'text-blue-700': $route.name.includes('IBO') === true }"
+          :class="{ 'text-blue-700': $route.name.includes('IB') === true }"
         >
           Become an Agent/Tenant
         </p>
