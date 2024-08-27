@@ -263,6 +263,7 @@ async function makeUserAnIBO() {
                         router.replace('/tenancy')
                     }
                 }
+                
             }, 2000);
             
         } else {
