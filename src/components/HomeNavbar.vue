@@ -220,7 +220,7 @@
 
       <div
         class="w-full pl-[13px] py-[11px] nav-item"
-        v-if="$store.state.isAuthenticated || $store.state.user.role === 'USER'"
+        v-if="$store.state.isAuthenticated && $store.state.user.role === 'USER'"
       >
         <p
           @click="$router.push('/account/IBO/category')"
