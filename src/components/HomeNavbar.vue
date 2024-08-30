@@ -175,6 +175,16 @@
         </p>
       </div>
 
+      <div class="w-full pl-[13px] py-[11px] nav-item">
+        <p
+          @click="$router.push('/new-faq')"
+          class="text-sm text-webapp"
+          :class="{ 'text-blue-600': $route.name === 'New-Faq' }"
+        >
+          New Faq
+        </p>
+      </div>
+
       <div class="w-full pl-[13px] nav-item">
         <p
           @click="$router.push('/chats')"
