@@ -235,7 +235,7 @@
         <p
           @click="$router.push('/account/IBO/category')"
           class="text-sm text-webapp"
-          :class="{ 'text-blue-700': $route.name.includes('IBO') === true }"
+          :class="{ 'text-blue-700': $route.name.includes('IB') === true }"
         >
           Become an Agent/Tenant
         </p>

@@ -257,9 +257,15 @@ async function makeUserAnIBO() {
                 errorMsg.value.msg = ''
 
                 if (change.data.errorMsg === 'MATCH') {
-                    router.replace('/tenancy')
+                    if (props.data.role == 'AGENT') {
+                        router.replace('/agent/ads')
+                    } else {
+                        router.replace('/tenancy')
+                    }
                 }
+                
             }, 2000);
+            
         } else {
             newMsg.value = change.data.message
 
@@ -276,9 +282,9 @@ async function makeUserAnIBO() {
                 processing.value = false
                 newMsg.value = ''
                 if (props.data.role == "AGENT") {
-                    router.replace('/success-txn?type=agent-ibo')
+                    router.replace('/agent/ads')
                 } else {
-                    router.replace('/success-txn?type=tenant-ibo')
+                    router.replace('/')
                 }
             }, 1000);
 
