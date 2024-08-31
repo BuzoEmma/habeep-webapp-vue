@@ -339,7 +339,6 @@
             v-for="product in filteredProducts"
             :key="product"
           >
-            {{ console.log(product) }}
             <div
               class="filterFeeds flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 h-fit feed"
             >
