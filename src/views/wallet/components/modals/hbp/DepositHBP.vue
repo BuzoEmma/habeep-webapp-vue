@@ -20,13 +20,13 @@
                     <div class="flex flex-col items-start gap-y-3">
                         <span class="text-gray-400 text-xs">Account ID</span>
                         <span class="text-webapp text-xl font-medium uppercase">
-                            {{ props.wallet.accountID }}
+                            {{ props.wallet?.accountID }}
                         </span>
                     </div>
                     <div>
                         <button v-if="!linkCopied"
                             class="border border-blue-700 flex flex-row items-center gap-x-2 rounded-lg px-5 py-2"
-                            @click="copyLink(props.wallet.accountID)">
+                            @click="copyLink(props.wallet?.accountID)">
                             <img src="../../../../../assets/icons/link.svg" alt="">
                             <span class="text-primary text-sm font-medium">Copy</span>
                         </button>

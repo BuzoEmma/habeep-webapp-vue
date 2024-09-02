@@ -28,165 +28,180 @@
         alt=""
       />
     </div>
+
     <div class="w-full px-4 py-6 flex flex-col items-start">
       <span class="text-sub-webapp text-lg w-full text-left"
-        >Providess the amount and deposit method you wish to deposit to your
+        >Provides the amount and deposit method you wish to deposit to your
         {{ $store.state.user.currency }} wallet</span
       >
 
-      <div class="flex flex-col items-start gap-y-1 w-full mt-5 relative">
-        <span class="text-webapp text-sm">Amount to top-up</span>
-        <input
-          @keyup="formatPrice"
-          inputmode="numeric"
-          type="text"
-          v-model="depositData.amount"
-          placeholder="0.00"
-          @input="calculatePaystackFee(depositData.amount)"
-          class="w-full outline-none h-14 rounded-lg border border-gray p-2"
-        />
+      <form @submit.prevent="proceedToPayment" class="w-full">
+        <div class="flex flex-col items-start gap-y-1 w-full mt-5 relative">
+          <span class="text-webapp text-sm">Amount to top-up</span>
+          <input
+            @keyup="formatPrice"
+            inputmode="numeric"
+            type="text"
+            v-model="depositData.amount"
+            placeholder="0.00"
+            @input="
+              calculatePaystackFee(
+                parseFloat(depositData.amount.replaceAll(',', ''))
+              )
+            "
+            class="w-full outline-none h-14 rounded-lg border border-gray p-2"
+          />
 
-        <div
-          class="absolute top-8 h-10 w-9 right-2 rounded grid place-items-center"
-          style="background: #ebebeb"
-        >
-          {{ getSymbolFromCurrency($store.state.user.currency) }}
-        </div>
-      </div>
-
-      <div class="flex flex-col items-start gap-y-1 w-full mt-5 relative">
-        <span class="text-webapp text-sm">Deposit fee</span>
-        <input
-          type="text"
-          disabled
-          value="0.00"
-          class="w-full outline-none h-14 rounded-lg border border-gray p-2"
-        />
-
-        <div
-          class="absolute top-8 h-10 px-2 right-2 rounded grid place-items-center"
-          style="background: #ebebeb"
-        >
-          <p class="flex flex-row items-center gap-x-4">
-            <span
-              v-if="
-                depositData.paymentMethod !== 'bank-transfer' &&
-                depositData.fee < 1
-              "
-              >Free</span
-            >
-            <span v-else>{{ depositData.fee.toFixed(2) }}</span>
+          <div
+            class="absolute top-8 h-10 w-9 right-2 rounded grid place-items-center"
+            style="background: #ebebeb"
+          >
             {{ getSymbolFromCurrency($store.state.user.currency) }}
-          </p>
-        </div>
-      </div>
-
-      <div class="flex flex-col items-start gap-y-1 w-full mt-5 relative">
-        <span class="text-webapp text-sm">Deposit method</span>
-        <div
-          @click="onSelectMethod = true"
-          class="flex flex-row items-center w-full justify-between h-14 rounded-lg border border-gray p-2"
-        >
-          <span
-            class="text-sm text-webapp"
-            v-if="depositData.paymentMethod.length < 1"
-            >Select deposit method</span
-          >
-          <span
-            class="text-sm text-webapp"
-            v-if="depositData.paymentMethod === 'paystack'"
-            >Pay with Paystack</span
-          >
-          <span
-            class="text-sm text-webapp"
-            v-if="depositData.paymentMethod === 'flutterwave'"
-            >Pay with Flutterwave</span
-          >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="#71759D"
-            class="w-6 h-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-            />
-          </svg>
+          </div>
         </div>
 
-        <div
-          class="absolute z-20 top-14 right-2 p-5 flex flex-col items-start gap-y-5 rounded-lg bg-white select-method"
-          v-if="onSelectMethod"
-        >
-          <!-- <span class="text-sm text-webapp cursor-pointer" @click="choosePaymentMethod('paystack')">Pay with
+        <div class="flex flex-col items-start gap-y-1 w-full mt-5 relative">
+          <span class="text-webapp text-sm">Deposit fee</span>
+          <input
+            type="text"
+            disabled
+            value="0.00"
+            class="w-full outline-none h-14 rounded-lg border border-gray p-2"
+          />
+
+          <div
+            class="absolute top-8 h-10 px-2 right-2 rounded grid place-items-center"
+            style="background: #ebebeb"
+          >
+            <p class="flex flex-row items-center gap-x-4">
+              <span
+                v-if="
+                  depositData.paymentMethod !== 'bank-transfer' &&
+                  depositData.fee < 1
+                "
+                >Free</span
+              >
+              <span v-else>{{ depositData.fee.toFixed(2) }}</span>
+              {{ getSymbolFromCurrency($store.state.user.currency) }}
+            </p>
+          </div>
+        </div>
+
+        <div class="flex flex-col items-start gap-y-1 w-full mt-5 relative">
+          <span class="text-webapp text-sm">Deposit method</span>
+          <div
+            @click="onSelectMethod = true"
+            class="flex flex-row items-center w-full justify-between h-14 rounded-lg border border-gray p-2"
+          >
+            <span
+              class="text-sm text-webapp"
+              v-if="depositData.paymentMethod.length < 1"
+              >Select deposit method</span
+            >
+            <span
+              class="text-sm text-webapp"
+              v-if="depositData.paymentMethod === 'paystack'"
+              >Pay with Paystack</span
+            >
+            <span
+              class="text-sm text-webapp"
+              v-if="depositData.paymentMethod === 'flutterwave'"
+              >Pay with Flutterwave</span
+            >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="#71759D"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+              />
+            </svg>
+          </div>
+
+          <div
+            class="absolute z-20 top-14 right-2 p-5 flex flex-col items-start gap-y-5 rounded-lg bg-white select-method"
+            v-if="onSelectMethod"
+          >
+            <!-- <span class="text-sm text-webapp cursor-pointer" @click="choosePaymentMethod('paystack')">Pay with
                         Paystack</span> -->
-          <p
-            @click="choosePaymentMethod('paystack')"
-            class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer"
-          >
-            <span>Pay with Paystack</span>
-          </p>
-          <p
-            @click="choosePaymentMethod('flutterwave')"
-            class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer"
-          >
-            <span>Pay with Flutterwave</span>
-            <!-- <span class="text-xs font-extralight text-webapp">#comingsoon</span> -->
-          </p>
-          <p
-            class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer"
-            v-if="store.state.user.currency === 'NGN'"
-          >
-            <span>Pay with E-naira</span>
-            <span class="text-xs font-extralight text-webapp">#comingsoon</span>
-          </p>
-          <p
-            class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer"
-            v-else
-          >
-            <span>Pay with Paypal</span>
-            <span class="text-xs font-extralight text-webapp">#comingsoon</span>
-          </p>
+            <p
+              @click="choosePaymentMethod('paystack')"
+              class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer"
+            >
+              <span>Pay with Paystack</span>
+            </p>
+            <p
+              @click="choosePaymentMethod('flutterwave')"
+              class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer"
+            >
+              <span>Pay with Flutterwave</span>
+              <!-- <span class="text-xs font-extralight text-webapp">#comingsoon</span> -->
+            </p>
+            <p
+              class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer"
+              v-if="store.state.user.currency === 'NGN'"
+            >
+              <span>Pay with E-naira</span>
+              <span class="text-xs font-extralight text-webapp"
+                >#comingsoon</span
+              >
+            </p>
+            <p
+              class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer"
+              v-else
+            >
+              <span>Pay with Paypal</span>
+              <span class="text-xs font-extralight text-webapp"
+                >#comingsoon</span
+              >
+            </p>
+          </div>
         </div>
-      </div>
 
-      <Paystack
-        @success="processPayment"
-        @cancel="cancelPayment"
-        @errorLoading="$router.go()"
-        v-if="depositData.paymentMethod === 'paystack' && proceededPayment"
-        :payment-info="getPaystackDetails()"
-      />
+        <Paystack
+          @success="processPayment"
+          @cancel="cancelPayment"
+          @errorLoading="$router.go()"
+          v-if="depositData.paymentMethod === 'paystack' && proceededPayment"
+          :payment-info="getPaystackDetails()"
+        />
 
-      <Flutterwave
-        @success="processPayment"
-        @cancel="handleFlwClose"
-        @errorLoading="$router.go()"
-        v-if="depositData.paymentMethod === 'flutterwave' && proceededPayment"
-        :payment-info="getFlwDetails()"
-      />
+        <Flutterwave
+          @success="processPayment"
+          @cancel="handleFlwClose"
+          @errorLoading="$router.go()"
+          v-if="depositData.paymentMethod === 'flutterwave' && proceededPayment"
+          :payment-info="getFlwDetails()"
+        />
 
-      <button
-        @click="proceedToPayment"
-        :disabled="
-          depositData.amount < 10 || depositData.paymentMethod.length < 1
-        "
-        :class="{
-          'bg-blue-600 text-white':
-            depositData.amount > 9 && depositData.paymentMethod.length > 1,
-          'bg-gray-300':
-            depositData.amount < 10 || depositData.paymentMethod.length < 1,
-        }"
-        class="grid rounded-lg place-items-center h-14 my-6 w-full"
-      >
-        <span v-if="!processingDeposit">Continue</span>
-        <Preloader v-else />
-      </button>
+        <button
+          type="submit"
+          :disabled="
+            parseFloat(depositData.amount.replaceAll(',', '')) < 10 ||
+            depositData.paymentMethod.length < 1
+          "
+          :class="{
+            'bg-blue-600 text-white':
+              parseFloat(depositData.amount.replaceAll(',', '')) > 9 &&
+              depositData.paymentMethod.length > 1,
+            'bg-gray-300':
+              parseFloat(depositData.amount.replaceAll(',', '')) < 10 ||
+              depositData.paymentMethod.length < 1,
+          }"
+          class="deposit-form-button grid rounded-lg place-items-center h-14 my-6 w-full"
+        >
+          <span v-if="!processingDeposit">Continue</span>
+          <Preloader v-else />
+        </button>
+      </form>
     </div>
+
     <Toast :msg="errorMsg" type="danger" v-if="onError" />
     <Toast :msg="newMsg" type="success" v-if="newMsg.length > 0" />
   </div>
@@ -250,13 +265,16 @@ const choosePaymentMethod = (method) => {
   depositData.paymentMethod = method;
   onSelectMethod.value = false;
   if (depositData.paymentMethod === "paystack") {
-    calculatePaystackFee(Number(depositData.amount));
+    calculatePaystackFee(
+      Number(parseFloat(depositData.amount.replaceAll(",", "")))
+    );
   } else {
     depositData.fee = habeepDepositFee.value;
   }
 };
 
-function proceedToPayment() {
+function proceedToPayment(e) {
+  e.preventDefault();
   try {
     processingDeposit.value = true;
     proceededPayment.value = true;
@@ -274,7 +292,9 @@ function getPaystackDetails() {
   return {
     key: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY,
     email: store.state.user.email,
-    amount: (depositData.amount + depositData.fee) * 100,
+    amount:
+      (parseFloat(depositData.amount.replaceAll(",", "")) + depositData.fee) *
+      100,
     currency: store.state.user.currency,
     ref: genRef(),
     channels: channels(),
@@ -289,7 +309,8 @@ function getFlwDetails() {
   flwRef.value = genFlwRef();
   return {
     public_key: import.meta.env.VITE_FLW_PUBLIC_KEY,
-    amount: depositData.amount + depositData.fee,
+    amount:
+      parseFloat(depositData.amount.replaceAll(",", "")) + depositData.fee,
     country: store.state.user.countryShortName,
     currency: store.state.user.currency,
     customer: {
@@ -376,7 +397,7 @@ const processPayment = async (response) => {
 
     let data = {
       accountId: store.state.user.wallet[store.state.user.currency],
-      amount: depositData.amount,
+      amount: parseFloat(depositData.amount.replaceAll(",", "")),
       referenceId: reference,
       status: "PENDING",
       fee: depositData.fee,
@@ -471,6 +492,10 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+
+
+
+
 .main {
   width: 480px;
   border-radius: 10px;
@@ -487,6 +512,11 @@ onMounted(async () => {
 .paystack-btn {
   display: none;
   color: white;
+}
+
+
+.deposit-form-button:disabled{
+  background: rgba(128, 128, 128, 0.226);
 }
 
 @media screen and (max-width: 450px) {

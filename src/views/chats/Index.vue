@@ -91,35 +91,11 @@ async function getRooms() {
         processing.value = true
         const fetch = await axios.get('/messaging/get-rooms')
         allRooms.value = fetch.data.rooms
-
-        if (allRooms.value.length > 0) {
-            async.eachSeries(allRooms.value, function (room, callback) {
-                const roomInterval = setInterval(() => {
-                    enterChatBox(room)
-                    setTimeout(() => {
-                        leaveChat()
-                    }, 1000);
-                }, 2000);
-                setTimeout(() => {
-                    clearInterval(roomInterval)
-                    callback()
-                }, allRooms.value.length * 1100);
-            }, function () {
-                leaveChat()
-                processing.value = false
-            });
-        } else {
-            processing.value = false
-        }
-
-
-
+        processing.value = false
         if (route.query.roomId) {
             let filterId = allRooms.value.filter((room) => {
                 return room.room._id === route.query.roomId
             })
-            // // route.query.roomId = null
-            // router.replace({ query: { roomId: null } })
             enterChatBox(filterId[0])
         }
         return true
