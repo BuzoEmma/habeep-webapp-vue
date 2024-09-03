@@ -182,6 +182,7 @@
 
         <button
           type="submit"
+    
           :disabled="
             parseFloat(depositData.amount.replaceAll(',', '')) < 10 ||
             depositData.paymentMethod.length < 1
