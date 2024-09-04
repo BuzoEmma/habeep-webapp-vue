@@ -565,7 +565,7 @@
         <!-- Five V -->
 
         <div
-          class="filterFeeds-container basis-full md:basis-1/2 md:px-2 xl:basis-1/4 md:py-3 py-5 gap-y-4 px-5"
+          class="filterFeeds-container basis-full md:basis-1/2 md:px-2 xl:basis-1/4 md:py-3 py-5 gap-y-4 px-5 "
           v-else
           v-for="feed in filteredFeeds"
           :key="feed"
@@ -1086,20 +1086,16 @@ async function pauseVideo(e) {
 </script>
 
 <style scoped>
-/* .filterFeeds-container {
+.filterFeeds-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px; 
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
 }
 
 .filterFeeds {
-  grid-column: 1 / -1; 
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%; 
-} */
-/* background: #000; */
+  grid-row: 1;
+  height: 100%;
+}
 
 .location::-webkit-scrollbar {
   width: 6px;
