@@ -167,7 +167,7 @@
         <Paystack
           @success="processPayment"
           @cancel="cancelPayment"
-          @errorLoading="$router.go()"
+           @errorLoading="handleError"
           v-if="depositData.paymentMethod === 'paystack' && proceededPayment"
           :payment-info="getPaystackDetails()"
         />
@@ -175,7 +175,7 @@
         <Flutterwave
           @success="processPayment"
           @cancel="handleFlwClose"
-          @errorLoading="$router.go()"
+          @errorLoading="handleError"
           v-if="depositData.paymentMethod === 'flutterwave' && proceededPayment"
           :payment-info="getFlwDetails()"
         />
@@ -250,6 +250,19 @@ let errorMsg = ref("");
 let newMsg = ref("");
 
 const flwRef = ref("");
+
+// Handle payment error
+function handleError() {
+  terminatePayment();  
+  emit('close');   
+}
+
+// Cancel the payment
+function terminatePayment() {
+  proceededPayment.value = false;
+  processingDeposit.value = false;
+  emit('close');   
+}
 
 function getLogo() {
   if (store.state.user.userProfileImage !== "https://i.ibb.co/gtpxMJz/21.png") {

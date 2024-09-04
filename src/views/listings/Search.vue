@@ -889,8 +889,25 @@ async function pauseVideo(e) {
 </script>
 
 <style scoped>
-.feed-image {
+.filterFeeds-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.filterFeeds {
+  grid-row: 1;
   height: 100%;
+}
+
+/* .filterFeeds-img {
+  grid-row: 1;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+} */
+
+.feed-image {
   width: 100% !important;
   object-fit: cover;
   max-height: 185px !important;
