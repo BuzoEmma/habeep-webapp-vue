@@ -52,7 +52,7 @@ function guardMyrouteForUSERIBO(to, from, next) {
 // pages
 import Home from '../views/Home.vue'
 import Feeds from '../views/Feeds.vue'
-import NewFaq from '../views/NewFaq.vue'
+import Faq from '../views/NewFaq.vue'
 
 function changeHomeRoute() {
     if (createStore.state.isAuthenticated) {
@@ -95,11 +95,11 @@ const routes = [
     // }
   },
   {
-    path: "/new-faq",
-    component: NewFaq,
-    name: "New-Faq",
+    path: "/faq",
+    component: Faq,
+    name: "Faq",
     meta: {
-      title: "New Faq",
+      title: "Faq",
     },
   },
   {
