@@ -17,7 +17,7 @@
         </form>
 
         <img src="../../../../assets/icons/edit-icon.svg" @click="callImgProcessor"
-          class="-right-2 bottom-1 absolute cursor-pointer" alt="">
+          class="-right-2 bottom-1 absolute cursor-pointer" alt="" />
       </div>
       <!-- form -->
       <!-- input fields -->
@@ -153,10 +153,11 @@ async function savePhoto() {
     }
     formData.append('data', JSON.stringify(body))
 
-    const saveImage = await axios.post('/utility/save-image', formData, {
+    const saveImage = await axios.post('/utility/save-image', formData,
+     {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
-
+        console.log('Server Response:', saveImage);
     return saveImage.data.data[0].link
   } catch (error) {
     return 'https://i.ibb.co/gtpxMJz/21.png'

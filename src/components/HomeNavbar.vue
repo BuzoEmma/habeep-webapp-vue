@@ -184,6 +184,15 @@
           New Faq
         </p>
       </div>
+      <div class="w-full pl-[13px] py-[11px] nav-item">
+        <p
+          @click="$router.push('/about')"
+          class="text-sm text-webapp"
+          :class="{ 'text-blue-600': $route.name === 'About' }"
+        >
+          About
+        </p>
+      </div>
 
       <div class="w-full pl-[13px] nav-item">
         <p
