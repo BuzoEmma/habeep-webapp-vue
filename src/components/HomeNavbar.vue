@@ -175,24 +175,7 @@
         </p>
       </div>
 
-      <div class="w-full pl-[13px] py-[11px] nav-item">
-        <p
-          @click="$router.push('/new-faq')"
-          class="text-sm text-webapp"
-          :class="{ 'text-blue-600': $route.name === 'New-Faq' }"
-        >
-          New Faq
-        </p>
-      </div>
-      <div class="w-full pl-[13px] py-[11px] nav-item">
-        <p
-          @click="$router.push('/about')"
-          class="text-sm text-webapp"
-          :class="{ 'text-blue-600': $route.name === 'About' }"
-        >
-          About
-        </p>
-      </div>
+     
 
       <div class="w-full pl-[13px] nav-item">
         <p
@@ -213,6 +196,24 @@
           v-if="$store.state.isAuthenticated"
         >
           Account
+        </p>
+      </div>
+       <div class="w-full pl-[13px] py-[11px] nav-item">
+        <p
+          @click="$router.push('/about')"
+          class="text-sm text-webapp"
+          :class="{ 'text-blue-600': $route.name === 'About' }"
+        >
+          About
+        </p>
+      </div>
+      <div class="w-full pl-[13px] py-[11px] nav-item">
+        <p
+          @click="$router.push('/faq')"
+          class="text-sm text-webapp"
+          :class="{ 'text-blue-600': $route.name === 'Faq' }"
+        >
+          Faq
         </p>
       </div>
 
