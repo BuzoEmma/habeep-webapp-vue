@@ -608,19 +608,24 @@
               loop
               preload="metadata"
             ></video>
-            <p
-              class="text-webapp text-lg font-medium w-full px-2 cursor-pointer"
-              @click="$router.push('/listings/products/' + feed._id)"
-              v-html="shortener(feed.title, 24)"
-            ></p>
+          
 
+            <p
+            class="text-webapp text-lg font-medium w-full px-2 cursor-pointer"
+            @click="$router.push('/listings/products/' + feed._id)"
+          >
+            {{ shortener(feed.title, 24) }}
+          </p>
             <div
               class="location flex flex-row items-center gap-x-2 px-2"
               @click="$router.push('/listings/products/' + feed._id)"
             >
               <img src="../assets/images/map-pin.png" alt="" />
-              <span class="text-sm text-webapp" v-html="shortener(feed.location.city || feed.location.address.substr(0, 20), 34 )"></span>
+              <span class="text-sm text-webapp">
+                {{ shortener(feed.location.city || feed.location.address.substr(0, 20), 34) }}
+              </span>
             </div>
+
 
             <div class="flex flex-row items-center w-full justify-between px-2">
               <p
