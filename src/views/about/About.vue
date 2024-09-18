@@ -1324,6 +1324,7 @@ function getCurrentYear() {
     margin: 3rem 0rem;
     gap: 3rem;
     padding: 0rem 3rem;
+    
   }
 
   .intro-text {
