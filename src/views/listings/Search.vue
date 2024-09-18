@@ -334,13 +334,13 @@
           </div>
           <!-- listing template -->
           <div
-            class="filterFeeds-container basis-full md:basis-1/2 xl:basis-1/4 md:px-3 md:py-3 py-5 gap-y-4 px-0"
+            class="basis-full md:basis-1/2 xl:basis-1/4 md:px-3 md:py-3 py-5 gap-y-4 px-0"
             v-else
             v-for="product in filteredProducts"
             :key="product"
           >
             <div
-              class="filterFeeds flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 h-fit feed"
+              class="h-[300px] flex flex-col items-start gap-y-2 relative border rounded-md border-gray-200 pb-2 feed"
             >
               <Skeleton
                 v-if="!product.imageLoaded"
@@ -374,25 +374,24 @@
                 muted
                 preload="auto"
               ></video>
-            
 
               <p
-                class="text-webapp text-lg font-medium w-full px-2 cursor-pointer feed-image"
+                class="text-webapp text-lg font-medium px-2 cursor-pointer feed-image w-full max-w-[270px] whitespace-nowrap text-ellipsis overflow-hidden"
                 @click="$router.push('/listings/products/' + product._id)"
               >
-                {{ shortener(product.title, 24) }}
+                {{ product.title }}
               </p>
-
 
               <div
                 class="location flex flex-row items-center gap-x-2 px-2"
                 @click="$router.push('/listings/products/' + product._id)"
               >
                 <img src="../../assets/images/map-pin.png" alt="" />
-              <span class="text-sm text-webapp">
-                {{ shortener(product.location.city || product.location.address.substr(0, 20), 34) }}
-              </span>
-
+                <span
+                  class="text-sm text-webapp max-w-[235px] whitespace-nowrap text-ellipsis overflow-hidden"
+                >
+                  {{ product.location.city || product.location.address }}
+                </span>
               </div>
 
               <div
@@ -694,15 +693,6 @@ async function getSearch(location, query) {
   }
 }
 
-function shortener(text, length) {
-  if (text.toString().length > length) {
-    return (
-      text.toString().substring(0, length) +
-      '<span style="color: black; cursor: pointer; font-size: 1.5rem;">....</span>'
-    );
-  } else return text;
-}
-
 function toggleDropdown(type) {
   if (type == "location") {
     onSortDropdown.value = false;
@@ -887,24 +877,6 @@ async function pauseVideo(e) {
 </script>
 
 <style scoped>
-.filterFeeds-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
-}
-
-.filterFeeds {
-  grid-row: 1;
-  height: 100%;
-}
-
-/* .filterFeeds-img {
-  grid-row: 1;
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-} */
-
 .feed-image {
   width: 100% !important;
   object-fit: cover;
