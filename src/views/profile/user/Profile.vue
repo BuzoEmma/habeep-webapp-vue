@@ -186,7 +186,7 @@
                                     @touchstart="playVideo" @touchend="pauseVideo" @mouseenter="playVideo"
                                     @mouseout="pauseVideo" muted loop></video>
 
-                                <p class="text-webapp text-lg font-medium w-full px-3 cursor-pointer"
+                                <p class="text-webapp text-lg font-medium w-full px-3 cursor-pointer "
                                     @click="$router.push('/listings/products/' + ad._id)">
                                     {{ ad.title }}
                                 </p>
@@ -251,18 +251,17 @@
                                     :src="ad.images[0] && ad.images[0].link" class="w-full rounded-t-md feed-image" v-else
                                     muted loop></video>
                                <p
-                                class="text-webapp text-lg font-medium w-full px-3 cursor-pointer"
+                                class="text-webapp text-lg font-medium w-full px-3 cursor-pointer max-w-[270px] whitespace-nowrap text-ellipsis overflow-hidden"
                                 @click="$router.push('/listings/products/' + ad._id)"
                                 >
-                                {{ shortener(ad.title, 22) }}
+                                {{ ad.title }}
                                 </p>
 
 
                                 <div class="location flex flex-row items-center gap-x-2 px-2">
                                     <img src="../../../assets/images/map-pin.png" alt="">
-                                    <span class="text-sm text-webapp capitalize" >
-                                    {{ shortener(ad.location.city || ad.location.address.substr(0, 20), 32) }}
-                                    hello world
+                                    <span class="text-sm text-webapp capitalize max-w-[235px] whitespace-nowrap text-ellipsis overflow-hidden" >
+                                    {{ ad.location.city || ad.location.address}}
                                     </span>
 
                                 </div>
@@ -456,14 +455,6 @@ function goBack(component) {
     eval(component).value = true
 }
 
-function shortener(text, length) {
-  if (text.toString().length > length) {
-    return (
-      text.toString().substring(0, length) +
-      '<span style="color: black; cursor: pointer; font-size: 1.5rem;">....</span>'
-    );
-  } else return text;
-}
 
 
 const screenWidth = ref(window.innerWidth)

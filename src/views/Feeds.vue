@@ -565,13 +565,13 @@
         <!-- Five V -->
 
         <div
-          class="filterFeeds-container basis-full md:basis-1/2 md:px-2 xl:basis-1/4 md:py-3 py-5 gap-y-4 px-5 "
+          class=" basis-full md:basis-1/2 md:px-2 xl:basis-1/4 md:py-3 py-5 gap-y-4 px-5 "
           v-else
           v-for="feed in filteredFeeds"
           :key="feed"
         >
           <div
-            class="filterFeeds flex flex-col items-start gap-y-2 border rounded-md border-gray-200 pb-2 feed relative"
+            class="h-[300px] flex flex-col items-start gap-y-2 border rounded-md border-gray-200 pb-2 feed relative"
           >
             <Skeleton
               v-if="!feed.imageLoaded"
@@ -610,19 +610,21 @@
             ></video>
           
 
-            <p
-            class="text-webapp text-lg font-medium w-full px-2 cursor-pointer"
-            @click="$router.push('/listings/products/' + feed._id)"
-          >
-            {{ shortener(feed.title, 24) }}
-          </p>
+         <p
+          class="text-webapp text-lg font-medium w-full  px-2 cursor-pointer max-w-[270px] whitespace-nowrap text-ellipsis overflow-hidden"
+  
+          @click="$router.push('/listings/products/' + feed._id)"
+        >
+          {{ feed.title }}
+        </p>
+
             <div
               class="location flex flex-row items-center gap-x-2 px-2"
               @click="$router.push('/listings/products/' + feed._id)"
             >
               <img src="../assets/images/map-pin.png" alt="" />
-              <span class="text-sm text-webapp">
-                {{ shortener(feed.location.city || feed.location.address.substr(0, 20), 34) }}
+              <span class="text-sm text-webapp max-w-[235px] whitespace-nowrap text-ellipsis overflow-hidden">
+                {{ feed.location.city || feed.location.address}}
               </span>
             </div>
 
@@ -858,14 +860,7 @@ async function getFeeds() {
   }
 }
 
-function shortener(text, length) {
-  if (text.toString().length > length) {
-    return (
-      text.toString().substring(0, length) +
-      '<span style="color: black; cursor: pointer; font-size: 1.5rem;">....</span>'
-    );
-  } else return text;
-}
+
 
 function changeStateModal(state, type) {
   if (state !== "All") {
@@ -1091,16 +1086,6 @@ async function pauseVideo(e) {
 </script>
 
 <style scoped>
-.filterFeeds-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
-}
-
-.filterFeeds {
-  grid-row: 1;
-  height: 100%;
-}
 
 .location::-webkit-scrollbar {
   width: 6px;
