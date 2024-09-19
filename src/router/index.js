@@ -52,7 +52,7 @@ function guardMyrouteForUSERIBO(to, from, next) {
 // pages
 import Home from '../views/Home.vue'
 import Feeds from '../views/Feeds.vue'
-import NewFaq from '../views/NewFaq.vue'
+import Faq from '../views/NewFaq.vue'
 
 function changeHomeRoute() {
     if (createStore.state.isAuthenticated) {
@@ -70,6 +70,7 @@ import Login from '../views/Auth/Login.vue'
 import Logout from '../views/Auth/Logout.vue'
 import ForgotPin from '../views/Auth/ForgotPin.vue'
 import OTP from '../views/Auth/OTP_Validation.vue'
+import About from '../views/about/About.vue'
 
 const routes = [
   {
@@ -94,11 +95,19 @@ const routes = [
     // }
   },
   {
-    path: "/new-faq",
-    component: NewFaq,
-    name: "New-Faq",
+    path: "/faq",
+    component: Faq,
+    name: "Faq",
     meta: {
-      title: "New Faq",
+      title: "Faq",
+    },
+  },
+  {
+    path: "/about",
+    component: About,
+    name: "About",
+    meta: {
+      title: "About",
     },
   },
   // extras

@@ -186,7 +186,7 @@
                                     @touchstart="playVideo" @touchend="pauseVideo" @mouseenter="playVideo"
                                     @mouseout="pauseVideo" muted loop></video>
 
-                                <p class="text-webapp text-lg font-medium w-full px-3 cursor-pointer"
+                                <p class="text-webapp text-lg font-medium w-full px-3 cursor-pointer "
                                     @click="$router.push('/listings/products/' + ad._id)">
                                     {{ ad.title }}
                                 </p>
@@ -231,12 +231,12 @@
                         <img src="../../../assets/icons/no-ad.svg" alt="">
                         <span class="text-gray-300 text-lg">No Saved ads yet</span>
                     </div>
-                    <div class="flex-row h-full flex-wrap w-full flex overflow-y-auto" v-else>
+                    <div class="flex-row h-full flex-wrap w-full flex overflow-y-auto " v-else>
                         <!-- listing template -->
                         <div class="basis-full md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0" v-for="ad in savedAds"
                             :key="ad">
                             <div
-                                class="flex flex-col items-start gap-y-2 relative ad feed w-full border rounded-md border-gray-200 pb-2">
+                                class="flex flex-col items-start gap-y-2 relative ad feed w-full border rounded-md border-gray-200 pb-2 h-full">
                                 <Skeleton v-if="!ad.imageLoaded" class=" w-full h-full rounded-t-md feed-image"
                                     style="width: 100%" />
                                 <img @click="$router.push('/listings/products/' + ad._id)"
@@ -250,19 +250,20 @@
                                     @click="$router.push('/listings/products/' + ad._id)" preload="metadata"
                                     :src="ad.images[0] && ad.images[0].link" class="w-full rounded-t-md feed-image" v-else
                                     muted loop></video>
-                                <p class="text-webapp text-lg font-medium w-full px-3 cursor-pointer"
-                                    @click="$router.push('/listings/products/' + ad._id)"
-                                    v-html="shortener(ad.title, 22)"
-                                    >
+                               <p
+                                class="text-webapp text-lg font-medium w-full px-3 cursor-pointer max-w-[270px] whitespace-nowrap text-ellipsis overflow-hidden"
+                                @click="$router.push('/listings/products/' + ad._id)"
+                                >
+                                {{ ad.title }}
                                 </p>
+
 
                                 <div class="location flex flex-row items-center gap-x-2 px-2">
                                     <img src="../../../assets/images/map-pin.png" alt="">
-                                    <span class="text-sm text-webapp capitalize"
-                                    
-                                    v-html="shortener(ad.location.city ||
-                                        ad.location.address.substr(0, 20), 32)"
-                                    ></span>
+                                    <span class="text-sm text-webapp capitalize max-w-[235px] whitespace-nowrap text-ellipsis overflow-hidden" >
+                                    {{ ad.location.city || ad.location.address}}
+                                    </span>
+
                                 </div>
 
                                 <div class="flex flex-row items-center w-full justify-between px-3">
@@ -454,14 +455,6 @@ function goBack(component) {
     eval(component).value = true
 }
 
-function shortener(text, length) {
-  if (text.toString().length > length) {
-    return (
-      text.toString().substring(0, length) +
-      '<span style="color: black; cursor: pointer; font-size: 1.5rem;">....</span>'
-    );
-  } else return text;
-}
 
 
 const screenWidth = ref(window.innerWidth)
