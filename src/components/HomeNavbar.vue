@@ -207,15 +207,7 @@
           About
         </p>
       </div>
-      <div class="w-full pl-[13px] py-[11px] nav-item">
-        <p
-          @click="$router.push('/faq')"
-          class="text-sm text-webapp"
-          :class="{ 'text-blue-600': $route.name === 'Faq' }"
-        >
-          Faq
-        </p>
-      </div>
+ 
 
       <hr class="my-1" />
 

@@ -29,7 +29,18 @@ function getCurrentYear() {
         Our mission is to bridge the gap between landlords and tenants, making
         renting and managing properties easy.
       </p>
-      <div class="hero-video"></div>
+        <video
+        class="hero-video"
+          src="../../assets/videos/HabeepAbout.mp4"
+          controls
+          autoplay
+          loop
+          muted
+          preload="metadata"
+          poster="thumbnail.jpg"
+        >
+          Your browser does not support the video tag.
+        </video>
     </section>
 
     <section class="discover-section">
@@ -505,6 +516,8 @@ function getCurrentYear() {
     height: 473px;
     border-radius: 30px;
     background: rgba(217, 217, 217, 1);
+    overflow: hidden; 
+    /* object-fit: inherit */
   }
 
   .discover-section {
@@ -1324,7 +1337,6 @@ function getCurrentYear() {
     margin: 3rem 0rem;
     gap: 3rem;
     padding: 0rem 3rem;
-    
   }
 
   .intro-text {
@@ -3055,7 +3067,6 @@ function getCurrentYear() {
     align-items: center;
     margin: 2rem 0rem;
     flex-direction: column;
-   
   }
 
   .footer-habeep div:nth-child(1) {
@@ -3064,7 +3075,6 @@ function getCurrentYear() {
     background-position: center;
     background-repeat: no-repeat;
     background-image: url("../../assets/images/footerHabeep.svg");
-
   }
   .footer-habeep-home {
     margin-bottom: 4rem;
@@ -3072,7 +3082,7 @@ function getCurrentYear() {
     justify-content: center;
     align-items: center;
   }
-   .footer-habeep .footer-habeep-divs1 div,
+  .footer-habeep .footer-habeep-divs1 div,
   .footer-habeep .footer-habeep-divs2 div {
     width: 279px;
     height: 26px;
@@ -3090,16 +3100,15 @@ function getCurrentYear() {
     display: flex;
     justify-content: center;
     align-items: center;
-    
   }
 
-  .footer-habeep-divs1 div:nth-child(2){ 
+  .footer-habeep-divs1 div:nth-child(2) {
     margin-top: -1px;
     margin-bottom: 1rem;
   }
   .footer-habeep .footer-habeep-divs2 div:nth-child(2) {
     max-width: 402px;
-    text-align: center
+    text-align: center;
   }
   .footer-copy-write {
     width: 200px;
