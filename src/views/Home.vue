@@ -298,14 +298,14 @@ useHead({
 import HomeNavbar from "../components/HomeNavbar.vue";
 import MobileSearch from "./components/MobileSearch.vue";
 
-const currentColor = ref(localStorage.getItem("currentColor") || "#E8E9F5");
+const currentColor = ref(localStorage.getItem("currentColor") || "#FFFFFF");
 
 function updateColor(color) {
   currentColor.value = color;
   localStorage.setItem("currentColor", color);
 }
 
-const showList = ref(true);
+const showList = ref(false);
 
 function toggleList() {
   showList.value = !showList.value;
