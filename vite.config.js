@@ -12,10 +12,6 @@ const routes = [
 
   },
   {
-    path: '/about',
-    name: 'About',
-  },
-  {
     path: '/home',
     name: 'Home',
   },
@@ -156,7 +152,7 @@ export default defineConfig({
         return updatedRoutes;
       }
     }),
-    loadEnv('staging', './',),
+    loadEnv('production', './',),
     ViteImageOptimizer(DEFAULT_OPTIONS_IMAGE_COMPRESSOR),
   ]
 })
