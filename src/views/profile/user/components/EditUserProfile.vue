@@ -17,7 +17,7 @@
         </form>
 
         <img src="../../../../assets/icons/edit-icon.svg" @click="callImgProcessor"
-          class="-right-2 bottom-1 absolute cursor-pointer" alt="">
+          class="-right-2 bottom-1 absolute cursor-pointer" alt="" />
       </div>
       <!-- form -->
       <!-- input fields -->
@@ -46,7 +46,7 @@
                   d="M17 10a.75.75 0 01-.75.75H5.612l4.158 3.96a.75.75 0 11-1.04 1.08l-5.5-5.25a.75.75 0 010-1.08l5.5-5.25a.75.75 0 111.04 1.08L5.612 9.25H16.25A.75.75 0 0117 10z"
                   clip-rule="evenodd" />
               </svg>
-
+              
               <span class="text-sm capitalize">{{ selectedContinent.name }}</span>
             </div>
             <div class="w-full h-fit" v-if="allContinents.length > 0 && !selectedContinent.name">
@@ -153,10 +153,11 @@ async function savePhoto() {
     }
     formData.append('data', JSON.stringify(body))
 
-    const saveImage = await axios.post('/utility/save-image', formData, {
+    const saveImage = await axios.post('/utility/save-image', formData,
+     {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
-
+        console.log('Server Response:', saveImage);
     return saveImage.data.data[0].link
   } catch (error) {
     return 'https://i.ibb.co/gtpxMJz/21.png'

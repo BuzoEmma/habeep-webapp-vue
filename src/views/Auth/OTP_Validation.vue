@@ -44,14 +44,14 @@
 
                 <p class="flex-row-center w-full gap-x-1 text-sm px-2">
                     <span class="text-webapp font-medium">Resend OTP in:</span>
-                    <span class="underline text-blue-600 cursor-pointer" v-if="timer.isExpired.value"
-                        @click="getOTP()">Send</span>
+                    <span class="underline text-orange-400 cursor-pointer" v-if="timer.isExpired.value"
+                        @click="getOTP()">Re-send</span>
                     <span class="text-orange-400 pl-1" v-else>{{ timer.seconds }}</span>
                 </p>
 
                 <!-- submit btn -->
-                <div class="bottom-0 absolute px-4 w-full">
-                    <button class="bg-primary w-full rounded-lg grid place-items-center h-14 mt-5 text-white"
+                <div class="px-4 w-full mt-[2rem]">
+                    <button class=" bg-primary w-full rounded-lg place-items-center h-14 mt-5 ml-[-1rem] text-white"
                         @click="verifyOTP">
                         <span v-if="!processing">Continue</span>
                         <Preloader v-else />

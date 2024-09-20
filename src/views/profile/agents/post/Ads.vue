@@ -159,8 +159,8 @@
                             <div class="mt-3 flex flex-row items-center justify-between gap-x-2 w-full">
                                 <button @click="$router.push('/listings/agent/view/products/' + item._id)"
                                     class="border border-blue-700 flex flex-row justify-center cursor-pointer items-center gap-x-2 rounded-md w-1/2 h-12">
-                                    <img src="../../../../assets/icons/listings/edit.svg" alt="">
-                                    <span class="text-sm text-primary">Edit ad</span>
+                                    <!-- <img src="../../../../assets/icons/listings/edit.svg" alt=""> -->
+                                    <span class="text-sm text-primary">View Ad</span>
                                 </button>
                                 <button
                                     class="bg-primary flex flex-row justify-center cursor-pointer items-center rounded-md w-1/2 h-12"

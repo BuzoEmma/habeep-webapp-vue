@@ -22,6 +22,7 @@
 
         <article class="mt-10 break-words w-full h-fit text-sub-webapp sm:text-lg text-sm" v-html="readingArticle.content">
         </article>
+        
     </div>
 
     <div class="w-full gap-y-10 flex flex-col items-center" v-else>

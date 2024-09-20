@@ -1,7 +1,7 @@
 <template></template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
 import axios from 'axios'
 
 const props = defineProps(['paymentInfo'])
@@ -50,6 +50,14 @@ function closePayment() {
 onMounted(() => {
     createFlw()
 })
+
+onUnmounted(() => {
+  const script = document.getElementById('flw')
+  if (script) {
+    document.getElementsByTagName('head')[0].removeChild(script)
+  }
+})
+
 </script>
 
 <style></style>
