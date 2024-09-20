@@ -8,7 +8,7 @@ name: Publish Docker image to Digital Ocean
 on:
   push:
     branches:
-      - production
+      - staging
 
 jobs:
   push_to_registry:
@@ -50,4 +50,4 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         passphrase: ${{ secrets.PASSPHRASE }}
         port: 22
-        script: cd habeep && echo ${{ secrets.PASSPHRASE }} | sudo -S bash update-web.sh
+        script: cd habeep-staging && echo ${{ secrets.PASSPHRASE }} | sudo -S bash update-web.sh
