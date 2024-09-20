@@ -10,7 +10,7 @@ function guardMyroute(to, from, next) {
             next({ name: 'OTP', query: { reason: 'user_verification', email: createStore.state.user.email } }) // go to '/verify';
         } else next() // allow to enter route
     } else {
-        // console.log(to)
+       
         next("/login?redirect=" + to.path + "?reloadApp=true") // go to '/login';
     }
 }
