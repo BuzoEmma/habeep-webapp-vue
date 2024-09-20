@@ -109,7 +109,7 @@ export default defineConfig({
   plugins: [
     vue(),
     VitePluginSitemap({
-      baseUrl: 'https://habeep.org',
+      baseUrl: 'https://staging.habeep.org',
       contentBase: './',
       routes: routes,
       urlGenHook: async (config) => {
@@ -118,7 +118,7 @@ export default defineConfig({
         try {
           // get products seo routes
           let productsLinks = []
-          const fetch = await axios.get('https://backend-api.habeep.org/backend/api/v1/seo/products')
+          const fetch = await axios.get('https://staging-backend-api.habeep.org/backend/api/v1/seo/products')
           productsLinks = fetch.data.data
           productsLinks.forEach(product => {
             updatedRoutes.push({
@@ -129,7 +129,7 @@ export default defineConfig({
 
           // get users seo routes
           let usersLinks = []
-          const fetchUsers = await axios.get('https://backend-api.habeep.org/backend/api/v1/seo/users')
+          const fetchUsers = await axios.get('https://staging-backend-api.habeep.org/backend/api/v1/seo/users')
           usersLinks = fetchUsers.data.data
           usersLinks.forEach(username => {
             updatedRoutes.push({
@@ -140,7 +140,7 @@ export default defineConfig({
 
           // get blogs seo routes
           let blogsLinks = []
-          const fetchBlogs = await axios.get('https://backend-api.habeep.org/backend/api/v1/seo/blogs')
+          const fetchBlogs = await axios.get('https://staging-backend-api.habeep.org/backend/api/v1/seo/blogs')
           blogsLinks = fetchBlogs.data.data
           blogsLinks.forEach(blog => {
             updatedRoutes.push({
@@ -156,7 +156,7 @@ export default defineConfig({
         return updatedRoutes;
       }
     }),
-    loadEnv('production', './',),
+    loadEnv('staging', './',),
     ViteImageOptimizer(DEFAULT_OPTIONS_IMAGE_COMPRESSOR),
   ]
 })
