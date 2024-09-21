@@ -15,6 +15,8 @@ import AvatarInitials from './components/reusables/AvatarInitials.vue'
 import SkeletonLoader from './components/reusables/SkeletonLoader.vue'
 import PriceFormatter from './components/reusables/PriceFormatter.vue'
 
+import TawkMessengerVue from '@tawk.to/tawk-messenger-vue-3';
+
 import { createHead } from "@vueuse/head"
 
 // markdown editor
@@ -41,6 +43,26 @@ myApp.component('Avatar', AvatarInitials)
 myApp.component('Loader', Loader)
 myApp.component('PriceFormatter', PriceFormatter)
 
+myApp.use(TawkMessengerVue, {
+  propertyId: '66eedef54cbc4814f7dcb89f',
+  widgetId: '1i8ahds7f',
+  autoStart: false,
+  customStyle: {
+    visibility: {
+      desktop: {
+        position: 'cr'
+      },
+
+      mobile: {
+        yOffset: 110,
+        xOffset: 10,
+        position: 'br'
+      }
+    }
+  }
+});
+
+
 myApp.use(MotionPlugin)
 myApp.use(VMdPreview);
 myApp.use(head)
@@ -48,7 +70,3 @@ myApp.use(VueSocialSharing)
 myApp.use(store)
 myApp.use(router)
 myApp.mount('#app')
-
-
-// import generateSitemap from "vue-router-tiny-sitemap"
-// generateSitemap(routes, "https://habeep.org")
