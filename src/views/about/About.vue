@@ -1,7 +1,27 @@
 <script setup>
 import { register } from "swiper/element/bundle";
 register();
-import dataBlog from "./aboutBlog";
+import { ref } from 'vue'
+import axios from '../../composables/axios.js'
+import moment from "moment";
+
+const fetchingBlogs = ref(false)
+const blogs = ref([])
+async function fetchBlogs() {
+  try {
+    fetchingBlogs.value = true
+    const fetchBlogs = await axios.get('/articles/blog/fetch')
+
+    setTimeout(() => {
+      blogs.value = fetchBlogs.data.data
+      fetchingBlogs.value = false
+    }, 1000);
+  } catch (error) {
+    fetchingBlogs.value = false
+  }
+}
+
+fetchBlogs()
 
 import MainNavbar from "../../components/MainNavbar.vue";
 import { useRouter } from "vue-router";
@@ -29,7 +49,7 @@ function getCurrentYear() {
         Our mission is to bridge the gap between landlords and tenants, making
         renting and managing properties easy.
       </p>
-      <video class="hero-video" src="../../assets/videos/HabeepAbout.mp4" controls autoplay loop muted
+      <video class="hero-video object-cover object-center" src="../../assets/videos/HabeepAbout.mp4" autoplay loop muted
         preload="metadata">
         Your browser does not support the video tag.
       </video>
@@ -104,7 +124,7 @@ function getCurrentYear() {
       </div>
     </section>
 
-    <section class="blog-section">
+    <section class="blog-section" v-if="blogs.length > 0 && !fetchingBlogs">
       <div class="blog-header">
         <p class="blog-title">Blogs</p>
         <p class="blog-subtitle">
@@ -151,28 +171,18 @@ function getCurrentYear() {
           1400: {
             slidesPerView: 3,
           },
-        }" :navigation="{
-            prevEl: '.swiper-prev',
-            nextEl: '.swiper-next',
-          }" @swiperprogress="onProgress" @swiperslidechange="onSlideChange" class="swiper-div">
-          <swiper-slide v-for="(item, index) in dataBlog" :key="index" class="swiper-slide">
-            <a v-if="item.link" :href="item.link" target="_blank" rel="noopener noreferrer"
-              :style="{ backgroundImage: `url(${item.image})` }" class="swiper-slide-card">
-              <div>
-                <p class="swiper-div-title">{{ item.title }}</p>
-                <p class="swiper-div-sub-title">
-                  <span>{{ item.date }}</span> &nbsp; &nbsp;
-                  <span>{{ item.name }}</span>
-                </p>
-              </div>
-            </a>
+        }" :navigation="blogs.length > 1 ? {
+          prevEl: '.swiper-prev',
+          nextEl: '.swiper-next',
+        } : false" @swiperprogress="onProgress" @swiperslidechange="onSlideChange" class="swiper-div">
+          <swiper-slide v-for="(item, index) in blogs" :key="index" class="swiper-slide">
 
-            <div v-else-if="item.route" @click="$router.push(item.route)"
-              :style="{ backgroundImage: `url(${item.image})` }" class="swiper-slide-card">
+            <div @click="$router.push('/blog/' + item._id)" :style="{ backgroundImage: `url(${item.imageCover})` }"
+              class="swiper-slide-card">
               <div>
                 <p class="swiper-div-title">{{ item.title }}</p>
                 <p class="swiper-div-sub-title">
-                  <span>{{ item.date }} {{ item.name }}</span>
+                  <span>{{ moment(item.createdAt).format('MMM DD, YYYY') }} | {{ item.username }}</span>
                 </p>
               </div>
             </div>
@@ -246,9 +256,9 @@ function getCurrentYear() {
           slidesPerView: 1,
         },
       }" :navigation="{
-          prevEl: '.testimonial-swiper-prev',
-          nextEl: '.testimonial-swiper-next',
-        }" @swiperprogress="onProgress" @swiperslidechange="onSlideChange" class="testimonial-div">
+        prevEl: '.testimonial-swiper-prev',
+        nextEl: '.testimonial-swiper-next',
+      }" @swiperprogress="onProgress" @swiperslidechange="onSlideChange" class="testimonial-div">
         <swiper-slide v-for="(testimonial, index) in testimonials" :key="index" class="testimonial-slide">
           <div class="testimonial-slide-img">
             <img :src="testimonial.img" alt="testimonial image" />
@@ -293,7 +303,7 @@ function getCurrentYear() {
         </div>
         <div class="footer-habeep-divs1">
           <div>
-            <a href="tel:+234 708 818 8807">+234 708 818 8807</a>
+            <a href="tel:+2347088188807">+234 708 818 8807</a>
           </div>
           <div>
             <a href="http://www.habeep.org">www.habeep.org</a>
@@ -301,7 +311,7 @@ function getCurrentYear() {
         </div>
         <div class="footer-habeep-divs2">
           <div>
-            <a href="http://www.instagram.com" target="_blank" rel="noopener noreferrer">
+            <a href="http://www.instagram.com/habeep_realest" target="_blank" rel="noopener noreferrer">
               <svg width="143" height="24" viewBox="0 0 143 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M16 7C16 6.73478 16.1054 6.48043 16.2929 6.29289C16.4804 6.10536 16.7348 6 17 6C17.2652 6 17.5196 6.10536 17.7071 6.29289C17.8946 6.48043 18 6.73478 18 7C18 7.26522 17.8946 7.51957 17.7071 7.70711C17.5196 7.89464 17.2652 8 17 8C16.7348 8 16.4804 7.89464 16.2929 7.70711C16.1054 7.51957 16 7.26522 16 7Z"
@@ -333,6 +343,7 @@ function getCurrentYear() {
     </section>
   </div>
 </template>
+
 
 <style scoped>
 /*  Import Ubuntu font */

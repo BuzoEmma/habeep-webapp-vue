@@ -8,7 +8,7 @@ export default createStore({
         },
         navOpen: false,
         isAuthenticated: false,
-        user: [],
+        user: {},
         sessionId: '',
         listingProcess: {
             for: '',
