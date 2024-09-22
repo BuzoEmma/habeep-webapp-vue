@@ -82,6 +82,7 @@
             <router-link to="/terms-of-service" class="underline text-webapp">Terms of service</router-link>
             <router-link to="/listings/search?name=Houses" class="underline text-webapp">Products</router-link>
             <router-link to="/help" class="underline text-webapp">Help</router-link>
+            <router-link to="/about" class="underline text-blue-600">About us</router-link>
         </div>
     </div>
 </template>
