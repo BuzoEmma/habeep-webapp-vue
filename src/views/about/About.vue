@@ -29,7 +29,7 @@ import discoverSvg1 from "../../assets/images/discoverImg1.svg";
 import discoverSvg2 from "../../assets/images/discoverImg2.svg";
 import tenants1 from "../../assets/images/tenantsSvg1.png";
 import tenants2 from "../../assets/images/tenantsSvg2.png";
-import landlordPhone from "../../assets/images/habeepMobileApp.jpg";
+import landlordPhone from "../../assets/images/lan.png";
 import testimonials from "./aboutTestimonials";
 
 const router = useRouter();
@@ -208,7 +208,7 @@ function getCurrentYear() {
         </div>
       </div>
       <div class="landlords-download">
-        <p>Download the Landlord App</p>
+        <p>Download the User App</p>
         <div class="landlords-download-btn">
           <a href="https://apps.apple.com/us/app/habeep/id6450388013" target="_blank" class="landlords-links">
             <img src="../../assets/icons/download-app-apple.svg" alt="" />
@@ -278,7 +278,7 @@ function getCurrentYear() {
       <div class="footer-user-app">
         <div class="footer-user-app-div">
           <div>
-            <p>Download the User App</p>
+            <p>Download the Landlord App</p>
             <p>
               Lorem ipsum dolor sit amet consectetur. Dolor sit amet
               consectetur.
@@ -913,7 +913,7 @@ function getCurrentYear() {
     width: 100%;
     max-width: 375px;
     height: 412px;
-    border-radius: 20px 20px 0px 0px;
+    /* border-radius: 40px; */
     border: 0px 0px 0px 0px;
     position: relative;
     bottom: -4rem;
@@ -984,7 +984,6 @@ function getCurrentYear() {
     justify-content: center;
     align-content: center;
     position: relative;
-    
   }
 
   .testimonial-div {
@@ -1802,14 +1801,14 @@ function getCurrentYear() {
     color: white;
   }
 
- .landlords-svg1 img {
-    width: 100%;
-    max-width: 375px;
-    height: 375px;
-    border-radius: 20px 20px 0px 0px;
+  .landlords-svg1 img {
+    width: 300px;
+    height: 330px;
+    /* border-radius: 40px; */
     border: 0px 0px 0px 0px;
     position: relative;
-    bottom: -4rem;
+    bottom: -5.4rem;
+    object-fit: contain;
   }
 
   .landlords-svgs .landlords-svg2 {
@@ -2722,8 +2721,8 @@ function getCurrentYear() {
 
   .landlords-svg1 img {
     width: 300px;
-    height: 340px;
-    border-radius: 20px 20px 0px 0px;
+    height: 330px;
+    /* border-radius: 40px; */
     border: 0px 0px 0px 0px;
     position: relative;
     bottom: -5.4rem;
@@ -3604,13 +3603,12 @@ function getCurrentYear() {
 
   .landlords-svg1 img {
     width: 250px;
-    height: 255px;
-    border-radius: 20px 20px 0px 0px;
+    height: 250px;
+    /* border-radius: 40px; */
     border: 0px 0px 0px 0px;
     position: relative;
     bottom: -4.3rem;
     object-fit: contain;
-    background-color: white;
   }
 
   .landlords-svgs .landlords-svg2 {
