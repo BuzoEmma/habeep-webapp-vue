@@ -29,7 +29,7 @@ import discoverSvg1 from "../../assets/images/discoverImg1.svg";
 import discoverSvg2 from "../../assets/images/discoverImg2.svg";
 import tenants1 from "../../assets/images/tenantsSvg1.png";
 import tenants2 from "../../assets/images/tenantsSvg2.png";
-import landlordPhone from "../../assets/images/lan.png";
+import landlordPhone from "../../assets/images/habeepMobileApp.jpg";
 import testimonials from "./aboutTestimonials";
 
 const router = useRouter();
@@ -221,7 +221,7 @@ function getCurrentYear() {
       </div>
     </section>
 
-    <section class="testimonial-section">
+    <section class="testimonial-section" style="display: none;">
       <div class="testimonial-swiper-prev">
         <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g clip-path="url(#clip0_1298_971)">
@@ -793,39 +793,47 @@ function getCurrentYear() {
     box-shadow: rgb(255, 255, 255) 1px -70px 40px -18px inset;
     background-size: cover;
     background-position: center;
+    cursor: pointer;
     /* filter: brightness(0.8) */
   }
 
   .swiper-slide-card div {
+    height: auto;
     position: absolute;
     bottom: 40px;
     width: 351px;
-    height: 87px;
     gap: 0px;
     opacity: 1;
+    display: flex;
+    flex-flow: nowrap column;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px;
   }
+.swiper-div-title {
+  width: 351px;
+  height: auto;
+  font-family: Ubuntu;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+  text-align: left;
+  color: #ffffff; 
+  text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); 
+}
 
-  .swiper-div-title {
-    width: 351px;
-    height: 56px;
-    font-family: Ubuntu;
-    font-size: 20px;
-    font-weight: 500;
-    line-height: 28px;
-    text-align: left;
-    color: #0a1045;
-  }
+.swiper-div-sub-title {
+  width: 100%;
+  height: auto;
+  font-family: Ubuntu;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 26px;
+  text-align: left;
+  color: #ffffffbe;
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
 
-  .swiper-div-sub-title {
-    width: 100%;
-    height: 26px;
-    font-family: Ubuntu;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 26px;
-    text-align: left;
-    color: #71759d;
-  }
+}
 
   .landlords-section {
     width: 100%;
@@ -905,7 +913,7 @@ function getCurrentYear() {
     width: 100%;
     max-width: 375px;
     height: 412px;
-    /* border-radius: 40px; */
+    border-radius: 20px 20px 0px 0px;
     border: 0px 0px 0px 0px;
     position: relative;
     bottom: -4rem;
@@ -976,6 +984,7 @@ function getCurrentYear() {
     justify-content: center;
     align-content: center;
     position: relative;
+    
   }
 
   .testimonial-div {
@@ -1621,19 +1630,15 @@ function getCurrentYear() {
     text-align: center;
     color: #b1b2b6;
   }
-
   .swiper-container-wrapper {
     position: relative;
-    width: 100%;
-    max-width: 800px;
-    max-height: 399px;
-    height: 100%;
-    gap: 5rem;
+    width: 900px;
+    height: 399px;
+    gap: 7rem;
     opacity: 0px;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0rem 5rem;
   }
 
   .swiper-prev,
@@ -1646,38 +1651,24 @@ function getCurrentYear() {
   }
 
   .swiper-prev {
-    width: 80px;
     left: -7rem;
   }
 
   .swiper-next {
-    right: -7rem;
+    right: -6rem;
   }
 
   .swiper-div {
-    max-height: 399px;
-    max-width: 800px;
-    gap: 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-content: center;
-  }
-
-  swiper-slide.swiper-slide.swiper-slide-active {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  swiper-slide.swiper-slide.swiper-slide-next {
+    width: 900px;
+    height: 399px;
+    gap: 27px;
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
   .swiper-slide-card {
-    width: 100%;
-    max-width: 350px;
+    width: 422px;
     height: 399px;
     border-radius: 30px 30px 0px 0px;
     border-color: none;
@@ -1690,45 +1681,48 @@ function getCurrentYear() {
     box-shadow: rgb(255, 255, 255) 1px -70px 40px -18px inset;
     background-size: cover;
     background-position: center;
-
+    cursor: pointer;
     /* filter: brightness(0.8) */
   }
 
   .swiper-slide-card div {
+    height: auto;
     position: absolute;
     bottom: 40px;
-    max-width: 351px;
-    width: 100%;
-    height: 87px;
+    width: 351px;
     gap: 0px;
     opacity: 1;
-    text-align: center;
-    padding: 0px 5px;
+    display: flex;
+    flex-flow: nowrap column;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.514);
+    padding: 10px;
+    bottom: 1px;
   }
+.swiper-div-title {
+  width: 351px;
+  height: auto;
+  font-family: Ubuntu;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+  text-align: left;
+  color: #ffffff; 
+  text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); 
+}
 
-  .swiper-div-title {
-    width: 100%;
-    max-width: 350px;
-    height: 56px;
-    font-family: Ubuntu;
-    font-size: 18px;
-    font-weight: 500;
-    line-height: 25px;
-    text-align: center;
-    color: #0a1045;
-  }
+.swiper-div-sub-title {
+  width: 100%;
+  height: auto;
+  font-family: Ubuntu;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 26px;
+  text-align: left;
+  color: #ffffffbe;
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
 
-  .swiper-div-sub-title {
-    width: 100%;
-    height: 26px;
-    font-family: Ubuntu;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 26px;
-    text-align: left;
-    color: #71759d;
-    padding-left: 1.5rem;
-  }
+}
 
   .landlords-section {
     width: 100%;
@@ -1808,14 +1802,14 @@ function getCurrentYear() {
     color: white;
   }
 
-  .landlords-svg1 img {
-    width: 300px;
-    height: 330px;
-    /* border-radius: 40px; */
+ .landlords-svg1 img {
+    width: 100%;
+    max-width: 375px;
+    height: 375px;
+    border-radius: 20px 20px 0px 0px;
     border: 0px 0px 0px 0px;
     position: relative;
-    bottom: -5.4rem;
-    object-fit: contain;
+    bottom: -4rem;
   }
 
   .landlords-svgs .landlords-svg2 {
@@ -2610,23 +2604,28 @@ function getCurrentYear() {
     bottom: 40px;
     max-width: 351px;
     width: 100%;
-    height: 87px;
+    height: auto;
     gap: 0px;
     opacity: 1;
     text-align: center;
-    padding: 0px 5px;
+    bottom: 10px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.514);
+
+
+
   }
 
   .swiper-div-title {
     width: 100%;
     max-width: 350px;
-    height: 56px;
+    height: auto;
     font-family: Ubuntu;
     font-size: 18px;
     font-weight: 500;
     line-height: 25px;
-    text-align: center;
-    color: #0a1045;
+   color: white;
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   }
 
   .swiper-div-sub-title {
@@ -2637,8 +2636,8 @@ function getCurrentYear() {
     font-weight: 400;
     line-height: 26px;
     text-align: left;
-    color: #71759d;
-    padding-left: 1.5rem;
+    color: rgba(255, 255, 255, 0.863);
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
   }
 
   .landlords-section {
@@ -2723,8 +2722,8 @@ function getCurrentYear() {
 
   .landlords-svg1 img {
     width: 300px;
-    height: 330px;
-    /* border-radius: 40px; */
+    height: 340px;
+    border-radius: 20px 20px 0px 0px;
     border: 0px 0px 0px 0px;
     position: relative;
     bottom: -5.4rem;
@@ -3488,7 +3487,7 @@ function getCurrentYear() {
     width: 100%;
     max-width: 250px;
     height: 257px;
-    border-radius: 30px;
+    /* border-radius: 30px; */
     border-color: none;
     display: flex;
     justify-content: center;
@@ -3499,32 +3498,38 @@ function getCurrentYear() {
     box-shadow: rgb(255, 255, 255) 1px -70px 40px -18px inset;
     background-size: cover;
     background-position: center;
-    /* background: #000; */
-    /* filter: brightness(0.8) */
+
   }
 
   .swiper-slide-card div {
-    width: 184px;
-    height: 80px;
+    width: 100%;
+    height: auto;
+    background: none;
+    gap: 5px;
+    bottom: 3rem;
   }
 
   .swiper-div-title {
-    width: 184px;
-    height: 63px;
+    width: 100%;
+    height: auto;
     font-size: 14px;
     font-weight: 500;
     line-height: 21px;
     text-align: left;
+    color: #0a1045;
+    
   }
 
   .swiper-div-sub-title {
-    width: 200px;
-    height: 19px;
+    width: 100%;
+    height: auto;
     font-size: 12px;
     font-weight: 400;
     line-height: 16px;
     text-align: left;
     padding: 0;
+        color: #71759d;
+
   }
 
   .landlords-section {
@@ -3599,12 +3604,13 @@ function getCurrentYear() {
 
   .landlords-svg1 img {
     width: 250px;
-    height: 250px;
-    /* border-radius: 40px; */
+    height: 255px;
+    border-radius: 20px 20px 0px 0px;
     border: 0px 0px 0px 0px;
     position: relative;
     bottom: -4.3rem;
     object-fit: contain;
+    background-color: white;
   }
 
   .landlords-svgs .landlords-svg2 {
