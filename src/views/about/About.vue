@@ -932,39 +932,47 @@ function getCurrentYear() {
     box-shadow: rgb(255, 255, 255) 1px -70px 40px -18px inset;
     background-size: cover;
     background-position: center;
+    cursor: pointer;
     /* filter: brightness(0.8) */
   }
 
   .swiper-slide-card div {
+    height: auto;
     position: absolute;
     bottom: 40px;
     width: 351px;
-    height: 87px;
     gap: 0px;
     opacity: 1;
+    display: flex;
+    flex-flow: nowrap column;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px;
   }
+.swiper-div-title {
+  width: 351px;
+  height: auto;
+  font-family: Ubuntu;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+  text-align: left;
+  color: #ffffff; 
+  text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); 
+}
 
-  .swiper-div-title {
-    width: 351px;
-    height: 56px;
-    font-family: Ubuntu;
-    font-size: 20px;
-    font-weight: 500;
-    line-height: 28px;
-    text-align: left;
-    color: #0a1045;
-  }
+.swiper-div-sub-title {
+  width: 100%;
+  height: auto;
+  font-family: Ubuntu;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 26px;
+  text-align: left;
+  color: #ffffffbe;
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
 
-  .swiper-div-sub-title {
-    width: 100%;
-    height: 26px;
-    font-family: Ubuntu;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 26px;
-    text-align: left;
-    color: #71759d;
-  }
+}
 
   .landlords-section {
     width: 100%;
@@ -1822,38 +1830,40 @@ function getCurrentYear() {
     height: auto;
     position: absolute;
     bottom: 40px;
-    max-width: 351px;
-    width: 100%;
-    height: 87px;
+    width: 351px;
     gap: 0px;
     opacity: 1;
-    text-align: center;
-    padding: 0px 5px;
+    display: flex;
+    flex-flow: nowrap column;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.514);
+    padding: 10px;
+    bottom: 1px;
   }
+.swiper-div-title {
+  width: 351px;
+  height: auto;
+  font-family: Ubuntu;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+  text-align: left;
+  color: #ffffff; 
+  text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); 
+}
 
-  .swiper-div-title {
-    width: 100%;
-    max-width: 350px;
-    height: 56px;
-    font-family: Ubuntu;
-    font-size: 18px;
-    font-weight: 500;
-    line-height: 25px;
-    text-align: center;
-    color: #0a1045;
-  }
+.swiper-div-sub-title {
+  width: 100%;
+  height: auto;
+  font-family: Ubuntu;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 26px;
+  text-align: left;
+  color: #ffffffbe;
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
 
-  .swiper-div-sub-title {
-    width: 100%;
-    height: 26px;
-    font-family: Ubuntu;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 26px;
-    text-align: left;
-    color: #71759d;
-    padding-left: 1.5rem;
-  }
+}
 
   .landlords-section {
     width: 100%;
@@ -2744,7 +2754,12 @@ function getCurrentYear() {
     gap: 0px;
     opacity: 1;
     text-align: center;
-    padding: 0px 5px;
+    bottom: 10px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.514);
+
+
+
   }
 
   .swiper-div-title {
@@ -2755,8 +2770,8 @@ function getCurrentYear() {
     font-size: 18px;
     font-weight: 500;
     line-height: 25px;
-    text-align: center;
-    color: #0a1045;
+   color: white;
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   }
 
   .swiper-div-sub-title {
@@ -2767,8 +2782,8 @@ function getCurrentYear() {
     font-weight: 400;
     line-height: 26px;
     text-align: left;
-    color: #71759d;
-    padding-left: 1.5rem;
+    color: rgba(255, 255, 255, 0.863);
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
   }
 
   .landlords-section {
@@ -3633,13 +3648,15 @@ function getCurrentYear() {
     box-shadow: rgb(255, 255, 255) 1px -70px 40px -18px inset;
     background-size: cover;
     background-position: center;
-    /* background: #000; */
-    /* filter: brightness(0.8) */
+
   }
 
   .swiper-slide-card div {
-    width: 184px;
-    height: 80px;
+    width: 100%;
+    height: auto;
+    background: none;
+    gap: 5px;
+    bottom: 3rem;
   }
 
   .swiper-div-title {
@@ -3649,6 +3666,8 @@ function getCurrentYear() {
     font-weight: 500;
     line-height: 21px;
     text-align: left;
+    color: #0a1045;
+    
   }
 
   .swiper-div-sub-title {
@@ -3659,6 +3678,8 @@ function getCurrentYear() {
     line-height: 16px;
     text-align: left;
     padding: 0;
+        color: #71759d;
+
   }
 
   .landlords-section {
