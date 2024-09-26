@@ -208,7 +208,7 @@ function getCurrentYear() {
         </div>
       </div>
       <div class="landlords-download">
-        <p>Download the User App</p>
+        <p>Download the Landlord App</p>
         <div class="landlords-download-btn">
           <a href="https://apps.apple.com/us/app/habeep/id6450388013" target="_blank" class="landlords-links">
             <img src="../../assets/icons/download-app-apple.svg" alt="" />
@@ -278,7 +278,7 @@ function getCurrentYear() {
       <div class="footer-user-app">
         <div class="footer-user-app-div">
           <div>
-            <p>Download the Landlord App</p>
+            <p>Download the User App</p>
             <p>
               Lorem ipsum dolor sit amet consectetur. Dolor sit amet
               consectetur.
@@ -299,7 +299,6 @@ function getCurrentYear() {
       </div>
       <div class="footer-habeep">
         <div @click="$router.push('/home')" class="footer-habeep-home">
-          <!-- <img src="../../assets/images/footerHabeep.svg" alt="" /> -->
         </div>
         <div class="footer-habeep-divs1">
           <div>
@@ -383,12 +382,10 @@ function getCurrentYear() {
 
   .hero-video {
     width: 100%;
-    max-width: 1245px;
-    height: 473px;
+    max-width: 902px;
+    height: 507px;
     border-radius: 30px;
     background: rgba(217, 217, 217, 1);
-    overflow: hidden;
-    /* object-fit: inherit */
   }
 
   .discover-section {
@@ -2056,6 +2053,8 @@ function getCurrentYear() {
     position: relative;
     bottom: -4.7rem;
     object-fit: contain;
+
+    
   }
 
   .footer-habeep {
@@ -2976,7 +2975,7 @@ function getCurrentYear() {
     /* border-radius: 40px; */
     border: 10px;
     position: relative;
-    bottom: -3rem;
+    bottom: -3.1rem;
     object-fit: contain;
   }
 
@@ -3084,9 +3083,11 @@ function getCurrentYear() {
   .hero-video {
     width: 100%;
     max-width: 331px;
-    max-height: 419px;
+    max-height: 300px;
     border-radius: 30px;
     background: rgba(217, 217, 217, 1);
+    overflow: hidden;
+    background: red;
   }
 
   .discover-section {
@@ -3856,7 +3857,7 @@ function getCurrentYear() {
   .footer-user-app img:nth-child(2) {
     width: 250px;
     height: 400px;
-    bottom: -2.6rem;
+    bottom: -3.2rem;
   }
 
   .footer-habeep {
@@ -3878,6 +3879,7 @@ function getCurrentYear() {
   }
 
   .footer-habeep-home {
+    width: 180px !important;
     margin-bottom: 4rem;
   }
 
