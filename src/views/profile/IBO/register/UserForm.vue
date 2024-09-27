@@ -24,8 +24,12 @@
 
                 <div class="flex flex-col items-start w-full gap-y-1 mt-8">
                     <label for="" class="text-sm text-webapp">Bio</label>
-                    <textarea type="text" v-model="data.bio" name="" class="w-full h-28 pt-3 rounded-lg"
-                        placeholder="Write something about youself" id=""></textarea>
+                    <div class="w-full">
+                        <textarea type="text" v-model="data.bio" name=""
+                            class="w-full h-28 pt-3 rounded-lg bg-transparent"
+                            placeholder="Write something about youself (min. 10 characters)" id=""></textarea>
+                        <p class="text-xs text-sub-webapp">min. 10 characters</p>
+                    </div>
                 </div>
 
                 <p class="w-full text-left text-webapp  text-sm mt-10">
@@ -33,8 +37,14 @@
                         class="cursor-pointer text-primary underline">Terms and conditions</span>
                 </p>
                 <!-- submit btn -->
-                <button class="bg-primary w-full rounded-lg grid place-items-center h-14 text-white mt-5"
-                    @click="inputCompleted = true">
+                <button class="w-full  rounded-[5px] grid place-items-center h-14 text-white mt-5" :class="{
+                    'bg-primary': data.bio.length >= 10, 'bg-gray-300'
+                        : data.bio.length < 10
+                }" @click="() => {
+                    if (data.bio.length >= 10) {
+                        inputCompleted = true
+                    }
+                }">
                     <span>Next</span>
                 </button>
 
@@ -42,24 +52,14 @@
 
         </div>
 
-        <AffiliateFee v-else :data="data" />
+        <AffiliateFee v-else :data="data" @back="inputCompleted = false" />
     </div>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
-import { useRouter, useRoute } from "vue-router";
-import axios from "../../../../composables/axios";
-import axiosDefault from 'axios'
-import { useStore } from "vuex";
+import { ref, reactive } from 'vue'
+
 import AffiliateFee from './AffiliateFee.vue';
-
-import { formValidator } from '../../../../composables/2-validator'
-
-const route = useRoute();
-const router = useRouter();
-
-const store = useStore();
 
 const inputCompleted = ref(false)
 
@@ -67,32 +67,6 @@ const data = reactive({
     role: 'TENANT',
     bio: ''
 })
-
-const onError = ref(false)
-let errorMsg = ref({
-    msg: '',
-    field: null
-})
-
-let newMsg = ref('')
-let warningMsg = ref('')
-const processing = ref(false)
-
-function validateFormField(field, data) {
-    const validator = formValidator(field, data)
-
-
-    if (!validator.success) {
-        onError.value = true
-        errorMsg.value.msg = validator.message
-        errorMsg.value.field = field
-    } else {
-        onError.value = false
-        errorMsg.value.msg = ''
-        errorMsg.value.field = null
-    }
-}
-
 </script>
 
 <style scoped>

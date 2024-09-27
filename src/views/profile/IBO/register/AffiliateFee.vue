@@ -1,12 +1,12 @@
 <template>
     <div
-        class="form-container flex flex-col items-center relative bg-white gap-y-3 w-full xl:w-2/3 h-full pb-6 md:py-10 overflow-y-auto overflow-x-hidden">
+        class="form-container flex flex-col items-center relative bg-white gap-y-3 w-full xl:w-2/3 h-full pb-6 overflow-y-auto overflow-x-hidden">
 
         <!-- logo -->
         <div
             class="w-full text-left text-webapp justify-between font-medium text-xl flex flex-row px-4 items-center py-5 border-b border-b-gray-200">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0A1045"
-                class="w-6 h-6  text-webapp" @click="$emit('back')">
+                class="w-6 h-6  text-webapp cursor-pointer" @click="$emit('back')">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
             <span class="capitalize text-webapp ">IBO Affiliate fee</span>
@@ -40,7 +40,8 @@
                         account</span>
                     <span class="text-sm text-webapp mt-[10px]" v-else>{{ $store.state.user.currency }} wallet
                         account</span>
-                    <img src="../../../../assets/icons/exchange.svg" class="mt-[10px]" @click="changeAccountType" alt="">
+                    <img src="../../../../assets/icons/exchange.svg" class="mt-[10px]" @click="changeAccountType"
+                        alt="">
                 </fieldset>
 
                 <div class="flex flex-row items-center justify-between px-[18px] w-full h-[48px] form-field rounded-[5px] mt-4"
@@ -48,7 +49,7 @@
                     <span class="text-sub-webapp text-[11px]">Balance</span>
                     <div class="flex-row flex items-center" v-if="accountType === 'hbp'">
                         <span class="text-sm font-medium text-webapp">{{ hbpWalletData.accountValue.toFixed(2)
-                        }}</span>
+                            }}</span>
                         <span class="text-[11px] text-webapp mt-1">HBP</span>
                     </div>
                     <div class="flex-row flex items-center" v-else>
@@ -76,7 +77,8 @@
             </div>
 
             <!-- submit btn -->
-            <button :disabled="processing" class="bg-primary w-full rounded-[5px] grid place-items-center h-14 text-white"
+            <button :disabled="processing" v-if="!alreadyDebited"
+                class="bg-primary w-full rounded-[5px] grid place-items-center h-14 text-white md:w-2/3"
                 @click="debitFee">
                 <Preloader v-if="processing" />
                 <span v-if="!processing && accountType === 'hbp'">Pay {{ amountToDebit }}HBP</span>
@@ -84,6 +86,13 @@
                     <PriceFormatter :from="$store.state.user.currency" :to="$store.state.user.currency"
                         :amount="currencyAmountToDebit" />
                 </p>
+            </button>
+            <button :disabled="processing" v-else
+                class="bg-primary w-full rounded-[5px] grid place-items-center h-14 text-white md:w-2/3"
+                @click="makeUserAnIBO">
+                <Preloader v-if="processing" />
+                <span v-else>Become a Tenant</span>
+
             </button>
         </div>
 
@@ -175,66 +184,71 @@ if (currencyAmountToDebit.value === true) {
 
 async function debitFee() {
     if (alreadyDebited.value === false) {
-        if (accountType.value === 'hbp') {
-            if (hbpWalletData.value.accountValue < amountToDebit) {
-                onError.value = true
-                errorMsg.value.msg = 'Deposit ' + (amountToDebit - hbpWalletData.value.accountValue).toFixed(2) + 'HBP to continue. Redirecting to deposit page in 2sec!'
-
-                setTimeout(() => {
-                    router.push('/wallet?tab=hbp&cont=deposit')
-                }, 2000);
-            } else {
-                try {
-                    processing.value = true
-                    let data = {
-                        amount: amountToDebit,
-                        description: 'Purchase ' + props.data.role + ' plan',
-                        dates: {
-                            createdAt: moment().format('LLL'),
-                            time: moment().format('LTS'),
-                            date: moment().format('LL')
-                        },
-                    }
-                    await axios.post('/wallet/debit-wallet', data)
-                    hbpWalletData.value.accountValue -= amountToDebit
-                    alreadyDebited.value = true
-                    makeUserAnIBO()
-                } catch (error) {
-                    processing.value = false
+        const debitVerification = await checkAlreadyDebitedTxn();
+        if (debitVerification === false) {
+            if (accountType.value === 'hbp') {
+                if (hbpWalletData.value.accountValue < amountToDebit) {
                     onError.value = true
-                    errorMsg.value.msg = 'Unable to debit user wallet. Try again later'
+                    errorMsg.value.msg = 'Deposit ' + (amountToDebit - hbpWalletData.value.accountValue).toFixed(2) + 'HBP to continue. Redirecting to deposit page in 2sec!'
+
+                    setTimeout(() => {
+                        router.push('/wallet?tab=hbp&cont=deposit')
+                    }, 2000);
+                } else {
+                    try {
+                        processing.value = true
+                        let data = {
+                            amount: amountToDebit,
+                            description: 'Purchase ' + props.data.role + ' plan',
+                            dates: {
+                                createdAt: moment().format('LLL'),
+                                time: moment().format('LTS'),
+                                date: moment().format('LL')
+                            },
+                        }
+                        await axios.post('/wallet/debit-wallet', data)
+                        hbpWalletData.value.accountValue -= amountToDebit
+                        alreadyDebited.value = true
+                        makeUserAnIBO()
+                    } catch (error) {
+                        processing.value = false
+                        onError.value = true
+                        errorMsg.value.msg = 'Unable to debit user wallet. Try again later'
+                    }
+                }
+            } else {
+                if (currencyWalletData.value.accountValue < currencyAmountToDebit.value) {
+                    onError.value = true
+                    errorMsg.value.msg = 'Deposit ' + currencyFormatter.format(currencyAmountToDebit.value - currencyWalletData.value.accountValue, { code: store.state.user.currency }) + ` to continue. Redirecting to deposit page in 2sec!`
+
+                    setTimeout(() => {
+                        router.push('/wallet?tab=currency&cont=deposit')
+                    }, 2000);
+                } else {
+                    try {
+                        processing.value = true
+                        let data = {
+                            amount: currencyAmountToDebit.value,
+                            description: 'Purchase ' + props.data.role + ' plan',
+                            dates: {
+                                createdAt: moment().format('LLL'),
+                                time: moment().format('LTS'),
+                                date: moment().format('LL')
+                            },
+                        }
+                        await axios.post('/wallet/charge-money-wallet', data)
+                        currencyWalletData.value.accountValue -= currencyAmountToDebit.value
+                        alreadyDebited.value = true
+                        makeUserAnIBO()
+                    } catch (error) {
+                        processing.value = false
+                        onError.value = true
+                        errorMsg.value.msg = 'Unable to debit user wallet. Try again later'
+                    }
                 }
             }
         } else {
-            if (currencyWalletData.value.accountValue < currencyAmountToDebit.value) {
-                onError.value = true
-                errorMsg.value.msg = 'Deposit ' + currencyFormatter.format(currencyAmountToDebit.value - currencyWalletData.value.accountValue, { code: store.state.user.currency }) + ` to continue. Redirecting to deposit page in 2sec!`
-
-                setTimeout(() => {
-                    router.push('/wallet?tab=currency&cont=deposit')
-                }, 2000);
-            } else {
-                try {
-                    processing.value = true
-                    let data = {
-                        amount: currencyAmountToDebit.value,
-                        description: 'Purchase ' + props.data.role + ' plan',
-                        dates: {
-                            createdAt: moment().format('LLL'),
-                            time: moment().format('LTS'),
-                            date: moment().format('LL')
-                        },
-                    }
-                    await axios.post('/wallet/charge-money-wallet', data)
-                    currencyWalletData.value.accountValue -= currencyAmountToDebit.value
-                    alreadyDebited.value = true
-                    makeUserAnIBO()
-                } catch (error) {
-                    processing.value = false
-                    onError.value = true
-                    errorMsg.value.msg = 'Unable to debit user wallet. Try again later'
-                }
-            }
+            makeUserAnIBO()
         }
     } else {
         makeUserAnIBO()
@@ -263,9 +277,9 @@ async function makeUserAnIBO() {
                         router.replace('/tenancy')
                     }
                 }
-                
+
             }, 2000);
-            
+
         } else {
             newMsg.value = change.data.message
 
@@ -304,10 +318,43 @@ async function makeUserAnIBO() {
     }
 }
 
+
+async function checkAlreadyDebitedTxn() {
+    const accountUsed = accountType.value.toLowerCase()
+
+    async function runTxn(wallet = 'hbp') {
+        const fetch = await axios.post('/wallet/fetch-transaction-with-reference', { reference: `Purchase ${props.data?.role?.toUpperCase() ?? 'TENANT'} plan`, wallet: wallet })
+        if (fetch.data.error === false) {
+            const accounts = [store.state.user.wallet[store.state.user.currency], store.state.user.wallet?.coin]
+            const data = fetch.data.data;
+            if (accounts.includes(data?.walletId)) {
+                if (['COMPLETED', 'SUCCESSFUL'].includes(data?.status?.toUpperCase())) {
+                    alreadyDebited.value = true;
+                } else {
+                    alreadyDebited.value = false;
+                }
+            }
+        }
+    }
+    try {
+        await runTxn(accountUsed);
+        return alreadyDebited.value;
+    } catch (error) {
+        try {
+            await runTxn(accountUsed === 'hbp' ? store.state.user.currency?.toLowerCase() : 'hbp');
+            return alreadyDebited.value;
+        } catch (error) {
+            return alreadyDebited.value;
+        }
+
+    }
+}
+
 onMounted(async () => {
     hbpWalletData.value.accountValue = 0
     currencyWalletData.value.accountValue = 0
-    getWallet()
+    await getWallet()
+    checkAlreadyDebitedTxn()
 
     let nairaValue = ref(87)
     try {
@@ -317,13 +364,22 @@ onMounted(async () => {
         nairaValue.value = 87
     }
 
-    currencyAmountToDebit.value = await converter.convert(nairaValue.value * amountToDebit, 'ngn', store.state.user.currency.toLowerCase())
-
+    try {
+        currencyAmountToDebit.value = await converter.convert(nairaValue.value * amountToDebit, 'ngn', store.state.user.currency.toLowerCase())
+    } catch (error) {
+        currencyAmountToDebit.value = nairaValue.value * 120
+    }
 
     if (hbpWalletData.value.accountValue >= amountToDebit) {
         accountType.value = 'hbp'
     } else if (currencyWalletData.value.accountValue >= currencyAmountToDebit.value) {
         accountType.value = 'currency'
+    } else if (currencyWalletData.value.accountValue > 0 || hbpWalletData.value.accountValue > 0) {
+        if ((hbpWalletData.value.accountValue * nairaValue.value) > currencyWalletData.value.accountValue) {
+            accountType.value = 'hbp'
+        } else {
+            accountType.value = 'currency'
+        }
     }
 })
 
