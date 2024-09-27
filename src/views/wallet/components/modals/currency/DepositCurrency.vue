@@ -1,86 +1,45 @@
 <template>
-  <div
-    class="main flex flex-col items-center z-20 gap-y-2 overflow-hidden my-auto mx-auto bg-white"
-  >
-    <div
-      class="flex flex-row items-center justify-between w-full px-4 py-4 border-b border-b-gray-100"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        @click="$emit('close')"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="w-6 h-6 block md:hidden font-bold"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M15.75 19.5L8.25 12l7.5-7.5"
-        />
+  <div class="main flex flex-col items-center z-20 gap-y-2 overflow-hidden my-auto mx-auto bg-white">
+    <div class="flex flex-row items-center justify-between w-full px-4 py-4 border-b border-b-gray-100">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" @click="$emit('close')" viewBox="0 0 24 24" stroke-width="1.5"
+        stroke="currentColor" class="w-6 h-6 block md:hidden font-bold">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
       </svg>
       <span class="text-xl font-medium text-webapp">Deposit</span>
-      <img
-        src="../../../../../assets/icons/x.svg"
-        class="cursor-pointer collapse md:visible"
-        @click="$emit('close')"
-        alt=""
-      />
+      <img src="../../../../../assets/icons/x.svg" class="cursor-pointer collapse md:visible" @click="$emit('close')"
+        alt="" />
     </div>
 
     <div class="w-full px-4 py-6 flex flex-col items-start">
-      <span class="text-sub-webapp text-lg w-full text-left"
-        >Provides the amount and deposit method you wish to deposit to your
-        {{ $store.state.user.currency }} wallet</span
-      >
+      <span class="text-sub-webapp text-lg w-full text-left">Provides the amount and deposit method you wish to deposit
+        to your
+        {{ $store.state.user.currency }} wallet</span>
 
       <form @submit.prevent="proceedToPayment" class="w-full">
         <div class="flex flex-col items-start gap-y-1 w-full mt-5 relative">
           <span class="text-webapp text-sm">Amount to top-up</span>
-          <input
-            @keyup="formatPrice"
-            inputmode="numeric"
-            type="text"
-            v-model="depositData.amount"
-            placeholder="0.00"
+          <input @keyup="formatPrice" inputmode="numeric" type="text" v-model="depositData.amount" placeholder="0.00"
             @input="
               calculatePaystackFee(
                 parseFloat(depositData.amount.replaceAll(',', ''))
               )
-            "
-            class="w-full outline-none h-14 rounded-lg border border-gray p-2"
-          />
+              " class="w-full outline-none h-14 rounded-lg border border-gray p-2" />
 
-          <div
-            class="absolute top-8 h-10 w-9 right-2 rounded grid place-items-center"
-            style="background: #ebebeb"
-          >
+          <div class="absolute top-8 h-10 w-9 right-2 rounded grid place-items-center" style="background: #ebebeb">
             {{ getSymbolFromCurrency($store.state.user.currency) }}
           </div>
         </div>
 
         <div class="flex flex-col items-start gap-y-1 w-full mt-5 relative">
           <span class="text-webapp text-sm">Deposit fee</span>
-          <input
-            type="text"
-            disabled
-            value="0.00"
-            class="w-full outline-none h-14 rounded-lg border border-gray p-2"
-          />
+          <input type="text" disabled value="0.00" class="w-full outline-none h-14 rounded-lg border border-gray p-2" />
 
-          <div
-            class="absolute top-8 h-10 px-2 right-2 rounded grid place-items-center"
-            style="background: #ebebeb"
-          >
+          <div class="absolute top-8 h-10 px-2 right-2 rounded grid place-items-center" style="background: #ebebeb">
             <p class="flex flex-row items-center gap-x-4">
-              <span
-                v-if="
-                  depositData.paymentMethod !== 'bank-transfer' &&
-                  depositData.fee < 1
-                "
-                >Free</span
-              >
+              <span v-if="
+                depositData.paymentMethod !== 'bank-transfer' &&
+                depositData.fee < 1
+              ">Free</span>
               <span v-else>{{ depositData.fee.toFixed(2) }}</span>
               {{ getSymbolFromCurrency($store.state.user.currency) }}
             </p>
@@ -89,114 +48,60 @@
 
         <div class="flex flex-col items-start gap-y-1 w-full mt-5 relative">
           <span class="text-webapp text-sm">Deposit method</span>
-          <div
-            @click="onSelectMethod = true"
-            class="flex flex-row items-center w-full justify-between h-14 rounded-lg border border-gray p-2"
-          >
-            <span
-              class="text-sm text-webapp"
-              v-if="depositData.paymentMethod.length < 1"
-              >Select deposit method</span
-            >
-            <span
-              class="text-sm text-webapp"
-              v-if="depositData.paymentMethod === 'paystack'"
-              >Pay with Paystack</span
-            >
-            <span
-              class="text-sm text-webapp"
-              v-if="depositData.paymentMethod === 'flutterwave'"
-              >Pay with Flutterwave</span
-            >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="#71759D"
-              class="w-6 h-6"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M19.5 8.25l-7.5 7.5-7.5-7.5"
-              />
+          <div @click="onSelectMethod = true"
+            class="flex flex-row items-center w-full justify-between h-14 rounded-lg border border-gray p-2">
+            <span class="text-sm text-webapp" v-if="depositData.paymentMethod.length < 1">Select deposit method</span>
+            <span class="text-sm text-webapp" v-if="depositData.paymentMethod === 'paystack'">Pay with Paystack</span>
+            <span class="text-sm text-webapp" v-if="depositData.paymentMethod === 'flutterwave'">Pay with
+              Flutterwave</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#71759D"
+              class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
             </svg>
           </div>
 
           <div
             class="absolute z-20 top-14 right-2 p-5 flex flex-col items-start gap-y-5 rounded-lg bg-white select-method"
-            v-if="onSelectMethod"
-          >
+            v-if="onSelectMethod">
             <!-- <span class="text-sm text-webapp cursor-pointer" @click="choosePaymentMethod('paystack')">Pay with
                         Paystack</span> -->
-            <p
-              @click="choosePaymentMethod('paystack')"
-              class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer"
-            >
+            <p @click="choosePaymentMethod('paystack')" v-if="availableMethods.includes('paystack')"
+              class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer">
               <span>Pay with Paystack</span>
             </p>
-            <p
-              @click="choosePaymentMethod('flutterwave')"
-              class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer"
-            >
+            <p @click="choosePaymentMethod('flutterwave')" v-if="availableMethods.includes('flutterwave')"
+              class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer">
               <span>Pay with Flutterwave</span>
               <!-- <span class="text-xs font-extralight text-webapp">#comingsoon</span> -->
             </p>
-            <p
-              class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer"
-              v-if="store.state.user.currency === 'NGN'"
-            >
+            <p class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer"
+              v-if="store.state.user.currency === 'NGN'">
               <span>Pay with E-naira</span>
-              <span class="text-xs font-extralight text-webapp"
-                >#comingsoon</span
-              >
+              <span class="text-xs font-extralight text-webapp">#comingsoon</span>
             </p>
-            <p
-              class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer"
-              v-else
-            >
+            <p class="text-sm text-webapp flex flex-row justify-between items-center w-full cursor-pointer" v-else>
               <span>Pay with Paypal</span>
-              <span class="text-xs font-extralight text-webapp"
-                >#comingsoon</span
-              >
+              <span class="text-xs font-extralight text-webapp">#comingsoon</span>
             </p>
           </div>
         </div>
 
-        <Paystack
-          @success="processPayment"
-          @cancel="cancelPayment"
-           @errorLoading="handleError"
-          v-if="depositData.paymentMethod === 'paystack' && proceededPayment"
-          :payment-info="getPaystackDetails()"
-        />
+        <Paystack @success="processPayment" @cancel="cancelPayment" @errorLoading="handleError"
+          v-if="depositData.paymentMethod === 'paystack' && proceededPayment" :payment-info="getPaystackDetails()" />
 
-        <Flutterwave
-          @success="processPayment"
-          @cancel="handleFlwClose"
-          @errorLoading="handleError"
-          v-if="depositData.paymentMethod === 'flutterwave' && proceededPayment"
-          :payment-info="getFlwDetails()"
-        />
+        <Flutterwave @success="processPayment" @cancel="handleFlwClose" @errorLoading="handleError"
+          v-if="depositData.paymentMethod === 'flutterwave' && proceededPayment" :payment-info="getFlwDetails()" />
 
-        <button
-          type="submit"
-    
-          :disabled="
-            parseFloat(depositData.amount.replaceAll(',', '')) < 10 ||
-            depositData.paymentMethod.length < 1
-          "
-          :class="{
+        <button type="submit" :disabled="parseFloat(depositData.amount.replaceAll(',', '')) < 10 ||
+          depositData.paymentMethod.length < 1
+          " :class="{
             'bg-blue-600 text-white':
               parseFloat(depositData.amount.replaceAll(',', '')) > 9 &&
               depositData.paymentMethod.length > 1,
             'bg-gray-300':
               parseFloat(depositData.amount.replaceAll(',', '')) < 10 ||
               depositData.paymentMethod.length < 1,
-          }"
-          class="deposit-form-button grid rounded-lg place-items-center h-14 my-6 w-full"
-        >
+          }" class="deposit-form-button grid rounded-lg place-items-center h-14 my-6 w-full">
           <span v-if="!processingDeposit">Continue</span>
           <Preloader v-else />
         </button>
@@ -251,17 +156,33 @@ let newMsg = ref("");
 
 const flwRef = ref("");
 
+const availableMethods = ref(['paystack'])
+const fetchingMethods = ref(false)
+
+async function getAvailableDepositMethods() {
+  try {
+    fetchingMethods.value = true
+    const fetchMethods = await axios.get('/maintenance/services/get-service/deposit')
+    availableMethods.value = fetchMethods.data.data.availableServices
+    fetchingMethods.value = false
+  } catch (error) {
+    fetchingMethods.value = false
+    return false
+  }
+}
+getAvailableDepositMethods()
+
 // Handle payment error
 function handleError() {
-  terminatePayment();  
-  emit('close');   
+  terminatePayment();
+  emit('close');
 }
 
 // Cancel the payment
 function terminatePayment() {
   proceededPayment.value = false;
   processingDeposit.value = false;
-  emit('close');   
+  emit('close');
 }
 
 function getLogo() {
@@ -506,10 +427,6 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-
-
-
-
 .main {
   width: 480px;
   border-radius: 10px;
@@ -529,7 +446,7 @@ onMounted(async () => {
 }
 
 
-.deposit-form-button:disabled{
+.deposit-form-button:disabled {
   background: rgba(128, 128, 128, 0.226);
 }
 
