@@ -2,8 +2,9 @@
     <div class="flex flex-col gap-y-5 h-full items-center w-full" v-if="walletData !== null">
         <div class="flex flex-col border border-gray-200 w-full divide-y rounded-lg h-fit gap-y-6">
             <div class="top justify-center items-center h-1/2 w-full flex flex-col py-7">
-                <p class="text-6xl font-bold text-webapp flex flex-row items-end">{{ formatNumber(walletData.accountValue)
-                }}
+                <p class="text-6xl font-bold text-webapp flex flex-row items-end">{{
+                    formatNumber(walletData.accountValue)
+                    }}
                     <span class="text-sm">{{ $store.state.user.currency }}</span>
                 </p>
             </div>
@@ -19,7 +20,8 @@
                         <img src="../../../assets/icons/wallet/withdraw.svg" alt="">
                         <span class="text-xs text-webapp">Withdraw</span>
                     </div>
-                    <div class="flex flex-col gap-y-1 items-center cursor-pointer" @click="$emit('openModal', 'swapModal')">
+                    <div class="flex flex-col gap-y-1 items-center cursor-pointer"
+                        @click="$emit('openModal', 'swapModal')">
                         <img src="../../../assets/icons/wallet/swap.svg" alt="">
                         <span class="text-xs text-webapp">Swap</span>
                     </div>
@@ -49,8 +51,8 @@
                                     <td class="capitalize">Wallet {{ txn.txnType }}</td>
                                     <td class="">{{ txn.reference }}</td>
                                     <td class="font amount">
-                                        <PriceFormatter :from="$store.state.user.currency" :to="$store.state.user.currency"
-                                            :amount="txn.amount" />
+                                        <PriceFormatter :from="$store.state.user.currency"
+                                            :to="$store.state.user.currency" :amount="txn.amount" />
                                     </td>
                                     <td>
                                         <div class="w-32 py-2 rounded-md text-center"
@@ -100,7 +102,8 @@
 
 
                     </div>
-                    <div class="flex flex-col items-center justify-center  gap-y-1 py-20" v-if="transactions.length < 1">
+                    <div class="flex flex-col items-center justify-center  gap-y-1 py-20"
+                        v-if="transactions.length < 1">
                         <img src="../../../assets/icons/no-txn.svg" alt="">
                         <span class="text-sm text-sub-webapp">No transaction</span>
                     </div>
@@ -209,7 +212,7 @@ async function getTransactions(txns) {
             }
         }
     } catch (error) {
-
+        console.log(error)
     }
 }
 

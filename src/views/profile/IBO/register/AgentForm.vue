@@ -1,43 +1,20 @@
 <template>
-  <div
-    class="w-screen min-w-full flex flex-row items-center bg-white h-screen min-h-full overflow-hidden"
-  >
-    <img
-      src="../../../../assets/images/habeep-show-ibo.png"
-      class="w-1/3 xl:block hidden h-full"
-      alt=""
-    />
-    <div
-      v-if="!inputCompleted"
-      class="form-container flex flex-col items-center relative bg-white gap-y-3 w-full xl:w-2/3 h-full pb-6 md:py-10 overflow-y-auto overflow-x-hidden"
-    >
+  <div class="w-screen min-w-full flex flex-row items-center bg-white h-screen min-h-full overflow-hidden">
+    <img src="../../../../assets/images/habeep-show-ibo.png" class="w-1/3 xl:block hidden h-full" alt="" />
+    <div v-if="!inputCompleted"
+      class="form-container flex flex-col items-center relative bg-white gap-y-3 w-full xl:w-2/3 h-full pb-6 md:py-10 overflow-y-auto overflow-x-hidden">
       <div class="flex flex-col items-center w-full md:w-2/3 px-4">
         <!-- logo -->
-        <div
-          class="logo md:flex hidden flex-row items-center justify-end w-full gap-x-2 cursor-pointer"
-          @click="$router.push('/')"
-        >
+        <div class="logo md:flex hidden flex-row items-center justify-end w-full gap-x-2 cursor-pointer"
+          @click="$router.push('/')">
           <img src="../../../../assets/icons/logo.svg" alt="Logo" />
           <span class="text-primary text-2xl">Habeep</span>
         </div>
 
-        <p
-          class="w-full text-left text-webapp font-bold text-xl flex flex-row items-center gap-x-1 mt-10"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="#0A1045"
-            class="w-6 h-6 cursor-pointer"
-            @click="$router.go(-1)"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M15.75 19.5L8.25 12l7.5-7.5"
-            />
+        <p class="w-full text-left text-webapp font-bold text-xl flex flex-row items-center gap-x-1 mt-10">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0A1045"
+            class="w-6 h-6 cursor-pointer" @click="$router.go(-1)">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
           </svg>
           <span>Become an Agent</span>
         </p>
@@ -46,28 +23,14 @@
 
         <div class="flex flex-col items-start w-full gap-y-1 mt-8">
           <label for="" class="text-sm text-webapp">Street address</label>
-          <input
-            type="text"
-            name=""
-            v-model="data.address"
-            class="w-full h-14 rounded-lg"
-            placeholder="Enter your street address"
-            id=""
-          />
+          <input type="text" name="" v-model="data.address" class="w-full h-14 rounded-lg"
+            placeholder="Enter your street address" id="" />
         </div>
 
-        <div
-          class="flex flex-col sm:flex-row items-center gap-x-3 w-full justify-between"
-        >
+        <div class="flex flex-col sm:flex-row items-center gap-x-3 w-full justify-between">
           <div class="flex flex-col items-start w-full sm:w-6/12 gap-y-1 mt-8">
             <label for="" class="text-sm text-webapp">State</label>
-            <select
-              name=""
-              v-model="data.state"
-              class="w-full h-14 rounded-lg px-2"
-              id=""
-              placeholder="Select state"
-            >
+            <select name="" v-model="data.state" class="w-full h-14 rounded-lg px-2" id="" placeholder="Select state">
               <option value="Choose a state" selected>Choose a state</option>
               <option :value="state" v-for="state in states" :key="state">
                 <span v-if="state.state.name == 'Cross'">Cross River</span>
@@ -77,29 +40,15 @@
           </div>
           <div class="flex flex-col items-start w-full sm:w-6/12 gap-y-1 mt-8">
             <label for="" class="text-sm text-webapp">City</label>
-            <select
-              name=""
-              v-model="data.city"
-              class="w-full h-14 rounded-lg px-2"
-              id=""
-            >
-              <option
-                value="Choose a city"
-                v-if="data.city === 'Choose a city'"
-                selected
-              >
+            <select name="" v-model="data.city" class="w-full h-14 rounded-lg px-2" id="">
+              <option value="Choose a city" v-if="data.city === 'Choose a city'" selected>
                 Choose a city
               </option>
               <option value="" v-else selected>Choose a city</option>
               <option value="" v-if="!data.state && !data.state[0]">
                 Choose a state
               </option>
-              <option
-                v-else
-                :value="city.name"
-                v-for="city in data.state.cities"
-                :key="city"
-              >
+              <option v-else :value="city.name" v-for="city in data.state.cities" :key="city">
                 {{ city.name }}
               </option>
             </select>
@@ -108,49 +57,34 @@
 
         <div class="flex flex-col items-start w-full gap-y-1 mt-8">
           <label for="" class="text-sm text-webapp">Bio</label>
-          <textarea
-            type="text"
-            v-model="data.bio"
-            name=""
-            class="w-full h-28 pt-3 rounded-lg"
-            placeholder="Write something about youself"
-            id=""
-          ></textarea>
+          <div class="w-full">
+            <textarea type="text" v-model="data.bio" name="" class="w-full h-28 pt-3 rounded-lg bg-transparent"
+              placeholder="Write something about youself (min. 10 characters)" id=""></textarea>
+            <p class="text-xs text-sub-webapp">min. 10 characters</p>
+          </div>
         </div>
 
         <p class="w-full text-left text-webapp text-sm mt-10">
           By clicking on “Next” you agree to Agent IBO
-          <span
-            @click="$router.push('/terms-of-service')"
-            class="cursor-pointer text-primary underline"
-            >Terms and conditions</span
-          >
+          <span @click="$router.push('/terms-of-service')" class="cursor-pointer text-primary underline">Terms and
+            conditions</span>
         </p>
         <!-- submit btn -->
-        <button
-          :class="{
-            'bg-blue-600 text-white': allFields() === true,
-            'bg-gray-300 text-black': allFields() === false,
-          }"
-          class="w-full rounded-lg grid place-items-center h-14 mt-5"
-          @click="
-            () => {
-              data.state = data.state?.state?.name;
-              inputCompleted = true;
-            }
-          "
-        >
+        <button :class="{
+          'bg-blue-600 text-white': allFields() === true,
+          'bg-gray-300 text-black': allFields() === false,
+        }" class="w-full rounded-lg grid place-items-center h-14 mt-5" @click="() => {
+          data.state = data.state?.state?.name;
+          inputCompleted = true;
+        }
+          ">
           <span v-if="!processing">Next</span>
           <Preloader v-else />
         </button>
       </div>
     </div>
 
-    <AffiliateFee
-      v-else
-      :data="data"
-      @pushToWallet="$router.push('/wallet?tab=hbp&cont=deposit')"
-    />
+    <AffiliateFee v-else :data="data" @back="inputCompleted = false" />
 
     <!-- components -->
     <Toast :msg="errorMsg.msg" type="danger" v-if="onError" />
@@ -160,9 +94,7 @@
 
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import { useRouter, useRoute } from "vue-router";
 import axios from "../../../../composables/axios";
-import axiosDefault from "axios";
 import { useStore } from "vuex";
 import AffiliateFee from "./AffiliateFee.vue";
 
@@ -197,6 +129,9 @@ function allFields() {
   for (const key of Object.keys(data)) {
     if (data[key].length < 1) {
       return false;
+    }
+    if (key === 'bio' && data[key].length < 10) {
+      return false
     }
   }
   return true;
