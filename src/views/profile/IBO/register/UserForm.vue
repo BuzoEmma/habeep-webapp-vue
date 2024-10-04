@@ -12,9 +12,10 @@
                     <span class="text-primary text-2xl">Habeep</span>
                 </div>
 
-                <p class="w-full text-left text-webapp font-bold text-xl flex flex-row items-center gap-x-1 mt-10">
+                <p class="w-full text-left text-webapp font-bold text-xl  cursor-pointer flex flex-row items-center gap-x-1 mt-10"
+                    @click="$router.go(-1)">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="#0A1045" class="w-6 h-6 cursor-pointer" @click="$router.go(-1)">
+                        stroke="#0A1045" class="w-6 h-6 cursor-pointer">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                     </svg>
                     <span>Become a Tenant</span>
@@ -37,14 +38,15 @@
                         class="cursor-pointer text-primary underline">Terms and conditions</span>
                 </p>
                 <!-- submit btn -->
-                <button class="w-full  rounded-[5px] grid place-items-center h-14 text-white mt-5" :class="{
-                    'bg-primary': data.bio.length >= 10, 'bg-gray-300'
-                        : data.bio.length < 10
-                }" @click="() => {
-                    if (data.bio.length >= 10) {
-                        inputCompleted = true
-                    }
-                }">
+                <button :disabled="data.bio.length < 10"
+                    class="w-full  rounded-[5px] grid place-items-center h-14 text-white mt-5" :class="{
+                        'bg-primary': data.bio.length >= 10, 'bg-gray-300'
+                            : data.bio.length < 10
+                    }" @click="() => {
+                        if (data.bio.length >= 10) {
+                            inputCompleted = true
+                        }
+                    }">
                     <span>Next</span>
                 </button>
 
