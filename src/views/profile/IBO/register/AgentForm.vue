@@ -11,9 +11,10 @@
           <span class="text-primary text-2xl">Habeep</span>
         </div>
 
-        <p class="w-full text-left text-webapp font-bold text-xl flex flex-row items-center gap-x-1 mt-10">
+        <p class="w-full text-left text-webapp font-bold text-xl cursor-pointer flex flex-row items-center gap-x-1 mt-10"
+          @click="$router.go(-1)">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0A1045"
-            class="w-6 h-6 cursor-pointer" @click="$router.go(-1)">
+            class="w-6 h-6 ">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
           </svg>
           <span>Become an Agent</span>
@@ -73,7 +74,7 @@
         <button :class="{
           'bg-blue-600 text-white': allFields() === true,
           'bg-gray-300 text-black': allFields() === false,
-        }" class="w-full rounded-lg grid place-items-center h-14 mt-5" @click="() => {
+        }" :disabled="allFields() === false" class="w-full rounded-lg grid place-items-center h-14 mt-5" @click="() => {
           data.state = data.state?.state?.name;
           inputCompleted = true;
         }
