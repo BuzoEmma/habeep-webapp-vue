@@ -71,6 +71,7 @@ import Logout from '../views/Auth/Logout.vue'
 import ForgotPin from '../views/Auth/ForgotPin.vue'
 import OTP from '../views/Auth/OTP_Validation.vue'
 import About from '../views/about/About.vue'
+import DeleteAccount from "../views/profile/delete-account/DeleteAccount.vue";
 
 const routes = [
   {
@@ -267,6 +268,11 @@ const routes = [
     path: "/logout",
     name: "Logout",
     component: Logout,
+  },
+  {
+    path: "/delete-account",
+    name: "Delete-account",
+    component: DeleteAccount,
   },
   {
     path: "/forgot-pin",
