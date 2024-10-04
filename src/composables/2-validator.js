@@ -6,8 +6,8 @@ export function validator(password, confirmPassword) {
     }
 }
 
-const validateEmail = (userEmail) => {
-    return userEmail.match(
+export const validateEmail = (userEmail) => {
+    return userEmail.toString().match(
         /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     );
 };
