@@ -290,7 +290,7 @@ function getCurrentYear() {
       </div>
     </section>
 
-    <section class="testimonial-section">
+    <section class="testimonial-section" style="display: none;">
       <div class="testimonial-swiper-prev">
         <svg
           width="80"
@@ -415,7 +415,6 @@ function getCurrentYear() {
       </div>
       <div class="footer-habeep">
         <div @click="$router.push('/home')" class="footer-habeep-home">
-          <!-- <img src="../../assets/images/footerHabeep.svg" alt="" /> -->
         </div>
         <div class="footer-habeep-divs1">
           <div>
@@ -521,12 +520,10 @@ function getCurrentYear() {
 
   .hero-video {
     width: 100%;
-    max-width: 1245px;
-    height: 473px;
+    max-width: 902px;
+    height: 507px;
     border-radius: 30px;
     background: rgba(217, 217, 217, 1);
-    overflow: hidden;
-    /* object-fit: inherit */
   }
 
   .discover-section {
@@ -940,7 +937,14 @@ function getCurrentYear() {
     width: 100%;
     position: absolute;
     bottom: 0px;
+    /* filter: brightness(0.8) */
+  }
 
+  .swiper-slide-card div {
+    height: auto;
+    position: absolute;
+    bottom: 40px;
+    width: 351px;
     gap: 0px;
     opacity: 1;
     display: flex;
@@ -972,6 +976,35 @@ function getCurrentYear() {
     color: #ffffffbe;
     text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
   }
+=======
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 10px;
+  }
+.swiper-div-title {
+  width: 351px;
+  height: auto;
+  font-family: Ubuntu;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+  text-align: left;
+  color: #ffffff; 
+  text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); 
+}
+
+.swiper-div-sub-title {
+  width: 100%;
+  height: auto;
+  font-family: Ubuntu;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 26px;
+  text-align: left;
+  color: #ffffffbe;
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+
+}
 
   .landlords-section {
     width: 100%;
@@ -1831,6 +1864,7 @@ function getCurrentYear() {
     bottom: 40px;
     width: 100%;
     max-width: 422px;
+    width: 351px;
     gap: 0px;
     opacity: 1;
     display: flex;
@@ -1863,7 +1897,35 @@ function getCurrentYear() {
     color: #ffffffbe;
     text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
   }
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.514);
+    padding: 10px;
+    bottom: 1px;
+  }
+.swiper-div-title {
+  width: 351px;
+  height: auto;
+  font-family: Ubuntu;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+  text-align: left;
+  color: #ffffff; 
+  text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); 
+}
 
+.swiper-div-sub-title {
+  width: 100%;
+  height: auto;
+  font-family: Ubuntu;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 26px;
+  text-align: left;
+  color: #ffffffbe;
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+
+}
   .landlords-section {
     width: 100%;
     height: auto;
@@ -2202,6 +2264,8 @@ function getCurrentYear() {
     position: relative;
     bottom: -4.7rem;
     object-fit: contain;
+
+    
   }
 
   .footer-habeep {
@@ -2758,6 +2822,10 @@ function getCurrentYear() {
     border-radius: 0px 0px 30px 30px;
     background: rgba(0, 0, 0, 0.514);
     padding-left: 1rem;
+    background: rgba(0, 0, 0, 0.514);
+
+
+
   }
 
   .swiper-div-title {
@@ -2769,6 +2837,7 @@ function getCurrentYear() {
     font-weight: 500;
     line-height: 25px;
     color: white;
+   color: white;
     text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   }
 
@@ -2782,6 +2851,7 @@ function getCurrentYear() {
     text-align: left;
     color: rgba(255, 255, 255, 0.863);
     text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
   }
 
   .landlords-section {
@@ -3125,7 +3195,7 @@ function getCurrentYear() {
     /* border-radius: 40px; */
     border: 10px;
     position: relative;
-    bottom: -3rem;
+    bottom: -3.1rem;
     object-fit: contain;
   }
 
@@ -3233,9 +3303,11 @@ function getCurrentYear() {
   .hero-video {
     width: 100%;
     max-width: 331px;
-    max-height: 419px;
+    max-height: 300px;
     border-radius: 30px;
     background: rgba(217, 217, 217, 1);
+    overflow: hidden;
+    background: red;
   }
 
   .discover-section {
@@ -3654,6 +3726,9 @@ function getCurrentYear() {
     gap: 5px;
     bottom: 2rem;
     background: rgba(0, 0, 0, 0.514);
+    background: none;
+    gap: 5px;
+    bottom: 3rem;
   }
 
   .swiper-div-title {
@@ -3664,7 +3739,8 @@ function getCurrentYear() {
     line-height: 21px;
     text-align: left;
     color: white;
-  }
+    color: #0a1045;
+    }
 
   .swiper-div-sub-title {
     width: 100%;
@@ -3675,6 +3751,7 @@ function getCurrentYear() {
     text-align: left;
     padding: 0;
     color: white;
+    color: #71759d;
   }
 
   .landlords-section {
@@ -4003,6 +4080,8 @@ function getCurrentYear() {
     width: 250px;
     height: 320px;
     bottom: -1.45rem;
+    height: 400px;
+    bottom: -3.2rem;
   }
 
   .footer-habeep {
@@ -4024,6 +4103,7 @@ function getCurrentYear() {
   }
 
   .footer-habeep-home {
+    width: 180px !important;
     margin-bottom: 4rem;
   }
 
