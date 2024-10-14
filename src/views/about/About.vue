@@ -290,7 +290,7 @@ function getCurrentYear() {
       </div>
     </section>
 
-    <section class="testimonial-section" style="display: none;">
+    <section class="testimonial-section">
       <div class="testimonial-swiper-prev">
         <svg
           width="80"
@@ -415,6 +415,7 @@ function getCurrentYear() {
       </div>
       <div class="footer-habeep">
         <div @click="$router.push('/home')" class="footer-habeep-home">
+          <!-- <img src="../../assets/images/footerHabeep.svg" alt="" /> -->
         </div>
         <div class="footer-habeep-divs1">
           <div>
@@ -520,10 +521,12 @@ function getCurrentYear() {
 
   .hero-video {
     width: 100%;
-    max-width: 902px;
-    height: 507px;
+    max-width: 1245px;
+    height: 473px;
     border-radius: 30px;
     background: rgba(217, 217, 217, 1);
+    overflow: hidden;
+    /* object-fit: inherit */
   }
 
   .discover-section {
@@ -930,18 +933,24 @@ function getCurrentYear() {
     background-size: cover;
     background-position: center;
     cursor: pointer;
+<<<<<<< HEAD
     /* filter: brightness(0.8) */
+  }
+=======
   }
 
   .swiper-slide-card div {
-    height: auto;
+    max-width: 422px;
+    width: 100%;
     position: absolute;
-    bottom: 40px;
-    width: 351px;
+    bottom: 0px;
+>>>>>>> 92d822c (Update resolved conflict)
+
     gap: 0px;
     opacity: 1;
     display: flex;
     flex-flow: nowrap column;
+<<<<<<< HEAD
     border-radius: 5px;
     background: rgba(0, 0, 0, 0.3);
     padding: 10px;
@@ -970,6 +979,35 @@ function getCurrentYear() {
   text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
 
 }
+=======
+    background: rgba(0, 0, 0, 0.514);
+    padding: 10px 10px 10px 15px;
+    border-radius: 0px 0px 30px 30px;
+  }
+  .swiper-div-title {
+    width: 100%;
+    height: auto;
+    font-family: Ubuntu;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 28px;
+    text-align: left;
+    color: #ffffff;
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  .swiper-div-sub-title {
+    width: 100%;
+    height: auto;
+    font-family: Ubuntu;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 26px;
+    text-align: left;
+    color: #ffffffbe;
+    text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  }
+>>>>>>> 92d822c (Update resolved conflict)
 
   .landlords-section {
     width: 100%;
@@ -1827,11 +1865,17 @@ function getCurrentYear() {
     height: auto;
     position: absolute;
     bottom: 40px;
+<<<<<<< HEAD
     width: 351px;
+=======
+    width: 100%;
+    max-width: 422px;
+>>>>>>> 92d822c (Update resolved conflict)
     gap: 0px;
     opacity: 1;
     display: flex;
     flex-flow: nowrap column;
+<<<<<<< HEAD
     border-radius: 5px;
     background: rgba(0, 0, 0, 0.514);
     padding: 10px;
@@ -1862,6 +1906,37 @@ function getCurrentYear() {
 
 }
 
+=======
+    border-radius: 0 0 30px 30px;
+    background: rgba(0, 0, 0, 0.514);
+    padding: 10px 10px 10px 15px;
+    bottom: 1px;
+  }
+  .swiper-div-title {
+    width: 351px;
+    height: auto;
+    font-family: Ubuntu;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 28px;
+    text-align: left;
+    color: #ffffff;
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  .swiper-div-sub-title {
+    width: 100%;
+    height: auto;
+    font-family: Ubuntu;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 26px;
+    text-align: left;
+    color: #ffffffbe;
+    text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  }
+
+>>>>>>> 92d822c (Update resolved conflict)
   .landlords-section {
     width: 100%;
     height: auto;
@@ -2200,8 +2275,6 @@ function getCurrentYear() {
     position: relative;
     bottom: -4.7rem;
     object-fit: contain;
-
-    
   }
 
   .footer-habeep {
@@ -2755,10 +2828,16 @@ function getCurrentYear() {
     text-align: center;
     bottom: 10px;
     padding: 10px;
+<<<<<<< HEAD
     background: rgba(0, 0, 0, 0.514);
 
 
 
+=======
+    border-radius: 0px 0px 30px 30px;
+    background: rgba(0, 0, 0, 0.514);
+    padding-left: 1rem;
+>>>>>>> 92d822c (Update resolved conflict)
   }
 
   .swiper-div-title {
@@ -2769,7 +2848,11 @@ function getCurrentYear() {
     font-size: 18px;
     font-weight: 500;
     line-height: 25px;
+<<<<<<< HEAD
    color: white;
+=======
+    color: white;
+>>>>>>> 92d822c (Update resolved conflict)
     text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   }
 
@@ -2782,7 +2865,11 @@ function getCurrentYear() {
     line-height: 26px;
     text-align: left;
     color: rgba(255, 255, 255, 0.863);
+<<<<<<< HEAD
   text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+=======
+    text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+>>>>>>> 92d822c (Update resolved conflict)
   }
 
   .landlords-section {
@@ -3126,7 +3213,7 @@ function getCurrentYear() {
     /* border-radius: 40px; */
     border: 10px;
     position: relative;
-    bottom: -3.1rem;
+    bottom: -3rem;
     object-fit: contain;
   }
 
@@ -3234,11 +3321,9 @@ function getCurrentYear() {
   .hero-video {
     width: 100%;
     max-width: 331px;
-    max-height: 300px;
+    max-height: 419px;
     border-radius: 30px;
     background: rgba(217, 217, 217, 1);
-    overflow: hidden;
-    background: red;
   }
 
   .discover-section {
@@ -3655,9 +3740,15 @@ function getCurrentYear() {
   .swiper-slide-card div {
     width: 100%;
     height: auto;
+<<<<<<< HEAD
     background: none;
     gap: 5px;
     bottom: 3rem;
+=======
+    gap: 5px;
+    bottom: 2rem;
+    background: rgba(0, 0, 0, 0.514);
+>>>>>>> 92d822c (Update resolved conflict)
   }
 
   .swiper-div-title {
@@ -3667,8 +3758,12 @@ function getCurrentYear() {
     font-weight: 500;
     line-height: 21px;
     text-align: left;
+<<<<<<< HEAD
     color: #0a1045;
     
+=======
+    color: white;
+>>>>>>> 92d822c (Update resolved conflict)
   }
 
   .swiper-div-sub-title {
@@ -3679,8 +3774,12 @@ function getCurrentYear() {
     line-height: 16px;
     text-align: left;
     padding: 0;
+<<<<<<< HEAD
         color: #71759d;
 
+=======
+    color: white;
+>>>>>>> 92d822c (Update resolved conflict)
   }
 
   .landlords-section {
@@ -4009,11 +4108,15 @@ function getCurrentYear() {
     width: 250px;
 <<<<<<< HEAD
     height: 320px;
+<<<<<<< HEAD
     bottom: -1.45rem;
 =======
     height: 400px;
     bottom: -3.2rem;
 >>>>>>> 2b422ce (made size adjustment on the video clip and text content)
+=======
+    bottom: -1.98rem;
+>>>>>>> 92d822c (Update resolved conflict)
   }
 
   .footer-habeep {
@@ -4035,7 +4138,6 @@ function getCurrentYear() {
   }
 
   .footer-habeep-home {
-    width: 180px !important;
     margin-bottom: 4rem;
   }
 
