@@ -388,8 +388,8 @@ function getCurrentYear() {
           <div>
             <p>Download the Landlord App</p>
             <p>
-              Lorem ipsum dolor sit amet consectetur. Dolor sit amet
-              consectetur.
+              Download the Habeep app from the Play Store/App Store to find
+              properties, save for rent, and access rent loans easily.
             </p>
           </div>
           <div class="footer-download-app">
@@ -1268,6 +1268,12 @@ function getCurrentYear() {
     /* background: #000; */
   }
 
+  .footer-user-app .footer-user-app-div div:nth-child(1) {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
   .footer-user-app .footer-download-app {
     width: 100%;
     display: flex;
@@ -1289,7 +1295,7 @@ function getCurrentYear() {
     width: 530px;
     height: 66px;
     font-family: Aeonik;
-    font-size: 27.65px;
+    font-size: 25px;
     font-weight: 500;
     line-height: 33.18px;
     text-align: center;
@@ -3086,7 +3092,7 @@ function getCurrentYear() {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 4rem;
+    gap: 1.7rem;
     height: auto;
   }
 
@@ -3095,6 +3101,7 @@ function getCurrentYear() {
     display: flex;
     justify-content: center;
     gap: 1rem;
+  
   }
 
   .footer-user-app div p:nth-child(1) {
@@ -3921,7 +3928,6 @@ function getCurrentYear() {
     width: 24px;
     height: 30px;
     bottom: 16rem;
-  
   }
 
   .testimonial-container,
@@ -4002,7 +4008,7 @@ function getCurrentYear() {
   .footer-user-app img:nth-child(2) {
     width: 250px;
     height: 320px;
-    bottom: -1.98rem;
+    bottom: -1.96rem;
   }
 
   .footer-habeep {
