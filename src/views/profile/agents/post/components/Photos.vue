@@ -7,9 +7,10 @@
                 <img src="../../../../../assets/icons/logo-white.svg" alt="Logo">
                 <span class="text-white text-2xl">Habeep</span>
             </div>
-            <img src="../../../../../assets/icons/chevron-left.svg" @click="$emit('goBack')" class="md:hidden block pt-10"
-                alt="">
-            <h1 class="text-white font-medium text-2xl md:text-4xl xl:text-5xl   w-full text-left">Add some photos or videos
+            <img src="../../../../../assets/icons/chevron-left.svg" @click="$emit('goBack')"
+                class="md:hidden block pt-10" alt="">
+            <h1 class="text-white font-medium text-2xl md:text-4xl xl:text-5xl   w-full text-left">Add some photos or
+                videos
                 to the
                 listing
             </h1>
@@ -29,14 +30,16 @@
                         :class="{ 'hidden': imageData5.length > 0 }">
                         <button type="button"
                             class="upload-btn w-30 h-8 rounded-lg p-2 flex flex-row items-center justify-center font-medium gap-x-1 text-webapp">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                class="w-5 h-5">
                                 <path fill-rule="evenodd"
                                     d="M11.47 2.47a.75.75 0 011.06 0l4.5 4.5a.75.75 0 01-1.06 1.06l-3.22-3.22V16.5a.75.75 0 01-1.5 0V4.81L8.03 8.03a.75.75 0 01-1.06-1.06l4.5-4.5zM3 15.75a.75.75 0 01.75.75v2.25a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5V16.5a.75.75 0 011.5 0v2.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V16.5a.75.75 0 01.75-.75z"
                                     clip-rule="evenodd" />
                             </svg>
                             <span>Upload</span>
-                            <input type="file" ref="inputRef" :multiple="allCompleted === false" accept="video/mp4,image/*"
-                                :class="{'hidden': allCompleted}" v-if="!processing" @change="previewImg($event.target, currentBlock)">
+                            <input type="file" ref="inputRef" :multiple="allCompleted === false"
+                                accept="video/mp4,image/*" :class="{ 'hidden': allCompleted }" v-if="!processing"
+                                @change="previewImg($event.target, currentBlock)">
                         </button>
                     </form>
 
@@ -45,12 +48,13 @@
 
                 <div class="flex flex-col items-center photos-preview w-full h-full overflow-y-auto mb-2">
                     <div class="flex flex-row items-center w-full flex-wrap h-fit pb-2">
-                        <div class="basis-full md:basis-2/3 photo-cover p-2 h-full" @click="callImgProcessor(1)" v-if="imageData1">
+                        <div class="basis-full md:basis-2/3 photo-cover p-2 h-full" @click="callImgProcessor(1)"
+                            v-if="imageData1">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
                                 <img :src="imageData1" class="h-full w-full rounded-lg feed-image"
                                     v-if="pic1.type !== 'video/mp4'" alt="">
-                                <video :src="imageData1" class="h-full w-full rounded-lg feed-image" v-else height="100%"
-                                    width="100%" autoplay muted></video>
+                                <video playsinline :src="imageData1" class="h-full w-full rounded-lg feed-image" v-else
+                                    height="100%" width="100%" autoplay muted></video>
                             </div>
                         </div>
                         <div class="gap-x-2 basis-full p-2 md:basis-2/3 h-full photo-cover" @click="callImgProcessor(1)"
@@ -63,12 +67,13 @@
                             </div>
                         </div>
 
-                        <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(2)" v-if="imageData2">
+                        <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(2)"
+                            v-if="imageData2">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
                                 <img :src="imageData2" class="h-full w-full rounded-lg feed-image"
                                     v-if="pic2.type !== 'video/mp4'" alt="">
-                                <video :src="imageData2" class="h-full w-full rounded-lg feed-image" v-else height="100%"
-                                    width="100%" autoplay muted></video>
+                                <video playsinline :src="imageData2" class="h-full w-full rounded-lg feed-image" v-else
+                                    height="100%" width="100%" autoplay muted></video>
                             </div>
                         </div>
                         <div v-else class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(2)">
@@ -77,12 +82,13 @@
                             </div>
                         </div>
 
-                        <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(3)" v-if="imageData3">
+                        <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(3)"
+                            v-if="imageData3">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
                                 <img :src="imageData3" class="h-full w-full rounded-lg feed-image"
                                     v-if="pic3.type !== 'video/mp4'" alt="">
-                                <video :src="imageData3" class="h-full w-full rounded-lg feed-image" v-else height="100%"
-                                    width="100%" autoplay muted></video>
+                                <video playsinline :src="imageData3" class="h-full w-full rounded-lg feed-image" v-else
+                                    height="100%" width="100%" autoplay muted></video>
                             </div>
                         </div>
                         <div v-else class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(3)">
@@ -91,12 +97,13 @@
                             </div>
                         </div>
 
-                        <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(4)" v-if="imageData4">
+                        <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(4)"
+                            v-if="imageData4">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
                                 <img :src="imageData4" class="h-full w-full rounded-lg feed-image"
                                     v-if="pic4.type !== 'video/mp4'" alt="">
-                                <video :src="imageData4" class="h-full w-full rounded-lg feed-image" v-else height="100%"
-                                    width="100%" autoplay muted></video>
+                                <video playsinline :src="imageData4" class="h-full w-full rounded-lg feed-image" v-else
+                                    height="100%" width="100%" autoplay muted></video>
                             </div>
                         </div>
                         <div v-else class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(4)">
@@ -105,12 +112,13 @@
                             </div>
                         </div>
 
-                        <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(5)" v-if="imageData5">
+                        <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(5)"
+                            v-if="imageData5">
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
                                 <img :src="imageData5" class="h-full w-full rounded-lg feed-image"
                                     v-if="pic5.type !== 'video/mp4'" alt="">
-                                <video :src="imageData5" class="h-full w-full rounded-lg feed-image" v-else height="100%"
-                                    width="100%" autoplay muted></video>
+                                <video playsinline :src="imageData5" class="h-full w-full rounded-lg feed-image" v-else
+                                    height="100%" width="100%" autoplay muted></video>
                             </div>
                         </div>
                         <div v-else class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(5)">
@@ -128,9 +136,11 @@
                     <div class="bg-webapp h-full w-12/12"></div>
                 </div>
                 <div class="flex flex-row p-6 w-full items-center justify-between">
-                    <span :class="{'collapse': processing}" class="text-xl font-medium text-webapp underline cursor-pointer"
+                    <span :class="{ 'collapse': processing }"
+                        class="text-xl font-medium text-webapp underline cursor-pointer"
                         @click="$emit('goBack', { to: 'Desc', from: 'Photos' })">Back</span>
-                    <button @click="sendData()" :class="{ 'bg-slate-400 text-white': allCompleted === false || totalFilesSize > 30 }"
+                    <button @click="sendData()"
+                        :class="{ 'bg-slate-400 text-white': allCompleted === false || totalFilesSize > 30 }"
                         class="h-10 rounded-lg w-fit px-2 bg-primary text-white text-sm flex flex-row justify-center items-center font-extralight gap-x-2"
                         style="min-width: 96px" :disabled="allCompleted === false || totalFilesSize > 30">
                         <span v-if="!processing">Post AD</span>

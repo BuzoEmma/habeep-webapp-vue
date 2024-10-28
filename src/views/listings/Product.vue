@@ -2,7 +2,8 @@
     <div class="product-share w-full h-full absolute flex flex-col items-center md:justify-center justify-end z-50 overflow-hidden backdrop-blur-md bg-black bg-opacity-10"
         v-if="onProductShare === true">
         <ShareModal class="md:flex hidden" v-motion-fade :product="product" @end-share="onProductShare = false" />
-        <ShareModal class="flex md:hidden" v-motion-slide-bottom :product="product" @end-share="onProductShare = false" />
+        <ShareModal class="flex md:hidden" v-motion-slide-bottom :product="product"
+            @end-share="onProductShare = false" />
     </div>
 
 
@@ -24,19 +25,22 @@
                         @load="carouselImg.imageLoaded = true" :class="{ 'hidden': !carouselImg.imageLoaded }"
                         v-if="carouselImg.link.toString().includes('.mp4') == false" @click="enterImageViewer()"
                         :alt="product.title">
-                    <video :poster="carouselImg.thumbnail" :src="carouselImg.link" @click="enterImageViewer()" loop
-                        @loadedmetadata="carouselImg.imageLoaded = true" :class="{ 'hidden': !carouselImg.imageLoaded }"
-                        class="w-full h-full rounded-lg feed-image" :alt="product.title" v-else autoplay muted></video>
+                    <video playsinline :poster="carouselImg.thumbnail" :src="carouselImg.link"
+                        @click="enterImageViewer()" loop @loadedmetadata="carouselImg.imageLoaded = true"
+                        :class="{ 'hidden': !carouselImg.imageLoaded }" class="w-full h-full rounded-lg feed-image"
+                        :alt="product.title" v-else autoplay muted></video>
 
                     <div class="w-full absolute flex flex-row top-5 items-center justify-between px-2">
-                        <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
+                        <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer"
+                            alt="">
                         <div class="flex flex-row gap-x-3 items-center">
                             <img @click="startProductShare" src="../../assets/icons/share.svg" class="cursor-pointer"
                                 alt="">
                             <div class="grid place-items-center relative p-1" v-if="$store.state.isAuthenticated">
                                 <img src="../../assets/icons/heart.svg" class="cursor-pointer" alt="">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                    stroke="currentColor" class="w-6 h-6 absolute top-3 cursor-pointer transition-all"
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor"
+                                    class="w-6 h-6 absolute top-3 cursor-pointer transition-all"
                                     @click="saveAd(product._id)"
                                     :class="{ 'text-orange-400 scale-[1] opacity-100': $store.state.user.savedAds.includes(product._id), 'scale-[0.8] opacity-80 text-white': !$store.state.user.savedAds.includes(product._id) }">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -57,7 +61,7 @@
                                 class=" h-full w-full rounded-lg feed-image-short"
                                 v-if="image.link && image.link.toString().includes('.mp4') === false"
                                 @click="enterImageViewer()" :key="image">
-                            <video :poster="image.thumbnail" @touchstart="playVideo" @touchend="pauseVideo"
+                            <video playsinline :poster="image.thumbnail" @touchstart="playVideo" @touchend="pauseVideo"
                                 @mouseenter="playVideo" @mouseout="pauseVideo" :alt="product.title"
                                 @loadedmetadata="image.imageLoaded = true" :class="{ 'hidden': !image.imageLoaded }"
                                 :src="image.link" @click="enterImageViewer()" loop
@@ -69,10 +73,11 @@
                             v-for="image in images.slice(3, 5)" :key="image">
                             <Skeleton v-if="!image.imageLoaded" class=" w-full h-full rounded-md" style="width: 100%" />
                             <img :src="image.link" @load="image.imageLoaded = true"
-                                :class="{ 'hidden': !image.imageLoaded }" class=" h-full w-full rounded-md feed-image-short"
+                                :class="{ 'hidden': !image.imageLoaded }"
+                                class=" h-full w-full rounded-md feed-image-short"
                                 v-if="image.link && image.link.toString().includes('.mp4') == false"
                                 @click="enterImageViewer()" :alt="product.title">
-                            <video :poster="image.thumbnail" @touchstart="playVideo" @touchend="pauseVideo"
+                            <video playsinline :poster="image.thumbnail" @touchstart="playVideo" @touchend="pauseVideo"
                                 @mouseenter="playVideo" @mouseout="pauseVideo" :alt="product.title"
                                 @loadedmetadata="image.imageLoaded = true" :class="{ 'hidden': !image.imageLoaded }"
                                 :src="image.link" @click="enterImageViewer()" loop
@@ -89,7 +94,8 @@
                 <div class="w-full absolute flex flex-row top-5 items-center justify-between md:px-8 px-2 z-10">
                     <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
                     <div class="flex flex-row gap-x-3 items-center">
-                        <img @click="startProductShare" src="../../assets/icons/share.svg" class="cursor-pointer" alt="">
+                        <img @click="startProductShare" src="../../assets/icons/share.svg" class="cursor-pointer"
+                            alt="">
 
                         <div class="grid place-items-center relative" v-if="$store.state.isAuthenticated">
                             <img src="../../assets/icons/heart.svg" class="cursor-pointer" alt="">
@@ -109,7 +115,7 @@
                     @load="carouselImg.imageLoaded = true" :class="{ 'hidden': !carouselImg.imageLoaded }"
                     v-if="carouselImg.link && carouselImg.link.toString().includes('.mp4') == false"
                     @click="enterImageViewer()">
-                <video :poster="carouselImg.thumbnail" :alt="product.title" :src="carouselImg.link" loop
+                <video playsinline :poster="carouselImg.thumbnail" :alt="product.title" :src="carouselImg.link" loop
                     class="w-full feed-image" @load="carouselImg.imageLoaded = true"
                     :class="{ 'hidden': !carouselImg.imageLoaded }" @click="enterImageViewer()" v-else autoplay muted
                     preload="metadata"></video>
@@ -132,13 +138,14 @@
                     <div class="px-6 py-2 rounded opacity-70" style="background: #161622;">
                         <span class="text-sm text-white font-medium">{{ (activeCarouselImg + '/' +
                             images.length)
-                        }}</span>
+                            }}</span>
                     </div>
                 </div>
             </div>
 
             <!-- product details -->
-            <div class="flex flex-col md:flex-row items-start w-full gap-x-4 h-fit justify-between px-6 sm:px-7 xl:px-0">
+            <div
+                class="flex flex-col md:flex-row items-start w-full gap-x-4 h-fit justify-between px-6 sm:px-7 xl:px-0">
                 <!-- product info -->
                 <div class="flex flex-col items-start md:w-2/3 w-full xl:w-4/6 h-full pt-2">
                     <!-- top product info -->
@@ -266,7 +273,8 @@
                                     :lname="agentDetails.name.surname" />
                             </div>
                             <div class="flex flex-col ">
-                                <span class="text-sm xl:text-lg md:text-center text-left agent-name text-webapp font-medium"
+                                <span
+                                    class="text-sm xl:text-lg md:text-center text-left agent-name text-webapp font-medium"
                                     v-if="agentDetails.name">
                                     {{
                                         agentDetails.name.fname + ' ' + agentDetails.name.surname
@@ -324,7 +332,7 @@
                                     }}</span>
                                 <span class="text-sm agent-ads-count text-left text-sub-webapp">{{
                                     agentDetails.ads.length
-                                }} ads</span>
+                                    }} ads</span>
                             </div>
                         </div>
                         <a class="cursor-pointer" :href="'tel:' + agentDetails.phoneNumber"><img
@@ -405,7 +413,7 @@
             <div class="image-container h-fit flex flex-col items-center justify-center w-full">
                 <img :src="carouselImg.link" v-if="carouselImg && carouselImg.link.includes('mp4') == false"
                     class="w-full h-full feed-image" alt="">
-                <video :poster="carouselImg.thumbnail" :src="carouselImg.link" loop
+                <video playsinline :poster="carouselImg.thumbnail" :src="carouselImg.link" loop
                     class="md:w-4/5 w-full rounded-lg feed-image" @click="enterImageViewer()" v-else controls
                     autoplay></video>
             </div>

@@ -8,7 +8,7 @@
                 <swiper-slide v-for="image of data.images" :key="image">
                     <img v-if="image && image.link.includes('mp4') == false" :src="image.link"
                         class="w-full h-full object-cover md:object-contain object-center">
-                    <video v-else :src="image.link" preload="metadata"
+                    <video playsinline v-else :src="image.link" preload="metadata"
                         class="w-full h-full object-cover md:object-contain object-center" autoplay controls></video>
                 </swiper-slide>
             </swiper>
@@ -17,7 +17,8 @@
         <div class="w-full py-10 h-3/5 md:h-2/5 px-4 overflow-y-auto no-scroll-btn flex-col-center justify-start gap-y-4"
             v-motion-slide-bottom v-if="!currentComponent">
             <div class="w-full md:w-1/2 xl:w-1/3" v-for="key of Object.keys(data)" :key="key" @click="editKey(key)">
-                <div class="border-2 border-color-webapp cursor-pointer rounded-2xl p-4 flex-row-center justify-between">
+                <div
+                    class="border-2 border-color-webapp cursor-pointer rounded-2xl p-4 flex-row-center justify-between">
                     <span class="text-sm font-black text-webapp uppercase">{{ key }}:</span>
                     <span class="text-sm font-black text-webapp uppercase"
                         v-if="key !== 'price' && key !== 'size' && key !== 'description' && key !== 'images' && key !== 'features' && key !== 'location'">{{
@@ -51,7 +52,7 @@
         <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" size="200px" color="#0A1045"></loader>
     </div>
 </template>
-  
+
 <script setup>
 import { useStore } from "vuex";
 import { ref, onMounted, reactive } from 'vue'
@@ -187,7 +188,7 @@ onMounted(() => {
 })
 
 </script>
-  
+
 <style>
 .swiper {
     width: 100%;
