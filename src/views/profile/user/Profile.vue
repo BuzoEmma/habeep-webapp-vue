@@ -8,8 +8,8 @@
         <FollowingPage transition="bounceUp" @close="closeModal" v-if="onModal && FollowingModal"
             :users="$store.state.user.following" v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }"
             :enter="{ opacity: 1, y: 0, x: 0 }" />
-        <FollowersPage @close="closeModal" v-if="onModal && FollowersModal" :users="$store.state.user.followers" v-motion
-            :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }" />
+        <FollowersPage @close="closeModal" v-if="onModal && FollowersModal" :users="$store.state.user.followers"
+            v-motion :initial="{ opacity: 0.5, y: 100, x: 100 }" :enter="{ opacity: 1, y: 0, x: 0 }" />
         <Affiliate @close="closeModal" v-if="onModal && affiliateModal" @openReferral="closeAndOpen('referralModal')" />
         <Referrals @close="closeAndOpen('affiliateModal')" @closeModals="closeModal" v-if="onModal && referralModal" />
     </div>
@@ -60,12 +60,14 @@
                                 :lname="$store.state.user.surname" />
                         </div>
                         <div class="flex flex-col w-fit mt-2">
-                            <span class="text-xl w-full whitespace-nowrap text-left agent-name text-webapp font-medium">{{
-                                $store.state.user.surname + ' ' + $store.state.user.fname
-                            }}</span>
+                            <span
+                                class="text-xl w-full whitespace-nowrap text-left agent-name text-webapp font-medium">{{
+                                    $store.state.user.surname + ' ' + $store.state.user.fname
+                                }}</span>
 
                             <p class="text-lg agent-ads-count text-sub-webapp flex flex-row gap-x-2 items-center"><img
-                                    src="../../../assets/images/map-pin.png" alt="">{{ $store.state.user.nationality }}</p>
+                                    src="../../../assets/images/map-pin.png" alt="">{{ $store.state.user.nationality }}
+                            </p>
 
                             <div
                                 class="flex flex-row items-center w-full gap-x-2 mt-3 justify-between overflow-x-auto no-scroll-btn">
@@ -152,8 +154,8 @@
                         :class="{ 'text-blue-600 border-b-blue-700 border-b-2': openTab === 1 }">
                         Agent Ads
                     </div>
-                    <div class="cursor-pointer flex flex-row items-center justify-center w-24 pb-1" @click="changeTab(2)"
-                        :class="{ 'text-blue-600 border-b-blue-700 border-b-2': openTab === 2 }">
+                    <div class="cursor-pointer flex flex-row items-center justify-center w-24 pb-1"
+                        @click="changeTab(2)" :class="{ 'text-blue-600 border-b-blue-700 border-b-2': openTab === 2 }">
                         Saved ads
                     </div>
                 </div>
@@ -172,7 +174,8 @@
                         <!-- listing template -->
                         <div class="basis-full md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0"
                             v-for="ad in agentDetails.ads" :key="ad">
-                            <div class="flex flex-col items-start gap-y-2  border rounded-md border-gray-200 pb-2 ad feed">
+                            <div
+                                class="flex flex-col items-start gap-y-2  border rounded-md border-gray-200 pb-2 ad feed">
                                 <Skeleton v-if="!ad.imageLoaded" class=" w-full h-full rounded-t-md feed-image"
                                     style="width: 100%" />
                                 <img @click="$router.push('/listings/products/' + ad._id)"
@@ -180,10 +183,11 @@
                                     @load="ad.imageLoaded = true" class="w-full rounded-t-md feed-image"
                                     v-if="ad.images[0] && ad.images[0].link && ad.images[0].link.includes('mp4') == false"
                                     alt="">
-                                <video @loadedmetadata="ad.imageLoaded = true" :class="{ 'hidden': !ad.imageLoaded }"
+                                <video playsinline @loadedmetadata="ad.imageLoaded = true"
+                                    :class="{ 'hidden': !ad.imageLoaded }"
                                     @click="$router.push('/listings/products/' + ad._id)" preload="metadata"
-                                    :src="ad.images[0] && ad.images[0].link" class="w-full rounded-t-md feed-image" v-else
-                                    @touchstart="playVideo" @touchend="pauseVideo" @mouseenter="playVideo"
+                                    :src="ad.images[0] && ad.images[0].link" class="w-full rounded-t-md feed-image"
+                                    v-else @touchstart="playVideo" @touchend="pauseVideo" @mouseenter="playVideo"
                                     @mouseout="pauseVideo" muted loop></video>
 
                                 <p class="text-webapp text-lg font-medium w-full px-3 cursor-pointer "
@@ -204,8 +208,8 @@
                                         <span v-if="ad.for === 'rent'">Rent</span>
                                         <span v-if="ad.for === 'sale'">Sale</span>
                                     </p>
-                                    <svg xmlns="http://www.w3.org/2000/svg" v-if="$store.state.isAuthenticated" fill="none"
-                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                    <svg xmlns="http://www.w3.org/2000/svg" v-if="$store.state.isAuthenticated"
+                                        fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                         class="w-6 h-6 cursor-pointer transition-all" @click="saveAd(ad._id)"
                                         :class="{ 'text-orange-400 scale-[1] opacity-100': $store.state.user.savedAds.includes(ad._id), 'scale-[0.8] opacity-80': !$store.state.user.savedAds.includes(ad._id) }">
                                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -233,8 +237,8 @@
                     </div>
                     <div class="flex-row h-full flex-wrap w-full flex overflow-y-auto " v-else>
                         <!-- listing template -->
-                        <div class="basis-full md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0" v-for="ad in savedAds"
-                            :key="ad">
+                        <div class="basis-full md:basis-1/2 xl:basis-1/3 md:px-3 md:py-3 py-5 px-0"
+                            v-for="ad in savedAds" :key="ad">
                             <div
                                 class="flex flex-col items-start gap-y-2 relative ad feed w-full border rounded-md border-gray-200 pb-2 h-full">
                                 <Skeleton v-if="!ad.imageLoaded" class=" w-full h-full rounded-t-md feed-image"
@@ -244,24 +248,23 @@
                                     @load="ad.imageLoaded = true" class="w-full rounded-t-md feed-image"
                                     v-if="ad.images[0] && ad.images[0].link && ad.images[0].link.includes('mp4') == false"
                                     alt="">
-                                <video @touchstart="playVideo" @touchend="pauseVideo" @mouseenter="playVideo"
-                                    @mouseout="pauseVideo" @loadedmetadata="ad.imageLoaded = true"
-                                    :class="{ 'hidden': !ad.imageLoaded }"
+                                <video playsinline @touchstart="playVideo" @touchend="pauseVideo"
+                                    @mouseenter="playVideo" @mouseout="pauseVideo"
+                                    @loadedmetadata="ad.imageLoaded = true" :class="{ 'hidden': !ad.imageLoaded }"
                                     @click="$router.push('/listings/products/' + ad._id)" preload="metadata"
-                                    :src="ad.images[0] && ad.images[0].link" class="w-full rounded-t-md feed-image" v-else
-                                    muted loop></video>
-                               <p
-                                class="text-webapp text-lg font-medium w-full px-3 cursor-pointer max-w-[270px] whitespace-nowrap text-ellipsis overflow-hidden"
-                                @click="$router.push('/listings/products/' + ad._id)"
-                                >
-                                {{ ad.title }}
+                                    :src="ad.images[0] && ad.images[0].link" class="w-full rounded-t-md feed-image"
+                                    v-else muted loop></video>
+                                <p class="text-webapp text-lg font-medium w-full px-3 cursor-pointer max-w-[270px] whitespace-nowrap text-ellipsis overflow-hidden"
+                                    @click="$router.push('/listings/products/' + ad._id)">
+                                    {{ ad.title }}
                                 </p>
 
 
                                 <div class="location flex flex-row items-center gap-x-2 px-2">
                                     <img src="../../../assets/images/map-pin.png" alt="">
-                                    <span class="text-sm text-webapp capitalize max-w-[235px] whitespace-nowrap text-ellipsis overflow-hidden" >
-                                    {{ ad.location.city || ad.location.address}}
+                                    <span
+                                        class="text-sm text-webapp capitalize max-w-[235px] whitespace-nowrap text-ellipsis overflow-hidden">
+                                        {{ ad.location.city || ad.location.address }}
                                     </span>
 
                                 </div>
@@ -273,8 +276,8 @@
                                         <span v-if="ad.for === 'rent'">Rent</span>
                                         <span v-if="ad.for === 'sale'">Sale</span>
                                     </p>
-                                    <svg xmlns="http://www.w3.org/2000/svg" v-if="$store.state.isAuthenticated" fill="none"
-                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                    <svg xmlns="http://www.w3.org/2000/svg" v-if="$store.state.isAuthenticated"
+                                        fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                         class="w-6 h-6 cursor-pointer transition-all" @click="saveAd(ad._id)"
                                         :class="{ 'text-orange-400 scale-[1] opacity-100': $store.state.user.savedAds.includes(ad._id), 'scale-[0.8] opacity-80 ': !$store.state.user.savedAds.includes(ad._id) }">
                                         <path stroke-linecap="round" stroke-linejoin="round"

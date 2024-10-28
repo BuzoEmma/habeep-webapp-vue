@@ -14,11 +14,12 @@
                 <div class="relative h-full display-img w-1/2">
                     <img :src="carouselImg.link" class=" h-full rounded-lg feed-image w-full"
                         v-if="carouselImg.link.toString().includes('mp4') == false" @click="enterImageViewer()" alt="">
-                    <video :src="carouselImg.link" @click="enterImageViewer()" loop
+                    <video playsinline :src="carouselImg.link" @click="enterImageViewer()" loop
                         class="w-full h-full rounded-lg feed-image" v-else autoplay muted></video>
 
                     <div class="w-full absolute flex flex-row top-5 items-center justify-between px-2">
-                        <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer" alt="">
+                        <img src="../../assets/icons/back-img.svg" @click="$router.go(-1)" class="cursor-pointer"
+                            alt="">
                         <div class="flex flex-row gap-x-3 items-center">
                             <ShareNetwork network="whatsapp" popup.width="500px" popup.height="500px"
                                 :url="'https://habeep.org/' + $route.fullPath"
@@ -28,8 +29,9 @@
                             </ShareNetwork>
                             <div class="grid place-items-center relative p-1" v-if="$store.state.isAuthenticated">
                                 <img src="../../assets/icons/heart.svg" class="cursor-pointer" alt="">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                    stroke="currentColor" class="w-6 h-6 absolute top-3 cursor-pointer transition-all"
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor"
+                                    class="w-6 h-6 absolute top-3 cursor-pointer transition-all"
                                     @click="saveAd(product._id)"
                                     :class="{ 'text-orange-400 scale-[1] opacity-100': $store.state.user.savedAds.includes(product._id), 'scale-[0.8] opacity-80 text-white': !$store.state.user.savedAds.includes(product._id) }">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -47,7 +49,7 @@
                             <img :src="image.link" class=" h-full w-full rounded-lg feed-image-short"
                                 v-if="image.link && image.link.toString().includes('mp4') === false"
                                 @click="enterImageViewer()" :key="image" alt="">
-                            <video :src="image.link" @click="enterImageViewer()" loop
+                            <video playsinline :src="image.link" @click="enterImageViewer()" loop
                                 class="w-full rounded-lg feed-image-short" v-else autoplay muted></video>
                         </div>
                     </div>
@@ -57,7 +59,7 @@
                             <img :src="image.link" class=" h-full w-full rounded-md feed-image-short"
                                 v-if="image.link && image.link.toString().includes('mp4') == false"
                                 @click="enterImageViewer()" alt="">
-                            <video :src="image.link" @click="enterImageViewer()" loop
+                            <video playsinline :src="image.link" @click="enterImageViewer()" loop
                                 class="w-full rounded-md feed-image-short" v-else autoplay muted></video>
                         </div>
                     </div>
@@ -94,8 +96,8 @@
                 <img :src="carouselImg.link" class=" h-full w-full feed-image"
                     v-if="carouselImg.link && carouselImg.link.toString().includes('mp4') == false"
                     @click="enterImageViewer()" alt="">
-                <video :src="carouselImg.link" loop class="w-full feed-image" @click="enterImageViewer()" v-else autoplay
-                    muted></video>
+                <video playsinline :src="carouselImg.link" loop class="w-full feed-image" @click="enterImageViewer()"
+                    v-else autoplay muted></video>
                 <!-- <img :src="images[activeCarouselImg - 1].link" class="h-full w-full new-img" :class="{'hidden': changeCarouselImg}"> -->
 
                 <div class="flex flex-row items-center w-full absolute bottom-5 justify-between md:px-8 px-2">
@@ -115,13 +117,14 @@
                     <div class="px-6 py-2 rounded opacity-70" style="background: #161622;">
                         <span class="text-sm text-white font-medium">{{ (activeCarouselImg + '/' +
                             images.length)
-                        }}</span>
+                            }}</span>
                     </div>
                 </div>
             </div>
 
             <!-- product details -->
-            <div class="flex flex-col md:flex-row items-start w-full gap-x-4 h-fit justify-between px-6 sm:px-7 xl:px-0">
+            <div
+                class="flex flex-col md:flex-row items-start w-full gap-x-4 h-fit justify-between px-6 sm:px-7 xl:px-0">
                 <!-- product info -->
                 <div class="flex flex-col items-start md:w-2/3 w-full xl:w-4/6 h-full pt-2">
                     <!-- top product info -->
@@ -148,7 +151,8 @@
                                 Rent
                             </p>
                             <p v-else
-                                class="text-sub-webapp text-sm xl:text-lg product-duration flex flex-row justify-end ">Sale
+                                class="text-sub-webapp text-sm xl:text-lg product-duration flex flex-row justify-end ">
+                                Sale
                             </p>
 
                         </div>
@@ -315,7 +319,7 @@
             <div class="image-container h-fit flex flex-col items-center justify-center w-full">
                 <img :src="carouselImg.link" v-if="carouselImg && carouselImg.link.includes('mp4') == false"
                     class="w-full h-full feed-image" alt="">
-                <video :src="carouselImg.link" loop class="md:w-4/5 w-full rounded-lg feed-image"
+                <video playsinline :src="carouselImg.link" loop class="md:w-4/5 w-full rounded-lg feed-image"
                     @click="enterImageViewer()" v-else controls autoplay></video>
             </div>
             <img src="../../assets/icons/next-circle.svg" @click="changeCarouselImg(activeCarouselImg + 1)"

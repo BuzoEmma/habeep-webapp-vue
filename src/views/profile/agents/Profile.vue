@@ -1,5 +1,6 @@
 <template>
-    <div class="fixed w-screen h-full mx-auto top-0 opacity-50 overflow-hidden" v-if="onModal" style="background: #161622">
+    <div class="fixed w-screen h-full mx-auto top-0 opacity-50 overflow-hidden" v-if="onModal"
+        style="background: #161622">
     </div>
 
     <div class="product-share w-full h-full absolute flex flex-col items-center md:justify-center justify-end z-50 overflow-hidden backdrop-blur-md bg-black bg-opacity-10"
@@ -15,7 +16,8 @@
     </div>
 
     <div class="w-full min-h-screen flex-col h-screen flex items-center justify-center">
-        <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" v-if="!agentDetails.userId" size="200px" color="#0A1045"></loader>
+        <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" v-if="!agentDetails.userId" size="200px" color="#0A1045">
+        </loader>
         <div class="w-screen min-w-full flex flex-col items-center bg-white h-full min-h-screen overflow-y-auto" v-else
             :class="{ 'max-h-screen overflow-y-hidden': onModal, 'overflow-y-hidden h-screen no-scroll-btn': onProductShare }"
             resize="changeWidth">
@@ -27,10 +29,11 @@
                         stroke="#0A1045" class="w-6 h-6 cursor-pointer" @click="$router.go(-1)">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                     </svg>
-                    <span class="text-xl text-webapp font-medium capitalize">{{ agentDetails.name.fname }} Profile</span>
+                    <span class="text-xl text-webapp font-medium capitalize">{{ agentDetails.name.fname }}
+                        Profile</span>
                 </div>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#0A1045"
-                    class="w-6 h-6 collapse">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="#0A1045" class="w-6 h-6 collapse">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                 </svg>
@@ -64,16 +67,19 @@
                     </div>
 
                     <div class="flex flex-row items-center w-full gap-x-4 mt-3">
-                        <p class="text-xl font-webapp font-medium flex flex-row gap-x-1">{{ agentDetails.ads.length }}<span
-                                class="text-sub-webapp text-lg">Ads</span></p>
-                        <p class="text-xl font-webapp font-medium flex flex-row gap-x-1" @click="openModal('followers')">{{
-                            agentDetails.followers.length
-                        }}<span class="text-sub-webapp text-lg">Followers</span></p>
+                        <p class="text-xl font-webapp font-medium flex flex-row gap-x-1">{{ agentDetails.ads.length
+                            }}<span class="text-sub-webapp text-lg">Ads</span></p>
+                        <p class="text-xl font-webapp font-medium flex flex-row gap-x-1"
+                            @click="openModal('followers')">{{
+                                agentDetails.followers.length
+                            }}<span class="text-sub-webapp text-lg">Followers</span></p>
                         <p class="text-xl font-webapp font-medium flex flex-row gap-x-1 cursor-pointer"
                             v-if="$store.state.isAuthenticated" @click="openModal('following')">
-                            {{ agentDetails.following.length }}<span class="text-sub-webapp text-lg">Following </span></p>
+                            {{ agentDetails.following.length }}<span class="text-sub-webapp text-lg">Following </span>
+                        </p>
                         <p class="text-xl font-webapp font-medium flex flex-row gap-x-1 cursor-pointer" v-else>
-                            {{ agentDetails.following.length }}<span class="text-sub-webapp text-lg">Following </span></p>
+                            {{ agentDetails.following.length }}<span class="text-sub-webapp text-lg">Following </span>
+                        </p>
                     </div>
 
                     <p class="text-lg xl:text-xl font-medium  text-webapp mt-3">Bio</p>
@@ -124,11 +130,13 @@
                 <div class="flex flex-col items-start w-full lg:w-4/5">
                     <div class="flex flex-row gap-x-3 border-b border-b-gray-300 w-full">
                         <div class="cursor-pointer flex flex-row items-center justify-center w-16  pb-1"
-                            @click="changeTab(1)" :class="{ 'text-blue-600 border-b-blue-700 border-b-2': openTab === 1 }">
+                            @click="changeTab(1)"
+                            :class="{ 'text-blue-600 border-b-blue-700 border-b-2': openTab === 1 }">
                             Ads
                         </div>
                         <div class="cursor-pointer flex flex-row items-center justify-center w-24 pb-1"
-                            @click="changeTab(2)" :class="{ 'text-blue-600 border-b-blue-700 border-b-2': openTab === 2 }">
+                            @click="changeTab(2)"
+                            :class="{ 'text-blue-600 border-b-blue-700 border-b-2': openTab === 2 }">
                             Saved ads
                         </div>
                     </div>
@@ -150,9 +158,9 @@
                                         :src="ad.images[0].link" class="w-full h-full rounded-t-md feed-image"
                                         v-if="ad.images && ad.images[0] && ad.images[0].link.includes('mp4') == false"
                                         alt="">
-                                    <video :poster="ad.images[0].thumbnail" :alt="ad.title" @touchstart="playVideo"
-                                        @touchend="pauseVideo" @mouseenter="playVideo" @mouseout="pauseVideo"
-                                        @click="$router.push('/listings/products/' + ad._id)"
+                                    <video playsinline :poster="ad.images[0].thumbnail" :alt="ad.title"
+                                        @touchstart="playVideo" @touchend="pauseVideo" @mouseenter="playVideo"
+                                        @mouseout="pauseVideo" @click="$router.push('/listings/products/' + ad._id)"
                                         :src="ad.images && ad.images[0] && ad.images[0].link"
                                         class="w-full rounded-t-md feed-image" v-else muted></video>
                                     <p class="text-webapp text-lg font-medium w-full px-3 cursor-pointer"
@@ -211,10 +219,11 @@
                                     <img :alt="ad.title" @click="$router.push('/listings/products/' + ad._id)"
                                         :src="ad.images[0].link" class="w-full h-full rounded-t-md feed-image"
                                         v-if="ad.images[0].link.includes('mp4') == false" alt="">
-                                    <video :poster="ad.images[0].thumbnail" :alt="ad.title" @touchstart="playVideo"
-                                        @touchend="pauseVideo" @mouseenter="playVideo" @mouseout="pauseVideo"
-                                        @click="$router.push('/listings/products/' + ad._id)" :src="ad.images[0].link"
-                                        class="w-full rounded-t-md feed-image" v-else muted></video>
+                                    <video playsinline :poster="ad.images[0].thumbnail" :alt="ad.title"
+                                        @touchstart="playVideo" @touchend="pauseVideo" @mouseenter="playVideo"
+                                        @mouseout="pauseVideo" @click="$router.push('/listings/products/' + ad._id)"
+                                        :src="ad.images[0].link" class="w-full rounded-t-md feed-image" v-else
+                                        muted></video>
                                     <p class="text-webapp text-lg font-medium w-full px-3 cursor-pointer"
                                         @click="$router.push('/listings/products/' + ad._id)">
                                         {{ ad.title }}

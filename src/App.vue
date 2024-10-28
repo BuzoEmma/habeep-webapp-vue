@@ -177,7 +177,7 @@ onMounted(() => {
           <img :src="notif.img" alt="" class="rounded-2xl w-12 h-12 object-cover object-center"
             v-if="notif.img && notif.img.toString().includes('mp4') == false">
           <video :src="notif.img" loop preload="auto" class="rounded-2xl w-12 h-12 notif-video" v-else autoplay
-            muted></video>
+            playsinline muted></video>
           <div class="flex-col flex items-start gap-y-1">
             <h3 class="text-webapp text-sm font-medium">{{ notif.subject }}</h3>
             <span class="text-sub-webapp font-light text-xs">{{ notif.msg }}</span>
