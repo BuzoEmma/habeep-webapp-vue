@@ -19,7 +19,7 @@
             <h1 v-else
                 class="md:text-6xl text-4xl lg:w-3/5 md:w-4/5 w-full px-4 text-center text-black bacasime font-bold">
                 {{
-                blog.title }}</h1>
+                    blog.title }}</h1>
 
             <Skeleton class="lg:w-3/6 md:w-3/5 w-11/12 md:h-24 h-12 "
                 v-if="fetchingBlog || blog.subtitle.length === 0" />
@@ -144,6 +144,21 @@ async function fetchBlog() {
         const fetchBlog = await axios.get('/articles/blog/fetch/' + route.params.id)
         blog.value = fetchBlog.data.data
 
+        // set google seo
+        const structuredData = {
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            "headline": blog.value.title,
+            "image": [blog.value.imageCover],
+            "datePublished": moment(blog.value.createdAt).toDate(),
+            "dateModified": moment(blog.value.updateAt ?? blog.value.createdAt).toDate(),
+            "author": [{
+                "@type": "Organization",
+                "name": "Habeep LLC",
+                "url": "https://instagram.com/habeep_realest"
+            }]
+        }
+
         useHead({
             title: 'Habeep | Blog - ' + blog.value.title,
             meta: [
@@ -156,32 +171,14 @@ async function fetchBlog() {
                 { name: 'og:description', content: blog.value.subtitle },
                 { name: 'viewport', content: 'width=device-width, initial-scale=1' }
             ],
+            script: [
+                { type: 'application/ld+json', textContent: JSON.stringify(structuredData) }
+            ],
             link: [
                 { rel: 'icon', href: blog.value.imageCover },
                 { rel: 'shortcut icon', href: blog.value.imageCover },
                 { rel: 'apple-touch-icon', href: blog.value.imageCover }
             ],
-        })
-
-        // set google seo
-        const structuredData = {
-            "@context": "https://schema.org",
-            "@type": "NewsArticle",
-            "headline": blog.value.title,
-            "image": [blog.value.imageCover],
-            "datePublished": blog.value.createdAt,
-            "dateModified": blog.value.createdAt,
-            "author": [{
-                "@type": "Organization",
-                "name": "Habeep",
-                "url": "https://habeep.org/"
-            }]
-        }
-
-        useHead({
-            script: [
-                { type: 'application/ld+json', textContent: JSON.stringify(structuredData) }
-            ]
         })
 
         setTimeout(() => {

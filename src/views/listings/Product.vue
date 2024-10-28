@@ -448,6 +448,7 @@ const img = ref('')
 
 import { useHead } from '@vueuse/head'
 import ShareModal from './components/ShareModal.vue';
+import moment from 'moment';
 
 useHead({
     title: () => title.value,
@@ -592,6 +593,7 @@ async function getAgent(agentId) {
                 "@type": "Offer",
                 url: `https://habeep.org/listings/products/${product.value._id}`,
                 "priceCurrency": "NGN",
+                "priceValidUntil": moment(product.value.dateUpdated).add(1, 'year').toDate() ?? moment().add(1, 'year'),
                 price: product.value.price,
                 "itemCondition": "https://schema.org/NewCondition",
                 "availability": "https://schema.org/InStock"

@@ -278,6 +278,22 @@ const img = ref(
 );
 import { useHead } from "@vueuse/head";
 
+// set google seo
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Home Search",
+  "url": "https://habeep.org/listings/search",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://habeep.org/listings/search?name={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+
 useHead({
   title: () => title.value,
   meta: [
@@ -295,6 +311,9 @@ useHead({
     { name: "og:description", content: () => content.value },
 
     { name: "viewport", content: "width=device-width, initial-scale=1" },
+  ],
+  script: [
+    { type: 'application/ld+json', textContent: JSON.stringify(structuredData) }
   ],
   link: [
     {
