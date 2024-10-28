@@ -4,7 +4,6 @@ Disallow: /reset-pin
 Disallow: /logout
 Disallow: /login
 Disallow: /forgot-pin
-Disallow: /home
 Disallow: /feeds
 
 User-agent: googlebot
