@@ -75,7 +75,9 @@ useHead({
         renting and managing properties easy.
       </p>
       <video class="hero-video object-cover object-center" src="../../assets/videos/HabeepAbout.mp4"
-        fetchpriority="high" playsinline loop muted preload="metadata">
+        fetchpriority="high"
+        poster="https://res.cloudinary.com/dfjud30cb/video/upload/v1730114260/files/web-assets/Habeep_About.jpg"
+        playsinline autoplay loop muted preload="metadata">
         Your browser does not support the video tag.
       </video>
     </section>
