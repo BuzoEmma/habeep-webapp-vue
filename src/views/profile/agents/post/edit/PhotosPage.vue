@@ -5,7 +5,8 @@
             <div class="w-full flex-row-center justify-between pt-10">
                 <img src="../../../../../assets/icons/chevron-left.svg" @click="$emit('goBack')" class="block" alt="">
             </div>
-            <h1 class="text-white font-medium text-2xl md:text-4xl xl:text-5xl   w-full text-left">Add some photos or videos
+            <h1 class="text-white font-medium text-2xl md:text-4xl xl:text-5xl   w-full text-left">Add some photos or
+                videos
                 to the
                 listing
             </h1>
@@ -35,8 +36,9 @@
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
                                 <img :src="data.images[0].link" class="h-full w-full rounded-lg feed-image"
                                     v-if="data.images[0].link.includes('mp4') !== true" alt="">
-                                <video :src="data.images[0].link" class="h-full w-full rounded-lg feed-image" v-else
-                                    height="100%" width="100%" autoplay muted></video>
+                                <video playsinline :src="data.images[0].link"
+                                    class="h-full w-full rounded-lg feed-image" v-else height="100%" width="100%"
+                                    autoplay muted></video>
                             </div>
                         </div>
 
@@ -44,8 +46,9 @@
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
                                 <img :src="data.images[1].link" class="h-full w-full rounded-lg feed-image"
                                     v-if="data.images[1].link.includes('mp4') !== true" alt="">
-                                <video :src="data.images[1].link" class="h-full w-full rounded-lg feed-image" v-else
-                                    height="100%" width="100%" autoplay muted></video>
+                                <video playsinline :src="data.images[1].link"
+                                    class="h-full w-full rounded-lg feed-image" v-else height="100%" width="100%"
+                                    autoplay muted></video>
                             </div>
                         </div>
 
@@ -53,8 +56,9 @@
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
                                 <img :src="data.images[2].link" class="h-full w-full rounded-lg feed-image"
                                     v-if="data.images[2].link.includes('mp4') !== true" alt="">
-                                <video :src="data.images[2].link" class="h-full w-full rounded-lg feed-image" v-else
-                                    height="100%" width="100%" autoplay muted></video>
+                                <video playsinline :src="data.images[2].link"
+                                    class="h-full w-full rounded-lg feed-image" v-else height="100%" width="100%"
+                                    autoplay muted></video>
                             </div>
                         </div>
 
@@ -62,16 +66,17 @@
                             <div class="flex flex-col items-center justify-center dashed h-full w-full">
                                 <img :src="data.images[3].link" class="h-full w-full rounded-lg feed-image"
                                     v-if="data.images[3].link.includes('mp4') !== true" alt="">
-                                <video :src="data.images[3].link" class="h-full w-full rounded-lg feed-image" v-else
-                                    height="100%" width="100%" autoplay muted></video>
+                                <video playsinline :src="data.images[3].link"
+                                    class="h-full w-full rounded-lg feed-image" v-else height="100%" width="100%"
+                                    autoplay muted></video>
                             </div>
                         </div>
 
                         <div class="basis-1/2 md:basis-1/3 photo p-2 h-full" @click="callImgProcessor(4)">
                             <img :src="data.images[4].link" class="h-full w-full rounded-lg feed-image"
                                 v-if="data.images[4].link.includes('mp4') !== true" alt="">
-                            <video :src="data.images[4].link" class="h-full w-full rounded-lg feed-image" v-else
-                                height="100%" width="100%" autoplay muted></video>
+                            <video playsinline :src="data.images[4].link" class="h-full w-full rounded-lg feed-image"
+                                v-else height="100%" width="100%" autoplay muted></video>
                         </div>
                     </div>
                 </div>
@@ -196,7 +201,7 @@ async function updateProduct() {
             allNewImages.value.push(image.link)
         })
 
-        if(allNewImages.value !== allPreviousImages.value) {
+        if (allNewImages.value !== allPreviousImages.value) {
             edited = true
         }
 

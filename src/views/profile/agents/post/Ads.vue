@@ -31,10 +31,12 @@
 
             <div class="w-full flex flex-row items-center mt-5 px-1 py-3 relative justify-between h-fit">
                 <div class="flex flex-row items-center h-fit gap-x-4 w-full md:w-1/3" v-if="!onSearch">
-                    <button class="px-4 py-2  rounded-full border border-gray-300 text-sm whitespace-nowrap text-gray-400"
+                    <button
+                        class="px-4 py-2  rounded-full border border-gray-300 text-sm whitespace-nowrap text-gray-400"
                         @click="changeAdsTab(1)" :class="{ 'on-active': adsTab === 1 }">Active
                         ads</button>
-                    <button class="px-4 py-2 rounded-full border border-gray-300 text-sm whitespace-nowrap text-gray-400"
+                    <button
+                        class="px-4 py-2 rounded-full border border-gray-300 text-sm whitespace-nowrap text-gray-400"
                         v-if="!onSearch" @click="changeAdsTab(2)" :class="{ 'on-active': adsTab === 2 }">Closed
                         ads</button>
                 </div>
@@ -42,8 +44,8 @@
                     :class="{ 'w-full': onSearch === true, 'w-2/3': !onSearch }">
                     <div :class="{ 'flex-display w-4/5': onSearch === true }"
                         class="search-bar w-3/5 hidden md:flex flex-row rounded-full border border-gray-300 items-center py-1 px-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" @click="onSearch = false" fill="none" viewBox="0 0 24 24"
-                            stroke-width="1" stroke="#B1B4CD" class="w-6 h-6 mt-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" @click="onSearch = false" fill="none"
+                            viewBox="0 0 24 24" stroke-width="1" stroke="#B1B4CD" class="w-6 h-6 mt-1">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                         </svg>
@@ -126,8 +128,9 @@
                                 :class="{ 'hidden': !item.imageLoaded }" @load="item.imageLoaded = true"
                                 v-if="item.images[0] && item.images[0].link && item.images[0].link.includes('.mp4') == false"
                                 alt="">
-                            <video @touchstart="playVideo" @touchend="pauseVideo" @mouseenter="playVideo"
-                                @mouseout="pauseVideo" @click="$router.push('/listings/agent/view/products/' + item._id)"
+                            <video playsinline @touchstart="playVideo" @touchend="pauseVideo" @mouseenter="playVideo"
+                                @mouseout="pauseVideo"
+                                @click="$router.push('/listings/agent/view/products/' + item._id)"
                                 :class="{ 'hidden': !item.imageLoaded }" @loadedmetadata="item.imageLoaded = true"
                                 :src="item.images[0].link" class="w-full rounded-md feed-image"
                                 v-if="item.images[0] && item.images[0].link && item.images[0].link.includes('.mp4') == true"
@@ -194,8 +197,9 @@
                                 :class="{ 'hidden': !item.imageLoaded }" @load="item.imageLoaded = true"
                                 v-if="item.images[0] && item.images[0].link && item.images[0].link.includes('.mp4') == false"
                                 alt="">
-                            <video @touchstart="playVideo" @touchend="pauseVideo" @mouseenter="playVideo"
-                                @mouseout="pauseVideo" @click="$router.push('/listings/agent/view/products/' + item._id)"
+                            <video playsinline @touchstart="playVideo" @touchend="pauseVideo" @mouseenter="playVideo"
+                                @mouseout="pauseVideo"
+                                @click="$router.push('/listings/agent/view/products/' + item._id)"
                                 :class="{ 'hidden': !item.imageLoaded }" @loadedmetadata="item.imageLoaded = true"
                                 :src="item.images[0].link" class="w-full rounded-md feed-image"
                                 v-if="item.images[0] && item.images[0].link && item.images[0].link.includes('.mp4') == true"
@@ -485,4 +489,5 @@ input:focus {
     object-fit: cover;
     max-height: 164px !important;
     object-position: center;
-}</style>
+}
+</style>
