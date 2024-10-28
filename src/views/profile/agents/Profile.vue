@@ -294,6 +294,7 @@ const content = ref('View more information about @' + route.params.username)
 
 const img = ref('')
 import { useHead } from '@vueuse/head'
+import moment from 'moment'
 
 useHead({
     title: () => title.value,
@@ -367,13 +368,46 @@ async function getAgent() {
 
         // set google seo
         const structuredData = {
-            "@context": "http:\/\/schema.org\/",
-            "name": agentDetails.value.name.fname + ' ' + agentDetails.value.name.surname,
-            "@type": "Person",
-            "email": agentDetails.value.email,
-            "sameAs": [
-                `https:\/\/habeep.org\/${agentDetails.value.name.username}`,
-            ]
+            "@context": "https://schema.org",
+            "@type": "ProfilePage",
+            "dateCreated": moment(moment().year(2023)).toDate(),
+            "dateModified": new Date(),
+            "mainEntity": {
+                "@type": "Person",
+                "name": agentDetails.value.name.fname + ' ' + agentDetails.value.name.surname,
+                "alternateName": agentDetails.value.name.username,
+                "identifier": agentDetails.value.userId,
+                "interactionStatistic": [
+                    {
+                        "@type": "InteractionCounter",
+                        "interactionType": "https://schema.org/FollowAction",
+                        "userInteractionCount": agentDetails.value.followers?.length ?? 0
+                    },
+                    {
+                        "@type": "InteractionCounter",
+                        "interactionType": "https://schema.org/LikeAction",
+                        "userInteractionCount": agentDetails.value.savedAds?.length ?? 0
+                    }
+                ],
+                "agentInteractionStatistic": [
+                    {
+                        "@type": "InteractionCounter",
+                        "interactionType": "https://schema.org/WriteAction",
+                        "userInteractionCount": agentDetails.value.ads?.length ?? 0
+                    },
+                    {
+                        "@type": "InteractionCounter",
+                        "interactionType": "https://schema.org/FollowAction",
+                        "userInteractionCount": agentDetails.value.following?.length ?? 0
+                    }
+                ],
+                "description": content.value,
+                "image": img.value,
+                "sameAs": [
+                    `https://www.instagram.com/${agentDetails.value.username}`,
+                    `https://www.twitter.com/${agentDetails.value.username}`,
+                ]
+            }
         }
 
         useHead({

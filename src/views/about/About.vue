@@ -4,6 +4,7 @@ register();
 import { ref } from "vue";
 import axios from "../../composables/axios.js";
 import moment from "moment";
+import { useHead } from "@unhead/vue";
 
 const fetchingBlogs = ref(false);
 const blogs = ref([]);
@@ -38,6 +39,30 @@ function getCurrentYear() {
   const date = new Date();
   return date.getFullYear();
 }
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "VideoObject",
+  "potentialAction": {
+    "@type": "SeekToAction",
+    "target": "https://habeep.org/about?t={seek_to_second_number}",
+    "startOffset-input": "required name=seek_to_second_number"
+  },
+  "name": "Introducing Habeep!",
+  "duration": "PT00H00M14S",
+  "uploadDate": "2024-10-01T08:00:00+08:00",
+  "thumbnailUrl": "https://res.cloudinary.com/dfjud30cb/video/upload/v1730114260/files/web-assets/Habeep_About.jpg",
+  "description": "Our innovative solutions for your perfect living experience",
+  "contentUrl": "https://res.cloudinary.com/dfjud30cb/video/upload/v1730114260/files/web-assets/Habeep_About.mp4",
+  "embedUrl": "https://habeep.org/about"
+}
+
+
+useHead({
+  script: [
+    { type: 'application/ld+json', textContent: JSON.stringify(structuredData) }
+  ]
+})
 </script>
 
 <template>

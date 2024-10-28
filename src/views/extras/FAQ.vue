@@ -53,7 +53,7 @@
                 <span class="text-sub-webapp text-sm">Written by:
                   <strong class="text-webapp uppercase">{{
                     collection.writer
-                    }}</strong></span>
+                  }}</strong></span>
               </p>
             </div>
           </div>
@@ -78,7 +78,7 @@
         </p>
       </div>
       <div class="social-links flex flex-row gap-x-3">
-        <a href="https://www.twitter.com/habeep_re" class="link">
+        <a href="https://www.twitter.com/habeep_housing" class="link">
           <div class="bg-white h-10 w-10 sm:h-12 sm:w-12 grid-center" style="border-radius: 50%">
             <img src="../../assets/images/socials/twitter.svg" alt="" />
           </div>
@@ -98,14 +98,6 @@
             <img src="../../assets/images/socials/linkedin.svg" alt="" />
           </div>
         </a>
-        <!-- <a href="#" class="link">
-                    <div class="bg-white h-10 w-10 sm:h-12 sm:w-12 grid-center" style="border-radius: 50%"><img
-                            src="../../assets/images/socials/telegram.svg" alt=""></div>
-                </a>
-                <a href="#" class="link">
-                    <div class="bg-white h-10 w-10 sm:h-12 sm:w-12 grid-center" style="border-radius: 50%"><img
-                            src="../../assets/images/socials/tiktok.svg" alt=""></div>
-                </a> -->
       </div>
     </div>
 
@@ -132,8 +124,8 @@ import Article from "./components/Article.vue";
 
 import faq from "./data/articles/faq.json";
 import contact_us from "./data/articles/contact-us.json";
-// import hbptoken from './data/articles/hbptoken.json'
-// import wallet from './data/articles/wallet.json'
+import hbptoken from './data/articles/hbptoken.json'
+import wallet from './data/articles/wallet.json'
 
 import { inject, onMounted } from "vue";
 import { onBeforeRouteLeave } from "vue-router";
@@ -307,6 +299,39 @@ function searchArticles() {
     filteredCollections.value = uniqueResults;
   } else {
     filteredCollections.value = collections;
+  }
+}
+
+// setup seo
+if (collections.length > 0) {
+  const entities = []
+  for (const collection of collections) {
+    if (collection.articles.length > 0) {
+      for (const article of collection.articles) {
+        entities.push({
+          "@type": "Question",
+          "name": article.title,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": article.content
+          }
+        })
+      }
+    }
+  }
+  if (entities.length > 0) {
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": entities
+    }
+
+    useHead({
+      script: [
+        { type: 'application/ld+json', textContent: JSON.stringify(structuredData) }
+      ]
+    })
+
   }
 }
 </script>
