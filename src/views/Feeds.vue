@@ -565,7 +565,7 @@
         <!-- Five V -->
 
         <div
-          class=" basis-full md:basis-1/2 md:px-2 xl:basis-1/4 md:py-3 py-5 gap-y-4 px-5 "
+          class="basis-full md:basis-1/2 md:px-2 xl:basis-1/4 md:py-3 py-5 gap-y-4 px-5"
           v-else
           v-for="feed in filteredFeeds"
           :key="feed"
@@ -608,26 +608,37 @@
               loop
               preload="metadata"
             ></video>
-          
 
-         <p
-          class="text-webapp text-lg font-medium w-full  px-2 cursor-pointer max-w-[270px] whitespace-nowrap text-ellipsis overflow-hidden"
-  
-          @click="$router.push('/listings/products/' + feed._id)"
-        >
-          {{ feed.title }}
-        </p>
+
+            <!-- Video Icon -->
+            <div
+              v-if="feed.images[0].link.includes('mp4') == true"
+              class="video-icon-overlay"
+            >
+              <!-- Video SVG -->
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </div>
+
+            <p
+              class="text-webapp text-lg font-medium w-full px-2 cursor-pointer max-w-[270px] whitespace-nowrap text-ellipsis overflow-hidden"
+              @click="$router.push('/listings/products/' + feed._id)"
+            >
+              {{ feed.title }}
+            </p>
 
             <div
               class="location flex flex-row items-center gap-x-2 px-2"
               @click="$router.push('/listings/products/' + feed._id)"
             >
               <img src="../assets/images/map-pin.png" alt="" />
-              <span class="text-sm text-webapp max-w-[235px] whitespace-nowrap text-ellipsis overflow-hidden">
-                {{ feed.location.city || feed.location.address}}
+              <span
+                class="text-sm text-webapp max-w-[235px] whitespace-nowrap text-ellipsis overflow-hidden"
+              >
+                {{ feed.location.city || feed.location.address }}
               </span>
             </div>
-
 
             <div class="flex flex-row items-center w-full justify-between px-2">
               <p
@@ -860,8 +871,6 @@ async function getFeeds() {
   }
 }
 
-
-
 function changeStateModal(state, type) {
   if (state !== "All") {
     if (type === "state") {
@@ -1086,7 +1095,6 @@ async function pauseVideo(e) {
 </script>
 
 <style scoped>
-
 .location::-webkit-scrollbar {
   width: 6px;
 }
@@ -1132,5 +1140,17 @@ async function pauseVideo(e) {
   width: 100% !important;
   object-fit: cover;
   max-height: 185px !important;
+}
+
+.video-icon-overlay {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(0, 0, 0, 0.5); /* Optional background */
+  border-radius: 50%;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
