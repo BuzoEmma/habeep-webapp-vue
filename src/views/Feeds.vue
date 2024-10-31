@@ -616,7 +616,7 @@
               class="video-icon-overlay"
             >
               <!-- Video SVG -->
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
                 <path d="M8 5v14l11-7z" />
               </svg>
             </div>
@@ -1145,7 +1145,7 @@ async function pauseVideo(e) {
 .video-icon-overlay {
   position: absolute;
   top: 10px;
-  left: 10px;
+  right: 10px;
   background-color: rgba(0, 0, 0, 0.5); /* Optional background */
   border-radius: 50%;
   padding: 5px;
