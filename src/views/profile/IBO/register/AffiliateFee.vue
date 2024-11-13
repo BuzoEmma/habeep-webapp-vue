@@ -136,7 +136,7 @@ const currencyWalletData = ref({
     accountValue: 0
 })
 
-const accountType = ref('hbp')
+const accountType = ref('currency')
 
 function changeAccountType() {
     if (accountType.value !== 'hbp') {
@@ -370,10 +370,10 @@ onMounted(async () => {
         currencyAmountToDebit.value = nairaValue.value * 120
     }
 
-    if (hbpWalletData.value.accountValue >= amountToDebit) {
-        accountType.value = 'hbp'
-    } else if (currencyWalletData.value.accountValue >= currencyAmountToDebit.value) {
+    if (currencyWalletData.value.accountValue >= currencyAmountToDebit.value) {
         accountType.value = 'currency'
+    } else if (hbpWalletData.value.accountValue >= amountToDebit) {
+        accountType.value = 'hbp'
     } else if (currencyWalletData.value.accountValue > 0 || hbpWalletData.value.accountValue > 0) {
         if ((hbpWalletData.value.accountValue * nairaValue.value) > currencyWalletData.value.accountValue) {
             accountType.value = 'hbp'
@@ -381,6 +381,8 @@ onMounted(async () => {
             accountType.value = 'currency'
         }
     }
+
+
 })
 
 
