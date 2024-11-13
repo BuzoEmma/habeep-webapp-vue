@@ -103,13 +103,6 @@
           Account
         </p>
       </div>
-
-        <div class="w-full pl-[13px] py-[11px] nav-item" v-if="$store.state.isAuthenticated">
-        <p @click="$router.push('/about')" class="text-sm text-webapp"
-          :class="{ 'text-blue-600': $route.name === 'About' }">
-          About us
-        </p>
-      </div>
      
       <div class="w-full pl-[13px] py-[11px] nav-item">
         <p @click="$router.push('/help')" class="text-sm text-webapp"
@@ -121,7 +114,7 @@
 
       <hr class="my-1" />
 
-       <div class="w-full pl-[13px] py-[11px] nav-item" v-if="!$store.state.isAuthenticated">
+       <div class="w-full pl-[13px] py-[11px] nav-item" >
         <p @click="$router.push('/about')" class="text-sm text-webapp"
           :class="{ 'text-blue-600': $route.name === 'About' }">
           About us
