@@ -12,7 +12,7 @@
         <div class="profile relative flex flex-col w-full items-center gap-y-6 px-4">
             <div class="relative flex flex-row items-center justify-center w-24 h-24 rounded-full border border-gray-200">
                 <img :src="$store.state.user.userProfileImage"
-                    class="w-24 h-24 min-h-full min-w-full rounded-full cursor-pointer object-cover"
+                    class="w-24 h-24 min-h-full min-w-full rounded-full cursor-pointer object-contain"
                     v-if="$store.state.user.userProfileImage !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
                 <Avatar size="100%" v-else :fname="$store.state.user.fname" :lname="$store.state.user.surname" />
 

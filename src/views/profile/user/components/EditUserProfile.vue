@@ -7,7 +7,7 @@
 
     <div class="profile relative flex flex-col w-full items-center gap-y-6 px-4 h-full">
       <div class="relative flex flex-row items-center justify-center w-24 h-24 rounded-full border border-gray-200">
-        <img :src="imageData" class="w-24 h-24 min-h-full min-w-full  object-cover rounded-full cursor-pointer"
+        <img :src="imageData" class="w-24 h-24 min-h-full min-w-full  object-contain rounded-full cursor-pointer"
           v-if="imageData !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
         <Avatar size="100%" v-else :fname="$store.state.user.fname" :lname="$store.state.user.surname" />
 
