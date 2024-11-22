@@ -368,7 +368,7 @@ useHead({
         </div>
       </div>
       <div class="footer-copy-write">
-        <span>&#x00A9;</span> {{ getCurrentYear() }} 525SYSTEM
+        <span>&#x00A9;</span> <span style="font-size:large;">{{ getCurrentYear() }} </span> Habeep
       </div>
     </section>
   </div>

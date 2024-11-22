@@ -8,7 +8,7 @@
             <div class="flex flex-col items-center w-full md:w-2/3 px-4">
                 <!-- logo -->
                 <div class="logo md:flex hidden flex-row items-center justify-end w-full gap-x-2 cursor-pointer"
-                    @click="$router.push('/')">
+                    @click="$router.push({path: '/'})">
                     <img src="../../assets/icons/logo.svg" alt="Logo">
                     <span class="text-primary text-2xl">Habeep</span>
                 </div>
