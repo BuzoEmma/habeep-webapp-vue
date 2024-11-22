@@ -1,6 +1,6 @@
 <template>
     <!-- Header / Navbar -->
-    <div class="absolute w-screen h-screen top-0 opacity-50" @click="toggleMobileNav" v-if="onMobileNav"
+    <div class="absolute w-screen h-screen  top-0 opacity-50" @click="toggleMobileNav" v-if="onMobileNav"
         style="background: #161622"></div>
 
     <div
@@ -42,9 +42,9 @@
                 <span class="uppercase text-lg text-webapp cursor-pointer"
                     :class="{ 'text-blue-700': $route.fullPath.includes('blog') === true }"
                     @click="$router.push('/blog')">BLOG</span>
-                <div class="flex flex-row items-center  gap-x-2 min-w-[40px] min-h-[40px]" @click="toggleNav">
+                <div class="flex flex-row items-center cursor-pointer gap-x-2 min-w-[40px] min-h-[40px]" @click="toggleNav">
                     <img src="../assets/icons/user.svg" alt="" v-if="!$store.state.isAuthenticated">
-                    <img :src="$store.state.user.userProfileImage" class="w-10 h-10 rounded-full "
+                    <img :src="$store.state.user.userProfileImage" class="w-10 h-10 object-contain rounded-full "
                         v-else-if="$store.state.user.userProfileImage !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
                     <Avatar size="100%" class="w-10 h-10 min-w-[40px] min-h-[40px]"
                         v-if="$store.state.user.userProfileImage === 'https://i.ibb.co/gtpxMJz/21.png' && $store.state.isAuthenticated"
@@ -57,7 +57,7 @@
             </div>
         </div>
 
-        <div class="flex flex-row items-center gap-x-5 dlex md:hidden">
+        <div class="flex flex-row items-center gap-x-5  dlex md:hidden">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" @click="$emit('toggleSearch')"
                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -65,7 +65,7 @@
             </svg>
 
             <img src="../assets/icons/wallet-icon.svg" @click="$router.push('/wallet')" alt="">
-            <img src="../assets/icons/mobile-nav.svg" @click="toggleMobileNav" alt="">
+            <img src="../assets/icons/mobile-nav.svg"  @click="toggleMobileNav" alt="">
         </div>
         <!-- Navigation Menu -->
 

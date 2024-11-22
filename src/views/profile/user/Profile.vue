@@ -54,7 +54,7 @@
                     <div class="flex flex-row gap-x-3 items-start">
                         <div class="rounded-full w-24 h-24 grid place-items-center border">
                             <img :src="$store.state.user.userProfileImage"
-                                class="w-24 h-24 min-h-full min-w-full rounded-full cursor-pointer"
+                                class="w-24 h-24 min-h-full min-w-full object-contain rounded-full cursor-pointer"
                                 v-if="$store.state.user.userProfileImage !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
                             <Avatar size="100%" v-else :fname="$store.state.user.fname"
                                 :lname="$store.state.user.surname" />

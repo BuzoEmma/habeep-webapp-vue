@@ -40,10 +40,10 @@
         <span class="uppercase text-lg text-webapp cursor-pointer" :class="{
           'text-blue-700': $route.fullPath.includes('blog') === true,
         }" @click="$router.push('/blog')">BLOG</span>
-        <div class="flex flex-row items-center gap-x-2 min-w-[40px] min-h-[40px]" @click="toggleNav">
+        <div class="flex flex-row items-center gap-x-2 min-w-[40px] min-h-[40px] cursor-pointer" @click="toggleNav">
           <img src="../assets/icons/user.svg" alt="" v-if="!$store.state.isAuthenticated" />
 
-          <img :src="$store.state.user.userProfileImage" class="w-10 h-10 rounded-full" v-else-if="
+          <img :src="$store.state.user.userProfileImage" class="w-10 h-10 object-contain rounded-full" v-else-if="
             $store.state.user.userProfileImage !==
             'https://i.ibb.co/gtpxMJz/21.png'
           " alt="" />
