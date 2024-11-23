@@ -319,7 +319,7 @@ useHead({
               <img src="../../assets/icons/download-app-apple.svg" alt="" />
             </a>
 
-            <a href="https://play.google.com/store/apps/details?id=org.habeep" target="_blank" class="landlords-links">
+            <a href="https://play.google.com/store/apps/details?id=org.habeep.landlords" target="_blank" class="landlords-links">
               <img src="../../assets/icons/download-app-google.svg" alt="" />
             </a>
           </div>
