@@ -144,11 +144,8 @@
         >Products</router-link
       >
       <router-link to="/help" class="underline text-webapp">Help</router-link>
-      <router-link to="/about-tenant" class="underline text-blue-600"
-        >About Tenants</router-link
-      >
-      <router-link to="/about-landlord" class="underline text-blue-600"
-        >About Landlord</router-link
+      <router-link to="/tenant-app" class="underline text-blue-600"
+        >About</router-link
       >
     </div>
   </div>

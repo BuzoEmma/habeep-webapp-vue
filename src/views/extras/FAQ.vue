@@ -172,7 +172,7 @@
         >Products</router-link
       >
       <router-link to="/help" class="underline text-blue-600">Help</router-link>
-      <router-link to="/about-tenant" class="underline text-blue-600"
+      <router-link to="/tenant-app" class="underline text-blue-600"
         >About Tenants</router-link
       >
 

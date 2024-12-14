@@ -100,8 +100,8 @@ import Login from "../views/Auth/Login.vue";
 import Logout from "../views/Auth/Logout.vue";
 import ForgotPin from "../views/Auth/ForgotPin.vue";
 import OTP from "../views/Auth/OTP_Validation.vue";
-import AboutTenant from "../views/about/AboutTenant.vue";
-import AboutLord from "../views/about/AboutLandlord.vue";
+import TenantApp from "../views/about/TenantApp.vue";
+import LordlordApp from "../views/about/LordlordApp.vue";
 import DeleteAccount from "../views/profile/delete-account/DeleteAccount.vue";
 
 const routes = [
@@ -135,19 +135,19 @@ const routes = [
     },
   },
   {
-    path: "/about-tenant",
-    component: AboutTenant,
-    name: "About-Tenant",
+    path: "/tenant-app",
+    component: TenantApp,
+    name: "Tenant-App",
     meta: {
-      title: "About-Tenant",
+      title: "Tenant-App",
     },
   },
   {
-    path: "/about-landlord",
-    component: AboutLord,
-    name: "About-Landlord",
+    path: "/landlord-app",
+    component: LordlordApp,
+    name: "Landlord-App",
     meta: {
-      title: "About-Landlord",
+      title: "Landlord-App",
     },
   },
   // extras

@@ -214,23 +214,41 @@
 
       <hr class="my-1" />
 
-      <div class="w-full pl-[13px] py-[11px] nav-item">
-        <p
-          @click="$router.push('/about-tenant')"
-          class="text-sm text-webapp"
-          :class="{ 'text-blue-600': $route.name === 'About-Tenant' }"
+     <div class="nav-item w-full pl-[13px] py-[11px]">
+        <div
+          class="menu-header w-full flex justify-between pr-5 text-sm text-webapp"
         >
-          About Tenants
-        </p>
-      </div>
-      <div class="w-full pl-[13px] py-[11px] nav-item">
-        <p
-          @click="$router.push('/about-landlord')"
-          class="text-sm text-webapp"
-          :class="{ 'text-blue-600': $route.name === 'About-Landlord' }"
-        >
-          About Landlord
-        </p>
+          <p>About</p>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="#0A1045"
+            class="icon-chevron w-5 h-5 transition-transform duration-300"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+            />
+          </svg>
+        </div>
+
+        <div class="submenu hidden flex-col px-4 py-3 gap-3">
+          <p
+            @click="$router.push('/tenant-app')"
+            class="submenu-item text-sm text-webapp hover:text-gray-600"
+          >
+            Tenant App
+          </p>
+          <p
+            @click="$router.push('/landlord-app')"
+            class="submenu-item text-sm text-webapp hover:text-gray-600"
+          >
+            Landlord App
+          </p>
+        </div>
       </div>
 
       <div
@@ -379,5 +397,27 @@ input {
 
 div.nav div.nav-item:hover {
   background: #eaeefa;
+}
+
+
+.submenu {
+  display: none;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease-in-out;
+}
+
+.nav-item:hover .submenu {
+  display: flex;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.icon-chevron {
+  transition: transform 0.3s ease-in-out;
+}
+
+.nav-item:hover .icon-chevron {
+  transform: rotate(180deg);
 }
 </style>

@@ -161,7 +161,9 @@
         class="xl:flex hidden"
         alt=""
       />
-      <div class="flex flex-wrap justify-center flex-row md:mb-8 mb-4 items-center gap-x-4">
+      <div
+        class="flex flex-wrap justify-center flex-row md:mb-8 mb-4 items-center gap-x-4"
+      >
         <router-link to="/terms-of-service" class="underline text-webapp"
           >Terms of service</router-link
         >
@@ -172,11 +174,8 @@
         >
         <router-link to="/help" class="underline text-webapp">Help</router-link>
 
-        <router-link to="/about-tenant" class="underline text-webapp"
-          >About Tenants</router-link
-        >
-        <router-link to="/about-landlord" class="underline text-webapp"
-          >About Landlord</router-link
+        <router-link to="/tenant-app" class="underline text-webapp"
+          >About</router-link
         >
       </div>
       <img

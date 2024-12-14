@@ -11,11 +11,11 @@ const routes = [
     name: "App",
   },
   {
-    path: "/about-tenant",
+    path: "/tenant-app",
     name: "About Tenants",
   },
   {
-    path: "/about-landlord",
+    path: "/landlord-app",
     name: "About Landlord",
   },
   {
