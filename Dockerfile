@@ -8,4 +8,4 @@ COPY . ./
 
 RUN ls -la
 
-EXPOSE 8080
+EXPOSE 8081

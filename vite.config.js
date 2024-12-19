@@ -155,7 +155,11 @@ export default defineConfig({
         return updatedRoutes;
       },
     }),
+
     loadEnv("production", "./"),
+
+    loadEnv('staging', './',),
+
     ViteImageOptimizer(DEFAULT_OPTIONS_IMAGE_COMPRESSOR),
   ],
 });
