@@ -117,7 +117,7 @@ import AboutNavbar from "../../components/AboutNavbar.vue";
 .main-container {
   max-width: 1440px;
   margin: 0 auto;
-  /* padding: 2rem; */
+  /* padding: 0 2rem; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -133,7 +133,7 @@ import AboutNavbar from "../../components/AboutNavbar.vue";
 
 .mission {
   max-width: 100%;
-  height: 650px;
+  height: 700px;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -141,10 +141,15 @@ import AboutNavbar from "../../components/AboutNavbar.vue";
 }
 
 .mission-text {
-  font-family: Aeonik, sans-serif;
-  font-size: clamp(1.5rem, 5vw, 61.04px);
-  line-height: clamp(2rem, 6vw, 73.25px);
+  width: 1194px;
+  height: 219px;
+  font-family: Aeonik;
+  font-size: 61.04px;
   font-weight: 700;
+  line-height: 73.25px;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
 }
 
 .download-links {
@@ -170,12 +175,13 @@ import AboutNavbar from "../../components/AboutNavbar.vue";
 }
 
 .landlord img {
-  width: 1000.57px;
-  height: 220px;
+  width: 1160.57px;
+  height: 280px;
 }
 
 .landlord-container {
-  width: 1440px;
+  /* width: 100%; */
+  width: 1240px;
   background-image: url("../../assets/landlord/landbg.png");
   height: 798px;
   border-radius: 30px;
@@ -191,7 +197,7 @@ import AboutNavbar from "../../components/AboutNavbar.vue";
   top: -12rem;
 }
 .section-title {
-  width: 359px;
+  width: 312px;
   height: 292px;
   font-family: Aeonik;
   font-size: 61.04px;
@@ -204,8 +210,8 @@ import AboutNavbar from "../../components/AboutNavbar.vue";
 }
 
 .benefit-item {
-  width: 360px;
-  height: 369px;
+  width: 329px;
+  height: 329px;
   color: white;
   display: flex;
   flex-direction: column;
@@ -226,18 +232,31 @@ import AboutNavbar from "../../components/AboutNavbar.vue";
 }
 
 .benefit-icon p {
-  width: 347px;
-  height: 66px;
+  width: 286px;
+  height: 56px;
   font-family: Aeonik;
-  font-size: 27.65px;
+  font-size: 23.04px;
   font-weight: 500;
-  line-height: 33.18px;
+  line-height: 27.65px;
   text-align: left;
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
 }
 /* Responsive Styles */
+
+/* @media (max-width: 1300px) {
+  .landlord-container {
+    max-width: 1140px;
+    display: none;
+  }
+} */
+
 @media (max-width: 1200px) {
+  .landlord-container {
+    width: 1440px;
+   
+  }
+
   .mission {
     max-width: 1000px;
     height: 500px;
