@@ -414,36 +414,9 @@ useHead({
     </section>
 
     <section class="footer-section">
-      <div class="footer-user-app">
-        <div class="footer-user-app-div">
-          <div>
-            <p>Download the Landlord App</p>
-            <p>
-              Download the Habeep app from the Play Store/App Store to find
-              properties, save for rent, and access rent loans easily.
-            </p>
-          </div>
-          <div class="footer-download-app">
-            <a
-              href="https://apps.apple.com/us/app/habeep/id6450388013"
-              target="_blank"
-              class="landlords-links"
-            >
-              <img src="../../assets/icons/download-app-apple.svg" alt="" />
-            </a>
+  
 
-            <a
-              href="https://play.google.com/store/apps/details?id=org.habeep.landlords"
-              target="_blank"
-              class="landlords-links"
-            >
-              <img src="../../assets/icons/download-app-google.svg" alt="" />
-            </a>
-          </div>
-        </div>
 
-        <img src="../../assets/images/footerPhone.png" alt="" />
-      </div>
       <div class="footer-habeep">
         <div @click="$router.push('/home')" class="footer-habeep-home">
           <!-- <img src="../../assets/images/footerHabeep.svg" alt="" /> -->
