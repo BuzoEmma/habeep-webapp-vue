@@ -23,8 +23,6 @@ async function fetchBlogs() {
 }
 
 fetchBlogs();
-
-import MainNavbar from "../../components/MainNavbar.vue";
 import { useRouter } from "vue-router";
 import discoverSvg1 from "../../assets/images/discoverImg1.svg";
 import discoverSvg2 from "../../assets/images/discoverImg2.svg";
@@ -32,6 +30,7 @@ import tenants1 from "../../assets/images/tenantsSvg1.png";
 import tenants2 from "../../assets/images/tenantsSvg2.png";
 import landlordPhone from "../../assets/images/lan.png";
 import testimonials from "./aboutTestimonials.js";
+import AboutNavbar from "../../components/AboutNavbar.vue";
 
 const router = useRouter();
 
@@ -70,7 +69,7 @@ useHead({
 </script>
 
 <template>
-  <MainNavbar />
+  <AboutNavbar />
 
   <div class="about-sections">
     <section class="hero-section">
