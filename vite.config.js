@@ -1,40 +1,43 @@
-import { defineConfig, loadEnv } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import { ViteImageOptimizer } from 'vite-plugin-image-optimizer';
-import axios from 'axios'
+import { defineConfig, loadEnv } from "vite";
+import vue from "@vitejs/plugin-vue";
+import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
+import axios from "axios";
 
-import { VitePluginSitemap } from '@tormak/vite-plugin-sitemap';
+import { VitePluginSitemap } from "@tormak/vite-plugin-sitemap";
 
 const routes = [
   {
-    path: '/',
-    name: 'App'
-
+    path: "/",
+    name: "App",
   },
   {
-    path: '/about',
-    name: 'About Us',
+    path: "/tenant-app",
+    name: "About Tenants",
   },
   {
-    path: '/home',
-    name: 'Home',
+    path: "/landlord-app",
+    name: "About Landlord",
   },
   {
-    path: '/blog',
-    name: 'Blogs',
+    path: "/home",
+    name: "Home",
   },
   {
-    path: '/help',
-    name: 'FAQ',
+    path: "/blog",
+    name: "Blogs",
   },
   {
-    path: '/terms-of-service',
-    name: 'Terms-Of-Service',
+    path: "/help",
+    name: "FAQ",
+  },
+  {
+    path: "/terms-of-service",
+    name: "Terms-Of-Service",
   },
   // listings
   {
-    path: '/listings/search',
-    name: 'Listings-search',
+    path: "/listings/search",
+    name: "Listings-search",
   },
 ];
 
@@ -49,7 +52,7 @@ const DEFAULT_OPTIONS_IMAGE_COMPRESSOR = {
     multipass: true,
     plugins: [
       {
-        name: 'preset-default',
+        name: "preset-default",
         params: {
           overrides: {
             cleanupNumericValues: false,
@@ -62,11 +65,11 @@ const DEFAULT_OPTIONS_IMAGE_COMPRESSOR = {
           convertPathData: false,
         },
       },
-      'sortAttrs',
+      "sortAttrs",
       {
-        name: 'addAttributesToSVGElement',
+        name: "addAttributesToSVGElement",
         params: {
-          attributes: [{ xmlns: 'http://www.w3.org/2000/svg' }],
+          attributes: [{ xmlns: "http://www.w3.org/2000/svg" }],
         },
       },
     ],
@@ -105,55 +108,58 @@ export default defineConfig({
   plugins: [
     vue(),
     VitePluginSitemap({
-      baseUrl: 'https://habeep.org',
-      contentBase: './',
+      baseUrl: "https://habeep.org",
+      contentBase: "./",
       routes: routes,
       urlGenHook: async (config) => {
         let updatedRoutes = config.routes;
-        const baseUrl = 'https://backend-api.habeep.org/backend/api/v1/seo'
+        const baseUrl = "https://backend-api.habeep.org/backend/api/v1/seo";
 
         try {
           // get products seo routes
-          let productsLinks = []
-          const fetch = await axios.get(baseUrl + '/products')
-          productsLinks = fetch.data.data
-          productsLinks.forEach(product => {
+          let productsLinks = [];
+          const fetch = await axios.get(baseUrl + "/products");
+          productsLinks = fetch.data.data;
+          productsLinks.forEach((product) => {
             updatedRoutes.push({
-              path: '/listings/products/' + product,
-              name: 'product - ' + product
-            })
+              path: "/listings/products/" + product,
+              name: "product - " + product,
+            });
           });
 
           // get users seo routes
-          let usersLinks = []
-          const fetchUsers = await axios.get(baseUrl + '/users')
-          usersLinks = fetchUsers.data.data
-          usersLinks.forEach(username => {
+          let usersLinks = [];
+          const fetchUsers = await axios.get(baseUrl + "/users");
+          usersLinks = fetchUsers.data.data;
+          usersLinks.forEach((username) => {
             updatedRoutes.push({
-              path: '/' + username,
-              name: username + ' Profile'
-            })
+              path: "/" + username,
+              name: username + " Profile",
+            });
           });
 
           // get blogs seo routes
-          let blogsLinks = []
-          const fetchBlogs = await axios.get(baseUrl + '/blogs')
-          blogsLinks = fetchBlogs.data.data
-          blogsLinks.forEach(blog => {
+          let blogsLinks = [];
+          const fetchBlogs = await axios.get(baseUrl + "/blogs");
+          blogsLinks = fetchBlogs.data.data;
+          blogsLinks.forEach((blog) => {
             updatedRoutes.push({
-              path: '/blog/' + blog,
-              name: blog + ' Page'
-            })
+              path: "/blog/" + blog,
+              name: blog + " Page",
+            });
           });
         } catch (error) {
-          console.log(error)
+          console.log(error);
         }
 
-
         return updatedRoutes;
-      }
+      },
     }),
+
+    loadEnv("production", "./"),
+
     loadEnv('staging', './',),
+
     ViteImageOptimizer(DEFAULT_OPTIONS_IMAGE_COMPRESSOR),
-  ]
-})
+  ],
+});

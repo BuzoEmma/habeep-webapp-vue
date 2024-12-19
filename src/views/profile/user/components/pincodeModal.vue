@@ -1,5 +1,5 @@
 <template>
-    <div class="main flex flex-col md:h-64 z-10 overflow-hidden  bg-white h-full">
+    <div class="main flex flex-col md:h-64 z-10 overflow-hidden  bg-white h-[100px]">
         <div class="flex flex-row items-center justify-between w-full px-4 py-4 border-b border-b-gray-100">
             <span class="text-lg font-medium text-webapp">Change pincode</span>
             <div class="flex flex-row items-center gap-x-2">
@@ -9,7 +9,7 @@
             </div>
         </div>
 
-        <div class="profile relative flex flex-col w-full items-center gap-y-6 px-4">
+        <div class="profile relative flex flex-col w-full items-center  px-4">
             <div class="relative flex flex-row items-center justify-center w-24 h-24 rounded-full border border-gray-200">
                 <img :src="$store.state.user.userProfileImage"
                     class="w-24 h-24 min-h-full min-w-full rounded-full cursor-pointer object-contain"
@@ -20,11 +20,11 @@
             </div>
             <!-- form -->
             <!-- input fields -->
-            <div class="flex flex-col items-start w-full xs:w-5/12 gap-y-1 mt-8">
+            <div class="flex flex-col items-start w-full xs:w-5/12 gap-y-1 mt-8 ">
                 <label for="" class="text-sm text-webapp">Old pincode</label>
                 <input type="number" maxlength="4" v-model="data.oldPin"
                     @input="validateFormField('oldPin', data.oldPin.toString())" placeholder="Enter old pincode"
-                    class="w-full h-14 rounded-lg bg-transaparent"
+                    class="w-full h-12 rounded-lg bg-transaparent"
                     :class="{ 'bg-bg': onModal, 'invalidField': errorMsg.field === 'oldPin' }">
             </div>
 
@@ -33,7 +33,7 @@
                 <label for="" class="text-sm text-webapp">New pincode</label>
                 <input type="number" maxlength="4" v-model="data.newPin"
                     @input="validateFormField('newPin', data.newPin.toString())" placeholder="Enter new pincode"
-                    class="w-full h-14 rounded-lg bg-transaparent"
+                    class="w-full h-12 rounded-lg bg-transaparent"
                     :class="{ 'bg-bg': onModal, 'invalidField': errorMsg.field === 'newPin' }">
             </div>
 
@@ -41,7 +41,7 @@
                 <label for="" class="text-sm text-webapp">Re-enter new pincode</label>
                 <input type="number" maxlength="4" v-model="data.confirmPin"
                     @input="validateFormField('confirmPin', data.confirmPin.toString())" placeholder="Enter new pincode"
-                    class="w-full h-14 rounded-lg bg-transaparent"
+                    class="w-full h-12 rounded-lg bg-transaparent"
                     :class="{ 'bg-bg': onModal, 'invalidField': errorMsg.field === 'confirmPin' }">
             </div>
 
@@ -51,7 +51,7 @@
         </div>
 
 
-        <button class="bg-primary mx-4 rounded-lg grid place-items-center h-14 my-6 text-white" @click="changePin">
+        <button class="bg-primary mx-4 rounded-lg grid place-items-center h-12 my-6 text-white" @click="changePin">
             <span v-if="!processing">Continue</span>
             <Preloader v-else />
         </button>

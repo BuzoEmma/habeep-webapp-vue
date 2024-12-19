@@ -68,25 +68,32 @@
 
 
             <div class="flex-col flex items-start w-full space-y-1">
-                <span class="text-lg text-[#242E4C] helvetica-font">Or copy link</span>
-                <div class="w-full px-4 flex-row-center rounded-[5px] h-[57px] border border-[#EBEBF2] justify-between">
-                    <p class="text-[16px] helvetica-font lg:inline hidden">{{ 'https://habeep.org/' + user.username }}
-                    </p>
-                    <p class="text-[14px] helvetica-font inline lg:hidden">
-                        <span class="md:inline lg:hidden hidden">
-                            {{ ('https://habeep.org/' + user.username).substring(0, 60) }}...
-                        </span>
-                        <span class="md:hidden lg:inline inline"
-                            v-if="('https://habeep.org/' + user.username).length < 30">{{ 'https://habeep.org/' +
-                                user.username }}</span>
-                        <span class="md:hidden lg:inline inline" v-else>{{ ('https://habeep.org/' +
-                            user.username).substring(0, 30) }}...</span>
-                    </p>
-                    <span v-if="!copiedShareLink" @click="copyShareLink('https://habeep.org/' + user.username)"
-                        class="md:text-[14px] text-[12px]  text-webapp hover:cursor-pointer hover:font-bold transition-all hover:text-[15px]">Copy</span>
-                    <span v-else class="text-webapp font-bold md:text-[15px] text-[13px]">Copied</span>
-                </div>
-            </div>
+    <span class="text-lg text-[#242E4C] helvetica-font">Or copy link</span>
+    <div class="w-full px-4 flex-row-center rounded-[5px] h-[57px] border border-[#EBEBF2] justify-between">
+        <a :href="'https://habeep.org/' + user.username" target="_blank"
+            class="text-[16px] helvetica-font lg:inline hidden text-blue-500 hover:underline">
+            {{ 'https://habeep.org/' + user.username }}
+        </a>
+        <p class="text-[14px] helvetica-font inline lg:hidden">
+            <span class="md:inline lg:hidden hidden">
+                {{ ('https://habeep.org/' + user.username).substring(0, 60) }}...
+            </span>
+            <span class="md:hidden lg:inline inline"
+                v-if="('https://habeep.org/' + user.username).length < 30">
+                {{ 'https://habeep.org/' + user.username }}
+            </span>
+            <span class="md:hidden lg:inline inline" v-else>
+                {{ ('https://habeep.org/' + user.username).substring(0, 30) }}...
+            </span>
+        </p>
+        <span v-if="!copiedShareLink" @click="copyShareLink('https://habeep.org/' + user.username)"
+            class="md:text-[14px] text-[12px] text-webapp hover:cursor-pointer hover:font-bold transition-all hover:text-[15px]">
+            Copy
+        </span>
+        <span v-else class="text-webapp font-bold md:text-[15px] text-[13px]">Copied</span>
+    </div>
+</div>
+
         </div>
     </div>
 </template>
