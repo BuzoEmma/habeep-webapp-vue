@@ -341,522 +341,1046 @@ function getCurrentYear() {
 </script>
 
 <style>
-.main-container {
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 0 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+@media screen and (min-width: 1440px) {
+  .main-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: gray;
+  }
 
-.section {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 2rem;
-}
+  .section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
 
-.mission {
-  max-width: 100%;
-  height: 700px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  text-align: center;
-}
+  .mission {
+    max-width: 100%;
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    text-align: center;
+  }
 
-.mission-text {
-  width: 1194px;
-  height: 219px;
-  font-family: Aeonik;
-  font-size: 61.04px;
-  font-weight: 700;
-  line-height: 73.25px;
-  text-align: center;
-  text-underline-position: from-font;
-  text-decoration-skip-ink: none;
-}
+  .mission-text {
+    width: 1194px;
+    height: 219px;
+    font-family: Aeonik;
+    font-size: 61.04px;
+    font-weight: 700;
+    line-height: 73.25px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+  }
 
-.download-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-}
+  .download-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
 
-.download-icon {
-  width: 250px;
-  height: auto;
-}
+  .download-icon {
+    width: 250px;
+    height: auto;
+  }
 
-.landlord {
-  width: 100%;
-  height: 1334px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+  .landlord {
+    width: 100%;
+    height: 1334px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-.landlord img {
-  width: 1160.57px;
-  height: 280px;
-}
+  .landlord img {
+    width: 1160.57px;
+    height: 280px;
+  }
 
-.landlord-container {
-  width: 1240px;
-  height: 798px;
-  background-image: url("../../assets/landlord/landbg.png");
-  border-radius: 30px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  position: relative;
-  top: 13rem;
-}
+  .landlord-container {
+    width: 1240px;
+    height: 798px;
+    background-image: url("../../assets/landlord/landbg.png");
+    border-radius: 30px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+    top: 13rem;
+  }
 
-.landlord-container img {
-  width: 375px;
-  height: 737px;
-  position: relative;
-  top: -12rem;
-}
-.section-title {
-  width: 312px;
-  height: 292px;
-  font-family: Aeonik;
-  font-size: 61.04px;
-  font-weight: 700;
-  line-height: 73.25px;
-  text-align: left;
-  text-underline-position: from-font;
-  text-decoration-skip-ink: none;
-  color: white;
-}
+  .landlord-container img {
+    width: 375px;
+    height: 737px;
+    position: relative;
+    top: -12rem;
+  }
+  .section-title {
+    width: 312px;
+    height: 292px;
+    font-family: Aeonik;
+    font-size: 61.04px;
+    font-weight: 700;
+    line-height: 73.25px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: white;
+  }
 
-.benefit-item {
-  width: 329px;
-  height: 329px;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
+  .benefit-item {
+    width: 329px;
+    height: 329px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 
-.benefit-icon {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  gap: 1rem;
-}
+  .benefit-icon {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1rem;
+  }
 
-.benefit-icon .icon {
-  background-color: #1b9160;
-  width: 30px;
-  height: 30px;
-}
+  .benefit-icon .icon {
+    background-color: #1b9160;
+    width: 30px;
+    height: 30px;
+  }
 
-.benefit-icon p {
-  width: 286px;
-  height: 56px;
-  font-family: Aeonik;
-  font-size: 23.04px;
-  font-weight: 500;
-  line-height: 27.65px;
-  text-align: left;
-  text-underline-position: from-font;
-  text-decoration-skip-ink: none;
-}
+  .benefit-icon p {
+    width: 286px;
+    height: 56px;
+    font-family: Aeonik;
+    font-size: 23.04px;
+    font-weight: 500;
+    line-height: 27.65px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+  }
 
-.journey {
-  width: 100%;
-  height: 1076px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-}
-.journey__title {
-  max-width: 1027px;
-  height: 146px;
-  font-family: Aeonik;
-  font-size: 61.04px;
-  font-weight: 700;
-  line-height: 73.25px;
-  text-align: center;
-  text-underline-position: from-font;
-  text-decoration-skip-ink: none;
-}
+  .journey {
+    width: 100%;
+    height: 1076px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  .journey__title {
+    max-width: 1027px;
+    height: 146px;
+    font-family: Aeonik;
+    font-size: 61.04px;
+    font-weight: 700;
+    line-height: 73.25px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+  }
 
-.journey__steps {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 2rem;
-}
+  .journey__steps {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2rem;
+  }
 
-.journey__intro {
-  width: 373px;
-  height: 247px;
-  gap: 37px;
-  display: flex;
-}
-.journey__icon {
-  display: inline-block;
-  background: #d9d9d9;
-  width: 50px;
-  height: 50px;
-}
+  .journey__intro {
+    width: 373px;
+    height: 247px;
+    gap: 37px;
+    display: flex;
+  }
+  .journey__icon {
+    display: inline-block;
+    background: #d9d9d9;
+    width: 50px;
+    height: 50px;
+  }
 
-.journey__text {
-  width: 366px;
-  height: 160px;
-  font-size: 33.18px;
-  font-weight: 700;
-  line-height: 39.82px;
-  color: #353742;
-}
+  .journey__text {
+    width: 366px;
+    height: 160px;
+    font-size: 33.18px;
+    font-weight: 700;
+    line-height: 39.82px;
+    color: #353742;
+  }
 
-.journey__step {
-  width: 900px;
-  height: 667px;
-}
-.journey__number {
-  width: 62px;
-  height: 60px;
-  top: 28px;
-  left: 31px;
-  padding: 16px 19px 16px 19px;
-  border-radius: 20px;
-  background: white;
-  color: #1b9160;
-  position: relative;
-  z-index: 5;
-  top: 4rem;
-}
+  .journey__step {
+    width: 900px;
+    height: 667px;
+  }
+  .journey__number {
+    width: 62px;
+    height: 60px;
+    top: 28px;
+    left: 31px;
+    padding: 16px 19px 16px 19px;
+    border-radius: 20px;
+    background: white;
+    color: #1b9160;
+    position: relative;
+    z-index: 5;
+    top: 4rem;
+  }
 
-.journey__content {
-  width: 900px;
-  height: 667px;
-  border-radius: 30px;
-  background-image: url("../../assets/landlord/bgphone1.png");
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  position: relative;
-}
+  .journey__content {
+    width: 900px;
+    height: 667px;
+    border-radius: 30px;
+    background-image: url("../../assets/landlord/bgphone1.png");
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    position: relative;
+  }
 
-.journey__details {
-  width: 373px;
-  height: 226px;
-  top: 308px;
-  left: 93px;
-  gap: 34px;
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  left: 4rem;
-}
+  .journey__details {
+    width: 373px;
+    height: 226px;
+    top: 308px;
+    left: 93px;
+    gap: 34px;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 4rem;
+  }
 
-.journey__step-title {
-  width: 373px;
-  height: 80px;
-  font-family: Aeonik;
-  font-size: 33.18px;
-  font-weight: 700;
-  line-height: 39.82px;
-}
+  .journey__step-title {
+    width: 373px;
+    height: 80px;
+    font-family: Aeonik;
+    font-size: 33.18px;
+    font-weight: 700;
+    line-height: 39.82px;
+  }
 
-.journey__desc {
-  width: 373px;
-  height: 112px;
-  font-family: Aeonik;
-  font-size: 23.04px;
-  font-weight: 400;
-  line-height: 27.65px;
-}
+  .journey__desc {
+    width: 373px;
+    height: 112px;
+    font-family: Aeonik;
+    font-size: 23.04px;
+    font-weight: 400;
+    line-height: 27.65px;
+  }
 
-.journey__divider {
-}
+  .journey__divider {
+  }
 
-.journey__spacer {
-  width: 480px;
-  height: 666px;
-  background-image: url("../../assets/landlord/bgcircle1.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  position: absolute;
-  right: 0;
-  top: 1px;
-  border-radius: 0 30px 0 0;
-  z-index: 1; /* Behind everything */
-}
+  .journey__spacer {
+    width: 480px;
+    height: 666px;
+    background-image: url("../../assets/landlord/bgcircle1.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+    right: 0;
+    top: 1px;
+    border-radius: 0 30px 0 0;
+    z-index: 1; /* Behind everything */
+  }
 
-.journey__phone {
-  width: 250px;
-  height: 594.96px;
-  position: absolute;
-  right: 0px;
-  bottom: -2.7rem;
-  z-index: 5;
-  object-fit: contain;
-}
+  .journey__phone {
+    width: 250px;
+    height: 594.96px;
+    position: absolute;
+    right: 0px;
+    bottom: -2.7rem;
+    z-index: 5;
+    object-fit: contain;
+  }
 
-.article-content {
-  width: 1241px;
-  height: 570px;
-  top: 200px;
-  left: 0px;
-  border-radius: 30px;
-  position: relative;
-  background-image: url("../../assets/landlord/bgbutton.png");
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 10rem;
-}
+  .article-content {
+    width: 1241px;
+    height: 570px;
+    top: 200px;
+    left: 0px;
+    border-radius: 30px;
+    position: relative;
+    background-image: url("../../assets/landlord/bgbutton.png");
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10rem;
+  }
 
-.article-text {
-  max-width: 953px;
-  height: 114px;
-  gap: 0px;
-  opacity: 0px;
+  .article-text {
+    max-width: 953px;
+    height: 114px;
+    gap: 0px;
+    opacity: 0px;
 
-  font-family: Aeonik;
-  font-size: 47.78px;
-  font-weight: 500;
-  line-height: 57.34px;
-  text-align: center;
-  text-underline-position: from-font;
-  text-decoration-skip-ink: none;
-}
+    font-family: Aeonik;
+    font-size: 47.78px;
+    font-weight: 500;
+    line-height: 57.34px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+  }
 
-.btn-read {
-  width: Hug (380px) px;
-  height: Hug (108px) px;
-  padding: 30px 80px 30px 80px;
-  gap: 10px;
-  border-radius: 30px;
-  font-family: Aeonik;
-  font-size: 39.81px;
-  font-weight: 700;
-  line-height: 47.77px;
-  background: white;
-  color: #eaaf72;
-}
+  .btn-read {
+    width: Hug (380px) px;
+    height: Hug (108px) px;
+    padding: 30px 80px 30px 80px;
+    gap: 10px;
+    border-radius: 30px;
+    font-family: Aeonik;
+    font-size: 39.81px;
+    font-weight: 700;
+    line-height: 47.77px;
+    background: white;
+    color: #eaaf72;
+  }
 
-.pricing {
-  width: 100%;
-  height: 1942px;
-  background-image: url("../../assets/landlord/bgprice.png");
-  border-radius: 30px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 10rem;
-}
+  .pricing {
+    width: 100%;
+    height: 1942px;
+    background-image: url("../../assets/landlord/bgprice.png");
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10rem;
+  }
 
-.pricing-header {
-  width: 1240.17px;
-  height: 154.26px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
-  position: relative;
-}
+  .pricing-header {
+    width: 1240.17px;
+    height: 154.26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    position: relative;
+  }
 
-.pricing-header p {
-  width: 507.5px;
-  height: 154.26px;
-  font-family: Aeonik;
-  font-size: 47.78px;
-  font-weight: 700;
-  line-height: 57.34px;
-  text-align: left;
-  text-underline-position: from-font;
-  text-decoration-skip-ink: none;
-}
+  .pricing-header p {
+    width: 507.5px;
+    height: 154.26px;
+    font-family: Aeonik;
+    font-size: 47.78px;
+    font-weight: 700;
+    line-height: 57.34px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+  }
 
-.pricing-line {
-  width: 100%;
-  max-width: 583.33px;
-  background: white;
-  height: 1%;
-  position: absolute;
-  bottom: 3rem;
-  left: 20rem;
-}
-.btn-see-all {
-  width: Fixed (234.17px) px;
-  height: Fixed (113.05px) px;
-  padding: 30px 80px 30px 80px;
-  border-radius: 30px;
-  color: black;
-  font-family: Aeonik;
-  font-size: 39.81px;
-  font-weight: 700;
-  line-height: 47.77px;
-  text-align: left;
-  background: white;
-  text-wrap: nowrap;
-}
+  .pricing-line {
+    width: 100%;
+    max-width: 583.33px;
+    background: white;
+    height: 1%;
+    position: absolute;
+    bottom: 3rem;
+    left: 20rem;
+  }
+  .btn-see-all {
+    width: Fixed (234.17px) px;
+    height: Fixed (113.05px) px;
+    padding: 30px 80px 30px 80px;
+    border-radius: 30px;
+    color: black;
+    font-family: Aeonik;
+    font-size: 39.81px;
+    font-weight: 700;
+    line-height: 47.77px;
+    text-align: left;
+    background: white;
+    text-wrap: nowrap;
+  }
 
-.pricing-list {
-  width: 1230px;
-  height: 810.11px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
+  .pricing-list {
+    width: 1230px;
+    height: 810.11px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
 
-.pricing-item {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  align-items: center;
-}
+  .pricing-item {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+  }
 
-.pricing-content {
-  width: 380px;
-  height: 370px;
-  gap: 13px;
-  display: flex;
-  flex-direction: column;
-}
+  .pricing-content {
+    width: 380px;
+    height: 370px;
+    gap: 13px;
+    display: flex;
+    flex-direction: column;
+  }
 
-.pricing-content img {
-  width: 380px;
-  height: 243.11px;
-  border-radius: 30px;
-}
+  .pricing-content img {
+    width: 380px;
+    height: 243.11px;
+    border-radius: 30px;
+  }
 
-.pricing-description {
-  width: 380px;
-  height: 114px;
-  font-family: Aeonik;
-  font-size: 23.04px;
-  font-weight: 400;
-  line-height: 37.68px;
-  color: white;
-}
+  .pricing-description {
+    width: 380px;
+    height: 114px;
+    font-family: Aeonik;
+    font-size: 23.04px;
+    font-weight: 400;
+    line-height: 37.68px;
+    color: white;
+  }
 
-.footer-section {
-  width: 1440px;
-  height: 300px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 4rem;
-}
+  .footer-section {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 4rem;
+  }
 
-.footer-habeep {
-  width: 100%;
-  height: auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 2rem 0rem;
-}
+  .footer-habeep {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2rem 0rem;
+  }
 
-.footer-habeep div:nth-child(1) {
-  width: 279px;
-  height: 50px;
-  background-position: left;
-  background-repeat: no-repeat;
-  background-image: url("../../assets/images/footerHabeep.svg");
-  /* background: white */
-}
+  .footer-habeep div:nth-child(1) {
+    width: 279px;
+    height: 50px;
+    background-position: left;
+    background-repeat: no-repeat;
+    background-image: url("../../assets/images/footerHabeep.svg");
+    /* background: white */
+  }
 
-.footer-habeep .footer-habeep-divs1 div,
-.footer-habeep .footer-habeep-divs2 div {
-  width: 279px;
-  height: 26px;
-  border-radius: 5px;
-  background: none;
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
-  font-family: Aeonik;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 19.2px;
-  text-align: left;
-  color: rgba(102, 102, 102, 1);
-}
+  .footer-habeep .footer-habeep-divs1 div,
+  .footer-habeep .footer-habeep-divs2 div {
+    width: 279px;
+    height: 26px;
+    border-radius: 5px;
+    background: none;
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    font-family: Aeonik;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19.2px;
+    text-align: left;
+    color: rgba(102, 102, 102, 1);
+  }
 
-.footer-habeep .footer-habeep-divs2 div:nth-child(2) {
-  width: 402px;
-}
+  .footer-habeep .footer-habeep-divs2 div:nth-child(2) {
+    width: 402px;
+  }
 
-.footer-copy-write {
-  width: 200px;
-  height: 24px;
-  font-family: Aeonik;
-  font-size: 20px;
-  font-weight: 400;
-  line-height: 24px;
-  text-align: left;
-  color: rgba(27, 73, 255, 1);
-}
+  .footer-copy-write {
+    width: 200px;
+    height: 24px;
+    font-family: Aeonik;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+    color: rgba(27, 73, 255, 1);
+  }
 
-.app-download {
-  width: 1239px;
-  height: 575px;
-  border-radius: 10px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  position: relative;
-  background: #e6e6e7;
-  top: -12rem;
-  background-image: url("../../assets/landlord/bgdown.png");
-}
+  .app-download {
+    width: 1239px;
+    height: 575px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+    background: #e6e6e7;
+    top: -12rem;
+    background-image: url("../../assets/landlord/bgdown.png");
+  }
 
-.app-download img {
-  position: relative;
-  bottom: -4.8rem;
-}
-.app-info {
-  max-width: 530px;
-}
+  .app-download img {
+    position: relative;
+    bottom: -4.8rem;
+  }
+  .app-info {
+    max-width: 530px;
+  }
 
-.app-text {
-  width: Fixed (530px) px;
-  height: Hug (126px) px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
+  .app-text {
+    width: Fixed (530px) px;
+    height: Hug (126px) px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
 
-.app-title {
-  font-family: Aeonik;
-  font-size: 38px;
-  font-weight: 700;
-  line-height: 45.6px;
-}
+  .app-title {
+    font-family: Aeonik;
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 45.6px;
+  }
 
-.app-description {
-  font-family: Aeonik;
-  font-size: 27.65px;
-  font-weight: 500;
-  line-height: 33.18px;
-  text-align: center;
-}
+  .app-description {
+    font-family: Aeonik;
+    font-size: 27.65px;
+    font-weight: 500;
+    line-height: 33.18px;
+    text-align: center;
+  }
 
-.app-links {
-  width: 534px;
-  height: 72.22px;
-  display: flex;
-  justify-content: space-between;
+  .app-links {
+    width: 534px;
+    height: 72.22px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .app-links a {
+    width: 250px;
+    height: 72.22px;
+  }
 }
-.app-links a{
-  width: 250px;
-  height: 72.22px;
+@media screen and (max-width: 1440px) {
+  .main-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: red;
+  }
+
+  .section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .mission {
+    max-width: 100%;
+    height: 700px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    text-align: center;
+  }
+
+  .mission-text {
+    width: 1194px;
+    height: 219px;
+    font-family: Aeonik;
+    font-size: 61.04px;
+    font-weight: 700;
+    line-height: 73.25px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+  }
+
+  .download-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .download-icon {
+    width: 250px;
+    height: auto;
+  }
+
+  .landlord {
+    width: 100%;
+    height: 1334px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .landlord img {
+    width: 1160.57px;
+    height: 280px;
+  }
+
+  .landlord-container {
+    width: 1240px;
+    height: 798px;
+    background-image: url("../../assets/landlord/landbg.png");
+    border-radius: 30px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+    top: 13rem;
+  }
+
+  .landlord-container img {
+    width: 375px;
+    height: 737px;
+    position: relative;
+    top: -12rem;
+  }
+  .section-title {
+    width: 312px;
+    height: 292px;
+    font-family: Aeonik;
+    font-size: 61.04px;
+    font-weight: 700;
+    line-height: 73.25px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: white;
+  }
+
+  .benefit-item {
+    width: 329px;
+    height: 329px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .benefit-icon {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .benefit-icon .icon {
+    background-color: #1b9160;
+    width: 30px;
+    height: 30px;
+  }
+
+  .benefit-icon p {
+    width: 286px;
+    height: 56px;
+    font-family: Aeonik;
+    font-size: 23.04px;
+    font-weight: 500;
+    line-height: 27.65px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+  }
+
+  .journey {
+    width: 100%;
+    height: 1076px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  .journey__title {
+    max-width: 1027px;
+    height: 146px;
+    font-family: Aeonik;
+    font-size: 61.04px;
+    font-weight: 700;
+    line-height: 73.25px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+  }
+
+  .journey__steps {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2rem;
+  }
+
+  .journey__intro {
+    width: 373px;
+    height: 247px;
+    gap: 37px;
+    display: flex;
+  }
+  .journey__icon {
+    display: inline-block;
+    background: #d9d9d9;
+    width: 50px;
+    height: 50px;
+  }
+
+  .journey__text {
+    width: 366px;
+    height: 160px;
+    font-size: 33.18px;
+    font-weight: 700;
+    line-height: 39.82px;
+    color: #353742;
+  }
+
+  .journey__step {
+    width: 900px;
+    height: 667px;
+  }
+  .journey__number {
+    width: 62px;
+    height: 60px;
+    top: 28px;
+    left: 31px;
+    padding: 16px 19px 16px 19px;
+    border-radius: 20px;
+    background: white;
+    color: #1b9160;
+    position: relative;
+    z-index: 5;
+    top: 4rem;
+  }
+
+  .journey__content {
+    width: 900px;
+    height: 667px;
+    border-radius: 30px;
+    background-image: url("../../assets/landlord/bgphone1.png");
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    position: relative;
+  }
+
+  .journey__details {
+    width: 373px;
+    height: 226px;
+    top: 308px;
+    left: 93px;
+    gap: 34px;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 4rem;
+  }
+
+  .journey__step-title {
+    width: 373px;
+    height: 80px;
+    font-family: Aeonik;
+    font-size: 33.18px;
+    font-weight: 700;
+    line-height: 39.82px;
+  }
+
+  .journey__desc {
+    width: 373px;
+    height: 112px;
+    font-family: Aeonik;
+    font-size: 23.04px;
+    font-weight: 400;
+    line-height: 27.65px;
+  }
+
+  .journey__divider {
+  }
+
+  .journey__spacer {
+    width: 480px;
+    height: 666px;
+    background-image: url("../../assets/landlord/bgcircle1.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+    right: 0;
+    top: 1px;
+    border-radius: 0 30px 0 0;
+    z-index: 1; /* Behind everything */
+  }
+
+  .journey__phone {
+    width: 250px;
+    height: 594.96px;
+    position: absolute;
+    right: 0px;
+    bottom: -2.7rem;
+    z-index: 5;
+    object-fit: contain;
+  }
+
+  .article-content {
+    width: 1241px;
+    height: 570px;
+    top: 200px;
+    left: 0px;
+    border-radius: 30px;
+    position: relative;
+    background-image: url("../../assets/landlord/bgbutton.png");
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10rem;
+  }
+
+  .article-text {
+    max-width: 953px;
+    height: 114px;
+    gap: 0px;
+    opacity: 0px;
+
+    font-family: Aeonik;
+    font-size: 47.78px;
+    font-weight: 500;
+    line-height: 57.34px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+  }
+
+  .btn-read {
+    width: Hug (380px) px;
+    height: Hug (108px) px;
+    padding: 30px 80px 30px 80px;
+    gap: 10px;
+    border-radius: 30px;
+    font-family: Aeonik;
+    font-size: 39.81px;
+    font-weight: 700;
+    line-height: 47.77px;
+    background: white;
+    color: #eaaf72;
+  }
+
+  .pricing {
+    width: 100%;
+    height: 1942px;
+    background-image: url("../../assets/landlord/bgprice.png");
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10rem;
+  }
+
+  .pricing-header {
+    width: 1240.17px;
+    height: 154.26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    position: relative;
+  }
+
+  .pricing-header p {
+    width: 507.5px;
+    height: 154.26px;
+    font-family: Aeonik;
+    font-size: 47.78px;
+    font-weight: 700;
+    line-height: 57.34px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+  }
+
+  .pricing-line {
+    width: 100%;
+    max-width: 583.33px;
+    background: white;
+    height: 1%;
+    position: absolute;
+    bottom: 3rem;
+    left: 20rem;
+  }
+  .btn-see-all {
+    width: Fixed (234.17px) px;
+    height: Fixed (113.05px) px;
+    padding: 30px 80px 30px 80px;
+    border-radius: 30px;
+    color: black;
+    font-family: Aeonik;
+    font-size: 39.81px;
+    font-weight: 700;
+    line-height: 47.77px;
+    text-align: left;
+    background: white;
+    text-wrap: nowrap;
+  }
+
+  .pricing-list {
+    width: 1230px;
+    height: 810.11px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .pricing-item {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .pricing-content {
+    width: 380px;
+    height: 370px;
+    gap: 13px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pricing-content img {
+    width: 380px;
+    height: 243.11px;
+    border-radius: 30px;
+  }
+
+  .pricing-description {
+    width: 380px;
+    height: 114px;
+    font-family: Aeonik;
+    font-size: 23.04px;
+    font-weight: 400;
+    line-height: 37.68px;
+    color: white;
+  }
+
+  .footer-section {
+    width: 1440px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 4rem;
+  }
+
+  .footer-habeep {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2rem 0rem;
+  }
+
+  .footer-habeep div:nth-child(1) {
+    width: 279px;
+    height: 50px;
+    background-position: left;
+    background-repeat: no-repeat;
+    background-image: url("../../assets/images/footerHabeep.svg");
+    /* background: white */
+  }
+
+  .footer-habeep .footer-habeep-divs1 div,
+  .footer-habeep .footer-habeep-divs2 div {
+    width: 279px;
+    height: 26px;
+    border-radius: 5px;
+    background: none;
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    font-family: Aeonik;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19.2px;
+    text-align: left;
+    color: rgba(102, 102, 102, 1);
+  }
+
+  .footer-habeep .footer-habeep-divs2 div:nth-child(2) {
+    width: 402px;
+  }
+
+  .footer-copy-write {
+    width: 200px;
+    height: 24px;
+    font-family: Aeonik;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+    color: rgba(27, 73, 255, 1);
+  }
+
+  .app-download {
+    width: 1239px;
+    height: 575px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+    background: #e6e6e7;
+    top: -12rem;
+    background-image: url("../../assets/landlord/bgdown.png");
+  }
+
+  .app-download img {
+    position: relative;
+    bottom: -4.8rem;
+  }
+  .app-info {
+    max-width: 530px;
+  }
+
+  .app-text {
+    width: Fixed (530px) px;
+    height: Hug (126px) px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .app-title {
+    font-family: Aeonik;
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 45.6px;
+  }
+
+  .app-description {
+    font-family: Aeonik;
+    font-size: 27.65px;
+    font-weight: 500;
+    line-height: 33.18px;
+    text-align: center;
+  }
+
+  .app-links {
+    width: 534px;
+    height: 72.22px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .app-links a {
+    width: 250px;
+    height: 72.22px;
+  }
 }
 </style>
