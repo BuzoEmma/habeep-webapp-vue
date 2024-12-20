@@ -34,7 +34,7 @@
     </div>
 
     <div class="section landlord">
-      <img src="../../assets/landlord/Frame.png" alt="" />
+      <img src="../../assets/landlord/Frame.png" class="landlord-img" alt="" />
       <div class="landlord-container">
         <p class="section-title">Why Become a Habeep Landlord</p>
         <img src="../../assets/landlord/phone.png" alt="" />
@@ -341,7 +341,7 @@ function getCurrentYear() {
 </script>
 
 <style>
-@media screen and (min-width: 1440px) {
+@media screen and (min-width: 1450px) {
   .main-container {
     max-width: 1440px;
     margin: 0 auto;
@@ -375,16 +375,16 @@ function getCurrentYear() {
     font-family: Aeonik;
     font-size: 61.04px;
     font-weight: 700;
-    line-height: 73.25px;
+    line-height: 73px;
     text-align: center;
     text-underline-position: from-font;
     text-decoration-skip-ink: none;
   }
 
   .download-links {
+    width: 100%;
     display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
+    gap: 2.5rem;
     justify-content: center;
   }
 
@@ -862,15 +862,15 @@ function getCurrentYear() {
     height: 72.22px;
   }
 }
-@media screen and (max-width: 1440px) {
+@media screen and (max-width: 1450px) {
   .main-container {
-    max-width: 1440px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 0 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: red;
+    background: rgba(155, 143, 143, 0.098);
   }
 
   .section {
@@ -883,7 +883,7 @@ function getCurrentYear() {
 
   .mission {
     max-width: 100%;
-    height: 700px;
+    height: 500px;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -903,33 +903,34 @@ function getCurrentYear() {
   }
 
   .download-links {
+    width: 100%;
     display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
+    gap: 2.5rem;
     justify-content: center;
   }
 
   .download-icon {
-    width: 250px;
+    width: 200px;
     height: auto;
   }
 
   .landlord {
     width: 100%;
-    height: 1334px;
+    height: 800px;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
-  .landlord img {
-    width: 1160.57px;
-    height: 280px;
+  .landlord-img {
+    max-width: 1000px;
+    height: 150px;
   }
 
   .landlord-container {
-    width: 1240px;
-    height: 798px;
+    width: 100%;
+    max-width: 1000px;
+    height: 400px;
     background-image: url("../../assets/landlord/landbg.png");
     border-radius: 30px;
     display: flex;
@@ -937,29 +938,31 @@ function getCurrentYear() {
     align-items: center;
     position: relative;
     top: 13rem;
+    gap: 2rem;
+    padding: 0rem 1.5rem;
   }
 
   .landlord-container img {
-    width: 375px;
-    height: 737px;
+    width: 250px;
+    height: 440px;
     position: relative;
-    top: -12rem;
+    top: -8rem;
   }
   .section-title {
-    width: 312px;
-    height: 292px;
+    max-width: 230px;
+    height: 100px;
     font-family: Aeonik;
-    font-size: 61.04px;
+    font-size: 30px;
     font-weight: 700;
-    line-height: 73.25px;
-    text-align: left;
-    text-underline-position: from-font;
-    text-decoration-skip-ink: none;
+    line-height: 50px;
+    text-align: center;
+    display: flex;
+    align-items: center;
     color: white;
   }
 
   .benefit-item {
-    width: 329px;
+    max-width: 300px;
     height: 329px;
     color: white;
     display: flex;
@@ -971,87 +974,85 @@ function getCurrentYear() {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    gap: 1rem;
+    gap: 0.8rem;
   }
 
   .benefit-icon .icon {
     background-color: #1b9160;
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
   }
 
   .benefit-icon p {
-    width: 286px;
+    max-width: 206px;
     height: 56px;
     font-family: Aeonik;
-    font-size: 23.04px;
+    font-size: 20px;
     font-weight: 500;
-    line-height: 27.65px;
-    text-align: left;
-    text-underline-position: from-font;
-    text-decoration-skip-ink: none;
+    line-height: 27px;
   }
 
   .journey {
     width: 100%;
-    height: 1076px;
+    height: 800px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
   }
   .journey__title {
-    max-width: 1027px;
+    max-width: 800px;
     height: 146px;
     font-family: Aeonik;
-    font-size: 61.04px;
+    font-size: 50px;
     font-weight: 700;
-    line-height: 73.25px;
+    line-height: 70px;
     text-align: center;
-    text-underline-position: from-font;
-    text-decoration-skip-ink: none;
   }
 
   .journey__steps {
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     gap: 2rem;
   }
 
   .journey__intro {
-    width: 373px;
+    max-width: 500px;
     height: 247px;
     gap: 37px;
     display: flex;
+    flex-direction: column;
+    position: relative;
+    left: 2rem;
   }
   .journey__icon {
     display: inline-block;
     background: #d9d9d9;
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
   }
 
   .journey__text {
-    width: 366px;
+    max-width: 300px;
     height: 160px;
-    font-size: 33.18px;
+    font-size: 30px;
     font-weight: 700;
-    line-height: 39.82px;
+    line-height: 39px;
     color: #353742;
   }
 
   .journey__step {
-    width: 900px;
-    height: 667px;
+    width: 750px;
+    height: 500px;
   }
   .journey__number {
-    width: 62px;
-    height: 60px;
+    width: 42px;
+    height: 50px;
     top: 28px;
     left: 31px;
-    padding: 16px 19px 16px 19px;
+    padding: 16px;
     border-radius: 20px;
     background: white;
     color: #1b9160;
@@ -1061,42 +1062,42 @@ function getCurrentYear() {
   }
 
   .journey__content {
-    width: 900px;
-    height: 667px;
+    max-width: 750px;
+    height: 500px;
     border-radius: 30px;
     background-image: url("../../assets/landlord/bgphone1.png");
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
     position: relative;
+    top: -24px;
   }
 
   .journey__details {
-    width: 373px;
+    max-width: 300px;
     height: 226px;
-    top: 308px;
-    left: 93px;
+    top: 170px;
+    left: 43px;
     gap: 34px;
     display: flex;
     flex-direction: column;
     position: absolute;
-    left: 4rem;
   }
 
   .journey__step-title {
-    width: 373px;
+    max-width: 300px;
     height: 80px;
     font-family: Aeonik;
-    font-size: 33.18px;
+    font-size: 30px;
     font-weight: 700;
-    line-height: 39.82px;
+    line-height: 35px;
   }
 
   .journey__desc {
-    width: 373px;
+    max-width: 373px;
     height: 112px;
     font-family: Aeonik;
-    font-size: 23.04px;
+    font-size: 22px;
     font-weight: 400;
     line-height: 27.65px;
   }
@@ -1105,41 +1106,43 @@ function getCurrentYear() {
   }
 
   .journey__spacer {
-    width: 480px;
-    height: 666px;
+    width: 365px;
+    height: 500px;
     background-image: url("../../assets/landlord/bgcircle1.png");
     background-repeat: no-repeat;
     background-size: cover;
     position: absolute;
     right: 0;
-    top: 1px;
+    top: -2px;
     border-radius: 0 30px 0 0;
-    z-index: 1; /* Behind everything */
+    z-index: 1;
   }
 
   .journey__phone {
-    width: 250px;
-    height: 594.96px;
+    width: 200px;
+    height: 500px;
     position: absolute;
-    right: 0px;
-    bottom: -2.7rem;
+    right: -1px;
+    bottom: -2.99rem;
     z-index: 5;
     object-fit: contain;
   }
-
+  .article-crad {
+    max-width: 100%;
+    height: auto;
+  }
   .article-content {
-    width: 1241px;
-    height: 570px;
-    top: 200px;
+    max-width: 1241px;
+    height: 440px;
+    top: 150px;
     left: 0px;
     border-radius: 30px;
     position: relative;
     background-image: url("../../assets/landlord/bgbutton.png");
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     flex-direction: column;
-    gap: 10rem;
   }
 
   .article-text {
@@ -1155,18 +1158,18 @@ function getCurrentYear() {
     text-align: center;
     text-underline-position: from-font;
     text-decoration-skip-ink: none;
+    padding: 0px 30px;
   }
 
   .btn-read {
-    width: Hug (380px) px;
-    height: Hug (108px) px;
-    padding: 30px 80px 30px 80px;
-    gap: 10px;
+    width: 380px;
+    height: 108px;
+    padding: 30px;
     border-radius: 30px;
     font-family: Aeonik;
-    font-size: 39.81px;
+    font-size: 37px;
     font-weight: 700;
-    line-height: 47.77px;
+    line-height: 45px;
     background: white;
     color: #eaaf72;
   }
@@ -1180,11 +1183,13 @@ function getCurrentYear() {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 0rem 2rem;
     gap: 10rem;
   }
 
   .pricing-header {
-    width: 1240.17px;
+    width: 100%;
+    max-width: 1100px;
     height: 154.26px;
     display: flex;
     justify-content: space-between;
@@ -1194,20 +1199,17 @@ function getCurrentYear() {
   }
 
   .pricing-header p {
-    width: 507.5px;
-    height: 154.26px;
+    width: 400px;
+    height: 130px;
     font-family: Aeonik;
-    font-size: 47.78px;
+    font-size: 45px;
     font-weight: 700;
-    line-height: 57.34px;
-    text-align: left;
-    text-underline-position: from-font;
-    text-decoration-skip-ink: none;
+    line-height: 50px;
   }
 
   .pricing-line {
     width: 100%;
-    max-width: 583.33px;
+    max-width: 500px;
     background: white;
     height: 1%;
     position: absolute;
@@ -1215,16 +1217,16 @@ function getCurrentYear() {
     left: 20rem;
   }
   .btn-see-all {
-    width: Fixed (234.17px) px;
-    height: Fixed (113.05px) px;
-    padding: 30px 80px 30px 80px;
+    width: 234px;
+    height: 100px;
+    padding: 30px;
     border-radius: 30px;
     color: black;
     font-family: Aeonik;
     font-size: 39.81px;
     font-weight: 700;
     line-height: 47.77px;
-    text-align: left;
+    text-align: center;
     background: white;
     text-wrap: nowrap;
   }
@@ -1238,28 +1240,31 @@ function getCurrentYear() {
   }
 
   .pricing-item {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
+    gap: 2rem;
   }
 
   .pricing-content {
-    width: 380px;
+    width: 300px;
     height: 370px;
     gap: 13px;
     display: flex;
     flex-direction: column;
+    
   }
 
   .pricing-content img {
-    width: 380px;
-    height: 243.11px;
+    width: 300px;
+    height: 240px;
     border-radius: 30px;
   }
 
   .pricing-description {
-    width: 380px;
+    width: 300px;
     height: 114px;
     font-family: Aeonik;
     font-size: 23.04px;
@@ -1269,7 +1274,7 @@ function getCurrentYear() {
   }
 
   .footer-section {
-    width: 1440px;
+    width: 100%;
     height: 300px;
     display: flex;
     justify-content: center;
@@ -1329,24 +1334,25 @@ function getCurrentYear() {
   }
 
   .app-download {
-    width: 1239px;
-    height: 575px;
+    width: 100%;
+    max-width: 1100px;
+    height: 500px;
     border-radius: 10px;
     display: flex;
     justify-content: space-around;
     align-items: center;
     position: relative;
     background: #e6e6e7;
-    top: -12rem;
+    top: -10rem;
     background-image: url("../../assets/landlord/bgdown.png");
   }
 
   .app-download img {
     position: relative;
-    bottom: -4.8rem;
+    bottom: -2.5rem;
   }
   .app-info {
-    max-width: 530px;
+    max-width: 500px;
   }
 
   .app-text {
@@ -1369,14 +1375,13 @@ function getCurrentYear() {
     font-size: 27.65px;
     font-weight: 500;
     line-height: 33.18px;
-    text-align: center;
+    text-align: left;
   }
 
   .app-links {
     width: 534px;
     height: 72.22px;
     display: flex;
-    justify-content: space-between;
   }
   .app-links a {
     width: 250px;
