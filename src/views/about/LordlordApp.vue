@@ -2,11 +2,14 @@
   <AboutNavbar />
   <div class="main-container">
     <div class="section mission">
-      <div class="mission-text">
+      <div class="mission-text" v-motion-pop-visible>
         Our mission is to bridge the gap between landlords and tenants, making
         renting and managing properties easy.
       </div>
-      <div class="download-links flex flex-row items-center gap-x-5">
+      <div
+        v-motion-pop-visible
+        class="download-links flex flex-row items-center gap-x-5"
+      >
         <a
           href="https://apps.apple.com/us/app/habeep/id6450388013"
           target="_blank"
@@ -34,10 +37,19 @@
     </div>
 
     <div class="section landlord">
-      <img src="../../assets/landlord/Frame.png" class="landlord-img" alt="" />
+      <img
+        v-motion-pop-visible
+        src="../../assets/landlord/Frame.png"
+        class="landlord-img"
+        alt=""
+      />
       <div class="landlord-container">
         <p class="section-title">Why Become a Habeep Landlord</p>
-        <img src="../../assets/landlord/phone.png" alt="" />
+        <img
+          src="../../assets/landlord/phone.png"
+          alt="phone"
+          v-motion-roll-visible-right
+        />
         <div class="benefit-item">
           <div class="benefit-icon">
             <svg
@@ -349,7 +361,6 @@ function getCurrentYear() {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: gray;
   }
 
   .section {
@@ -580,8 +591,8 @@ function getCurrentYear() {
     line-height: 27.65px;
   }
 
-  .journey__divider {
-  }
+  /* .journey__divider {
+  } */
 
   .journey__spacer {
     width: 480px;
@@ -870,7 +881,6 @@ function getCurrentYear() {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: rgba(155, 143, 143, 0.098);
   }
 
   .section {
@@ -891,8 +901,8 @@ function getCurrentYear() {
   }
 
   .mission-text {
-    width: 1194px;
-    height: 219px;
+    max-width: 1194px;
+    min-height: 219px;
     font-family: Aeonik;
     font-size: 61.04px;
     font-weight: 700;
@@ -1102,8 +1112,8 @@ function getCurrentYear() {
     line-height: 27.65px;
   }
 
-  .journey__divider {
-  }
+  /* .journey__divider {
+  } */
 
   .journey__spacer {
     width: 365px;
@@ -1232,7 +1242,7 @@ function getCurrentYear() {
   }
 
   .pricing-list {
-    width: 1230px;
+    max-width: 1230px;
     height: 810.11px;
     display: flex;
     flex-direction: column;
@@ -1254,7 +1264,544 @@ function getCurrentYear() {
     gap: 13px;
     display: flex;
     flex-direction: column;
-    
+  }
+
+  .pricing-content img {
+    width: 300px;
+    height: 240px;
+    border-radius: 30px;
+  }
+
+  .pricing-description {
+    width: 300px;
+    height: 114px;
+    font-family: Aeonik;
+    font-size: 23.04px;
+    font-weight: 400;
+    line-height: 37.68px;
+    color: white;
+  }
+
+  .footer-section {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 4rem;
+  }
+
+  .footer-habeep {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2rem 0rem;
+  }
+
+  .footer-habeep div:nth-child(1) {
+    width: 279px;
+    height: 50px;
+    background-position: left;
+    background-repeat: no-repeat;
+    background-image: url("../../assets/images/footerHabeep.svg");
+    /* background: white */
+  }
+
+  .footer-habeep .footer-habeep-divs1 div,
+  .footer-habeep .footer-habeep-divs2 div {
+    width: 279px;
+    height: 26px;
+    border-radius: 5px;
+    background: none;
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    font-family: Aeonik;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19.2px;
+    text-align: left;
+    color: rgba(102, 102, 102, 1);
+  }
+
+  .footer-habeep .footer-habeep-divs2 div:nth-child(2) {
+    width: 402px;
+  }
+
+  .footer-copy-write {
+    width: 200px;
+    height: 24px;
+    font-family: Aeonik;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+    color: rgba(27, 73, 255, 1);
+  }
+
+  .app-download {
+    width: 100%;
+    max-width: 1100px;
+    height: 500px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+    background: #e6e6e7;
+    top: -10rem;
+    background-image: url("../../assets/landlord/bgdown.png");
+  }
+
+  .app-download img {
+    position: relative;
+    bottom: -2.5rem;
+  }
+  .app-info {
+    max-width: 500px;
+  }
+
+  .app-text {
+    width: Fixed (530px) px;
+    height: Hug (126px) px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .app-title {
+    font-family: Aeonik;
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 45.6px;
+  }
+
+  .app-description {
+    font-family: Aeonik;
+    font-size: 27.65px;
+    font-weight: 500;
+    line-height: 33.18px;
+    text-align: left;
+  }
+
+  .app-links {
+    width: 534px;
+    height: 72.22px;
+    display: flex;
+  }
+  .app-links a {
+    width: 250px;
+    height: 72.22px;
+  }
+}
+
+@media screen and (max-width: 1300px) and (min-width: 1100px) {
+  .main-container {
+    max-width: 1200px;
+    padding: 0 1.5rem;
+  }
+
+  .mission-text {
+    width: 100%;
+    font-size: 50px;
+    line-height: 60px;
+  }
+
+  .download-links {
+    gap: 2rem;
+  }
+
+  .landlord-container {
+    max-width: 900px;
+    height: 350px;
+    gap: 1.5rem;
+  }
+
+  .journey__title {
+    font-size: 40px;
+    line-height: 55px;
+  }
+
+  .journey__content {
+    max-width: 700px;
+    height: 450px;
+  }
+  .journey__spacer {
+    width: 300px;
+    height: 450px;
+  }
+  .journey__phone {
+    width: 230px;
+    height: 350px;
+    top: 6.2rem;
+    right: -1.8rem;
+  }
+
+  .pricing-header p {
+    font-size: 40px;
+  }
+
+  .pricing-content {
+    width: 280px;
+    height: 350px;
+  }
+
+  .btn-see-all {
+    font-size: 35px;
+    padding: 25px;
+  }
+
+  .footer-copy-write {
+    font-size: 18px;
+  }
+
+  .app-title {
+    font-size: 34px;
+  }
+
+  .app-description {
+    font-size: 24px;
+    line-height: 30px;
+  }
+}
+
+@media screen and (max-width: 1099px) and (min-width: 700px) {
+  .section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+
+  .mission {
+    max-width: 100%;
+    height: 500px;
+  }
+
+  .mission-text {
+    font-size: 51.04px;
+    font-weight: 600;
+    line-height: 60px;
+  }
+
+  .download-links {
+    gap: 2rem;
+  }
+
+  .download-icon {
+    width: 170px;
+  }
+
+  .landlord {
+    height: 800px;
+  }
+
+  .landlord-img {
+    max-width: 600px;
+    height: 90px;
+  }
+
+  .landlord-container {
+    height: 400px;
+    top: 8rem;
+    display: flex;
+    justify-content: space-between;
+    padding: 0rem 1.5rem;
+  }
+
+  .landlord-container img {
+    width: 150px;
+    height: 300px;
+    top: -8rem;
+  }
+  .section-title {
+    width: 100%;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 40px;
+  }
+
+  .benefit-item {
+    width: 100%;
+    height: 329px;
+  }
+
+  .benefit-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  .benefit-icon .icon {
+    width: 30px;
+    height: 20px;
+  }
+
+  .benefit-icon p {
+    width: 206px;
+    height: 56px;
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .journey {
+    width: 100%;
+    height: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+  .journey__title {
+    width: 100%;
+    height: 146px;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 50px;
+  }
+
+  .journey__steps {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .journey__intro {
+    width: 100%;
+    height: 250px;
+    gap: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-direction: row;
+    position: relative;
+    left: 1rem;
+  }
+
+  .journey__text {
+    width: 100%;
+    height: 100px;
+    font-size: 25px;
+    line-height: 30px;
+    color: #353742;
+  }
+
+  .journey__step {
+    width: 700px;
+    max-height: 500px;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+  }
+  .journey__number {
+    width: 32px;
+    height: 30px;
+    top: 30px;
+    left: 31px;
+    padding: 12px;
+  }
+
+  .journey__content {
+    max-width: 650px;
+    height: 500px;
+    border-radius: 30px;
+    background-image: url("../../assets/landlord/bgphone1.png");
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    position: relative;
+    top: -24px;
+  }
+
+  .journey__details {
+    max-width: 300px;
+    height: 226px;
+    top: 170px;
+    left: 43px;
+    gap: 34px;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+  }
+
+  .journey__step-title {
+    max-width: 300px;
+    height: 80px;
+    font-family: Aeonik;
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 35px;
+  }
+
+  .journey__desc {
+    max-width: 373px;
+    height: 112px;
+    font-family: Aeonik;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 27.65px;
+  }
+
+  /* .journey__divider {
+  } */
+
+  .journey__spacer {
+    width: 365px;
+    height: 500px;
+    background-image: url("../../assets/landlord/bgcircle1.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+    right: 0;
+    top: -2px;
+    border-radius: 0 30px 0 0;
+    z-index: 1;
+  }
+
+  .journey__phone {
+    width: 200px;
+    height: 500px;
+    position: absolute;
+    right: -1px;
+    bottom: -2.99rem;
+    z-index: 5;
+    object-fit: contain;
+  }
+  .article-crad {
+    max-width: 100%;
+    height: auto;
+  }
+  .article-content {
+    max-width: 1241px;
+    height: 440px;
+    top: 150px;
+    left: 0px;
+    border-radius: 30px;
+    position: relative;
+    background-image: url("../../assets/landlord/bgbutton.png");
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .article-text {
+    max-width: 953px;
+    height: 114px;
+    gap: 0px;
+    opacity: 0px;
+
+    font-family: Aeonik;
+    font-size: 47.78px;
+    font-weight: 500;
+    line-height: 57.34px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    padding: 0px 30px;
+  }
+
+  .btn-read {
+    width: 380px;
+    height: 108px;
+    padding: 30px;
+    border-radius: 30px;
+    font-family: Aeonik;
+    font-size: 37px;
+    font-weight: 700;
+    line-height: 45px;
+    background: white;
+    color: #eaaf72;
+  }
+
+  .pricing {
+    width: 100%;
+    height: 1942px;
+    background-image: url("../../assets/landlord/bgprice.png");
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0rem 2rem;
+    gap: 10rem;
+  }
+
+  .pricing-header {
+    width: 100%;
+    max-width: 1100px;
+    height: 154.26px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    position: relative;
+  }
+
+  .pricing-header p {
+    width: 400px;
+    height: 130px;
+    font-family: Aeonik;
+    font-size: 45px;
+    font-weight: 700;
+    line-height: 50px;
+  }
+
+  .pricing-line {
+    width: 100%;
+    max-width: 500px;
+    background: white;
+    height: 1%;
+    position: absolute;
+    bottom: 3rem;
+    left: 20rem;
+  }
+  .btn-see-all {
+    width: 234px;
+    height: 100px;
+    padding: 30px;
+    border-radius: 30px;
+    color: black;
+    font-family: Aeonik;
+    font-size: 39.81px;
+    font-weight: 700;
+    line-height: 47.77px;
+    text-align: center;
+    background: white;
+    text-wrap: nowrap;
+  }
+
+  .pricing-list {
+    max-width: 1230px;
+    height: 810.11px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .pricing-item {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .pricing-content {
+    width: 300px;
+    height: 370px;
+    gap: 13px;
+    display: flex;
+    flex-direction: column;
   }
 
   .pricing-content img {
