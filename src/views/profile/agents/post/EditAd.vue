@@ -1,4 +1,5 @@
 <template>
+    <div>
     <div class="h-screen max-w-screen w-screen overflow-hidden" v-motion :initial="{ x: -100 }" :enter="{ x: 0 }"
         v-if="!processingProduct && product">
 
@@ -50,6 +51,7 @@
     </div>
     <div class="h-screen w-screen div-center-col" v-else>
         <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" size="200px" color="#0A1045"></loader>
+    </div>
     </div>
 </template>
 

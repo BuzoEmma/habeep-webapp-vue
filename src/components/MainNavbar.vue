@@ -1,5 +1,6 @@
 <template>
   <!-- Header / Navbar -->
+   <div>
   <div
     class="absolute w-screen h-screen top-0 opacity-50"
     @click="toggleMobileNav"
@@ -341,7 +342,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div></div>
 </template>
 
 <script setup>

@@ -15,7 +15,7 @@
     "@tormak/vite-plugin-sitemap": "^1.1.18",
     "@unhead/vue": "^1.1.27",
     "@vueuse/head": "^1.1.26",
-    "@vueuse/motion": "^2.0.0-beta.12",
+    "@vueuse/motion": "^2.2.6",
     "async": "^3.2.5",
     "axios": "^1.2.2",
     "capacitor-voice-recorder": "^5.0.0",

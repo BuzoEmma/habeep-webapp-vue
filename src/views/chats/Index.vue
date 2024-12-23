@@ -1,4 +1,5 @@
 <template>
+    <div>
     <div class="absolute w-screen h-screen top-0 opacity-50" v-if="onPhone && screenWidth < 1024"
         style="background: #161622"></div>
     <div class="w-screen max-w-full flex flex-col items-center bg-white h-screen max-h-full overflow-x-hidden ">
@@ -37,7 +38,7 @@
             </div>
         </div>
 
-    </div>
+    </div></div>
 </template>
 
 <script setup>

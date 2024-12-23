@@ -2,7 +2,7 @@
   <div
     class="w-screen relative min-w-full flex flex-col items-center bg-white h-screen min-h-full overflow-y-auto no-scroll-btn"
   >
-    <div class="top-details h-1/5 flex-col-center py-4 w-screen bg-primary">
+    <div class="top-details h-1/3 flex-col-center py-4 w-screen bg-primary">
       <div class="flex flex-col items-center w-5/6 xl:w-4/5 2xl:w-4/6 gap-y-10">
         <div class="flex-row-center w-full justify-between">
           <img

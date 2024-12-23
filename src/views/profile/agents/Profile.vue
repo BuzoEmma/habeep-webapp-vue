@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed w-screen h-full mx-auto top-0 opacity-50 overflow-hidden" v-if="onModal"
+    <div>    <div class="fixed w-screen h-full mx-auto top-0 opacity-50 overflow-hidden" v-if="onModal"
         style="background: #161622">
     </div>
 
@@ -268,6 +268,8 @@
             <Followers @close="closeModal" v-if="onModal && followersModal" :users="agentDetails.followers" />
         </div>
     </div>
+    </div>
+
 </template>
 
 <script setup>
