@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div
     class="absolute w-screen h-screen flex flex-row items-center justify-center"
     v-if="onModal"
@@ -19,6 +20,7 @@
       @goBack="back"
     >
     </component>
+  </div>
   </div>
 </template>
 

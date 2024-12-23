@@ -1,4 +1,5 @@
 <template>
+    <div>
     <MainNavbarVue />
     <div
         class="w-screen flex flex-col lg:flex-row items-center bg-white h-screen min-h-full overflow-y-auto lg:overflow-y-hidden no-scroll-btn overflow-x-hidden">
@@ -245,6 +246,7 @@
             </div>
 
         </div>
+    </div>
     </div>
 </template>
 

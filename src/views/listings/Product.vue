@@ -1,5 +1,5 @@
 <template>
-    <div class="product-share w-full h-full absolute flex flex-col items-center md:justify-center justify-end z-50 overflow-hidden backdrop-blur-md bg-black bg-opacity-10"
+    <div>    <div class="product-share w-full h-full absolute flex flex-col items-center md:justify-center justify-end z-50 overflow-hidden backdrop-blur-md bg-black bg-opacity-10"
         v-if="onProductShare === true">
         <ShareModal class="md:flex hidden" v-motion-fade :product="product" @end-share="onProductShare = false" />
         <ShareModal class="flex md:hidden" v-motion-slide-bottom :product="product"
@@ -421,6 +421,8 @@
                 v-if="activeCarouselImg < images.length" class="cursor-pointer lg:block absolute right-3 z-10" alt="">
         </div>
     </div>
+    </div>
+
 </template>
 
 <script setup>

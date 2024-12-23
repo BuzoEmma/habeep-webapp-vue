@@ -1,4 +1,5 @@
 <template>
+    <div>
     <div id="toast-success" v-motion-slide-top :delay="200"
         class="flex items-center z-20 w-full max-w-xs p-4 mb-4 fixed top-5 right-5 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
         role="alert" v-if="props.type == 'success'">
@@ -46,7 +47,7 @@
             <span class="sr-only">Warning icon</span>
         </div>
         <div class="ml-3 text-sm font-normal">{{ props.msg }}</div>
-    </div>
+    </div></div>
 </template>
 
 <script setup>

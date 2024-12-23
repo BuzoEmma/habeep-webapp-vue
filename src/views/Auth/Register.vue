@@ -1,4 +1,5 @@
 <template>
+    <div>
     <div class="absolute w-screen h-screen flex flex-row items-center justify-center" v-if="onModal"
         style="background: rgb(22, 22, 34, 0.5)">
 
@@ -110,6 +111,7 @@
             <Toast :msg="errorMsg.msg" type="danger" v-if="onError" />
             <Toast :msg="newMsg" type="success" v-if="newMsg.length > 0" />
         </div>
+    </div>
     </div>
 </template>
 
