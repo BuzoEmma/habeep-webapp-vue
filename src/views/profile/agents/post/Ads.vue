@@ -1,4 +1,5 @@
 <template>
+    <div>
     <MainNavbarVue />
     <div
         class="w-screen flex flex-col lg:flex-row items-center bg-white h-screen min-h-full overflow-y-auto lg:overflow-y-hidden no-scroll-btn overflow-x-hidden">
@@ -40,7 +41,10 @@
                         v-if="!onSearch" @click="changeAdsTab(2)" :class="{ 'on-active': adsTab === 2 }">Closed
                         ads</button>
                 </div>
-                <div class="flex flex-row items-center h-full w-full gap-x-4 justify-end"
+                
+                
+            </div>
+<div class="flex flex-row items-center h-full w-full gap-x-4 justify-end"
                     :class="{ 'w-full': onSearch === true, 'w-2/3': !onSearch }">
                     <div :class="{ 'flex-display w-4/5': onSearch === true }"
                         class="search-bar w-3/5 hidden md:flex flex-row rounded-full border border-gray-300 items-center py-1 px-2">
@@ -74,7 +78,7 @@
                     <div v-if="(onSortDropdown && onDropdown)"
                         class="flex flex-col drop-shadow-md shadow-xl bg-white rounded-xl gap-y-3 border p-4 border-gray-300 absolute top-14 z-20"
                         style="width: 220px">
-                        <div class="flex flex-row items-center justify-between">
+                        <div class="flex flex-row items-center justify-between bg-red-900">
                             <span class="text-sm font-medium">Sort house type</span>
                         </div>
 
@@ -103,8 +107,6 @@
                             :class="{ 'text-primary': sortValue === 'room_parlor' }">Room and Parlor</p>
                     </div>
                 </div>
-            </div>
-
             <!-- tab for active ads -->
             <div class="ads-tab w-full h-fit mt-6 flex flex-row"
                 :class="{ 'justify-center items-center': activeProducts.length < 1 }" v-if="adsTab === 1">
@@ -244,6 +246,7 @@
             </div>
 
         </div>
+    </div>
     </div>
 </template>
 

@@ -1,76 +1,107 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from "vue-router";
 
-import createStore from '../store/index'
+import createStore from "../store/index";
 
 function guardMyroute(to, from, next) {
-    var isAuthenticated = false
-    if (createStore.state.isAuthenticated) { isAuthenticated = true } else { isAuthenticated = false }
-    if (isAuthenticated) {
-        if (!createStore.state.user.verified) {
-            next({ name: 'OTP', query: { reason: 'user_verification', email: createStore.state.user.email } }) // go to '/verify';
-        } else next() // allow to enter route
-    } else {
-       
-        next("/login?redirect=" + to.path + "?reloadApp=true") // go to '/login';
-    }
+  var isAuthenticated = false;
+  if (createStore.state.isAuthenticated) {
+    isAuthenticated = true;
+  } else {
+    isAuthenticated = false;
+  }
+  if (isAuthenticated) {
+    if (!createStore.state.user.verified) {
+      next({
+        name: "OTP",
+        query: {
+          reason: "user_verification",
+          email: createStore.state.user.email,
+        },
+      }); // go to '/verify';
+    } else next(); // allow to enter route
+  } else {
+    next("/login?redirect=" + to.path + "?reloadApp=true"); // go to '/login';
+  }
 }
 
-
-
 function guardMyrouteForAgent(to, from, next) {
-    var isAuthenticated = false
-    if (createStore.state.isAuthenticated) { isAuthenticated = true } else { isAuthenticated = false }
-    if (isAuthenticated) {
-        if (!createStore.state.user.verified) {
-            next({ name: 'OTP', query: { reason: 'user_verification', email: createStore.state.user.email } }) // go to '/verify'; // go to '/verify';
-        } else {
-            if (createStore.state.user.role === 'AGENT') {
-                next()
-            } else next({ name: 'IBO_Category_Agent' })
-        } // allow to enter route
+  var isAuthenticated = false;
+  if (createStore.state.isAuthenticated) {
+    isAuthenticated = true;
+  } else {
+    isAuthenticated = false;
+  }
+  if (isAuthenticated) {
+    if (!createStore.state.user.verified) {
+      next({
+        name: "OTP",
+        query: {
+          reason: "user_verification",
+          email: createStore.state.user.email,
+        },
+      }); // go to '/verify'; // go to '/verify';
     } else {
-        next("/login?redirect=" + to.path + "?reloadApp=true") // go to '/login';
-    }
+      if (createStore.state.user.role === "AGENT") {
+        next();
+      } else next({ name: "IBO_Category_Agent" });
+    } // allow to enter route
+  } else {
+    next("/login?redirect=" + to.path + "?reloadApp=true"); // go to '/login';
+  }
 }
 
 function guardMyrouteForUSERIBO(to, from, next) {
-    var isAuthenticated = false
-    if (createStore.state.isAuthenticated) { isAuthenticated = true } else { isAuthenticated = false }
-    if (isAuthenticated) {
-        if (!createStore.state.user.verified) {
-            next({ name: 'OTP', query: { reason: 'user_verification', email: createStore.state.user.email } }) // go to '/verify'; // go to '/verify';
-        } else {
-            if (createStore.state.user.role !== "TENANT" || !createStore.state.user.isTenant) {
-                next()
-            } else next({ name: 'IBO_Category_Agent' })
-        } // allow to enter route
+  var isAuthenticated = false;
+  if (createStore.state.isAuthenticated) {
+    isAuthenticated = true;
+  } else {
+    isAuthenticated = false;
+  }
+  if (isAuthenticated) {
+    if (!createStore.state.user.verified) {
+      next({
+        name: "OTP",
+        query: {
+          reason: "user_verification",
+          email: createStore.state.user.email,
+        },
+      }); // go to '/verify'; // go to '/verify';
     } else {
-        next("/login?redirect=" + to.path) // go to '/login';
-    }
+      if (
+        createStore.state.user.role !== "TENANT" ||
+        !createStore.state.user.isTenant
+      ) {
+        next();
+      } else next({ name: "IBO_Category_Agent" });
+    } // allow to enter route
+  } else {
+    next("/login?redirect=" + to.path); // go to '/login';
+  }
 }
 
 // pages
-import Home from '../views/Home.vue'
-import Feeds from '../views/Feeds.vue'
-import Faq from '../views/NewFaq.vue'
+import Home from "../views/Home.vue";
+import Feeds from "../views/Feeds.vue";
+import Faq from "../views/NewFaq.vue";
 
 function changeHomeRoute() {
-    if (createStore.state.isAuthenticated) {
-        return '/feeds'
-    } else return '/home'
+  if (createStore.state.isAuthenticated) {
+    return "/feeds";
+  } else return "/home";
 }
 
 // extras
-import Blogs from '../views/extras/BlogRoom.vue'
-import TOS from '../views/extras/TermsOfService.vue'
+import Blogs from "../views/extras/BlogRoom.vue";
+import TOS from "../views/extras/TermsOfService.vue";
 
 // auth
-import Register from '../views/Auth/Register.vue'
-import Login from '../views/Auth/Login.vue'
-import Logout from '../views/Auth/Logout.vue'
-import ForgotPin from '../views/Auth/ForgotPin.vue'
-import OTP from '../views/Auth/OTP_Validation.vue'
-import About from '../views/about/About.vue'
+import Register from "../views/Auth/Register.vue";
+import Login from "../views/Auth/Login.vue";
+import Logout from "../views/Auth/Logout.vue";
+import ForgotPin from "../views/Auth/ForgotPin.vue";
+import OTP from "../views/Auth/OTP_Validation.vue";
+import TenantApp from "../views/about/TenantApp.vue";
+import LordlordApp from "../views/about/LordlordApp.vue";
 import DeleteAccount from "../views/profile/delete-account/DeleteAccount.vue";
 
 const routes = [
@@ -104,11 +135,19 @@ const routes = [
     },
   },
   {
-    path: "/about",
-    component: About,
-    name: "About",
+    path: "/tenant-app",
+    component: TenantApp,
+    name: "Tenant-App",
     meta: {
-      title: "About",
+      title: "Tenant-App",
+    },
+  },
+  {
+    path: "/landlord-app",
+    component: LordlordApp,
+    name: "Landlord-App",
+    meta: {
+      title: "Landlord-App",
     },
   },
   // extras
@@ -323,34 +362,29 @@ const routes = [
   },
 ];
 
-
-
 const router = createRouter({
-    history: createWebHistory(),
-    routes
-})
+  history: createWebHistory(),
+  routes,
+});
 
 router.beforeEach((to, from, next) => {
-    if (to.meta && to.meta.title) {
-        document.title = `Habeep | ${to.meta.title}`;
-    }
-    if (to.query.reload) {
-        next({
-            query: null,
-            replace: true,
-            path: to.path
-        })
-    } else next()
-})
+  if (to.meta && to.meta.title) {
+    document.title = `Habeep | ${to.meta.title}`;
+  }
+  if (to.query.reload) {
+    next({
+      query: null,
+      replace: true,
+      path: to.path,
+    });
+  } else next();
+});
 
 router.resolve({
-    name: 'not-found',
-    params: { pathMatch: ['not', 'found'] },
-}).href
+  name: "not-found",
+  params: { pathMatch: ["not", "found"] },
+}).href;
 
-export {
-    router,
-    routes
-}
+export { router, routes };
 
-export default router
+export default router;

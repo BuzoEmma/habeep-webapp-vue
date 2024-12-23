@@ -5,7 +5,7 @@
       <img src="../../../../assets/icons/x.svg" class="cursor-pointer" @click="$emit('close')" alt="">
     </div>
 
-    <div class="profile relative flex flex-col w-full items-center gap-y-6 px-4 h-full">
+    <div class="profile relative flex flex-col w-full items-center gap-y-4 px-4 h-full">
       <div class="relative flex flex-row items-center justify-center w-24 h-24 rounded-full border border-gray-200">
         <img :src="imageData" class="w-24 h-24 min-h-full min-w-full  object-contain rounded-full cursor-pointer"
           v-if="imageData !== 'https://i.ibb.co/gtpxMJz/21.png'" alt="">
