@@ -5,7 +5,7 @@ import backgroundCircle from "../../assets/landlord/bgcircle1.png";
 import backgroundCircle2 from "../../assets/landlord/bgcircle2.png";
 import backgroundCircle3 from "../../assets/landlord/bgcircle3.png";
 import background from "../../assets/landlord/bgphone1.png";
-import background2 from "../../assets/landlord/bgphone3.png";
+import background2 from "../../assets/landlord/bgphone2.png";
 import background3 from "../../assets/landlord/bgphone3.png";
 export const steps = [
   {
@@ -33,3 +33,9 @@ export const steps = [
     background: background3,
   },
 ];
+
+
+
+
+
+

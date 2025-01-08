@@ -12,6 +12,7 @@ onMounted(() => {
     currentStep.value = (currentStep.value + 1) % steps.length;
   }, 3000); // 3 seconds
 });
+
 function getCurrentYear() {
   const date = new Date();
   return date.getFullYear();
@@ -148,7 +149,11 @@ function getCurrentYear() {
             </span>
           </div>
 
-          <div class="journey__step" :class="{ animate: show }" v-if="show">
+          <div
+            class="journey__step-desktop"
+            :class="{ animate: show }"
+            v-if="show"
+          >
             <span class="journey__number">{{ steps[currentStep].number }}</span>
             <div
               class="journey__content"
@@ -179,10 +184,37 @@ function getCurrentYear() {
               </div>
             </div>
           </div>
+          <div
+            class="journey__step-mobile"
+            v-for="(step, index) in steps"
+            :key="index"
+          >
+            <span class="journey__number">{{ step.number }}</span>
+            <div
+              class="journey__content"
+              :style="{
+                backgroundImage: `url(${step.background})`,
+              }"
+            >
+              <div class="journey__details">
+                <p class="journey__step-title">{{ step.title }}</p>
+                <p class="journey__desc">{{ step.description }}</p>
+              </div>
+              <div class="journey__divider">
+                <div
+                  class="journey__spacer"
+                  :style="{
+                    backgroundImage: `url(${step.backgroundCircle})`,
+                  }"
+                ></div>
+                <img class="journey__phone" :src="step.phone" alt="phone" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="article-card">
+         <div class="article-card">
         <div class="article-content">
           <p class="article-text">
             Lorem ipsum dolor sit amet consectetur. Enim amet cras nec eget.
@@ -566,12 +598,16 @@ function getCurrentYear() {
     color: #353742;
   }
 
-  .journey__step {
+  .journey__step-desktop {
     width: 900px;
     height: 667px;
     opacity: 0;
     transform: translateX(-100px);
     transition: all 0.5s ease-in-out;
+  }
+
+  .journey__step-mobile {
+    display: none;
   }
 
   .journey__step.animate {
@@ -626,6 +662,7 @@ function getCurrentYear() {
     font-size: 33.18px;
     font-weight: 700;
     line-height: 39.82px;
+    color: white;
   }
 
   .journey__desc {
@@ -635,9 +672,8 @@ function getCurrentYear() {
     font-size: 23.04px;
     font-weight: 400;
     line-height: 27.65px;
+    color: white;
   }
-
-
 
   .journey__spacer {
     width: 480px;
@@ -649,7 +685,7 @@ function getCurrentYear() {
     right: 0;
     top: 1px;
     border-radius: 0 30px 0 0;
-    z-index: 1; 
+    z-index: 1;
   }
 
   .journey__phone {
@@ -984,8 +1020,8 @@ function getCurrentYear() {
 
   .landlord-container {
     width: 100%;
-    max-width: 1000px;
-    height: 400px;
+    max-width: 1240px;
+    height: 798px;
     background-image: url("../../assets/landlord/landbg.png");
     border-radius: 30px;
     display: flex;
@@ -1097,8 +1133,10 @@ function getCurrentYear() {
     line-height: 39px;
     color: #353742;
   }
-
-  .journey__step {
+  .journey__step-mobile {
+    display: none;
+  }
+  .journey__step-desktop {
     width: 750px;
     height: 500px;
     opacity: 0;
@@ -1158,6 +1196,7 @@ function getCurrentYear() {
     font-family: Aeonik;
     font-size: 30px;
     font-weight: 700;
+    color: white;
     line-height: 35px;
   }
 
@@ -1168,6 +1207,7 @@ function getCurrentYear() {
     font-size: 22px;
     font-weight: 400;
     line-height: 27.65px;
+    color: white;
   }
 
   /* .journey__divider {
@@ -1472,10 +1512,19 @@ function getCurrentYear() {
     gap: 2rem;
   }
 
+  .landlord {
+    margin-bottom: 20rem;
+  }
+
   .landlord-container {
-    max-width: 900px;
-    height: 350px;
+    width: 100%;
+    max-width: 1240px;
+    max-height: 798px;
     gap: 1.5rem;
+  }
+
+  .landlord-container img {
+    top: -14rem;
   }
 
   .journey__title {
@@ -1494,8 +1543,8 @@ function getCurrentYear() {
   .journey__phone {
     width: 230px;
     height: 350px;
-    top: 6.2rem;
-    right: -1.8rem;
+    top: 6.3rem;
+    right: -1.2rem;
   }
 
   .pricing-header p {
@@ -1652,7 +1701,7 @@ function getCurrentYear() {
     color: #353742;
   }
 
-  .journey__step {
+  .journey__step-desktop {
     width: 100%;
     max-width: 650px;
     max-height: 500px;
@@ -2053,7 +2102,7 @@ function getCurrentYear() {
     color: #353742;
   }
 
-  .journey__step {
+  .journey__step-desktop {
     width: 100%;
     max-width: 650px;
     max-height: 500px;
@@ -2074,11 +2123,13 @@ function getCurrentYear() {
     font-size: 22px;
     line-height: 23px;
     align-content: center;
+    color: white;
   }
   .journey__desc {
     max-width: 210px;
     font-size: 18px;
     line-height: 22px;
+    color: white;
   }
   .journey__spacer {
     width: 250px;
@@ -2459,7 +2510,7 @@ function getCurrentYear() {
 
   .journey {
     width: 100%;
-    height: 1300px;
+    height: 3220px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -2479,14 +2530,13 @@ function getCurrentYear() {
     text-decoration-skip-ink: none;
   }
   .journey__steps {
-    width: 100%;
-    height: 300px;
+    max-width: 100%;
+    height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    position: relative;
-    top: -20rem;
+    margin: 4rem 0rem;
   }
   .journey__intro {
     width: 100%;
@@ -2517,14 +2567,32 @@ function getCurrentYear() {
     text-decoration-skip-ink: none;
   }
 
-  .journey__step {
-    /* width: 100%; */
-    max-width: 375px;
+  .journey__step-desktop {
+    display: none;
+  }
+
+  .journey__step-mobile {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    max-width: 500px;
+    width: 100%;
     height: 934px;
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .journey__number {
+    left: 2rem;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 2rem;
   }
 
   .journey__content {
-    width: 375px;
+    width: 100%;
     height: 934px;
     border: none;
     border-radius: 0px;
@@ -2534,7 +2602,9 @@ function getCurrentYear() {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    position: absolute;
   }
+
   .journey__details {
     max-width: 257px;
     height: 231px;
@@ -2550,6 +2620,7 @@ function getCurrentYear() {
     text-align: left;
     text-underline-position: from-font;
     text-decoration-skip-ink: none;
+    color: white;
   }
   .journey__desc {
     width: 257px;
@@ -2561,6 +2632,7 @@ function getCurrentYear() {
     text-align: left;
     text-underline-position: from-font;
     text-decoration-skip-ink: none;
+    color: white;
   }
   .journey__spacer {
     width: 68px;
@@ -2588,8 +2660,8 @@ function getCurrentYear() {
     background-repeat: repeat;
     display: none;
     transform: rotate(90deg);
-    transform-origin: right center; 
-    transition: transform 0.5s ease; 
+    transform-origin: right center;
+    transition: transform 0.5s ease;
   }
 
   .journey__phone {
@@ -2598,6 +2670,7 @@ function getCurrentYear() {
     object-fit: contain;
     position: relative;
   }
+
   .article-card {
     max-width: 331px;
     height: 383px;
