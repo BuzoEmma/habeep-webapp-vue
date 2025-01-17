@@ -1,0 +1,137 @@
+
+      <!-- <div class="article-card">
+        <div class="article-content">
+          <p class="article-text">
+            Lorem ipsum dolor sit amet consectetur. Enim amet cras nec eget.
+          </p>
+          <button class="btn-read">Read article</button>
+        </div>
+      </div> -->
+
+      <!-- <div class="pricing">
+        <div class="pricing-header">
+          <p>
+            Explore our Pricing <br />
+            and Benefits
+          </p>
+          <div class="pricing-line"></div>
+          <button class="btn-see-all">See all</button>
+        </div>
+
+        <div class="pricing-list">
+          <div class="pricing-item">
+            <div class="pricing-content">
+              <img
+                src="../../assets/landlord/listImage2.png"
+                alt="list image"
+              />
+              <p class="pricing-description">
+                Customer Support at Your Fingertips: How to Reach Habeep Support
+                Team
+              </p>
+            </div>
+            <div class="pricing-content">
+              <img
+                src="../../assets/landlord/listImage2.png"
+                alt="list image"
+              />
+              <p class="pricing-description">
+                Customer Support at Your Fingertips: How to Reach Habeep Support
+                Team
+              </p>
+            </div>
+            <div class="pricing-content">
+              <img
+                src="../../assets/landlord/listImage2.png"
+                alt="list image"
+              />
+              <p class="pricing-description">
+                Customer Support at Your Fingertips: How to Reach Habeep Support
+                Team
+              </p>
+            </div>
+          </div>
+          <div class="pricing-item">
+            <div class="pricing-content">
+              <img
+                src="../../assets/landlord/listImage2.png"
+                alt="list image"
+              />
+              <p class="pricing-description">
+                Customer Support at Your Fingertips: How to Reach Habeep Support
+                Team
+              </p>
+            </div>
+            <div class="pricing-content">
+              <img
+                src="../../assets/landlord/listImage2.png"
+                alt="list image"
+              />
+              <p class="pricing-description">
+                Customer Support at Your Fingertips: How to Reach Habeep Support
+                Team
+              </p>
+            </div>
+            <div class="pricing-content">
+              <img
+                src="../../assets/landlord/listImage2.png"
+                alt="list image"
+              />
+              <p class="pricing-description">
+                Customer Support at Your Fingertips: How to Reach Habeep Support
+                Team
+              </p>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- <div class="app-download">
+        <img
+          src="../../assets/landlord/phonefooter.png"
+          alt="phone"
+          class="app-image"
+        />
+
+        <div class="app-info">
+          <div class="app-text">
+            <p class="app-title">Download the User App</p>
+            <p class="app-description">
+              Lorem ipsum dolor sit amet consectetur. Dolor sit amet
+              consectetur.
+            </p>
+          </div>
+
+          <div class="app-links">
+            <a
+              href="https://apps.apple.com/us/app/habeep/id6450388013"
+              target="_blank"
+              class="download-link"
+            >
+              <img
+                src="../../assets/icons/download-app-apple.svg"
+                alt="Download on Apple Store"
+                class="download-icon"
+              />
+            </a>
+
+            <a
+              href="https://play.google.com/store/apps/details?id=org.habeep"
+              target="_blank"
+              class="download-link"
+            >
+              <img
+                src="../../assets/icons/download-app-google.svg"
+                alt="Download on Google Play"
+                class="download-icon"
+              />
+            </a>
+          </div>
+        </div>
+      </div> -->
+
+      <!-- 
+   
+
+   
+             
