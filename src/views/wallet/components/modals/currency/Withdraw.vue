@@ -6,17 +6,19 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
             <span class="text-xl font-medium text-webapp">Withdrawal details</span>
-            <img src="../../../../../assets/icons/x.svg" class="cursor-pointer collapse md:visible" @click="$emit('close')"
-                alt="">
+            <img src="../../../../../assets/icons/x.svg" class="cursor-pointer collapse md:visible"
+                @click="$emit('close')" alt="">
         </div>
         <div class="w-full px-4 py-6 flex flex-col items-start ">
-            <span class="text-sub-webapp text-lg w-full text-left">Please provide withdrawal details with bank account in
+            <span class="text-sub-webapp text-lg w-full text-left">Please provide withdrawal details with bank account
+                in
                 your name</span>
 
             <div class="flex flex-col items-start gap-y-1 w-full mt-5 relative">
                 <span class="text-webapp text-sm">Account number</span>
-                <input type="text" v-model="withdrawalDetails.accountNumber" @keyup="verifyAccountDetails" maxlength="10"
-                    placeholder="Enter account number" class="w-full outline-none h-12 rounded-lg border border-gray p-2">
+                <input type="text" v-model="withdrawalDetails.accountNumber" @keyup="verifyAccountDetails"
+                    maxlength="10" placeholder="Enter account number"
+                    class="w-full outline-none h-12 rounded-lg border border-gray p-2">
 
             </div>
 
@@ -83,19 +85,15 @@
         <Toast :msg="newMsg" type="success" v-if="newMsg.length > 0" />
     </div>
 </template>
-  
+
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import uniqid from 'uniqid'
 import axios from '../../../../../composables/axios'
-import axiosDefault from 'axios'
 import moment from 'moment'
-
-axiosDefault.defaults.headers.common = {
-    Authorization: `bearer ${import.meta.env.VITE_PAYSTACK_SECRET_KEY}`,
-};
+import converter from 'currency-exchanger-js'
 
 const props = defineProps(['amount'])
 
@@ -142,7 +140,7 @@ function chooseBank(bank) {
 
 async function getBanks() {
     try {
-        const banks = await axiosDefault.get('https://api.paystack.co/bank?currency=' + store.state.user.currency)
+        const banks = await axios.get('/services/paystack/banks/' + store.state.user.currency)
         allBanks.value = banks.data.data
         filteredBanks.value = allBanks.value
     } catch (error) {
@@ -166,15 +164,13 @@ async function verifyAccountDetails() {
         if (withdrawalDetails.accountNumber.length === 10 && withdrawalDetails.bank.code) {
             checkingForAccount.value = true
 
-            const verify = await axiosDefault.get(`https://api.paystack.co/bank/resolve?account_number=${withdrawalDetails.accountNumber}&bank_code=${withdrawalDetails.bank.code}`)
+            const verify = await axios.get(`/services/paystack/bank?accountNumber=${withdrawalDetails.accountNumber}&bankCode=${withdrawalDetails.bank.code}`)
 
             checkingForAccount.value = false
-            if (verify.data.status === true) {
-                if (verify.data.data.account_name.toLowerCase().includes(store.state.user.fname.toLowerCase()) && verify.data.data.account_name.toLowerCase().includes(store.state.user.surname.toLowerCase())) {
-                    verifiedAccount.value = verify.data.data
-                } else {
-                    accountError.value = "Bank name doesn't match your name!"
-                }
+            if (verify.data.data.account_name.toLowerCase().includes(store.state.user.fname.toLowerCase()) && verify.data.data.account_name.toLowerCase().includes(store.state.user.surname.toLowerCase())) {
+                verifiedAccount.value = verify.data.data
+            } else {
+                accountError.value = "Bank name doesn't match your name!"
             }
         }
     } catch (error) {
@@ -186,7 +182,7 @@ let paystackReference = ref(genRef())
 
 async function getPaystackBalance() {
     try {
-        const fetchBalance = await axiosDefault.get('https://api.paystack.co/balance')
+        const fetchBalance = await axios.get('/services/paystack/balance')
         paystackBalance.value = await converter.convert(fetchBalance.data.data[0].balance / 100, fetchBalance.data.data[0].currency, store.state.user.currency)
     } catch (error) {
         paystackBalance.value = 0
@@ -204,7 +200,7 @@ async function withdrawMoney() {
                 onError.value = false
             }, 3000);
             return;
-        } else if (paystackBalance.value > 0 && parseFloat(withdrawalDetails.amount.replaceAll(',', '')) > paystackBalance.value) {
+        } else if (paystackBalance.value > 0 && parseFloat(withdrawalDetails.amount.toString().replaceAll(',', '')) > paystackBalance.value) {
             onError.value = true
             errorMsg.value = `Withdrawals more than ${formatNumber(store.state.user.currency, Math.floor(paystackBalance.value))} currently disabled!`
             setTimeout(() => {
@@ -225,18 +221,15 @@ async function withdrawMoney() {
             email: store.state.user.email
         })
 
-        const createRecipient = await axiosDefault.post('https://api.paystack.co/transferrecipient', recipientParams)
-
-        const transferParams = reactive({
+        const initiateTransfer = await axios.post('/finance/payments/transfer-paystack-funds', {
             source: 'balance',
-            amount: withdrawalDetails.amount * 100,
-            reference: paystackReference,
+            amount: parseFloat(withdrawalDetails.amount.toString().replaceAll(',', '')),
+            reference: paystackReference.value,
             reason: "Habeep withdrawal",
-            recipient: createRecipient.data.data.recipient_code
+            recipientParams: recipientParams
         })
 
-        const initiateTransfer = await axiosDefault.post('https://api.paystack.co/transfer', transferParams)
-        processWithdrawal(initiateTransfer.data)
+        processWithdrawal(initiateTransfer.data.data)
 
         setTimeout(() => {
             newMsg.value = ''
@@ -244,6 +237,7 @@ async function withdrawMoney() {
         }, 3000);
 
     } catch (error) {
+        console.log(error)
         onError.value = true
         processWithdrawal({ status: 'QWERT//' })
         if (error.response) {
@@ -272,8 +266,7 @@ const processWithdrawal = async (response) => {
             accountId: store.state.user.wallet[store.state.user.currency],
             amount: withdrawalDetails.amount,
             reference: paystackReference.value,
-            status: response.status,
-            userId: store.state.user._id,
+            status: status,
             paymentMethod: withdrawalDetails.paymentMethod,
             dates: {
                 createdAt: moment().format('LLL'),
@@ -294,7 +287,7 @@ const processWithdrawal = async (response) => {
     } catch (error) {
         onError.value = true
         errorMsg.value = error.response.data.message
-
+        processingWithdrawal.value = false
         setTimeout(() => {
             onError.value = false
             errorMsg.value = ''
@@ -334,7 +327,7 @@ function genRef() {
 
 
 </script>
-  
+
 <style scoped>
 .main {
     width: 480px;

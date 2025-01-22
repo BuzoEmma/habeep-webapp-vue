@@ -8,6 +8,7 @@ yarn-error.log
 .env.development
 .env.staging
 .env.development
+.env.*
 .env
 
 dist
