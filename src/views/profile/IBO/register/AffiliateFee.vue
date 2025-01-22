@@ -147,15 +147,16 @@ function changeAccountType() {
 
 async function getWallet() {
     try {
+        const currencyWallet = await axios.post('/wallet/fetch-wallet', { wallet: store.state.user.currency })
+        if (currencyWallet.data.error === false) {
+            currencyWalletData.value = currencyWallet.data.data
+        }
+
         const hbpWallet = await axios.post('/wallet/fetch-wallet', { wallet: 'hbp' })
         if (hbpWallet.data.error === false) {
             hbpWalletData.value = hbpWallet.data.data
         }
 
-        const currencyWallet = await axios.post('/wallet/fetch-wallet', { wallet: store.state.user.currency })
-        if (currencyWallet.data.error === false) {
-            currencyWalletData.value = currencyWallet.data.data
-        }
 
 
     } catch (error) {
@@ -171,11 +172,11 @@ if (amountToDebit === true) {
     amountToDebit = 120
 }
 
-const currencyAmountToDebit = ref(50 ? props.data.role == "AGENT" : 120)
+const currencyAmountToDebit = ref(87 * 50 ? props.data.role == "AGENT" : 87 * 120)
 if (currencyAmountToDebit.value === true) {
-    currencyAmountToDebit.value = 50
+    currencyAmountToDebit.value = 87 * 50
 } else {
-    currencyAmountToDebit.value = 120
+    currencyAmountToDebit.value = 87 * 120
 }
 
 
