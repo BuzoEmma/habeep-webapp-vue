@@ -1,37 +1,22 @@
 <template>
   <div>
-    <div
-      class="flex flex-col gap-y-5 h-full items-center w-full"
-      v-if="walletData !== null"
-    >
-      <div
-        class="flex flex-col border border-gray-200 w-full divide-y rounded-lg h-fit gap-y-6"
-      >
-        <div
-          class="top justify-center items-center h-1/2 w-full flex flex-col py-7"
-        >
+    <div class="flex flex-col gap-y-5 h-full items-center w-full" v-if="walletData !== null">
+      <div class="flex flex-col border border-gray-200 w-full divide-y rounded-lg h-fit gap-y-6">
+        <div class="top justify-center items-center h-1/2 w-full flex flex-col py-7">
           <p class="text-6xl font-bold text-webapp flex flex-row items-end">
             {{ formatNumber(walletData.accountValue) }}
             <span class="text-sm">HBP</span>
           </p>
         </div>
-        <div
-          class="bottom justify-center items-center h-1/2 w-full flex flex-col py-10"
-        >
-          <div
-            class="w-full flex flex-row items-center justify-center gap-x-16"
-          >
-            <div
-              class="flex flex-col gap-y-1 items-center cursor-pointer"
-              @click="$emit('openModal', 'depositHBPModal')"
-            >
+        <div class="bottom justify-center items-center h-1/2 w-full flex flex-col py-10">
+          <div class="w-full flex flex-row items-center justify-center gap-x-16">
+            <div class="flex flex-col gap-y-1 items-center cursor-pointer"
+              @click="$emit('openModal', 'depositHBPModal')">
               <img src="../../../assets/icons/wallet/deposit.svg" alt="" />
               <span class="text-xs text-webapp">Deposit</span>
             </div>
-            <div
-              class="flex flex-col gap-y-1 items-center cursor-pointer"
-              @click="$emit('openModal', 'chooseHBPWithdrawalMethodModal')"
-            >
+            <div class="flex flex-col gap-y-1 items-center cursor-pointer"
+              @click="$emit('openModal', 'chooseHBPWithdrawalMethodModal')">
               <img src="../../../assets/icons/wallet/withdraw.svg" alt="" />
               <span class="text-xs text-webapp">Withdraw</span>
             </div>
@@ -46,9 +31,7 @@
       <div class="flex flex-col w-full rounded-lg border border-gray-200">
         <div class="pb-5 pt-2 flex-auto w-full h-full">
           <span class="text-xl ml-2 font-medium text-webapp">Transactions</span>
-          <div
-            class="tab-content tab-space w-full flex flex-col items-center justify-center"
-          >
+          <div class="tab-content tab-space w-full flex flex-col items-center justify-center">
             <!-- WALLET -->
             <div class="h-full w-full">
               <div class="overflow-x-auto txn-body w-full">
@@ -62,35 +45,19 @@
                   </thead>
                   <br />
 
-                  <tr
-                    class="tables w-full px-2 pt-4"
-                    v-for="txn in transactions"
-                    :key="txn"
-                  >
+                  <tr class="tables w-full px-2 pt-4" v-for="txn in transactions" :key="txn">
                     <td class="">{{ txn.date + " @ " + txn.time }}</td>
                     <td class="capitalize">Wallet {{ txn.txnType }}</td>
                     <td class="">{{ txn.reference }}</td>
                     <td class="amount">{{ txn.amount.toFixed(2) }} HBP</td>
                     <td>
-                      <div
-                        class="w-32 py-2 rounded-md text-center"
-                        style="background: rgb(28, 170, 67, 0.1)"
-                      >
-                        <span
-                          class="text-sm text-green-500 text-center w-full"
-                          v-if="txn.status === 'COMPLETED'"
-                          >COMPLETED</span
-                        >
-                        <span
-                          class="text-sm text-blue-500 text-center w-full"
-                          v-if="txn.status === 'PENDING'"
-                          >PENDING</span
-                        >
-                        <span
-                          class="text-sm text-red-500 text-center w-full"
-                          v-if="txn.status === 'FAILED'"
-                          >FAILED</span
-                        >
+                      <div class="w-32 py-2 rounded-md text-center" style="background: rgb(28, 170, 67, 0.1)">
+                        <span class="text-sm text-green-500 text-center w-full"
+                          v-if="txn.status === 'COMPLETED'">COMPLETED</span>
+                        <span class="text-sm text-blue-500 text-center w-full"
+                          v-if="txn.status === 'PENDING'">PENDING</span>
+                        <span class="text-sm text-red-500 text-center w-full"
+                          v-if="txn.status === 'FAILED'">FAILED</span>
                       </div>
                     </td>
                   </tr>
@@ -98,89 +65,51 @@
               </div>
 
               <!-- pagination tab -->
-              <div
-                class="w-full flex flex-col items-end mt-20 px-3"
-                v-if="transactions.length > 1"
-              >
+              <div class="w-full flex flex-col items-end mt-20 px-3" v-if="transactions.length > 1">
                 <div class="flex flex-row items-center gap-x-3">
-                  <span class="w-full text-webapp text-lg"
-                    >Page {{ currentPage }} of
-                    {{ Math.round(allPagesTxn) }}</span
-                  >
-                  <button
-                    class="flex flex-row items-center justify-center rounded-lg border-2 p-1"
-                    :class="{
-                      'text-gray-400 border-gray-400': currentPage === 1,
-                      'border-webapp text-webapp': currentPage > 1,
-                    }"
-                    @click="
-                      paginateEvent(
-                        currentPage - 1,
-                        transactions,
-                        filteredTxns,
-                        currentPage,
-                        'Txn'
-                      )
-                    "
-                    :disabled="currentPage === 1"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="w-4 h-4"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M15.75 19.5L8.25 12l7.5-7.5"
-                      />
+                  <span class="w-full text-webapp text-lg">Page {{ currentPage }} of
+                    {{ Math.round(allPagesTxn) }}</span>
+                  <button class="flex flex-row items-center justify-center rounded-lg border-2 p-1" :class="{
+                    'text-gray-400 border-gray-400': currentPage === 1,
+                    'border-webapp text-webapp': currentPage > 1,
+                  }" @click="
+                    paginateEvent(
+                      currentPage - 1,
+                      transactions,
+                      filteredTxns,
+                      currentPage,
+                      'Txn'
+                    )
+                    " :disabled="currentPage === 1">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                      stroke="currentColor" class="w-4 h-4">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                     </svg>
                   </button>
 
-                  <button
-                    class="flex flex-row items-center justify-center rounded-lg border-2 p-1"
-                    :class="{
-                      'text-gray-400 border-gray-400':
-                        currentPage === Math.round(allPagesTxn),
-                      'border-webapp text-webapp':
-                        currentPage < Math.round(allPagesTxn),
-                    }"
-                    @click="
-                      paginateEvent(
-                        currentPage + 1,
-                        transactions,
-                        filteredTxns,
-                        currentPage,
-                        'Txn'
-                      )
-                    "
-                    :disabled="currentPage === Math.round(allPagesTxn)"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="w-4 h-4"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M8.25 4.5l7.5 7.5-7.5 7.5"
-                      />
+                  <button class="flex flex-row items-center justify-center rounded-lg border-2 p-1" :class="{
+                    'text-gray-400 border-gray-400':
+                      currentPage === Math.round(allPagesTxn),
+                    'border-webapp text-webapp':
+                      currentPage < Math.round(allPagesTxn),
+                  }" @click="
+                    paginateEvent(
+                      currentPage + 1,
+                      transactions,
+                      filteredTxns,
+                      currentPage,
+                      'Txn'
+                    )
+                    " :disabled="currentPage === Math.round(allPagesTxn)">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                      stroke="currentColor" class="w-4 h-4">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                     </svg>
                   </button>
                 </div>
               </div>
             </div>
-            <div
-              class="flex flex-col items-center justify-center gap-y-1 py-20"
-              v-if="transactions.length < 1"
-            >
+            <div class="flex flex-col items-center justify-center gap-y-1 py-20" v-if="transactions.length < 1">
               <img src="../../../assets/icons/no-txn.svg" alt="" />
               <span class="text-sm text-sub-webapp">No transaction</span>
             </div>
@@ -189,11 +118,7 @@
       </div>
     </div>
     <div class="flex flex-col items-center justify-center w-full mt-24" v-else>
-      <loader
-        :letters="['H', 'A', 'B', 'E', 'E', 'P']"
-        size="200px"
-        color="#0A1045"
-      ></loader>
+      <loader :letters="['H', 'A', 'B', 'E', 'E', 'P']" size="200px" color="#0A1045"></loader>
     </div>
   </div>
 </template>
@@ -282,15 +207,15 @@ async function getWallet() {
 }
 
 async function getTransactions(txns) {
-  try {
-    for (const txn of txns) {
+  for (const txn of txns) {
+    try {
       const fetch = await axios.post("/wallet/fetch-transaction", { id: txn });
       if (fetch.data.error === false) {
         transactions.value.push(fetch.data.data);
       }
+    } catch (error) {
+      console.log(error);
     }
-  } catch (error) {
-    console.log(error);
   }
 }
 

@@ -2,7 +2,7 @@
 
 <script setup>
 import { onMounted } from 'vue'
-import axios from 'axios'
+import axiosInstance from '../../../../../../composables/axios'
 
 const props = defineProps(['paymentInfo'])
 const emit = defineEmits(['cancel', 'errorLoading', 'success'])
@@ -30,18 +30,13 @@ function createPaystack() {
     })
 }
 
-const secret_key = import.meta.env.VITE_PAYSTACK_SECRET_KEY
-
 async function confirmPayment(response) {
     try {
         if (response.status === 'success') {
 
-            axios.defaults.headers.common = {
-                Authorization: `Bearer ${secret_key}`
-            };
-            const verify = await axios.get('https://api.paystack.co/transaction/verify/' + response.reference)
-            
-            if(verify.data.status === true && verify.data.data.status === 'success') {
+            const verify = await axiosInstance.get(`/finance/payments/verify-paystack-txn?reference=${response.reference}&withTransaction=false`)
+
+            if (verify.data.data === 'SUCCESSFUL') {
                 emit('success', response)
             } else emit('cancel', { method: 'paystack', reference: props.paymentInfo.ref })
 
