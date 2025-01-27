@@ -24,8 +24,7 @@ function getCurrentYear() {
     <div class="main-container">
       <section class="mission">
         <div class="mission-statement">
-          Our mission is to bridge the gap between landlords and tenants, making
-          renting and managing properties easy.
+          Our mission is to simplify property management for Landlords.
         </div>
         <div class="download-links">
           <a
@@ -404,54 +403,83 @@ function getCurrentYear() {
           <div class="landlord-benefits">
             <div class="benefit-item">
               <svg
+                width="23"
+                height="17"
+                viewBox="0 0 23 17"
+                fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-                class="benefit-icon"
               >
                 <path
-                  d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"
+                  d="M14.6364 0C16.8545 0 18.9819 0.881166 20.5503 2.44965C22.1188 4.01814 23 6.14546 23 8.36364C23 10.5818 22.1188 12.7091 20.5503 14.2776C18.9819 15.8461 16.8545 16.7273 14.6364 16.7273C12.4182 16.7273 10.2909 15.8461 8.72238 14.2776C7.15389 12.7091 6.27273 10.5818 6.27273 8.36364C6.27273 6.14546 7.15389 4.01814 8.72238 2.44965C10.2909 0.881166 12.4182 0 14.6364 0ZM14.6364 2.09091C12.9727 2.09091 11.3772 2.75178 10.2009 3.92815C9.02451 5.10451 8.36364 6.70001 8.36364 8.36364C8.36364 10.0273 9.02451 11.6228 10.2009 12.7991C11.3772 13.9755 12.9727 14.6364 14.6364 14.6364C16.3 14.6364 17.8955 13.9755 19.0719 12.7991C20.2482 11.6228 20.9091 10.0273 20.9091 8.36364C20.9091 6.70001 20.2482 5.10451 19.0719 3.92815C17.8955 2.75178 16.3 2.09091 14.6364 2.09091ZM13.5909 4.18182H15.1591V8.13364L17.595 10.5695L16.4868 11.6777L13.5909 8.78182V4.18182ZM1.04545 14.6364C0.768183 14.6364 0.502267 14.5262 0.306206 14.3302C0.110146 14.1341 0 13.8682 0 13.5909C0 13.3136 0.110146 13.0477 0.306206 12.8517C0.502267 12.6556 0.768183 12.5455 1.04545 12.5455H5.04955C5.37364 13.2877 5.79182 13.9882 6.27273 14.6364H1.04545ZM2.09091 9.40909C1.81364 9.40909 1.54772 9.29894 1.35166 9.10288C1.1556 8.90682 1.04545 8.64091 1.04545 8.36364C1.04545 8.08636 1.1556 7.82045 1.35166 7.62439C1.54772 7.42833 1.81364 7.31818 2.09091 7.31818H4.23409L4.18182 8.36364L4.23409 9.40909H2.09091ZM3.13636 4.18182C2.85909 4.18182 2.59318 4.07167 2.39712 3.87561C2.20105 3.67955 2.09091 3.41364 2.09091 3.13636C2.09091 2.85909 2.20105 2.59318 2.39712 2.39712C2.59318 2.20106 2.85909 2.09091 3.13636 2.09091H6.27273C5.79182 2.73909 5.37364 3.43955 5.04955 4.18182H3.13636Z"
+                  fill="#1B9160"
                 />
               </svg>
-              <p>Lorem ipsum dolor sit amet consectetur.</p>
+
+              <p>Zero rent delays</p>
             </div>
 
             <div class="benefit-item">
               <svg
+                width="23"
+                height="23"
+                viewBox="0 0 23 23"
+                fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-                class="benefit-icon"
               >
                 <path
-                  d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"
+                  d="M1.91699 11.4999C1.91699 7.88604 1.91699 6.07863 3.04016 4.95642C4.16333 3.83421 5.96978 3.83325 9.58366 3.83325H13.417C17.0309 3.83325 18.8383 3.83325 19.9605 4.95642C21.0827 6.07959 21.0837 7.88604 21.0837 11.4999V13.4166C21.0837 17.0305 21.0837 18.8379 19.9605 19.9601C18.8373 21.0823 17.0309 21.0833 13.417 21.0833H9.58366C5.96978 21.0833 4.16237 21.0833 3.04016 19.9601C1.91795 18.8369 1.91699 17.0305 1.91699 13.4166V11.4999Z"
+                  stroke="#1B9160"
+                  stroke-width="1.5"
+                />
+                <path
+                  d="M6.70898 3.83325V2.39575M16.2923 3.83325V2.39575M2.39648 8.62492H20.6048"
+                  stroke="#1B9160"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M17.25 16.2917C17.25 16.5458 17.149 16.7896 16.9693 16.9693C16.7896 17.149 16.5458 17.25 16.2917 17.25C16.0375 17.25 15.7937 17.149 15.614 16.9693C15.4343 16.7896 15.3333 16.5458 15.3333 16.2917C15.3333 16.0375 15.4343 15.7937 15.614 15.614C15.7937 15.4343 16.0375 15.3333 16.2917 15.3333C16.5458 15.3333 16.7896 15.4343 16.9693 15.614C17.149 15.7937 17.25 16.0375 17.25 16.2917ZM17.25 12.4583C17.25 12.7125 17.149 12.9563 16.9693 13.136C16.7896 13.3157 16.5458 13.4167 16.2917 13.4167C16.0375 13.4167 15.7937 13.3157 15.614 13.136C15.4343 12.9563 15.3333 12.7125 15.3333 12.4583C15.3333 12.2042 15.4343 11.9604 15.614 11.7807C15.7937 11.601 16.0375 11.5 16.2917 11.5C16.5458 11.5 16.7896 11.601 16.9693 11.7807C17.149 11.9604 17.25 12.2042 17.25 12.4583ZM12.4583 16.2917C12.4583 16.5458 12.3574 16.7896 12.1776 16.9693C11.9979 17.149 11.7542 17.25 11.5 17.25C11.2458 17.25 11.0021 17.149 10.8224 16.9693C10.6426 16.7896 10.5417 16.5458 10.5417 16.2917C10.5417 16.0375 10.6426 15.7937 10.8224 15.614C11.0021 15.4343 11.2458 15.3333 11.5 15.3333C11.7542 15.3333 11.9979 15.4343 12.1776 15.614C12.3574 15.7937 12.4583 16.0375 12.4583 16.2917ZM12.4583 12.4583C12.4583 12.7125 12.3574 12.9563 12.1776 13.136C11.9979 13.3157 11.7542 13.4167 11.5 13.4167C11.2458 13.4167 11.0021 13.3157 10.8224 13.136C10.6426 12.9563 10.5417 12.7125 10.5417 12.4583C10.5417 12.2042 10.6426 11.9604 10.8224 11.7807C11.0021 11.601 11.2458 11.5 11.5 11.5C11.7542 11.5 11.9979 11.601 12.1776 11.7807C12.3574 11.9604 12.4583 12.2042 12.4583 12.4583ZM7.66667 16.2917C7.66667 16.5458 7.5657 16.7896 7.38598 16.9693C7.20625 17.149 6.9625 17.25 6.70833 17.25C6.45417 17.25 6.21041 17.149 6.03069 16.9693C5.85097 16.7896 5.75 16.5458 5.75 16.2917C5.75 16.0375 5.85097 15.7937 6.03069 15.614C6.21041 15.4343 6.45417 15.3333 6.70833 15.3333C6.9625 15.3333 7.20625 15.4343 7.38598 15.614C7.5657 15.7937 7.66667 16.0375 7.66667 16.2917ZM7.66667 12.4583C7.66667 12.7125 7.5657 12.9563 7.38598 13.136C7.20625 13.3157 6.9625 13.4167 6.70833 13.4167C6.45417 13.4167 6.21041 13.3157 6.03069 13.136C5.85097 12.9563 5.75 12.7125 5.75 12.4583C5.75 12.2042 5.85097 11.9604 6.03069 11.7807C6.21041 11.601 6.45417 11.5 6.70833 11.5C6.9625 11.5 7.20625 11.601 7.38598 11.7807C7.5657 11.9604 7.66667 12.2042 7.66667 12.4583Z"
+                  fill="#1B9160"
                 />
               </svg>
-              <p>Lorem ipsum dolor sit amet consectetur.</p>
+
+              <p>Stay informed and in control of your property</p>
             </div>
 
             <div class="benefit-item">
               <svg
+                width="23"
+                height="23"
+                viewBox="0 0 23 23"
+                fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-                class="benefit-icon"
               >
                 <path
-                  d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M16.1717 3.59377C15.6664 3.59351 15.1681 3.71165 14.7167 3.93871C14.2653 4.16577 13.8734 4.49544 13.5723 4.90129C13.2713 5.30713 13.0695 5.77786 12.9832 6.27574C12.8969 6.77361 12.9285 7.28479 13.0754 7.76827L13.2622 8.3864L12.8066 8.84352L3.81643 17.8322C3.63725 18.0114 3.53658 18.2544 3.53658 18.5078C3.53658 18.7612 3.63725 19.0043 3.81643 19.1835C3.99562 19.3626 4.23865 19.4633 4.49206 19.4633C4.74547 19.4633 4.9885 19.3626 5.16768 19.1835L14.1564 10.1919L14.6135 9.73477L15.2316 9.92165C15.8322 10.1046 16.473 10.1088 17.0759 9.93372C17.6788 9.75867 18.2177 9.41193 18.6269 8.93582C19.0362 8.4597 19.298 7.87479 19.3804 7.25242C19.4629 6.63005 19.3624 5.99714 19.0913 5.43089L16.9351 7.58858C16.8357 7.6916 16.7167 7.77379 16.5852 7.83035C16.4537 7.88692 16.3123 7.91673 16.1691 7.91804C16.0259 7.91935 15.884 7.89214 15.7514 7.83799C15.6189 7.78384 15.4985 7.70385 15.3972 7.60267C15.296 7.50149 15.2158 7.38115 15.1616 7.24868C15.1073 7.11621 15.08 6.97425 15.0811 6.8311C15.0823 6.68795 15.112 6.54646 15.1684 6.4149C15.2249 6.28334 15.3069 6.16433 15.4099 6.06483L17.5661 3.90858C17.1309 3.7 16.6544 3.59336 16.1717 3.59377ZM10.7811 6.82814C10.7812 5.72285 11.1211 4.64429 11.7547 3.73861C12.3882 2.83293 13.2849 2.14389 14.3232 1.76486C15.3614 1.38583 16.4911 1.33512 17.5592 1.6196C18.6273 1.90409 19.5821 2.51001 20.2942 3.35529C21.0064 4.20057 21.4415 5.24433 21.5406 6.34517C21.6398 7.44602 21.3981 8.55073 20.8484 9.50963C20.2987 10.4685 19.4675 11.2353 18.4674 11.706C17.4674 12.1767 16.3468 12.3286 15.2575 12.1411L14.4626 12.9375L15.8124 14.2888L16.488 13.6131L17.2499 12.8513L18.0117 13.6131L20.7071 16.3085C21.0032 16.5957 21.2392 16.9389 21.4014 17.3182C21.5637 17.6974 21.6488 18.1052 21.652 18.5177C21.6551 18.9302 21.5762 19.3392 21.4198 19.7209C21.2634 20.1026 21.0327 20.4494 20.741 20.7411C20.4493 21.0328 20.1025 21.2636 19.7208 21.42C19.3391 21.5764 18.93 21.6553 18.5175 21.6521C18.105 21.649 17.6973 21.5638 17.318 21.4016C16.9387 21.2394 16.5955 21.0033 16.3083 20.7072L13.613 18.0119L12.8511 17.25L13.613 16.4881L14.2886 15.8125L12.9374 14.4613L6.69143 20.7072C6.40424 21.0033 6.06101 21.2394 5.68174 21.4016C5.30246 21.5638 4.8947 21.649 4.4822 21.6521C4.0697 21.6553 3.66069 21.5764 3.27897 21.42C2.89726 21.2636 2.55047 21.0328 2.25877 20.7411C1.96708 20.4494 1.73632 20.1026 1.57992 19.7209C1.42351 19.3392 1.34459 18.9302 1.34775 18.5177C1.3509 18.1052 1.43607 17.6974 1.5983 17.3182C1.76052 16.9389 1.99656 16.5957 2.29268 16.3085L8.53718 10.0625L5.03112 6.55502L4.14418 7.44196L3.41537 6.34802L1.97787 4.19177L1.48768 3.45577L2.11299 2.83189L2.83174 2.11314L3.45562 1.48783L4.19162 1.97802L6.34787 3.41552L7.44181 4.14433L6.55631 5.03127L10.0624 8.53877L10.8587 7.7424C10.8086 7.4402 10.7826 7.13448 10.7811 6.82814ZM17.2499 15.8988L19.1833 17.8322C19.3625 18.0114 19.4632 18.2544 19.4632 18.5078C19.4632 18.7612 19.3625 19.0043 19.1833 19.1835C19.0041 19.3626 18.7611 19.4633 18.5077 19.4633C18.2543 19.4633 18.0112 19.3626 17.8321 19.1835L15.9001 17.25L17.2499 15.8988Z"
+                  fill="#1B9160"
                 />
               </svg>
-              <p>Lorem ipsum dolor sit amet consectetur.</p>
+
+              <p>Easy access to reliable property maintenance.</p>
             </div>
 
             <div class="benefit-item">
               <svg
+                width="23"
+                height="19"
+                viewBox="0 0 23 19"
+                fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512"
-                class="benefit-icon"
               >
                 <path
-                  d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"
+                  d="M9.78219 2.32161L7.94578 4.15802C7.39594 4.30895 6.88562 4.58567 6.45438 4.96661L5.49844 5.81833C5.13188 6.14536 4.65391 6.32505 4.16156 6.32505H3.45V10.925C4.18313 10.9466 4.88031 11.2449 5.40141 11.766L6.68078 13.0454L6.93234 13.2969L7.90266 14.2672C8.12547 14.49 8.49203 14.49 8.71484 14.2672C8.77594 14.2061 8.82266 14.1343 8.84781 14.0588C8.94844 13.7821 9.18203 13.5736 9.46953 13.509C9.75703 13.4443 10.0589 13.5305 10.2673 13.7425L10.6555 14.1235C11.0723 14.5404 11.748 14.5404 12.1612 14.1235C12.3553 13.9294 12.4595 13.6815 12.4703 13.4263C12.4847 13.11 12.6716 12.8297 12.9591 12.6932C13.2466 12.5566 13.5808 12.5854 13.8359 12.7686C14.1737 13.0094 14.6445 12.9771 14.9464 12.6752C15.2842 12.3374 15.2842 11.7911 14.9464 11.4569L12.2223 8.73286L10.9358 9.9188C9.95469 10.8244 8.44891 10.8388 7.44984 9.95114C6.31063 8.9377 6.28547 7.16958 7.39234 6.1238L9.91156 3.74474C10.8962 2.81755 12.1972 2.30005 13.552 2.30005C14.8494 2.30005 16.1036 2.77802 17.0703 3.63692L18.152 4.60005H22.425C22.7412 4.60005 23 4.8588 23 5.17505V12.65C23 13.2861 22.4861 13.8 21.85 13.8H20.7C20.2759 13.8 19.9022 13.57 19.7045 13.225H16.6534C16.5312 13.4658 16.3695 13.6958 16.1683 13.8971C15.5537 14.5116 14.702 14.7524 13.9042 14.6194C13.7748 14.8818 13.5987 15.1261 13.3795 15.3454C12.3984 16.3265 10.8639 16.4235 9.77141 15.6365C8.86937 16.384 7.52531 16.3372 6.68078 15.4891L5.71406 14.5188L5.4625 14.2672L4.18313 12.9879C3.98547 12.7902 3.72672 12.6752 3.45 12.6536C3.45 13.2861 2.9325 13.8 2.3 13.8H1.15C0.513906 13.8 0 13.2861 0 12.65V5.17505C0 4.8588 0.25875 4.60005 0.575 4.60005H4.16156C4.23344 4.60005 4.30172 4.57489 4.35203 4.52817L5.30438 3.68005C6.30703 2.79239 7.59719 2.30005 8.93766 2.30005H9.30781C9.46594 2.30005 9.62766 2.30724 9.78219 2.32161ZM19.55 11.5V6.32505H17.825C17.613 6.32505 17.4081 6.24599 17.2536 6.10583L15.9275 4.92708C15.2734 4.34489 14.4289 4.02505 13.552 4.02505C12.6392 4.02505 11.7623 4.37364 11.0975 4.99896L8.57828 7.37802C8.20813 7.73021 8.21531 8.32317 8.59625 8.66099C8.93047 8.95927 9.43719 8.95208 9.76422 8.6502L12.3481 6.26396C12.6967 5.94052 13.243 5.96208 13.5664 6.31427C13.8898 6.66645 13.8683 7.20911 13.5161 7.53255L13.4873 7.5613L16.1611 10.235C16.5205 10.5944 16.7541 11.0365 16.8583 11.4965H19.5464L19.55 11.5ZM2.3 12.075C2.3 11.9225 2.23942 11.7763 2.13159 11.6685C2.02375 11.5606 1.8775 11.5 1.725 11.5C1.5725 11.5 1.42625 11.5606 1.31841 11.6685C1.21058 11.7763 1.15 11.9225 1.15 12.075C1.15 12.2275 1.21058 12.3738 1.31841 12.4816C1.42625 12.5895 1.5725 12.65 1.725 12.65C1.8775 12.65 2.02375 12.5895 2.13159 12.4816C2.23942 12.3738 2.3 12.2275 2.3 12.075ZM21.275 12.65C21.4275 12.65 21.5738 12.5895 21.6816 12.4816C21.7894 12.3738 21.85 12.2275 21.85 12.075C21.85 11.9225 21.7894 11.7763 21.6816 11.6685C21.5738 11.5606 21.4275 11.5 21.275 11.5C21.1225 11.5 20.9762 11.5606 20.8684 11.6685C20.7606 11.7763 20.7 11.9225 20.7 12.075C20.7 12.2275 20.7606 12.3738 20.8684 12.4816C20.9762 12.5895 21.1225 12.65 21.275 12.65Z"
+                  fill="#1B9160"
                 />
               </svg>
-              <p>Lorem ipsum dolor sit amet consectetur.</p>
+
+              <p>Stay protected with a strong, legal lease agreement.</p>
             </div>
           </div>
         </div>
@@ -464,10 +492,47 @@ function getCurrentYear() {
 
         <div class="journey__steps">
           <div class="journey__intro">
-            <span class="journey__icon"></span>
+            <span class="journey__icon"
+              ><svg
+                width="50"
+                height="50"
+                viewBox="0 0 50 50"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g clip-path="url(#clip0_2603_2058)">
+                  <path
+                    d="M20.3933 15.3929C13.5361 10.7144 7.14328 14.2858 1.78613 19.7858L13.6433 26.9287M34.6076 29.6072C39.2861 36.4644 35.7147 42.8572 30.2147 48.2144L23.0718 36.3572"
+                    stroke="#666666"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M18.8578 17.9288L32.0721 31.1431M13.6436 26.8931L23.1078 36.3574C30.6793 31.8217 39.2864 27.4288 43.215 23.3574C51.715 14.8574 46.7864 3.21452 46.7864 3.21452C46.7864 3.21452 35.1436 -1.71405 26.6436 6.78595C22.5721 10.7145 18.1436 19.3574 13.6436 26.8931Z"
+                    stroke="#666666"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M37.5004 14.2858C37.974 14.2858 38.4282 14.0976 38.7631 13.7628C39.098 13.4279 39.2861 12.9737 39.2861 12.5001C39.2861 12.0265 39.098 11.5723 38.7631 11.2374C38.4282 10.9025 37.974 10.7144 37.5004 10.7144C37.0268 10.7144 36.5726 10.9025 36.2377 11.2374C35.9028 11.5723 35.7147 12.0265 35.7147 12.5001C35.7147 12.9737 35.9028 13.4279 36.2377 13.7628C36.5726 14.0976 37.0268 14.2858 37.5004 14.2858ZM13.1433 44.4286C11.0718 46.4286 1.78613 48.2144 1.78613 48.2144C1.78613 48.2144 3.57185 38.9286 5.57185 36.8572C6.31145 36.0665 7.27314 35.5183 8.33033 35.2848C9.38752 35.0512 10.4907 35.1432 11.4945 35.5487C12.4984 35.9542 13.356 36.6542 13.9544 37.5565C14.5527 38.4588 14.8639 39.5211 14.8468 40.6036C14.8338 41.3223 14.6762 42.031 14.3836 42.6875C14.0909 43.3441 13.6691 43.9385 13.1433 44.4286Z"
+                    stroke="#666666"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </g>
+                <defs>
+                  <clipPath id="clip0_2603_2058">
+                    <rect width="50" height="50" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+            </span>
             <span class="journey__text">
-              Lorem ipsum dolor sit amet consectetur. Quis commodo nec risus est
-              et.
+              Getting started is easy. After download, follow these simple steps
+              to improve your landlord experience.
             </span>
           </div>
           <div
@@ -527,7 +592,7 @@ function getCurrentYear() {
                 </p>
               </div>
               <div class="journey-svg" v-html="step.journeySvg"></div>
-              <div class="journey__spacer" v-html="step.spacerSVG"></div>
+              <div class="journey__spacer" v-html="step.spacerSVG1"></div>
 
               <img class="journey__phone" :src="step.phone" alt="phone" />
             </div>
@@ -568,7 +633,7 @@ function getCurrentYear() {
             </svg>
           </div>
           <p class="article-card__text">
-            Lorem ipsum dolor sit amet consectetur. Enim amet cras nec eget.
+            Discover the Benefits of Using Technology as a Landlord.
           </p>
           <button class="article-card__button">Read Article</button>
         </div>
@@ -881,17 +946,19 @@ function getCurrentYear() {
       <section class="download-app">
         <div class="download-div">
           <img
-            src="../../assets/landlord/phonefooter.png"
+            src="../../assets/landlord/phonefooter.svg"
             alt="phone"
             class="download-image"
           />
 
           <div class="download-info">
             <div class="download-text">
-              <p class="download-title">Download the User App</p>
+              <p class="download-title">
+                Download the Habeep Landlord App Today
+              </p>
               <p class="download-discription">
-                Lorem ipsum dolor sit amet consectetur. Dolor sit amet
-                consectetur.
+                Join Habeep today and turn property management into a seamless,
+                profitable venture.
               </p>
             </div>
 
@@ -1271,7 +1338,8 @@ function getCurrentYear() {
         <div class="footer-copyright">
           <div class="footer-copyright-text">
             <span>&#x00A9; </span>
-            <span style="font-size: large">{{ getCurrentYear() }} </span> HABEEP REAL ESTATE
+            <span style="font-size: large">{{ getCurrentYear() }} </span> HABEEP
+            REAL ESTATE
           </div>
         </div>
       </section>
@@ -1293,6 +1361,35 @@ function getCurrentYear() {
   font-family: Aeonik;
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
+  transform: scale(1.1);
+  animation: container 2s ease-out forwards;
+}
+
+@keyframes container {
+  0% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes section {
+  from {
+    opacity: 0;
+    scale: 0.5;
+    transform: translateX(-100px);
+    /* clip-path: inset(100% 100% 0 0); */
+  }
+
+  to {
+    opacity: 1;
+    scale: 1;
+    transform: translateX(0px);
+    /* clip-path: inset(0 0 0 0); */
+  }
 }
 
 section {
@@ -1322,7 +1419,7 @@ section {
   height: auto;
   font-family: Aeonik;
   padding: 1rem;
-  font-size: clamp(36px, 4vw, 61.04px);
+  font-size: clamp(36px, 5vw, 61.04px);
   font-weight: 700;
   line-height: clamp(54px, 6vw, 73.25px);
   text-align: center;
@@ -1330,6 +1427,7 @@ section {
   text-decoration-skip-ink: none;
   transition: transform 0.3s ease, font-size 0.3s ease, line-height 0.3s ease;
   transform: scale(1);
+  text-transform: capitalize;
 }
 
 .mission-statement:hover {
@@ -1348,6 +1446,9 @@ section {
   width: 250px;
   height: 72.22px;
   transition: background-color 0.3s ease, transform 0.3s ease;
+    animation: section linear;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
 }
 
 .download-links a:hover {
@@ -1364,18 +1465,9 @@ section {
   align-items: center;
   gap: 12rem;
   color: white;
-}
-
-/* Define keyframes for animation */
-@keyframes fadeInSlide {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  animation: section linear;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
 }
 
 .landlord-info {
@@ -1390,7 +1482,6 @@ section {
   padding: 1rem;
   background: #0b1f6b;
   flex-wrap: wrap;
-  animation: fadeInSlide 1s ease-out forwards;
 }
 
 .landlord-info:hover {
@@ -1399,23 +1490,21 @@ section {
   transition: background 0.4s ease, box-shadow 0.4s ease;
 }
 
-.landlord-info .landlord-section-title {
+.landlord-section-title {
   font-size: clamp(22px, 4vw, 61.04px);
   font-weight: 700;
   line-height: clamp(28px, 6vw, 73.25px);
   text-align: center;
   max-width: clamp(250px, 20vw, 359px);
   height: auto;
-  text-underline-position: from-font;
-  text-decoration-skip-ink: none;
   opacity: 1;
-  transition: all 0.3s ease, transform 0.3s ease;
-  transform: translateY(0);
+  transition: all 0.3s ease;
+    animation: section linear;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
+  
 }
 
-.landlord-info .landlord-section-title:hover {
-  transform: translateY(-5px);
-}
 
 .landlord-info .landlord-phone {
   width: clamp(250px, 50vw, 350px);
@@ -1427,6 +1516,9 @@ section {
   top: -8rem;
   opacity: 1;
   transition: all 0.3s ease, transform 0.3s ease;
+    animation: section linear;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
 }
 
 .landlord-info .landlord-svg {
@@ -1448,6 +1540,9 @@ svg {
   align-items: center;
   flex-direction: column;
   transition: all 0.4s ease-in-out;
+    animation: section linear;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
 }
 
 .landlord-info .landlord-benefits:hover {
@@ -1458,8 +1553,8 @@ svg {
   width: 100%;
   height: auto;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
   flex-direction: row;
   gap: 1rem;
   transition: all 0.3s ease-in-out;
@@ -1473,7 +1568,7 @@ svg {
 .benefit-item svg {
   width: 30px;
   height: 20px;
-  background-color: #1b9160;
+  /* background-color: #1b9160; */
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
@@ -1515,6 +1610,13 @@ svg {
   gap: 5rem;
 }
 
+.journey__step-desktop {
+  display: initial;
+  animation: section linear;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
+}
+
 .journey__title {
   max-width: 1027px;
   height: auto;
@@ -1525,6 +1627,9 @@ svg {
   text-align: center;
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
+  animation: section linear;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
 }
 
 .journey__steps {
@@ -1545,11 +1650,13 @@ svg {
   justify-content: flex-start;
   align-items: flex-start;
   gap: 2rem;
+  animation: section linear;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
 }
 .journey__icon {
   width: clamp(30px, 5vw, 50px);
   height: clamp(30px, 5vw, 50px);
-  background-color: #d9d9d9;
 }
 .journey__text {
   width: 100%;
@@ -1582,6 +1689,9 @@ svg {
   position: absolute;
   color: #1b9160;
   background: white;
+    animation: section linear;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
 }
 
 .journey__content {
@@ -1600,11 +1710,14 @@ svg {
   height: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
+  justify-content: flex-start;
+  align-items: flex-start;
+  /* gap: 2rem; */
   z-index: 999;
   position: absolute;
+    animation: section linear;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
 }
 
 .journey__step-title {
@@ -1634,7 +1747,9 @@ svg {
   border-top-right-radius: 30px;
   overflow: hidden;
 }
-
+.journey__spacer1 {
+  display: none;
+}
 .journey__phone {
   width: 300px;
   height: 500px;
@@ -1643,6 +1758,9 @@ svg {
   bottom: -5.3rem;
   border-bottom-right-radius: 30px;
   z-index: 90;
+    animation: section linear;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
 }
 
 .journey-svg {
@@ -1654,6 +1772,9 @@ svg {
   justify-content: center;
   align-items: center;
   overflow: hidden;
+    animation: section linear;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
 }
 
 .journey__step-mobile {
@@ -1688,6 +1809,9 @@ svg {
   transition: all 0.5s ease-in-out;
   transform: scale(1);
   padding: 1.42rem;
+  animation: section linear;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
 }
 
 .article-card__content:hover {
@@ -1706,6 +1830,7 @@ svg {
   color: white;
   transition: all 0.5s ease-in-out;
   transform: translateY(0);
+  text-transform: capitalize;
 }
 
 .article-card__text:hover {
@@ -1789,6 +1914,9 @@ svg {
   justify-content: space-between;
   align-content: flex-start;
   position: relative;
+  animation: section linear;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
 }
 .pricing__header p {
   width: 100%;
@@ -1851,6 +1979,9 @@ svg {
   display: flex;
   justify-content: center;
   align-items: center;
+  animation: section linear;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
 }
 .pricing-__item {
   width: 100%;
@@ -1923,12 +2054,12 @@ svg {
   position: absolute;
   bottom: -23rem;
   z-index: 99;
+
 }
 .download-div {
   width: 100%;
-  max-height: 100%;
   max-width: 1239px;
-  max-height: 600px;
+  height: 575px;
   border-radius: 30px;
   display: flex;
   justify-content: space-around;
@@ -1955,11 +2086,15 @@ svg {
   flex-direction: column;
   gap: 1.5rem;
   padding: 10px;
+  animation: section linear;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
 }
 
 .download-title {
+  width: 100%;
   max-width: 530px;
-  font-size: clamp(24px, 2.5vw, 38px);
+  font-size: clamp(24px, 4vw, 38px);
   font-weight: 700;
   line-height: clamp(28.8px, 3vw, 45.6px);
   text-align: center;
@@ -1969,9 +2104,9 @@ svg {
 .download-discription {
   max-width: 530px;
   font-family: Aeonik;
-  font-size: clamp(14px, 1.5vw, 27.65px);
+  font-size: clamp(14px, 2.5vw, 27.65px);
   font-weight: 500;
-  line-height: clamp(16.8px, 1.8vw, 33.18px);
+  line-height: clamp(16.8px, 2.2vw, 33.18px);
   text-align: center;
   transition: all 0.3s ease-in-out;
 }
@@ -1979,9 +2114,12 @@ svg {
   width: clamp(250px, 30%, 300px);
   height: 500px;
   position: relative;
-  bottom: -2.4rem;
+  bottom: -2.5rem;
   transition: all 0.3s ease-in-out;
   object-fit: contain;
+    animation: section linear;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
 }
 /* download-app ends here */
 
@@ -1995,6 +2133,9 @@ svg {
   align-items: center;
   flex-direction: column;
   position: relative;
+  animation: section linear;
+  animation-timeline: view();
+  animation-range: entry 0% cover 40%;
 }
 
 .footer-container {
@@ -2045,10 +2186,11 @@ span {
   width: clamp(150px, 197px, 250px);
   height: 30px;
 }
-.footer-copyright-text, .footer-copyright-text span{
+.footer-copyright-text,
+.footer-copyright-text span {
   width: 100%;
   height: auto;
-  color: #1B49FF;
+  color: #1b49ff;
   font-family: Aeonik;
   font-size: clamp(16px, 1.2vw, 20px);
   font-weight: 400;
@@ -2178,6 +2320,7 @@ span {
     position: relative;
     top: 18rem;
   }
+
   .pricing {
     top: 2rem;
   }
@@ -2219,7 +2362,7 @@ span {
 
   .download-image {
     position: relative;
-    bottom: -6.5rem;
+    bottom: -4.8rem;
   }
   .footer {
     top: 35rem;
@@ -2339,6 +2482,7 @@ span {
 
   .journey__step-mobile {
     display: block;
+    
   }
 
   .journey {
@@ -2439,7 +2583,16 @@ span {
     position: absolute;
     top: 5rem;
   }
-
+  .download-div {
+    height: 877px;
+  }
+  .download-image {
+    width: 250px;
+    height: 400px;
+    bottom: -2rem;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+  }
   .pricing {
     /* height: 1700px; */
     position: relative;
@@ -2479,7 +2632,7 @@ span {
     bottom: -78rem;
   }
   .download-title {
-    max-width: 179px;
+    max-width: 100%;
   }
   .download-discription {
     max-width: 269px;

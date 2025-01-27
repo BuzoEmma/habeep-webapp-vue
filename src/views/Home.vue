@@ -11,11 +11,11 @@
       />
 
       <!-- Hero/Quick search -->
-      <div class="flex flex-col items-center gap-y-12 md:pb-0 pb-16">
+      <div class="flex flex-col items-center gap-y-12 md:pb-0 pb-16 mt-10">
         <h1
-          class="hero-text md:text-5xl text-4xl xl:text-6xl text-center text-webapp font-medium sm:4/5 w-5/6 md:w-3/5"
+          class="hero-text md:text-5xl text-4xl xl:text-6xl text-center text-webapp font-medium sm:4/5 px-4"
         >
-          Quick way to Find your dream Property
+          Find your Dream Property.
         </h1>
 
         <!-- Quick search -->

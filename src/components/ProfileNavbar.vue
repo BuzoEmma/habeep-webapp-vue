@@ -206,7 +206,8 @@
 
         <div class="nav-item w-full pl-[13px] py-[11px]">
           <div
-            class="menu-header w-full flex justify-between pr-5 text-sm text-webapp"
+            class="menu-header w-full flex justify-between pr-5 text-sm text-webapp cursor-pointer"
+            @click="toggleAboutMenu"
           >
             <p>About</p>
             <svg
@@ -215,7 +216,10 @@
               viewBox="0 0 24 24"
               stroke-width="2"
               stroke="#0A1045"
-              class="icon-chevron w-5 h-5 transition-transform duration-300"
+              :class="[
+                'icon-chevron w-5 h-5 transition-transform duration-300',
+                { 'rotate-180': isAboutMenuOpen },
+              ]"
             >
               <path
                 stroke-linecap="round"
@@ -225,16 +229,19 @@
             </svg>
           </div>
 
-          <div class="submenu hidden flex-col px-4 py-3 gap-3">
+          <div
+            class="submenu flex-col px-4 py-3 gap-3"
+            :class="{ hidden: !isAboutMenuOpen }"
+          >
             <p
               @click="$router.push('/tenant-app')"
-              class="submenu-item text-sm text-webapp hover:text-gray-600"
+              class="submenu-item text-sm text-webapp hover:text-gray-400"
             >
               Tenant App
             </p>
             <p
               @click="$router.push('/landlord-app')"
-              class="submenu-item text-sm text-webapp hover:text-gray-600"
+              class="submenu-item text-sm text-webapp hover:text-gray-400"
             >
               Landlord App
             </p>
@@ -338,6 +345,7 @@ import { useStore } from "vuex";
 
 const onNavDropdown = ref(false);
 const onMobileNav = ref(false);
+const isAboutMenuOpen = ref(false);
 
 let searchInput = ref("");
 
@@ -352,6 +360,10 @@ function toggleNav() {
 function toggleMobileNav() {
   onMobileNav.value = !onMobileNav.value;
   store.commit("changeNavState", onMobileNav.value);
+}
+
+function toggleAboutMenu() {
+  isAboutMenuOpen.value = !isAboutMenuOpen.value;
 }
 
 const checkForEnter = (e) => {
@@ -383,23 +395,26 @@ div.nav div.nav-item:hover {
 }
 
 .submenu {
+  width: 100%;
+  height: auto;
   display: none;
-  opacity: 0;
+  flex-direction: column;
+  position: relative;
+  top: 1rem;
+  right: 0.4rem;
   transform: translateY(-10px);
   transition: all 0.3s ease-in-out;
 }
 
-.nav-item:hover .submenu {
+.submenu.hidden {
   display: flex;
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .icon-chevron {
   transition: transform 0.3s ease-in-out;
 }
 
-.nav-item:hover .icon-chevron {
+.icon-chevron.rotate-180 {
   transform: rotate(180deg);
 }
 </style>
