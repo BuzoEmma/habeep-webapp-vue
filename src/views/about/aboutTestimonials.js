@@ -1,4 +1,4 @@
-import MrJohn from "../../assets/images/MrJohn.jpg";
+import MrJohn from "../../assets/images/testimonial.png";
 
 const testimonials = [
   {

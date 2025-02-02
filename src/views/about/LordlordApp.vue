@@ -1381,14 +1381,12 @@ function getCurrentYear() {
     opacity: 0;
     scale: 0.5;
     transform: translateX(-100px);
-    /* clip-path: inset(100% 100% 0 0); */
   }
 
   to {
     opacity: 1;
     scale: 1;
     transform: translateX(0px);
-    /* clip-path: inset(0 0 0 0); */
   }
 }
 

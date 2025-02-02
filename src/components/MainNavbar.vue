@@ -363,7 +363,7 @@ import { useStore } from "vuex";
 
 const onNavDropdown = ref(false);
 const onMobileNav = ref(false);
-const isAboutMenuOpen = ref(false);
+const isAboutMenuOpen = ref(true);
 
 const route = useRoute();
 const router = useRouter();

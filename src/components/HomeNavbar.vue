@@ -353,7 +353,7 @@ const store = useStore();
 
 const onNavDropdown = ref(false);
 const onMobileNav = ref(false);
-const isAboutMenuOpen = ref(false);
+const isAboutMenuOpen = ref(true);
 
 store.commit("changeNavState", false);
 
