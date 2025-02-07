@@ -1,6 +1,8 @@
 <template>
   <!-- Header / Navbar -->
-  <div>
+  <div
+    class="flex flex-row items-center relative p-2 justify-between w-full 2xl:px-44 border-b border-b-textfieldbg"
+  >
     <div
       class="absolute w-screen h-screen top-0 opacity-50"
       @click="toggleMobileNav"
@@ -21,7 +23,7 @@
       <div
         class="search-bar lg:flex hidden w-1/4 flex-row rounded-full border border-gray-300 items-center pl-3 pr-1 h-9 py-1 gap-x-4"
       >
-        <svg
+       <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -159,7 +161,7 @@
         v-motion-slide-top
         :delay="200"
         id="navbar"
-        class="flex flex-col drop-shadow-lg shadow-xl nav bg-white rounded-xl border py-6 border-gray-300 absolute top-16 right-20 z-50"
+        class="flex flex-col drop-shadow-lg shadow-xl nav bg-white rounded-xl border py-6 border-gray-300 absolute top-16 right-7 z-50"
         style="width: 250px"
       >
         <div class="w-full pl-[13px] py-[11px] nav-item">

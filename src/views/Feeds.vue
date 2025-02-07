@@ -357,9 +357,9 @@
               @click="toggleDropdown('location')"
               class="border border-gray-300 py-1 px-3 hidden lg:flex flex-row items-center gap-x-4 rounded-full cursor-pointer"
             >
-              <span class="md:text-lg text-webapp">{{
-                currentCity || "Nigeria"
-              }}</span>
+              <span class="md:text-lg text-webapp">
+                {{ currentCity === "All" ? "All States" : currentCity }}
+              </span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 :class="{ 'rotate-180': onLocationDropdown }"
@@ -442,8 +442,8 @@
               <div class="flex flex-row items-center justify-between">
                 <span class="text-sm font-medium">
                   Location-
-                  <span v-if="onState">state</span>
-                  <span v-else>city</span>
+                  <span v-if="onState">states</span>
+                  <span v-else>cities</span>
                 </span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -467,12 +467,12 @@
                   class="text-sm mb-1 text-webapp cursor-pointer gap-x-2 flex flex-row"
                 >
                   <img src="../assets/icons/location-checked.svg" alt="" />
-                  <span v-if="currentState === 'All'">{{
+                  <!-- <span v-if="currentState === 'All'">{{
                     currentState + " Cities"
-                  }}</span>
-                  <span v-if="currentState !== 'All'">{{
-                    " - " + currentCity
-                  }}</span>
+                  }}</span> -->
+                  <!-- <span v-if="currentState !== 'All'">{{
+                    currentCity + " States"
+                  }}</span> -->
                 </p>
               </div>
               <div class="mt-1" v-if="!onState">
@@ -503,7 +503,7 @@
              -->
               <div v-if="onState" class="gap-y-2">
                 <div class="py-2" @click="changeStateModal('All', 'state')">
-                  <p class="text-sm mb-1 text-webapp cursor-pointer">All</p>
+                  <p class="text-sm mb-1 text-webapp cursor-pointer">All States</p>
                   <hr />
                 </div>
 

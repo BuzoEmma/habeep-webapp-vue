@@ -10,7 +10,6 @@
         >Habeep</span
       >
     </div>
-
     <div
       class="absolute w-screen h-screen top-2 opacity-50 -ml-[10rem]"
       @click="toggleNav"
@@ -120,7 +119,7 @@
       :class="{ 'right-2 top-20': onMobileNav }"
       v-motion-slide-top
       :delay="200"
-      class="flex flex-col drop-shadow-lg shadow-xl nav bg-white rounded-xl border py-6 border-gray-300 absolute top-16 right-20 z-50"
+      class="flex flex-col drop-shadow-lg shadow-xl nav bg-white rounded-xl border py-6 border-gray-300 absolute top-16 right-7 z-50"
       style="width: 250px"
     >
       <div class="w-full pl-[13px] py-[11px] nav-item">

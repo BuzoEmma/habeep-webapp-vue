@@ -92,7 +92,6 @@
         class="flex md:hidden"
         alt="Mobile nav image"
       />
-
       <!-- Navigation Menu -->
 
       <div
@@ -101,7 +100,7 @@
         v-motion-slide-top
         :delay="200"
         id="navbar"
-        class="flex flex-col mobile-nav drop-shadow-lg nav shadow-xl bg-white rounded-xl border py-6 border-gray-300 absolute top-16 right-20 z-50"
+        class="flex flex-col mobile-nav drop-shadow-lg nav shadow-xl bg-white rounded-xl border py-6 border-gray-300 absolute top-16 right-7 z-50"
         style="width: 250px"
       >
         <div class="w-full pl-[13px] py-[11px] nav-item">
