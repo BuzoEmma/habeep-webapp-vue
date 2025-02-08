@@ -362,76 +362,67 @@ async function checkForField(field) {
   }
 }
 
-async function createUser() {
-  if (selectedCountry.value && selectedCountry.value.isValid) {
-    const country = clm.getCountryByAlpha2(selectedCountry.value.countryCode);
-    if (country) {
-      data.countryCode = selectedCountry.value.countryCallingCode;
-      data.currency = country.currency;
-      data.phoneNumber = selectedCountry.value.nationalNumber;
-      data.shortName = selectedCountry.value.countryCode;
-      data.nationality = country.name;
-      const validator = registerValidate(data);
+const createUser = async () => {
+    if (selectedCountry.value && selectedCountry.value.isValid) {
+        const country = clm.getCountryByAlpha2(selectedCountry.value.countryCode);
+        if (country) {
+            data.countryCode = selectedCountry.value.countryCallingCode;
+            data.currency = country.currency;
+            data.phoneNumber = selectedCountry.value.nationalNumber;
+            data.shortName = selectedCountry.value.countryCode;
+            data.nationality = country.name;
+            const validator = registerValidate(data);
 
-      if (validator.success === false) {
-        onError.value = true;
-        errorMsg.value.msg = validator.message;
-        errorMsg.value.field = validator.field;
+            if (!validator.success) {
+                onError.value = true;
+                errorMsg.value.msg = validator.message;
+                errorMsg.value.field = validator.field;
+                setTimeout(() => (onError.value = false), 3000);
+            } else {
+                try {
+                    processing.value = true;
+                    const create = await axios.post(url, data);
 
-        setTimeout(() => {
-          onError.value = false;
-        }, 3000);
-      } else {
-        try {
-          processing.value = true;
-          const create = await axios.post(url, data);
-          if (!create.data.success) {
+                    if (!create.data.success) {
+                        onError.value = true;
+                        errorMsg.value.msg = create.data.message;
+                        setTimeout(() => {
+                            processing.value = false;
+                            onError.value = false;
+                            errorMsg.value.msg = "";
+                        }, 3000);
+                    } else {
+                        // Store user data in Vuex after successful registration
+                        store.commit("SET_USER", create.data.user);
+                        store.commit("SET_AUTHENTICATED", true);
+
+                        newMsg.value = create.data.message;
+
+                        setTimeout(() => {
+                            processing.value = false;
+                            newMsg.value = "";
+                            router.push("/feeds"); // Redirect user to feeds
+                        }, 1000);
+                    }
+                } catch (error) {
+                    processing.value = false;
+                    onError.value = true;
+                    errorMsg.value.msg = error.response.data.message;
+                    setTimeout(() => (onError.value = false), 5000);
+                }
+            }
+        } else {
             onError.value = true;
-            errorMsg.value.msg = create.data.message;
-
-            setTimeout(() => {
-              processing.value = false;
-              onError.value = false;
-              errorMsg.value.msg = "";
-            }, 3000);
-          } else {
-            newMsg.value = create.data.message;
-
-            setTimeout(() => {
-              processing.value = false;
-              newMsg.value = "";
-
-              gotoModal("listings");
-            }, 1000);
-          }
-        } catch (error) {
-          processing.value = false;
-          onError.value = true;
-          errorMsg.value.msg = error.response.data.message;
-
-          setTimeout(() => {
-            onError.value = false;
-          }, 5000);
+            errorMsg.value.msg = "Country is not supported or is invalid. Try again later";
+            setTimeout(() => (onError.value = false), 3000);
         }
-      }
     } else {
-      onError.value = true;
-      errorMsg.value.msg =
-        "Country is not supported or is invalid. Try again later";
-
-      setTimeout(() => {
-        onError.value = false;
-      }, 3000);
+        onError.value = true;
+        errorMsg.value.msg = "Invalid Phone Number";
+        setTimeout(() => (onError.value = false), 3000);
     }
-  } else {
-    onError.value = true;
-    errorMsg.value.msg = "Invalid Phone Number";
+};
 
-    setTimeout(() => {
-      onError.value = false;
-    }, 3000);
-  }
-}
 
 const hasSpecialChar = computed(() => specialCharRegex.test(data.username));
 

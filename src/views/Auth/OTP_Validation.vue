@@ -198,49 +198,38 @@ const verifyOTP = async () => {
     try {
         const otpInput = [val1.value, val2.value, val3.value, val4.value, val5.value].join('');
         const info = {
-            email: '',
+            email: route.query.email || store.state.user.email,
             reason: data.reason,
             otp: otpInput
-        }
-        if (route.query.email) {
-            info.email = route.query.email;
-        } else {
-            info.email = store.state.user.email;
-        }
-        processing.value = true
+        };
+
+        processing.value = true;
 
         const verify = await axios.post(url, info);
 
-        if (verify.data.errorMsg === 'OK') {
-            msg.value.type = 'success'
-            msg.value.text = verify.data.message
+        if (verify.data.errorMsg === 'OK' || verify.data.errorMsg == null) {
+            msg.value.type = 'success';
+            msg.value.text = verify.data.message;
+
+            // **Update Vuex Authentication State**
+            store.dispatch("setAuth", {
+                authState: true,
+                sessionId: verify.data.sessionId, // Store sessionId
+                userDetails: verify.data.user
+            });
 
             setTimeout(() => {
-                processing.value = false
+                processing.value = false;
 
                 if (data.reason === 'reset_pin') {
-                    router.push('/reset-pin?otp=' + info.otp + '&email=' + info.email)
+                    router.push('/reset-pin?otp=' + info.otp + '&email=' + info.email);
                 } else {
-                    router.push('/login')
+                    router.push('/feeds'); // Redirect to feeds after verification
                 }
             }, 3000);
-        } else if (verify.data.errorMsg == null) {
-            msg.value.type = 'success'
-            msg.value.text = verify.data.message
-
-            setTimeout(() => {
-                processing.value = false
-
-                if (data.reason === 'reset_pin') {
-                    router.push('/reset-pin?otp=' + info.otp + '&email=' + info.email)
-                } else {
-                    router.push('/login')
-                }
-            }, 3000);
-
         } else {
-            msg.value.type = 'danger'
-            msg.value.text = verify.data.message
+            msg.value.type = 'danger';
+            msg.value.text = verify.data.message;
 
             val1.value = ''
             val2.value = ''
@@ -250,20 +239,21 @@ const verifyOTP = async () => {
         }
 
         setTimeout(() => {
-            msg.value.type = ''
+            msg.value.type = '';
             msg.value.text = '';
-        }, 5000)
+        }, 5000);
     } catch (error) {
-        processing.value = false
-        msg.value.type = 'danger'
-        msg.value.text = error.response.data.message
+        processing.value = false;
+        msg.value.type = 'danger';
+        msg.value.text = error.response.data.message;
 
         setTimeout(() => {
-            msg.value.type = ''
+            msg.value.type = '';
             msg.value.text = '';
         }, 5000);
     }
-}
+};
+
 
 
 onMounted(() => {
