@@ -1,10 +1,11 @@
 <script setup>
 import AboutNavbar from "../../components/AboutNavbar.vue";
 import { ref, onMounted } from "vue";
-
 import { steps } from "./stepData.js";
+
 const currentStep = ref(0);
 const show = ref(false);
+
 onMounted(() => {
   show.value = true;
   setInterval(() => {
@@ -540,9 +541,10 @@ function getCurrentYear() {
             :class="{ animate: show }"
             v-if="show"
           >
-            <span class="journey__number">
+            <span class="journey__number" :style="steps[currentStep]?.styles">
               {{ steps[currentStep]?.number }}
             </span>
+
             <div
               class="journey__content"
               :style="{ backgroundColor: steps[currentStep]?.background }"
@@ -576,7 +578,7 @@ function getCurrentYear() {
             v-for="(step, index) in steps"
             :key="index"
           >
-            <span class="journey__number">
+            <span class="journey__number" :style="step.styles">
               {{ step.number }}
             </span>
             <div
@@ -1398,18 +1400,20 @@ section {
   align-items: center;
   flex-direction: column;
   padding: 1rem;
-  margin-bottom: 6rem;
+  margin-bottom: 4rem;
 }
 /* mission starts here */
 
 .mission {
   width: 100%;
-  max-height: 700px;
+  height: clamp(375px, 50vh, 500px);
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 2rem 0rem;
+  padding: 0rem;
   gap: 5rem;
+  position: relative;
+  top: 4rem;
 }
 
 .mission-statement {
@@ -1444,9 +1448,6 @@ section {
   width: 250px;
   height: 72.22px;
   transition: background-color 0.3s ease, transform 0.3s ease;
-    animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
 }
 
 .download-links a:hover {
@@ -1497,12 +1498,10 @@ section {
   height: auto;
   opacity: 1;
   transition: all 0.3s ease;
-    animation: section linear;
+  animation: section linear;
   animation-timeline: view();
   animation-range: entry 0% cover 40%;
-  
 }
-
 
 .landlord-info .landlord-phone {
   width: clamp(250px, 50vw, 350px);
@@ -1514,7 +1513,7 @@ section {
   top: -8rem;
   opacity: 1;
   transition: all 0.3s ease, transform 0.3s ease;
-    animation: section linear;
+  animation: section linear;
   animation-timeline: view();
   animation-range: entry 0% cover 40%;
 }
@@ -1538,7 +1537,7 @@ svg {
   align-items: center;
   flex-direction: column;
   transition: all 0.4s ease-in-out;
-    animation: section linear;
+  animation: section linear;
   animation-timeline: view();
   animation-range: entry 0% cover 40%;
 }
@@ -1672,6 +1671,12 @@ svg {
   border-radius: 30px;
   color: white;
   position: relative;
+  transition: transform 1s ease-out;
+}
+
+
+.journey__step:hover {
+  transform: translateY(-20px);
 }
 
 .journey__number {
@@ -1685,9 +1690,8 @@ svg {
   font-weight: 700;
   line-height: 27.65px;
   position: absolute;
-  color: #1b9160;
   background: white;
-    animation: section linear;
+  animation: section linear;
   animation-timeline: view();
   animation-range: entry 0% cover 40%;
 }
@@ -1713,7 +1717,7 @@ svg {
   /* gap: 2rem; */
   z-index: 999;
   position: absolute;
-    animation: section linear;
+  animation: section linear;
   animation-timeline: view();
   animation-range: entry 0% cover 40%;
 }
@@ -1756,7 +1760,7 @@ svg {
   bottom: -5.3rem;
   border-bottom-right-radius: 30px;
   z-index: 90;
-    animation: section linear;
+  animation: section linear;
   animation-timeline: view();
   animation-range: entry 0% cover 40%;
 }
@@ -1770,7 +1774,7 @@ svg {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-    animation: section linear;
+  animation: section linear;
   animation-timeline: view();
   animation-range: entry 0% cover 40%;
 }
@@ -2052,7 +2056,6 @@ svg {
   position: absolute;
   bottom: -23rem;
   z-index: 99;
-
 }
 .download-div {
   width: 100%;
@@ -2115,7 +2118,7 @@ svg {
   bottom: -2.5rem;
   transition: all 0.3s ease-in-out;
   object-fit: contain;
-    animation: section linear;
+  animation: section linear;
   animation-timeline: view();
   animation-range: entry 0% cover 40%;
 }
@@ -2403,6 +2406,7 @@ span {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 4rem;
   }
   .pricing__content {
     width: 100%;
@@ -2448,6 +2452,11 @@ span {
 }
 
 @media screen and (max-width: 500px) {
+  .mission {
+    margin-bottom: 6rem;
+    gap: 2rem;
+  }
+
   .landlord-info {
     height: 900px;
   }
@@ -2480,7 +2489,6 @@ span {
 
   .journey__step-mobile {
     display: block;
-    
   }
 
   .journey {
@@ -2594,7 +2602,7 @@ span {
   .pricing {
     /* height: 1700px; */
     position: relative;
-    top: 42rem;
+    top: 47rem;
     padding: 1rem;
   }
   .pricing-svg {
@@ -2627,7 +2635,7 @@ span {
   }
 
   .download-app {
-    bottom: -78rem;
+    bottom: -83rem;
   }
   .download-title {
     max-width: 100%;
@@ -2637,7 +2645,7 @@ span {
   }
   .footer {
     position: relative;
-    top: 105rem;
+    top: 110rem;
     height: auto;
   }
   .footer-container {

@@ -5,6 +5,9 @@ import phone3 from "../../assets/landlord/phone3.png";
 export const steps = [
   {
     number: "01",
+    styles: {
+      color: "#1b9160",
+    },
     title: "Sign in as a Landlord.",
     description:
       "Create an account on the Habeep platform to access hassle-free property management solutions.",
@@ -29,6 +32,9 @@ export const steps = [
 
   {
     number: "02",
+    styles: {
+      color: "#0B103F",
+    },
     title: "Add Your Property.",
     description: `Use the ‘Add Compound’ button to list your property details and connect with verified tenants.`,
     phone: phone2,
@@ -50,6 +56,9 @@ export const steps = [
   },
   {
     number: "03",
+    styles: {
+      color: "#FF9900",
+    },
     title: "Start Earning With Ease.",
     description:
       "Sit back while we ensure timely rent payments and smooth property management.",
