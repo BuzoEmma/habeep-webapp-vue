@@ -1533,19 +1533,19 @@ useHead({
       opacity: 1;
     }
   }
-@keyframes section {
-  0% {
-    opacity: 0;
-    transform: scale(0.7) translateX(-100px);
-    filter: blur(5px);
-  }
+  @keyframes section {
+    0% {
+      opacity: 0;
+      transform: scale(0.7) translateX(-100px);
+      filter: blur(5px);
+    }
 
-  100% {
-    opacity: 1;
-    transform: scale(1) translateX(0px);
-    filter: blur(0px);
+    100% {
+      opacity: 1;
+      transform: scale(1) translateX(0px);
+      filter: blur(0px);
+    }
   }
-}
   .hero-section {
     width: 100%;
     height: auto;
@@ -1567,8 +1567,8 @@ useHead({
     line-height: 60px;
     text-align: center;
     animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .hero-video {
@@ -1578,7 +1578,6 @@ useHead({
     height: 473px;
     border-radius: 30px;
     background: rgba(217, 217, 217, 1);
-
   }
 
   .discover-section {
@@ -1607,8 +1606,8 @@ useHead({
     line-height: 53px;
     text-align: left;
     animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .discover-subtitle {
@@ -1621,8 +1620,8 @@ useHead({
     text-align: left;
     color: #b1b2b6;
     animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .discover-svg {
@@ -1639,8 +1638,8 @@ useHead({
     max-height: 600px;
     border-radius: 30px;
     animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .tenants-section {
@@ -1674,9 +1673,9 @@ useHead({
     font-weight: 700;
     line-height: 60px;
     text-align: left;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .tenants-subtitle {
@@ -1690,9 +1689,9 @@ useHead({
     line-height: 40px;
     text-align: left;
     color: #b1b2b6;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .tenants-svg {
@@ -1701,9 +1700,9 @@ useHead({
     justify-content: flex-start;
     align-items: center;
     gap: 3rem;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .tenants-svg1 {
@@ -1735,9 +1734,9 @@ useHead({
     justify-content: space-around;
     align-items: center;
     background-image: url("../../assets/icons/tenant-bg.png");
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .tenants-benefits-list span {
@@ -1757,9 +1756,9 @@ useHead({
     align-items: flex-start;
     flex-direction: column;
     color: white;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .benefit1 p {
@@ -1771,9 +1770,9 @@ useHead({
     font-weight: 700;
     line-height: 45.6px;
     text-align: left;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .benefit2 {
@@ -1785,9 +1784,9 @@ useHead({
     align-items: flex-start;
     flex-direction: column;
     color: white;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .benefit2 p {
@@ -1799,9 +1798,9 @@ useHead({
     line-height: 37.5px;
     text-align: left;
     color: white;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .benefit3 {
@@ -1835,9 +1834,9 @@ useHead({
     max-width: 661x;
     height: auto;
     height: 100%;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .agent-title {
@@ -1848,9 +1847,9 @@ useHead({
     font-weight: 700;
     line-height: 63px;
     text-align: left;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .agent-subtitle {
@@ -1863,9 +1862,9 @@ useHead({
     line-height: 40px;
     text-align: left;
     color: #b1b2b6;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .agent-svg {
@@ -1885,9 +1884,9 @@ useHead({
     display: flex;
     justify-content: center;
     align-items: center;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .agent-svg-text p {
@@ -1900,9 +1899,9 @@ useHead({
     line-height: 40px;
     text-align: left;
     color: white;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .agent-svg-phone {
@@ -1915,9 +1914,9 @@ useHead({
     justify-content: center;
     align-items: center;
     flex-direction: column;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .agent-svg-phone p {
@@ -1932,9 +1931,9 @@ useHead({
     text-decoration-skip-ink: none;
     position: relative;
     left: -5rem;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .agent-svg-phone p span {
@@ -1952,9 +1951,9 @@ useHead({
     width: 350px;
     height: 250px;
     object-fit: contain;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .blog-section {
@@ -1976,9 +1975,9 @@ useHead({
     align-items: center;
     flex-direction: column;
     gap: 4rem;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .blog-header {
@@ -2003,9 +2002,9 @@ useHead({
     line-height: 60px;
     text-align: center;
     color: black;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .blog-subtitle {
@@ -2021,9 +2020,9 @@ useHead({
     line-height: 35px;
     text-align: center;
     color: #b1b2b6;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .swiper-container-wrapper {
@@ -2078,9 +2077,10 @@ useHead({
     background-size: cover;
     background-position: center;
     cursor: pointer;
-  animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;  }
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+  }
 
   .swiper-slide-card div {
     height: auto;
@@ -2108,9 +2108,9 @@ useHead({
     text-align: left;
     color: #ffffff;
     text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .swiper-div-sub-title {
@@ -2123,9 +2123,9 @@ useHead({
     text-align: left;
     color: #ffffffbe;
     text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .landlords-section {
@@ -2149,9 +2149,9 @@ useHead({
     justify-content: flex-start;
     align-items: flex-start;
     flex-direction: column;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .landlords-header .landlords-title {
@@ -2163,9 +2163,9 @@ useHead({
     font-weight: 700;
     line-height: 73.25px;
     text-align: left;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .landlords-subtitle {
@@ -2178,9 +2178,9 @@ useHead({
     line-height: 46.87px;
     text-align: left;
     color: #b1b2b6;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .landlords-svgs {
@@ -2203,9 +2203,9 @@ useHead({
     align-items: center;
     flex-direction: column;
     background-image: url("../../assets/images/landlordbg.png");
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .landlords-svgs .landlords-svg1 p {
@@ -2217,9 +2217,9 @@ useHead({
     line-height: 45.6px;
     text-align: left;
     color: white;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .landlords-svg1 img {
@@ -2229,9 +2229,9 @@ useHead({
     position: relative;
     bottom: -5.4rem;
     object-fit: contain;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .landlords-svgs .landlords-svg2 {
@@ -2243,9 +2243,9 @@ useHead({
     justify-content: center;
     align-items: center;
     background-image: url("../../assets/images/landlord.png");
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .landlords-svg2 p {
@@ -2258,9 +2258,9 @@ useHead({
     text-align: left;
     padding-left: 2rem;
     color: white;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .landlords-download {
@@ -2288,9 +2288,9 @@ useHead({
     font-weight: 700;
     line-height: 35px;
     text-align: left;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .landlords-download-btn {
@@ -2301,9 +2301,9 @@ useHead({
     align-items: center;
     flex-direction: row;
     gap: 1rem;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .testimonial-section {
@@ -2324,9 +2324,9 @@ useHead({
     display: flex;
     justify-content: center;
     align-content: center;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .testimonial-slide {
@@ -2337,9 +2337,9 @@ useHead({
     align-content: center;
     flex-direction: column-reverse;
     gap: 5rem;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .testimonial-slide-img {
@@ -2357,9 +2357,9 @@ useHead({
     display: flex;
     justify-content: center;
     align-content: center;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .testimonial-header {
@@ -2388,9 +2388,9 @@ useHead({
     font-weight: 700;
     line-height: 65px;
     text-align: left;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .testimonial-comment {
@@ -2399,9 +2399,9 @@ useHead({
     font-weight: 400;
     line-height: 36px;
     text-align: left;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .testimonial-name {
@@ -2411,9 +2411,9 @@ useHead({
     line-height: 36px;
     text-align: left;
     margin-top: 2rem;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .testimonial-container
@@ -2456,9 +2456,9 @@ useHead({
     flex-direction: column;
     padding: 0rem 3rem;
     gap: 6rem;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
   }
 
   .footer-user-app {
@@ -2529,10 +2529,10 @@ useHead({
     justify-content: space-between;
     align-items: center;
     margin: 2rem 0rem;
-      animation: section linear;
-  animation-timeline: view();
-  animation-range: entry 0% cover 40%;
-  animation-range: entry 0% cover 40%;
+    animation: section linear;
+    animation-timeline: view();
+    animation-range: entry 0% cover 40%;
+    animation-range: entry 0% cover 40%;
   }
 
   .footer-habeep div:nth-child(1) {
