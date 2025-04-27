@@ -1,5 +1,4 @@
 import mentusAyim from "../../assets/images/mentusAyim.jpg";
-import mtJohon from "../../assets/images/mtJohn.jpg";
 const testimonials = [
   {
     Name: "MENTUS AYIM",
